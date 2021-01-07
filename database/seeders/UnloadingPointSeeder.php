@@ -1,0 +1,24 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\UnloadingPoint;
+
+class UnloadingPointSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+        UnloadingPoint::create(["short_code" => "PDP Port", "name" => "Paradeep Port"]);
+        UnloadingPoint::create(["short_code" => "G. Port", "name" => "Gopalpur Port"]);
+        UnloadingPoint::create(["short_code" => "Barbil", "name" => "Barbil"]);
+        UnloadingPoint::create(["short_code" => "Banspani Rly Sdg", "name" => "Banspani Railway Siding"]);
+        UnloadingPoint::create(["short_code" => "JRLI Rly Sdg", "name" => "Jaroli Railway Siding"]);
+    }
+}
