@@ -117,6 +117,7 @@ class FleetLiveEvery10Mins extends Command
                 {
 
                 }
+                if($location['etpno'] != null && $location['etpno'] != "NA")
                 $trip_catch = FleetTripCatcher::firstOrCreate(
                     ['etpno' => $location['etpno']],
                     [
