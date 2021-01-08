@@ -1,4 +1,4 @@
-@if ($avatar == true)
+@if ($avatar)
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
             <div class="flex-shrink-0 w-10 h-10">
