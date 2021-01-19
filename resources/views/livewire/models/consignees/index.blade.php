@@ -1,6 +1,6 @@
 <div>
     <!-- List all consignees -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
                 <x-tables.basic.column>Serial No.</x-tables.basic.column>
                 <x-tables.basic.column>Company Name</x-tables.basic.column>
@@ -8,7 +8,7 @@
                 <x-tables.basic.column>Running Projects</x-tables.basic.column>
                 <x-tables.basic.column>Business Done</x-tables.basic.column>
         </x-slot>
-            
+
         <x-slot name="rows">
             @foreach ($consignees as $consignee)
                 <tr>

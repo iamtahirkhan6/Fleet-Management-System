@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Party;
+use App\Domain\Party\Models\Party;
 use App\Models\PartiesBankAccount;
 use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
@@ -29,9 +29,9 @@ class PartySeeder extends Seeder
         // $vehicle        = Vehicle::firstOrCreate(['number' => $vehicle_number], ['party_id' => $party->id]);
 
         $bank_account = PartiesBankAccount::where('bank_number', $acc_number)->firstOr(function () use($party_name, $vehicle_number, $acc_number, $ifsc_code) {
-            
+
             $vehicle = Vehicle::firstOrCreate(
-                ['number' => $vehicle_number], 
+                ['number' => $vehicle_number],
                 ['party_id' => Party::firstOrCreate(['name' => $party_name])->id]
             );
 
@@ -63,9 +63,9 @@ class PartySeeder extends Seeder
                 $party->pan         = $pan;
                 $party->save();
         }
-        
+
     }
-    
+
     public function run()
     {
         //
@@ -863,5 +863,5 @@ class PartySeeder extends Seeder
         $this->add('Baidhar Sahoo,OD04Q1148,3615651182,CBIN0282961');
         $this->add('Baidhar Sahoo,OD04Q0648,3615651182,CBIN0282961');
     }
-    
+
 }

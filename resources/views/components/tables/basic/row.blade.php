@@ -6,10 +6,10 @@
             </div>
             <div class="ml-4">
                 <div class="text-sm font-medium text-gray-900">
-                    {{ $slot }}
+                    {{ $slot ?? null }}
                 </div>
                 <div class="text-sm text-gray-500">
-                    {{ $val }}
+                    {{ $val ?? null }}
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
             </span>
         </td>
     @endif
-    
+
 @else
     <td class="px-6 py-4 whitespace-nowrap">
             <div class="text-sm text-gray-500">
@@ -37,17 +37,21 @@
                 @else
                     @if($money == "true")
                         @if($moneyBool == 0 || $moneyBool == false)
-                            <svg class="w-6 h-6 mr-3 text-red-500 transition duration-150 ease-in-out group-hover:text-red-500 group-focus:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            <x-svg.red-cross />
                         @else
                             {{ App\Helper\Helper::rupee_format($moneyVal) }}
+                        @endif
+                    @elseif($amount == "true")
+                        @if($amountVal > 0)
+                            {{ App\Helper\Helper::rupee_format($amountVal) }}
+                        @else
+                            <x-svg.red-cross />
                         @endif
                     @else
                         @if($colorSlot == true)
                             @if(($colorSlotVal <= 0))
                                 <span class="text-red-500" {{ $attributes }}>{{ $colorSlotVal }}</span>
-                            @else    
+                            @else
                                 <span class="text-green-500" {{ $attributes }}>{{ $colorSlotVal }}</span>
                             @endif
                         @else

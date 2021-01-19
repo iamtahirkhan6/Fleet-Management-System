@@ -16,8 +16,7 @@ class CreateFleetVehiclesTable extends Migration
         Schema::create('fleet_vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
-            $table->unsignedBigInteger('fleet_id')->nullable();
-            $table->foreign('fleet_id')->references('id')->on('fleets');
+            $table->foreignId('fleet_id')->references('id')->on('fleets');
             $table->string('owner_name');
             $table->string('reg_date');
             $table->string('model');

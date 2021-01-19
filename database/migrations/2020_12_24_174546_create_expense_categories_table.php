@@ -16,9 +16,7 @@ class CreateExpenseCategoriesTable extends Migration
         Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-
-            $table->unsignedBigInteger('type')->nullable();
-            $table->foreign('type')->references('id')->on('expense_category_types');
+            $table->foreignId('expense_category_type_id')->references('id')->on('expense_category_types');
 
             $table->timestamps();
         });

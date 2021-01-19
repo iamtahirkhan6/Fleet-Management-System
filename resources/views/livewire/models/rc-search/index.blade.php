@@ -20,7 +20,7 @@
                         class="block w-full pl-10 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         placeholder="OD-XX-XX-9999" pattern="[a-zA-Z0-9 ]+">
                 </div>
-                @error('vehicle_number')<p class="mt-2 text-sm text-red-600" id="name-error">{{ $message }}</p>@enderror 
+                @error('vehicle_number')<p class="mt-2 text-sm text-red-600" id="name-error">{{ $message }}</p>@enderror
             </div>
 
         </div>
@@ -42,10 +42,10 @@
         </div>
     </form>
 
-    <x-description-list.main x-cloak x-show="informationBox" 
-        title="Vehicle Information" 
+    <x-description-list.main x-cloak x-show="informationBox"
+        title="Vehicle Information"
         desc="All the details regarding the vehicle is available here.">
-        
+
         <x-description-list.row :value="$vehicle_number"                   background="bg-gray-50">Number</x-description-list.row >
         <x-description-list.row :value="$vehice_owner_name"                background="bg-white">Owner Name</x-description-list.row >
         <x-description-list.row :value="$vehice_model"                     background="bg-gray-50">Model</x-description-list.row >
@@ -55,9 +55,14 @@
         <x-description-list.row :value="$vehice_insurance_expiry"          background="bg-gray-50">Insurance Expiry</x-description-list.row >
         <x-description-list.row :value="$vehice_authority"                 background="bg-white">Registration Authority</x-description-list.row >
         <x-description-list.row :value="$vehice_rto_code"                  background="bg-gray-50">RTO Code</x-description-list.row >
+        <x-description-list.row :value="$vehicle_fuel_type"                background="bg-gray-50">Fuel Type</x-description-list.row >
+        <x-description-list.row :value="$vehicle_fuel_norm"                background="bg-gray-50">Fuel Norm</x-description-list.row >
+        <x-description-list.row :value="$vehicle_mvtax_upto"               background="bg-gray-50">MV Tax</x-description-list.row >
+        <x-description-list.row :value="$vehicle_noc_details"              background="bg-gray-50">Noc Details</x-description-list.row >
+        <x-description-list.row :value="$vehicle_puc_upto"                 background="bg-gray-50">PUC Upto</x-description-list.row >
         <x-description-list.row :value="$vehice_chassis_number"            background="bg-white">Chassis Number</x-description-list.row >
         <x-description-list.row :value="$vehice_engine_number"             background="bg-gray-50">Engine Number</x-description-list.row >
-            
+
 </x-description-list.main>
 
 

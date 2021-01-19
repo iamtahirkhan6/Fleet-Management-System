@@ -7,16 +7,15 @@
             Add Mines
         </a>
     </div>
-    
+
     <!-- List all mines -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
             <x-tables.basic.column>Serial No.</x-tables.basic.column>
             <x-tables.basic.column>Name</x-tables.basic.column>
             <x-tables.basic.column>Sector</x-tables.basic.column>
             <x-tables.basic.column>Total Projects</x-tables.basic.column>
             <x-tables.basic.column>Active Projects</x-tables.basic.column>
-            <x-tables.basic.column></x-tables.basic.column>
         </x-slot>
 
         <x-slot name="rows">

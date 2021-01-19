@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire\Models\Trips;
 
-use App\Models\Trip;
+use App\Domain\Trip\Models\Trip;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
-{ 
-    use WithPagination;
+{
     public $project;
+    use WithPagination;
 
     public function mount($project)
     {
@@ -18,6 +18,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.trips.index', ['trips' => Trip::where('project_id', $this->project->id)->paginate(25)]);
+        return view('livewire.models.trips.index', ['trips' => Trip::where('project_id', $this->project->id)->with('vehicle')->paginate(25)]);
     }
 }

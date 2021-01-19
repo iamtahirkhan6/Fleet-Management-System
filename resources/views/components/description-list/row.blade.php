@@ -15,19 +15,17 @@
                             ₹{{ number_format($value) }}
                         @endif
                     @else
-                        <svg class="w-5 h-5 mr-3 text-red-500 transition duration-150 ease-in-out group-hover:text-red-500 group-focus:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <x-svg.red-cross />
                     @endif
-                 
+                
+                @elseif($photo != null)
+                    Uploaded
                 @else
-                    {{ $value }}
+                    {{ $value ?? null }}
                 @endif
             @endif
         @else
-            <svg class="w-5 h-5 mr-3 text-red-500 transition duration-150 ease-in-out group-hover:text-red-500 group-focus:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <x-svg.red-cross />
         @endif
     </dd>
 </div>

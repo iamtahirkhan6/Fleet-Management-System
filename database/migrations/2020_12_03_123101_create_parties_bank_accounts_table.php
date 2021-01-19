@@ -15,8 +15,7 @@ class CreatePartiesBankAccountsTable extends Migration
     {
         Schema::create('parties_bank_accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('party_id');
-            $table->foreign('party_id')->references('id')->on('parties');
+            $table->foreignId('party_id')->references('id')->on('parties');
             $table->string('acc_name')->nullable();
             $table->string('bank_number')->unique();
             $table->string('ifsc');

@@ -16,8 +16,7 @@ class CreateExpenseIndividualsTable extends Migration
         Schema::create('expense_individuals', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

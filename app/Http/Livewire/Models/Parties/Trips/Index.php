@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Models\Parties\Trips;
 
-use App\Models\Trip;
+use App\Domain\Trip\Models\Trip;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
-{   
+{
     use WithPagination;
     public $party;
 

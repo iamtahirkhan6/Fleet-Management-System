@@ -23,8 +23,10 @@ class row extends Component
     public $moneyVal;
     public $colorSlot;
     public $colorSlotVal;
+    public $amount;
+    public $amountVal;
     
-    public function __construct($avatar = null, $val = null, $url = null, $colorToggle = null, $trueVal = null, $falseVal = null, $link = null, $money = null, $moneyBool = null, $moneyVal = null, $colorSlot = null, $colorSlotVal = null)
+    public function __construct($avatar = null, $amountVal = null, $val = null, $url = null, $colorToggle = null, $trueVal = null, $falseVal = null, $link = null, $money = null, $moneyBool = null, $moneyVal = null, $colorSlot = null, $colorSlotVal = null, $amount = null)
     {
         $this->avatar           = $avatar;
         $this->val              = $val;
@@ -38,6 +40,8 @@ class row extends Component
         $this->moneyVal         = $moneyVal;
         $this->colorSlot        = $colorSlot;
         $this->colorSlotVal     = $colorSlotVal;
+        $this->amount           = $amount;
+        $this->amountVal        = $amountVal;
     }
 
     /**

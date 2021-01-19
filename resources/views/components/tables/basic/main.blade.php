@@ -1,4 +1,4 @@
-<div class="flex flex-col mt-5">
+<div {{ $attributes->merge(["class" => "flex flex-col mt-5"]) }}>
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8 ">
             <div class="overflow-hidden border-t-4 border-indigo-400 shadow sm:rounded-lg">

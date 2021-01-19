@@ -16,20 +16,17 @@ class CreateTripPaymentTransactionsTable extends Migration
         Schema::create('trip_payment_transactions', function (Blueprint $table) {
             $table->id();
             
-            $table->unsignedBigInteger('party_id')->nullable();
-            $table->foreign('party_id')->references('id')->on('parties');
+            $table->foreignId('party_id')->references('id')->on('parties');
 
             $table->double('amount')->default(0);
 
-            $table->unsignedBigInteger('bank_account')->nullable();
-            $table->foreign('bank_account')->references('id')->on('parties_bank_accounts');
-            
-            $table->unsignedBigInteger('trip_id')->nullable();
-            $table->foreign('trip_id')->references('id')->on('trips');
+            $table->foreignId('parties_bank_account_id')->references('id')->on('parties_bank_accounts');
+
+            $table->foreignId('trip_id')->references('id')->on('trips');
 
             $table->boolean('status');
             
-            $table->string('remarks')->nullable();
+            $table->foreignId('payment_method_id')->references('id')->on('payment_methods');
 
             $table->timestamps();
         });

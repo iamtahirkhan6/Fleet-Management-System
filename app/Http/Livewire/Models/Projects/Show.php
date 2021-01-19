@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Models\Projects;
 
 use Livewire\Component;
-use App\Models\Trip;
+use App\Domain\Trip\Models\Trip;
 
 class Show extends Component
 {

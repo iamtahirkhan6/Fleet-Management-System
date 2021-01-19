@@ -1,6 +1,6 @@
 <div>
     <!-- List all vehicles -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
                 <x-tables.basic.column>Serial No.</x-tables.basic.column>
                 <x-tables.basic.column>Vehicle No.</x-tables.basic.column>
@@ -10,7 +10,7 @@
                 <x-tables.basic.column>Total Cash Advance</x-tables.basic.column>
                 {{-- <x-tables.basic.column></x-tables.basic.column> --}}
         </x-slot>
-            
+
         <x-slot name="rows">
             @foreach ($vehicles as $vehicle)
                 <tr>

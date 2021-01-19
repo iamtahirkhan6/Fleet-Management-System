@@ -1,5 +1,14 @@
-<div
-    x-data="{ step1: @entangle('step1'), step2: @entangle('step2'), step3: @entangle('step3'), stepOneCompleted: @entangle('stepOneCompleted'), stepTwoCompleted: @entangle('stepTwoCompleted'), stepThreeCompleted: @entangle('stepThreeCompleted'), hsdBool: @entangle('f_hsd_bool'), cashAdvBool: @entangle('f_cash_advance_bool') }">
+<div x-data="{
+        step0: @entangle('step0'),
+        step1: @entangle('step1'),
+        step2: @entangle('step2'),
+        step3: @entangle('step3'),
+        mActive: @entangle('mActive'),
+        oActive: @entangle('oActive'),
+        stepOneCompleted: @entangle('stepOneCompleted'),
+        stepTwoCompleted: @entangle('stepTwoCompleted'),
+        stepThreeCompleted: @entangle('stepThreeCompleted')
+    }">
 
     <!-- Steps -->
     <nav aria-label="Progress" class="mt-5 bg-white">
@@ -118,559 +127,355 @@
     <!-- Body -->
     <div class="mt-5 overflow-hidden bg-white border-t rounded-lg shadow-2xl border-gray-50">
         <div class="px-4 py-5 sm:p-6">
-            <!-- Body -->
-            <form class="space-y-4" wire:submit.prevent="createTrip">
-                <!-- Step 1 -->
-                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3" x-show="step1">
-                    <div class="w-11/12 col-span-1 border-gray-200 sm:border-r">
-                        <div class="">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">Trip Information</h3>
-                            <p class="mt-1 text-sm text-gray-500">Fill the details as mentioned on the challan.</p>
-                            <hr class="my-3 sm:w-3/4">
-                        </div>
-                        
-                        <!-- Loading Point -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Loading Point</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <p class="text-indigo-500 ">{{ $f_loading_point_val }}</p>
+            <form class="min-h-full space-y-4" wire:submit.prevent="createTrip">
+                <div x-show="step0" class="w-3/6 mx-auto">
+                    <fieldset>
+                        <legend class="sr-only">
+                            Privacy setting
+                        </legend>
+
+                        <div class="-space-y-px bg-white rounded-md">
+                            <div @click="mActive = true, oActive = false"
+                                :class="{ 'bg-indigo-50 border-indigo-200 z-10': mActive, 'border-gray-200': !mActive }"
+                                class="relative flex p-4 border rounded-tl-md rounded-tr-md">
+                                <div class="flex items-center h-5">
+                                    <input @click="mActive = true" type="radio" x-bind:checked="mActive"
+                                        class="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-500"
+                                        checked>
+                                </div>
+                                <label @click="mActive = true, oActive = false" for="settings-option-0"
+                                    class="flex flex-col ml-3 cursor-pointer">
+                                    <span :class="{ 'text-indigo-900': mActive, 'text-gray-900': !mActive }"
+                                        class="block text-sm font-medium">
+                                        Market Vehicle
+                                    </span>
+                                    <span :class="{ 'text-indigo-700': mActive, 'text-gray-500': !mActive }"
+                                        class="block text-sm">
+                                        This vehicle is owned by a third party and they do transportation for us.
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div @click="oActive = true, mActive = false"
+                                :class="{ 'bg-indigo-50 border-indigo-200 z-10': oActive, 'border-gray-200': !oActive }"
+                                class="relative flex p-4 border border-gray-200">
+                                <div class="flex items-center h-5">
+                                    <input @click="oActive = true" type="radio" x-bind:checked="oActive"
+                                        class="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-500">
+                                </div>
+                                <label @click="oActive = true, mActive = false" for="settings-option-1"
+                                    class="flex flex-col ml-3 cursor-pointer">
+                                    <span :class="{ 'text-indigo-900': oActive, 'text-gray-900': !oActive }"
+                                        class="block text-sm font-medium">
+                                        Owned Vehicle
+                                    </span>
+                                    <span :class="{ 'text-indigo-700': oActive, 'text-gray-500': !oActive }"
+                                        class="block text-sm">
+                                        This vehicle is owned by us and is a part of our fleet.
+                                    </span>
+                                </label>
                             </div>
                         </div>
+                    </fieldset>
 
-                        <!-- Unloading Point -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Unloading Point</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <p class="text-indigo-500 ">{{ $f_unloading_point_val }}</p>
-                            </div>
-                        </div>
+                </div>
+                <div x-show="step1" x-cloak>
+                    <!-- Step 1 -->
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 @if($mActive != 'true') sm:grid-cols-2 @else sm:grid-cols-3 @endif" x-show="step1">
 
-                        <!-- Consignee -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Consignee</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <p class="text-indigo-500">{{ $f_consignee_val }}</p>
-                            </div>
-                        </div>
+                        <!-- Trip Information -->
+                        <x-forms.below-stacked.vertical-column title="Trip Information"
+                            desc="Fill the details as mentioned on the challan."
+                            class="w-11/12 col-span-1 border-gray-200 sm:border-r">
 
-                        <!-- Date -->
-                        <div class="mt-6">
-                            <label class="block text-sm font-medium text-gray-700">Date</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <x-date-picker wire:model="f_date" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
-                            </div>
-                            @error('f_date')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Loading Point -->
+                            <x-forms.below-stacked.row-with-value title="Source">
+                                {{ $source }}
+                            </x-forms.below-stacked.row-with-value>
 
-                        <!-- Challan Serial -->
-                        <div class="mt-6">
-                            <label class="block text-sm font-medium text-gray-700">Challan Serial</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="number" wire:model="f_challan_serial"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_challan_serial')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Unloading Point -->
+                            <x-forms.below-stacked.row-with-value title="Destination">
+                                {{ $destination }}
+                            </x-forms.below-stacked.row-with-value>
 
-                        <!-- Vehicle Number -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Vehicle Number <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_vehicle_number"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_vehicle_number')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Consignee -->
+                            <x-forms.below-stacked.row-with-value title="Consignee">
+                                {{ $consignee }}
+                            </x-forms.below-stacked.row-with-value>
 
-                        <!-- TP Number -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">TP Number <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_tp_number"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_tp_number')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Date -->
+                            <x-forms.below-stacked.row title="Date" error="trip.date">
+                                <x-date-picker wire:model="trip.date"
+                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </x-forms.below-stacked.row>
 
-                        <!-- TP Serial -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">TP Serial <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_tp_serial"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_tp_serial')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Challan Serial -->
+                            <x-forms.below-stacked.row title="Challan Serial" error="trip.challan_serial">
+                                <x-forms.below-stacked.text-input type="text" wire:model="trip.challan_serial" />
+                            </x-forms.below-stacked.row>
 
-                        <!-- Agent -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Agent</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <select wire:model="f_agent"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option hidden>Select an Agent</option>
-                                    @foreach ($agents as $agent)
-                                        <option value="{{ $agent->id }}">{{ $agent->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                            <!-- Vehicle Number -->
+                            @if ($mActive == 'true')
 
-                    <div class="w-11/12 col-span-1 border-gray-200 sm:border-r">
+                                <!-- Market Vehicle -->
+                                <x-forms.below-stacked.row title="Vehicle Registration Number" error="vehicle.number" required="true">
+                                    <x-forms.below-stacked.text-input type="text" wire:model="vehicle.number" />
+                                </x-forms.below-stacked.row>
+
+                            @elseif($oActive == 'true')
+
+                            <!-- Fleet Vehicle -->
+                                <x-forms.below-stacked.row title="Vehicle Registration Number" error="fleet_vehicle_id"
+                                    required="true">
+                                    <x-forms.below-stacked.dropdown title="Select a Vehicle" :array="$fleet_vehicles" arrayKey="number"
+                                        wire:model="fleet_vehicle_id" />
+                                </x-forms.below-stacked.dropdown>
+
+                            @endif
+
+                            <!-- TP Number -->
+                            <x-forms.below-stacked.row title="TP Number" error="trip.tp_number" required="true">
+                                <x-forms.below-stacked.text-input type="text" wire:model="trip.tp_number" />
+                            </x-forms.below-stacked.row>
+
+                            <!-- TP Serial -->
+                            <x-forms.below-stacked.row title="TP Serial" error="trip.tp_serial" required="true">
+                                <x-forms.below-stacked.text-input type="text" wire:model="trip.tp_serial" />
+                            </x-forms.below-stacked.row>
+
+                            @if ($mActive == 'true' && $step0 == false)
+                                <!-- Agent -->
+                                <x-forms.below-stacked.row title="Agent" error="trip.agent_id">
+                                    <x-forms.below-stacked.dropdown :array="$agents" title="Select an agent"
+                                        wire:model="trip.agent_id" />
+                                </x-forms.below-stacked.row>
+                            @endif
+                        </x-forms.below-stacked.vertical-column>
+
                         <!-- Quantity Information -->
-                        <div>
-                            <h3 x-show="step1" class="text-lg font-medium leading-6 text-gray-900">Quantity Information
-                            </h3>
-                            <p class="mt-1 text-sm text-gray-500">Fill the details of the transported mineral.</p>
-                            <hr class="my-3 sm:w-3/4">
-                        </div>
+                        <x-forms.below-stacked.vertical-column title="Quantity Information"
+                            desc="Fill the details as mentioned on the challan."
+                            class="w-11/12 col-span-1 border-gray-200 {{ ($oActive != 'true') ? 'sm:border-r':'' }}">
 
-                        <!-- Gross Weight -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Gross Weight</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_gross_weight"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
+                            <!-- Gross Weight -->
+                            <x-forms.below-stacked.row title="Gross Weight" error="trip.gross_weight">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.gross_weight" />
+                            </x-forms.below-stacked.row>
 
-                        <!-- Tare Weight -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Tare Weight</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_tare_weight"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
+                            <!-- Tare Weight -->
+                            <x-forms.below-stacked.row title="Tare Weight" error="trip.tare_weight">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.tare_weight" />
+                            </x-forms.below-stacked.row>
 
-                        <!-- Net Weight -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Net Weight <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                            <input type="text" wire:model="f_net_weight"  }}"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_net_weight')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Net Weight -->
+                            <x-forms.below-stacked.row title="Net Weight" error="trip.net_weight" required="true">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.net_weight" />
+                            </x-forms.below-stacked.row>
 
-                        <!-- Rate -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Rate per metric ton <span
-                                    class="text-red-500">*</span></label>
-                            <div class="sm:w-3/4">
-                                <input type="number" wire:model="f_rate"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_rate')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                            <!-- Rate -->
+                            <x-forms.below-stacked.row title="Rate per metric ton" error="trip.rate" required="true">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.rate" />
+                            </x-forms.below-stacked.row>
 
-                        <div class="mt-6 sm:col-span-6">
-                            <h3 x-show="step1" class="text-lg font-medium leading-6 text-gray-900">Driver Information
-                            </h3>
-                            <p class="mt-1 text-sm text-gray-500">Fill the details as mentioned on the challan.</p>
-                            <hr class="my-3 sm:w-3/4">
-                        </div>
+                            <x-forms.below-stacked.vertical-column class="mt-5" title="Driver Information"
+                                desc="Fill the details as mentioned on the challan" />
 
-                        <!-- Driver Name -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Driver Name</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_driver_name"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
+                            @if ($mActive == 'true')
 
-                        <!-- Driver License Number -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">License Number</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_driver_license_num"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
+                                <!-- Driver Name -->
+                                <x-forms.below-stacked.row title="Driver Name" error="driver.name">
+                                    <x-forms.below-stacked.text-input type="text" wire:model="driver.name" />
+                                </x-forms.below-stacked.row>
 
-                        <!-- Driver Phone Number -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Driver Phone Number</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="number" wire:model="f_driver_phone_num"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
+                                <!-- Driver License Number -->
+                                <x-forms.below-stacked.row title="License Number" error="">
+                                    <x-forms.below-stacked.text-input type="text" wire:model="document.license_num" />
+                                </x-forms.below-stacked.row>
 
+                                <!-- Driver Phone Number -->
+                                <x-forms.below-stacked.row title="Phone Number" error="">
+                                    <x-forms.below-stacked.text-input type="number" wire:model="phone_number.mumber" />
+                                </x-forms.below-stacked.row>
+
+                            @elseif($oActive == 'true')
+
+                                <x-forms.below-stacked.row title="Driver" error="fleet_driver_id"
+                                    required="true">
+                                    <x-forms.below-stacked.dropdown title="Select a driver" :array="$paid_drivers" arrayKey="name"
+                                        wire:model="trip.driver_id" />
+                                </x-forms.below-stacked.dropdown>
+
+                            @endif
+
+                        </x-forms.below-stacked.vertical-column>
+
+                        @if($oActive != 'true')
+                        <!-- Cash Advance Information -->
+                        <x-forms.below-stacked.vertical-column title="Cash Advance Information"
+                            desc="Fill the details as mentioned on the challan." class="col-span-1">
+
+                            <!-- HSD Amount -->
+                            <x-forms.below-stacked.row title="HSD Amount" error="trip.hsd">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.hsd" />
+                            </x-forms.below-stacked.row>
+
+                            <!-- Cash Amount -->
+                            <x-forms.below-stacked.row title="Cash Amount" error="trip.cash">
+                                <x-forms.below-stacked.text-input type="number" wire:model="trip.cash" />
+                            </x-forms.below-stacked.row>
+
+                            <!-- Owner Information -->
+                            <x-forms.below-stacked.vertical-column class="mt-5" title="Owner Information"
+                                desc="Fill the details as mentioned on the challan" />
+
+                            <!-- Owner Name -->
+                            <x-forms.below-stacked.row title="Party Name" error="party.name">
+                                <x-forms.below-stacked.text-input type="text" wire:model="party.name" />
+                            </x-forms.below-stacked.row>
+
+                            <!-- Owner Phone Number -->
+                            <x-forms.below-stacked.row title="Phone Number" error="party_ph_num.number">
+                                <x-forms.below-stacked.text-input type="number" wire:model="party_ph_num.number" />
+                            </x-forms.below-stacked.row>
+
+                            @error('*')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </x-forms.below-stacked.vertical-column>
+                        @endif
                     </div>
 
-                    <div class="col-span-1 p-1">
-                        <div class="sm:col-span-6">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">Cash Advance Information</h3>
-                            <p class="mt-1 text-sm text-gray-500">Fill the details as mentioned on the challan.</p>
-                            <hr class="my-3 sm:w-3/4">
-                        </div>
+                    <!-- Step 2 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3" x-show="step2">
+                        <div class="col-span-1 border-gray-200 sm:border-r sm:pr-7">
+                            <!-- Upload Documents -->
+                            <x-forms.below-stacked.vertical-column title="Upload Documents"
+                                desc="Scan the copy of the challan and upload it." class="col-span-1" />
 
-                        <!-- HSD Advance Given? -->
-                        <div class="mt-6 sm:col-span-6">
-                            <div class="flex items-center justify-between">
-                                <span class="flex flex-row flex-grow" id="toggleLabel">
-                                    <span class="mr-40 text-sm font-medium text-gray-700">HSD Advance Given?</span>
+                            <!-- Upload Challan -->
+                            <div class="mt-6 sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    Upload Challan
+                                </label>
+                                <div
+                                    class="flex justify-center px-6 pt-5 pb-6 mt-2 border-2 border-gray-300 border-dashed rounded-md">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none"
+                                            viewBox="0 0 48 48" aria-hidden="true">
+                                            <path
+                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload"
+                                                class="relative font-medium text-indigo-600 bg-white rounded-md cursor-pointer hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                <span>Upload a file</span>
+                                                <input wire:model="challan_photo" id="file-upload" name="file-upload"
+                                                    type="file" class="sr-only">
+                                            </label>
+                                            <p class="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500">
+                                            PNG, JPG, GIF up to 10MB
+                                        </p>
+                                    </div>
+                                </div>
+                                @error('challan_photo')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
 
-                                    <button @click="hsdBool = !hsdBool"
-                                        :class="{ 'bg-gray-200': !hsdBool, 'bg-indigo-600': hsdBool }" type="button"
-                                        aria-pressed="false" aria-labelledby="toggleLabel"
-                                        class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        <span class="sr-only">Use setting</span>
-                                        <span :class="{ 'translate-x-5': hsdBool, 'translate-x-0': !hsdBool }"
-                                            aria-hidden="true"
-                                            class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow ring-0"></span>
-                                    </button>
-                            </div>
+                                <div>
 
-                        </div>
-
-                        <!-- HSD Amount -->
-                        <div class="mt-6 sm:col-span-6" x-show="hsdBool"  x-cloak>
-                            <label class="block text-sm font-medium text-gray-700">HSD Amount <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="number" wire:model="f_hsd_amount"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                        </div>
-
-                        <!-- Cash Amount Given? -->
-                        <div class="mt-6 sm:col-span-6">
-                            <div class="flex items-center justify-between">
-                                <span class="flex flex-row flex-grow">
-                                    <span class="mr-40 text-sm font-medium text-gray-700">Cash Advance Given?</span>
-
-                                    <button @click="cashAdvBool = !cashAdvBool"
-                                        :class="{ 'bg-gray-200': !cashAdvBool, 'bg-indigo-600': cashAdvBool }"
-                                        type="button" aria-pressed="false"
-                                        class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        <span class="sr-only">Use setting</span>
-                                        <span :class="{ 'translate-x-5': cashAdvBool, 'translate-x-0': !cashAdvBool }"
-                                            aria-hidden="true"
-                                            class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow ring-0"></span>
-                                    </button>
-                                </span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Cash Amount -->
-                        <div class="mt-6 sm:col-span-6" x-show="cashAdvBool" x-cloak>
-                            <label class="block text-sm font-medium text-gray-700">Cash Amount <span
-                                    class="text-red-500">*</span></label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="number" wire:model="f_cash_advance_amt"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <div class="col-span-1 pl-7" x-data="{ isUploading: false, progress: 0 }"
+                            x-on:livewire-upload-start="isUploading = true"
+                            x-on:livewire-upload-finish="isUploading = false"
+                            x-on:livewire-upload-error="isUploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress">
+
+                            <x-forms.below-stacked.vertical-column title="Image Preview"
+                                desc="You will be able to preview the photo once it is uploaded." class="col-span-1" />
+
+                            {{-- <div wire:loading wire:target="challan_photo">
+                                Uploading...</div> --}}
+                            <div x-show="isUploading">
+                                <progress max="100" x-bind:value="progress"></progress>
                             </div>
-                        </div>
 
-                        <!-- Owner Information -->
-                        <div class="mt-6 sm:col-span-6">
-                            <h3 x-show="step1" class="text-lg font-medium leading-6 text-gray-900">Owner Information
-                            </h3>
-                            <p class="mt-1 text-sm text-gray-500">Fill the details of the owner of the vehicle.</p>
-                            <hr class="my-3 sm:w-3/4">
+                            @if ($challan_photo)
+                                <img src="{{ $challan_photo->temporaryUrl() }}">
+                            @endif
                         </div>
+                    </div>
 
-                        <!-- Owner Name -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Owner Name</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="text" wire:model="f_owner_name"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_owner_name')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                    <!-- Step 3 -->
+                    <div class="grid-cols-1" x-show="step3">
+                        <x-description-list.main title="Review Trip Information"
+                            desc="Re-check every details before submiting the form.">
 
-                        <!-- Owner Phone Number -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Owner Phone Number</label>
-                            <div class="mt-1 sm:w-3/4">
-                                <input type="number" wire:model="f_owner_phone"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            </div>
-                            @error('f_owner_phone')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
-
+                            <x-description-list.row :value="$trip->date" background="bg-gray-50">Date</x-description-list.row>
+                            <x-description-list.row :value="$trip->challan_serial" background="bg-white">Challan Serial</x-description-list.row>
+                            <x-description-list.row :value="$consignee" background="bg-gray-50">Consignee</x-description-list.row>
+                            <x-description-list.row :value="$source" background="bg-white">Source</x-description-list.row>
+                            <x-description-list.row :value="$destination" background="bg-gray-50">Destination</x-description-list.row>
+                            <x-description-list.row :value="$vehicle->number" background="bg-white">Vehicle Number</x-description-list.row>
+                            <x-description-list.row :value="$trip->tp_number" background="bg-gray-50">TP Number</x-description-list.row>
+                            <x-description-list.row :value="$trip->tp_serial" background="bg-white">TP Serial</x-description-list.row>
+                            <x-description-list.row :value="$trip->gross_weight" background="bg-gray-50">Gross Weight</x-description-list.row>
+                            <x-description-list.row :value="$trip->tare_weight" background="bg-white" amount="true">Tare Weight</x-description-list.row>
+                            <x-description-list.row :value="$trip->net_weight" background="bg-gray-50">Net Weight</x-description-list.row>
+                            <x-description-list.row :value="$trip->rate" background="bg-white" amount="true">Rate</x-description-list.row>
+                            <x-description-list.row :value="$driver->name" background="bg-gray-50">Driver Name</x-description-list.row>
+                            <x-description-list.row :value="$driver->license_no" background="bg-white">License Number</x-description-list.row>
+                            <x-description-list.row :value="$trip->hsd" background="bg-gray-50" amount="true">HSD Amount</x-description-list.row>
+                            <x-description-list.row :value="$trip->cash" background="bg-white" amount="true">Cash Advance</x-description-list.row>
+                            <x-description-list.row :value="$trip->challan_photo" background="bg-gray-50" photo="true">Challan Soft Copy</x-description-list.row>
+                        </x-description-list.main>
                     </div>
                 </div>
-
-                <!-- Step 2 -->
-                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3" x-show="step2">
-                    <div class="col-span-1 ">
-                        <!-- Upload Documents -->
-                        <div class="">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">Upload Documents</h3>
-                            <p class="mt-1 text-sm text-gray-500">Scan the copy of the challan and upload it.</p>
-                            <hr class="my-3 sm:w-3/4">
-                        </div>
-
-                        <!-- Upload Challan -->
-                        <div class="mt-6 sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">
-                                Upload Challan
-                            </label>
-                            <div
-                                class="flex justify-center px-6 pt-5 pb-6 mt-2 border-2 border-gray-300 border-dashed rounded-md">
-                                <div class="space-y-1 text-center">
-                                    <svg class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none"
-                                        viewBox="0 0 48 48" aria-hidden="true">
-                                        <path
-                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600">
-                                        <label for="file-upload"
-                                            class="relative font-medium text-indigo-600 bg-white rounded-md cursor-pointer hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                            <span>Upload a file</span>
-                                            <input wire:model="f_challan_photo" id="file-upload" name="file-upload" type="file" class="sr-only">
-                                        </label>
-                                        <p class="pl-1">or drag and drop</p>
-                                    </div>
-                                    <p class="text-xs text-gray-500">
-                                        PNG, JPG, GIF up to 10MB
-                                    </p>
-                                </div>
-                            </div>
-                            @error('f_challan_photo')<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                            <div wire:loading wire:target="f_challan_photo">Uploading...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3" x-show="step3">
-                    <div class="col-span-3">
-                        <h3 class="text-lg font-medium leading-6 text-gray-900">
-                            Review Trip Information
-                        </h3>
-                        <p class="max-w-2xl mt-1 text-sm text-gray-500">
-                            Re-check every details before submiting the form.
-                        </p>
-                    </div>
-
-                    <div class="col-span-3">
-                        <div class="border-t border-b border-gray-200">
-                            <dl>
-                                <!-- Date -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Date
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_date }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Challan Serial -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Challan Serial
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_challan_serial }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Consignee -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Consignee
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_consignee_val }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Loading Point -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Loading Point
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <span class="text-indigo-500">{{ $f_loading_point_val }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Unloading Point -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Unloading Point
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_unloading_point_val }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Vehicle Number -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Vehicle Number
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_vehicle_number }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- TP Number -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        TP Number
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_tp_number }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- TP Serial -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        TP Serial
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <span class="text-indigo-500"> {{ $f_tp_serial }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Gross Weight  -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Gross Weight
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_gross_weight }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Tare Weight  -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Tare Weight
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_tare_weight }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Net Weight  -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Net Weight
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_net_weight }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Rate  -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Rate
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">₹{{ number_format($f_rate) }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Driver Name  -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Driver Name
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <span class="text-indigo-500"> {{ $f_driver_name }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Driver License Number  -->
-                                <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        License Number
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <span class="text-indigo-500"> {{ $f_driver_license_num }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- Driver Phone Number  -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Driver Phone Number
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                         <span class="text-indigo-500">{{ $f_driver_phone_num }}</span>
-                                    </dd>
-                                </div>
-
-                                <!-- HSD Amount  -->
-                                @if ($f_hsd_bool == true && $f_hsd_amount != null)
-                                    <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">
-                                            HSD Amount
-                                        </dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                             <span class="text-indigo-500">₹{{ number_format($f_hsd_amount) }}</span>
-                                        </dd>
-                                    </div>
-                                @endif
-
-                                <!-- Cash Advance Amount  -->
-                                @if ($f_cash_advance_bool == true && $f_cash_advance_amt != null)
-                                    <div class="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">
-                                            Cash Advance Amount
-                                        </dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                             <span class="text-indigo-500">₹{{ number_format($f_cash_advance_amt) }}</span>
-                                        </dd>
-                                    </div>
-                                @endif
-
-                                <!-- Upload Challan  -->
-                                <div class="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Challan Soft Copy
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <span class="text-indigo-500">
-                                            @if($f_challan_photo != NULL)
-                                            Uploaded
-                                            @endif
-                                        </span>
-                                    </dd>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
         </div>
 
-        
         <!-- Footer -->
         <div class="px-4 py-4 bg-gray-800 sm:px-6">
             <div class="flex justify-end">
-                <button x-show="step2" @click="step1 = !step1, step2 = !step2, stepOneCompleted = !stepOneCompleted" type="button"
+                <button x-show="step1" @click="step1 = !step1, step2 = false, step0 = true" type="button"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    x-cloak>Back</button>
-                <button x-show="step3" @click="step2 = !step2, step3 = !step3, stepTwoCompleted = !stepTwoCompleted" type="button"
+                    x-cloak>
+                    Back
+                </button>
+                <button x-show="step2" @click="step1 = !step1, step2 = !step2, stepOneCompleted = !stepOneCompleted"
+                    type="button"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    x-cloak>Back</button>
+                    x-cloak>
+                    Back
+                </button>
+                <button x-show="step3" @click="step2 = !step2, step3 = !step3, stepTwoCompleted = !stepTwoCompleted"
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    x-cloak>
+                    Back
+                </button>
 
-                <button x-show="step1" @click="" wire:click="checkStepOne" type="button"
-                    class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Next</button>
-                <button x-show="step2" @click="step3 = !step3, step2 = !step2, stepTwoCompleted = !stepTwoCompleted" type="button"
+                @if($this->mActive || $this->oActive)
+                    <button x-show="step0" @click="step0 = false, step1 = true" @if($mActive) wire:click="loadAgents" @else wire:click="loadPaidDrivers" @endif type="button"
+                        class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Next
+                    </button>
+                @endif
+                <button x-show="step1" wire:click="checkStepOne" type="button"
+                    class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Next
+                </button>
+                <button x-show="step2" @click="step3 = !step3, step2 = !step2, stepTwoCompleted = !stepTwoCompleted"
+                    type="button"
                     class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    x-cloak>Next</button>
+                    x-cloak>
+                    Next
+                </button>
                 <button x-show="step3" type="submit"
                     class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    x-cloak>Submit</button>
+                    x-cloak>
+                    Submit
+                </button>
             </div>
         </div>
         </form>

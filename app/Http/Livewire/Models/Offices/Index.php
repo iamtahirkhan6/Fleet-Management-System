@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\Offices;
 
-use App\Models\Office;
+use App\Domain\Office\Models\Office;
 use Livewire\Component;
 
 class Index extends Component

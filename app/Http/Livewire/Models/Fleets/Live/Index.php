@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire\Models\Fleets\Live;
 
-use App\Models\Fleet;
+use App\Domain\Fleet\Models\Fleet;
 use Livewire\Component;
 use Illuminate\Http\Request;
-use App\Models\FleetVehicle;
+use App\Domain\Fleet\Models\FleetVehicle;
 use Illuminate\Support\Facades\Http;
 
 class Index extends Component
-{   
+{
     public $fleet;
     public $vehicles;
     public $vehicles_data = array();
@@ -48,7 +48,7 @@ class Index extends Component
     public function mount()
     {
         $this->vehicles = FleetVehicle::all()->where('fleet_id', $this->fleet->id);
-        
+
     }
 
     public function render()

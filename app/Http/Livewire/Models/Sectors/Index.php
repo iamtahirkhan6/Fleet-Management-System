@@ -9,6 +9,6 @@ class Index extends Component
 {
     public function render()
     {
-        return view('livewire.models.sectors.index', ["sectors" => Sector::paginate(15)]);
+        return view('livewire.models.sectors.index', ["sectors" => Sector::with('mines')->paginate(15)]);
     }
 }

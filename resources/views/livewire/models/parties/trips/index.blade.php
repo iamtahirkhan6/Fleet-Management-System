@@ -1,6 +1,6 @@
 <div>
     <!-- List all trips -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
             <x-tables.basic.column>Serial No.</x-tables.basic.column>
             <x-tables.basic.column>Date</x-tables.basic.column>
@@ -23,13 +23,12 @@
                     <x-tables.basic.row>{{ $trip->vehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->tp_number }}/{{ $trip->tp_serial }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->net_weight }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $trip->rate() }}</x-tables.basic.row>
-                    <x-tables.basic.row money="true" :moneyBool="$trip->hsd_given_bool" :moneyVal="$trip->hsd_amount"></x-tables.basic.row>
-                    <x-tables.basic.row money="true" :moneyBool="$trip->cash_given_bool" :moneyVal="$trip->cash_amount_given"></x-tables.basic.row>
-                    <x-tables.basic.row money="true" :moneyBool="$trip->two_pay" :moneyVal="$trip->two_pay"></x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$trip->rate">{{ $trip->rate }}</x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$trip->hsd">{{ $trip->hsd }}</x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$trip->cash">{{ $trip->cash }}</x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$trip->two_pay">{{ $trip->two_pay }}</x-tables.basic.row>
                     <x-tables.basic.row :colorToggle="$trip->step_payment" trueVal="Completed" falseVal="Payment Pending"></x-tables.basic.>
                     <x-tables.basic.row link="/parties/{{ $trip->id }}/trips/{{ $trip->id }}">View</x-tables.basic.row>
-
                 </tr>
             @endforeach
         </x-slot>

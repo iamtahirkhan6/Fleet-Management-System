@@ -4,18 +4,19 @@ namespace App\Http\Livewire\Models\Trips;
 
 use Carbon\Carbon;
 use App\Models\Mine;
-use App\Models\Trip;
+use App\Domain\Trip\Models\Trip;
+use App\Domain\Fleet\Models\Fleet;
 use App\Models\Mines;
 use App\Models\Agent;
 use App\Models\Driver;
-use App\Models\Party;
-use App\Models\Vehicle;
-use App\Models\TripType;
+use App\Domain\Party\Models\Party;
+use App\Models\Docuent;
+use App\Domain\Employee\Models\Employee;
 use App\Models\Consignee;
-use App\Models\DriverNumber;
+use App\Models\PhoneNumber;
 use App\Models\TripDocuments;
+use App\Models\MarketVehicle;
 use App\Models\UnloadingPoint;
-use App\Models\PartiesPhoneNumber;
 use Illuminate\Support\Facades\Auth;
 
 use Livewire\Component;
@@ -25,82 +26,75 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    public $consignees;
-    public $mines;
-    public $unloading_points;
     public $agents;
+    public $paid_drivers = [];
+    public $fleet_vehicles = [];
 
-    public $step1 = true;
+    public $consignee;
+    public $source;
+    public $destination;
+
+    public $step0 = true;
+    public $step1 = false;
     public $step2 = false;
     public $step3 = false;
-    
-    public $stepOneCompleted = true;
+
+    public $mActive = false;
+    public $oActive = false;
+
+    public $fleet_vehicle_id;
+    public $fleet_driver_id;
+
+    public $stepOneCompleted = false;
     public $stepTwoCompleted = false;
     public $stepThreeCompleted = false;
 
-    // Form Inputs
-    public $f_date;
-    public $f_challan_serial;
-    public $f_project_id;
-    public $f_consignee;
-    public $f_consignee_val;
-    public $f_vehicle_number;
-    public $f_loading_point;
-    public $f_loading_point_val;
-    public $f_unloading_point;
-    public $f_unloading_point_val;
-    public $f_tp_number;
-    public $f_tp_serial;
-    public $f_agent;
-    public $f_gross_weight;
-    public $f_tare_weight;
-    public $f_net_weight;
-    public $f_rate;
-    public $f_driver_name;
-    public $f_driver_license_num;
-    public $f_driver_phone_num;
-    public $f_hsd_bool;
-    public $f_hsd_amount;
-    public $f_cash_advance_bool;
-    public $f_cash_advance_amt;
-    public $f_owner_name;
-    public $f_owner_phone;
-    public $f_challan_photo;
+    public Trip $trip;
+    public Party $party;
+    public Driver $driver;
+    public MarketVehicle $market_vehicle;
+    public Employee $driver_emp;
+    public PhoneNumber $phone_num;
+    public Document $document;
 
+    // Form Inputs
+    public $challan_photo;
 
     protected $rules = [
-        'f_date' => 'required|date',
-        'f_challan_serial' => 'nullable|alpha_num',
-        'f_vehicle_number' => 'required',
-        'f_tp_number' => 'required',
-        'f_tp_serial' => 'required|numeric',
-        'f_net_weight' => 'required',
-        'f_rate' => 'required|numeric',
-        'f_owner_name' => 'nullable|alpha_spaces',
-        'f_owner_phone' => 'nullable|digits:10',
-        'f_challan_photo' => 'nullable|file',
+        'trip.net_weight'           => 'required',
+        'trip.tp_number'            => 'required',
+        'trip.date'                 => 'required|date',
+        'trip.tp_serial'            => 'required|numeric',
+        'trip.rate'                 => 'required|numeric',
+        'trip.driver_id'            => 'required_if:oActive,true|numeric',
+        'trip.challan_serial'       => 'nullable|alpha_num',
+        'narketVehicle.number'      => 'required',
+        'party.name'                => 'nullable|alpha_spaces',
+        'party_ph_num.owner_phone'  => 'nullable|digits:10',
+        'challan_photo'             => 'nullable|image',
     ];
 
     protected $messages = [
-            'f_date.required' => 'Date cannot be empty.',
-            'f_vehicle_number.required' => 'Vehicle number cannot be empty.',
-            'f_tp_number.required' => 'Transit Pass (TP) cannot be empty.',
-            'f_tp_serial.required' => 'Transit Pass (TP) serial number cannot be empty.',
-            'f_tp_serial.numeric' => 'Transit Pass (TP) serial number should be numeric.',
-            'f_net_weight.required' => 'Net Weight cannot be empty.',
-            'f_rate.required' => 'Rate per ton be empty.',
-            'f_owner_name' => 'Owner Name is not valid.',
-            'f_owner_phone.digits' => 'Owner\'s Phone Number should be of 10 digits only.',
-            'f_challan_photo' => 'The Challan file should be an image(jpeg/png).',
-            'f_challan_photo.size' => 'The Challan should be less than 10mb.',
+        'trip.date.required'                    => 'Date cannot be empty.',
+        'trip.tp_number.required'               => 'Transit Pass (TP) cannot be empty.',
+        'trip.tp_serial.required'               => 'Transit Pass (TP) serial number cannot be empty.',
+        'trip.tp_serial.numeric'                => 'Transit Pass (TP) serial number should be numeric.',
+        'trip.net_weight.required'              => 'Net Weight cannot be empty.',
+        'trip.rate.required'                    => 'Rate per ton be empty.',
+        'party.name.alpha_spaces'               => 'Owner Name is not valid.',
+        'party_ph_num.owner_phone.digits'       => 'Owner\'s Phone Number should be of 10 digits only.',
+        'narketVehicle.number.required'         => 'Vehicle number cannot be empty.',
+        'challan_photo.mimes'                   => 'The Challan file should be an image(jpeg/png).',
+        'challan_photo.size'                    => 'The Challan should be less than 10mb.',
     ];
 
     public function checkStepOne()
     {
         $this->validate();
-        $this->step1 = !$this->step1;
-        $this->step2 = !$this->step2;
-        $this->stepOneCompleted = !$this->stepOneCompleted;
+        $this->step0 = false;
+        $this->step1 = false;
+        $this->step2 = true;
+        $this->stepOneCompleted = true;
     }
 
     public function updated($propertyName)
@@ -112,133 +106,118 @@ class Create extends Component
     {
         $this->validate();
 
-        $trip = new Trip;
-        $trip->loading_date = $this->f_date;
-        $trip->challan_serial = $this->f_challan_serial;
-        
-        // Owner
-        if((strlen($this->f_owner_name) >= 0) || (strlen($this->f_owner_phone) >= 0))
+        // Market Vehicle
+        if($this->mActive == "true")
         {
-            if(strlen($this->f_owner_name) > 0 && (strlen($this->f_owner_phone) < 0))
-            {
-                $trip->owner_id = Party::create(['name' => $this->f_owner_name])->id;
+            $this->trip->trip_type        = 1; // Market Vehicle Boolean
 
-            } elseif(strlen($this->f_owner_phone) > 0 && strlen($this->f_owner_name) <= 0)
+            // Party
+            if((strlen($this->party->name) >= 0) || (strlen($this->party_ph_num->number) >= 0))
             {
-                $trip->owner_id = Party::create(['name' => $this->f_vehicle_number])->id;
-                PartiesPhoneNumber::create(['party_id' => $trip->owner_id, 'phone_number' => $this->f_owner_phone]);
-            }
-            
-        } else {
-            $trip->party_id = Party::create(['name' => $this->f_vehicle_number])->id;
-        }
+                if(strlen($this->party->name) > 0 && (strlen($this->party_ph_num->number) < 0))
+                {
+                    $this->party->save();
+                    $this->trip->party_id = $this->party->id;
 
-        $trip->agent_id = $this->f_agent;
-        $trip->vehicle_number = Vehicle::firstOrCreate(['number' => $this->f_vehicle_number, 'party_id' => $trip->party_id])->id;
-        $trip->project_id = $this->f_project_id;
-        $trip->tp_number = $this->f_tp_number;
-        $trip->tp_serial = $this->f_tp_serial;
-        
-        // Driver
-        if((strlen($this->f_driver_name) > 0) || strlen($this->f_driver_license_num) > 0 || strlen($this->f_driver_phone_num) > 0)
-        {
-            if(strlen($this->f_driver_name) > 0 && strlen($this->f_driver_license_num) <= 0)
-            {
-                $driver = Driver::firstOrCreate(['name' => $this->f_driver_name]);
-                $this->driver_id = $driver->id;
+                } elseif(strlen($this->party_ph_num->number) > 0 && strlen($this->party->name) <= 0) {
+                    $this->party->name = $this->vehicle->name." - ".$this->trip->id;
+                    $this->party->save();
 
-            } elseif(strlen($this->f_driver_license_num) > 0 && strlen($this->f_driver_name) <= 0)
-            {
-                $driver = Driver::firstOrCreate(['license_no' => $this->f_driver_license_num]);
-                $this->driver_id = $driver->id;
+                    $this->trip->party_id = $this->party->id;
+
+                    $this->party_ph_num->party_id     = $this->trip->party_id;
+                    $this->party_ph_num->phone_number = $this->party_ph_num->number;
+                    $this->party_ph_num->save();
+                }
+
             } else {
-                 $driver = Driver::firstOrCreate(['name' => $this->f_driver_name, 'license_no' => $this->f_driver_license_num]);
-                 $this->driver_id = $driver->id;
+                $this->party->name = $this->vehicle->name;
+                $this->party->save();
+                $this->trip->party_id = $this->party->id;
             }
-            
-            if(strlen($this->driver_phone_num) > 0)
-            {
-                DriverNumber::create(['driver_id' => $this->driver_id, 'phone_number' => $this->driver_phone_num]);
+
+            // Driver
+            if ((strlen($this->driver->name) > 0) || strlen($this->driver->license_no) > 0 || strlen($this->driver->number) > 0) {
+
+                $this->driver->save();
+                $this->driver()->associate($this->driver)->save();
+
+                if (strlen($this->driver->name) > 0 && strlen($this->driver->license_no) <= 0) {
+
+                    // $this->trip->driver_id = Driver::firstOrCreate(['name' => $this->driver->name])->id;
+                    $this->driver->save;
+                } elseif (strlen($this->driver->license_no) > 0 && strlen($this->driver->name) <= 0) {
+
+                    $this->trip->driver_id = Driver::firstOrCreate(['license_no' => $this->driver->license_no])->id;
+
+                } else {
+                    $this->trip->driver_id = Driver::firstOrCreate(['name' => $this->driver->name, 'license_no' => $this->driver->license_no])->id;
+                }
+                $this->trip->driver_type    = "App\Driver";
+
+                if (strlen($this->driver_phone_num) > 0) {
+                    PhoneNumber::create(['driver_id' => $this->driver->id, 'phone_number' => $this->driver_phone_num->number]);
+                }
             }
-            $trip->driver_id = $this->driver_id;
+
+            $this->trip->vehicle_id = MarketVehicle::firstOrCreate(['number' => $this->vehicle->number, 'party_id' => $this->trip->party_id])->id;
+
+        } else {
+
+            // Owned Vehicle
+            $this->trip->trip_type      = 0;                        // Owned Vehicle Boolean
+
+            // Employeed Driver Id
+            $this->trip->driver_id      = $this->fleet_driver_id;
+            $this->trip->driver_type    = "App\Employee";
         }
-
-        // Owner Name
-
-        // Weight
-        $trip->gross_weight = $this->f_gross_weight;
-        $trip->tare_weight = $this->f_tare_weight;
-        $trip->net_weight = $this->f_net_weight;
 
         // Total Amount
-        $trip->rate = $this->f_rate;
-        $trip->total_amount = $this->f_net_weight * $this->f_rate;
+        $this->trip->amount           = $this->trip->net_weight * $this->trip->rate;
+        $this->trip->step_loading     = 1;
+        $this->trip->step_payment     = 0;
+        $this->trip->created_by       = Auth::id();
 
-        // HSD
-        if(($this->f_hsd_bool == true || $this->f_hsd_bool == 1) && ($this->f_hsd_amount != '0'))
-        {
-            $trip->hsd_given_bool = 1;
-            $trip->hsd_amount = $this->f_hsd_amount;
-        } else {
-            $trip->hsd_given_bool = 0;
-            $trip->hsd_amount = 0;
-        }
-        
-        // Cash Advance
-        if(($this->f_cash_advance_bool == true || $this->f_cash_advance_bool == 1) && ($this->f_cash_advance_amt != '0'))
-        {
-            $trip->cash_given_bool = 1;
-            $trip->cash_amount_given = $this->f_cash_advance_amt;
-        } else {
-            $trip->cash_given_bool = 0;
-            $trip->cash_amount_given = 0;
-        }
-
-        $trip->trip_type = 1;           // Market Vehicle
-        $trip->step_load = 1;           
-        $trip->step_pay = 1;           
-        $trip->created_by = Auth::id();
-
-        $trip->save();
+        $this->trip->save();
 
         // Challan Soft Copy
-        if($this->f_challan_photo != NULL)
+        if($this->challan_photo != NULL)
         {
-            $trip->challan_doc_id = TripDocuments::create(['trip_id' => $trip->id, 'doc_category_id' => '1', 'doc_path' => str_replace("public/documents/challans/","documents/challans/",$this->f_challan_photo->storePublicly('/public/documents/challans'))])->id;
+            $this->trip->challan_doc_id = TripDocuments::create(['trip_id' => $this->trip->id, 'doc_category_id' => '1', 'doc_path' => str_replace("public/","",$this->challan_photo->storePubliclyAs('/public/documents/challans', $this->trip->id))])->id;
         }
 
-        $trip->save();
+        $this->trip->save();
+    }
+
+    public function loadPaidDrivers()
+    {
+        $this->paid_drivers     = Employee::where('employee_designation_id', '7')->get();
+    }
+
+    public function loadAgents()
+    {
+        $this->agents           = Agent::get(['id', 'name']);
     }
 
     public function mount($project)
     {
-        $this->f_consignee = $project->Consignee->id;
-        $this->f_loading_point = $project->Source->id;
-        $this->f_unloading_point = $project->Destination->id;
+        $this->trip             = new Trip;
+        $this->party            = new Party;
+        $this->vehicle          = new MarketVehicle;
+        $this->driver           = new Driver;
+        $this->driver_emp       = new Employee;
+        $this->phone_number     = new PhoneNumber;
 
-        $this->f_consignee_val = $project->Consignee->name;
-        $this->f_loading_point_val = $project->Source->name;
-        $this->f_unloading_point_val = $project->Destination->name;
+        $this->trip->project_id = $project->id;
+        $this->consignee        = $project->Consignee->name;
+        $this->source           = $project->Source->name;
+        $this->destination      = $project->Destination->name;
 
-        $this->f_project_id = $project->id;
-        $this->f_date = Carbon::today()->format('d-m-Y');
+        $this->trip->date       = Carbon::today()->format('d-m-Y');
 
         // Pre-Load for step 1
-        $this->consignees = Consignee::all();
-        $this->mines = Mine::all();
-        $this->unloading_points = UnloadingPoint::all();
-        $this->agents = Agent::all();
 
-        // set default step
-        $this->step1 = true;
-        $this->step2 = false;
-        $this->step3 = false;
-        $this->step4 = false;
-
-        $this->stepOneCompleted = false;
-        $this->stepTwoCompleted = false;
-        $this->stepThreeCompleted = false;
-
+        $this->fleet_vehicles   = Fleet::with(['vehicles'])->find(1)->vehicles;
     }
 
     public function render()

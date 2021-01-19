@@ -8,7 +8,7 @@
         </a>
     </div>
     <!-- List all projects -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
             <x-tables.basic.column>Serial No.</x-tables.basic.column>
             <x-tables.basic.column>Source</x-tables.basic.column>
@@ -23,7 +23,7 @@
         <x-slot name="rows">
             @foreach ($projects as $project)
                 <tr>
-                    <x-tables.basic.row>{{ $project->id }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Source->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Destination->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Consignee->name }}</x-tables.basic.row>

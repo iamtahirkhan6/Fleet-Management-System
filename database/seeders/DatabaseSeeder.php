@@ -2,6 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Domain\Company\Seeders\CompanySeeder;
+use App\Domain\Document\Seeders\DocumentCategorySeeder;
+use App\Domain\Employee\Seeders\EmployeeDesignationSeeder;
+use App\Domain\Employee\Seeders\EmployeeSeeder;
+use App\Domain\Expense\Seeders\ExpenseCategorySeeder;
+use App\Domain\Expense\Seeders\ExpenseCategoryTypeSeeder;
+use App\Domain\Expense\Seeders\ExpenseSeeder;
+use App\Domain\Fleet\Seeders\FleetSeeder;
+use App\Domain\Fleet\Seeders\FleetVehicleSeeder;
+use App\Domain\Office\Seeders\OfficeSeeder;
+use App\Domain\Payment\Seeders\PaymentMethodSeeder;
+use App\Domain\Trip\Seeders\TripSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,24 +26,24 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            LaratrustSeeder::class,
             UserSeeder::class,
             CompanySeeder::class,
             SectorSeeder::class,
             MinesSeeder::class,
+            TaxCategorySeeder::class,
+            ExpenseCategoryTypeSeeder::class,
+            ExpenseCategorySeeder::class,
             UnloadingPointSeeder::class,
-            DesignationSeeder::class,
+            PaymentMethodSeeder::class,
+            EmployeeDesignationSeeder::class,
+            MaterialSeeder::class,
             OfficeSeeder::class,
             ConsigneeSeeder::class,
             EmployeeSeeder::class,
-            AgentSeeder::class,
             DocumentCategorySeeder::class,
-            MaterialSeeder::class,
             ProjectSeeder::class,
-            TripTypeSeeder::class,
             TripSeeder::class,
-            ExpenseCategoryTypeSeeder::class,
-            ExpenseCategorySeeder::class,
-            ExpensePaymentMethodSeeder::class,
             ExpenseSeeder::class,
             VehicleRCSeeder::class,
             FleetSeeder::class,

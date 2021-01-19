@@ -6,7 +6,7 @@
             </a>
     </div>
     <!-- List all expenses -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
             <x-tables.basic.column>ID</x-tables.basic.column>
             <x-tables.basic.column>Date</x-tables.basic.column>

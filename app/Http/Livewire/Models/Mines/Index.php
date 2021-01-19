@@ -10,10 +10,6 @@ class Index extends Component
 {
     use WithPagination;
 
-    public function mount()
-    {
-    }
-
     public function render()
     {
         return view('livewire.models.mines.index', ["mines" => Mine::with('sector')->paginate(15)]);

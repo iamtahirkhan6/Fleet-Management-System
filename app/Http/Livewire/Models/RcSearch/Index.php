@@ -22,6 +22,12 @@ class Index extends Component
     public $vehice_rto_code;
     public $vehice_chassis_number;
     public $vehice_engine_number;
+    public $vehicle_fuel_type;
+    public $vehicle_fuel_norm;
+    public $vehicle_mvtax_upto;
+    public $vehicle_noc_details;
+    public $vehicle_puc_upto;
+
 
     protected $rules = [
         'vehicle_number' => ['required', 'alpha_num', 'regex:/^[A-Z|a-z]{2}\s?[0-9]{1,2}\s?[A-Z|a-z]{0,3}\s?[0-9]{4}$/'],
@@ -41,7 +47,7 @@ class Index extends Component
     public function findVehicleInfo()
     {
         $vehicle_number = $this->vehicle_number;
-        $this->vehicle = VehicleRC::where('number', $vehicle_number)->firstOr(function () use($vehicle_number) 
+        $this->vehicle = VehicleRC::where('number', $vehicle_number)->firstOr(function () use($vehicle_number)
         {
             return VehicleRC::create(["number" => $vehicle_number]);
         });
@@ -58,6 +64,11 @@ class Index extends Component
             $this->vehice_rto_code          = $this->vehicle->rto_code;
             $this->vehice_chassis_number    = $this->vehicle->chassis_number;
             $this->vehice_engine_number     = $this->vehicle->engine_number;
+            $this->vehicle_fuel_type        = $this->vehicle->fuel_type;
+            $this->vehicle_fuel_norm        = $this->vehicle->fuel_norm;
+            $this->vehicle_mvtax_upto       = $this->vehicle->mvtax_upto;
+            $this->vehicle_noc_details      = $this->vehicle->noc_details;
+            $this->vehicle_puc_upto         = $this->vehicle->puc_upto;
 
             // dd($this->vehicle);
             $this->informationBox = true;

@@ -59,8 +59,8 @@
             <x-jet-input-error for="name" class="mt-2" />
         </div>
 
-        {{-- <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
+        <!-- Email -->
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="email" value="{{ __('Email') }}" />
             <x-jet-input id="email" type="email" class="block w-full mt-1" wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />

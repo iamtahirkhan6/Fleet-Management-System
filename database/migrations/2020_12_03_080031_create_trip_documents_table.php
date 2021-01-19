@@ -15,10 +15,8 @@ class CreateTripDocumentsTable extends Migration
     {
         Schema::create('trip_documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('trip_id');
-            $table->foreign('trip_id')->references('id')->on('trips');
-            $table->unsignedBigInteger('doc_category_id');
-            $table->foreign('doc_category_id')->references('id')->on('document_categories');
+            $table->foreignId('trip_id')->references('id')->on('trips');
+            $table->foreignId('doc_category_id')->references('id')->on('document_categories');
             $table->text('doc_path');
             $table->timestamps();
         });

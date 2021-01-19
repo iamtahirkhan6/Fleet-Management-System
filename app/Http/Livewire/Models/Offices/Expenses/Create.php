@@ -4,12 +4,12 @@ namespace App\Http\Livewire\Models\Offices\Expenses;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\Expense;
+use App\Domain\Expense\Models\Expense;
 use Livewire\WithFileUploads;
 use App\Models\ExpenseReceipt;
-use App\Models\ExpenseCategory;
-use App\Models\ExpenseIndividual;
-use App\Models\ExpensePaymentMethod;
+use App\Domain\Expense\Models\ExpenseCategory;
+use App\Domain\Expense\Models\ExpenseIndividual;
+use App\Domain\Payment\Models\PaymentMethod;
 
 class Create extends Component
 {
@@ -63,7 +63,7 @@ class Create extends Component
         $expense->date                      = $this->date;
         $expense->amount                    = $this->amount;
         $expense->expense_category_id       = $this->expense_category;
-        $expense->expense_payment_method_id = $this->payment_method;
+        $expense->payment_method_id         = $this->payment_method;
         $expense->expense_individual_id     = $this->payee;
         $expense->remark                    = $this->remarks;
         $expense->office_id                 = $this->office->id;
@@ -73,7 +73,7 @@ class Create extends Component
         foreach ($this->receipt as $photo) {
             $uploaded = str_replace("/public", "", $photo->storePublicly('/public/documents/expenses/offices/'.$this->office->id));
             $er = ExpenseReceipt::insert([
-                    'expense_id'    => $expense->id, 
+                    'expense_id'    => $expense->id,
                     'doc_path'      => $uploaded
                 ]);
             dd($er->id);
@@ -83,13 +83,13 @@ class Create extends Component
         {
             $this->showSuccess = true;
         }
-        
+
     }
 
     public function mount()
     {
         $this->expense_categories   = ExpenseCategory::all();
-        $this->payment_methods      = ExpensePaymentMethod::all();
+        $this->payment_methods      = PaymentMethod::all();
         $this->payment_individuals  = ExpenseIndividual::where('company_id', $this->office->company->id)->get();
         $this->date                 = Carbon::today()->format('d-m-Y');
     }

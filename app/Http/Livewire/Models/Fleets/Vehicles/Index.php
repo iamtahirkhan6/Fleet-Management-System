@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\Fleets\Vehicles;
 
-use App\Models\FleetVehicle;
+use App\Domain\Fleet\Models\FleetVehicle;
 use Livewire\Component;
 use Livewire\WithPagination;
 

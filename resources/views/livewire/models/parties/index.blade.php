@@ -29,7 +29,7 @@
         </div>
     </div>
     <!-- List all trips -->
-    <x-tables.basic.main>
+    <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
             <x-tables.basic.column>Serial No.</x-tables.basic.column>
             <x-tables.basic.column>Party Name</x-tables.basic.column>
@@ -45,11 +45,10 @@
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $party->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $party->total_vehicles() }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $party->total_bank_accounts() }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $party->total_trips() }}</x-tables.basic.row>
-                    <x-tables.basic.row money="true" :moneyBool="$party->total_business()"
-                        :moneyVal="$party->total_business()"></x-tables.basic.row>
+                    <x-tables.basic.row>{{ $party->vehicles->count() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $party->bankAccounts->count() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $party->trips->count() }}</x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$party->total_business()"></x-tables.basic.row>
                     <x-tables.basic.row link="/parties/{{ $party->id }}">View</x-tables.basic.row>
 
                 </tr>

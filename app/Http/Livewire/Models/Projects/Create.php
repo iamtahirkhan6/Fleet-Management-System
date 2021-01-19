@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Models\Projects;
 
 use App\Models\Mine;
-use App\Models\Project;
-use App\Models\Company;
+use App\Domain\Project\Models\Project;
+use App\Domain\Company\Models\Company;
 use App\Models\Material;
 use App\Models\Consignee;
 use App\Models\UnloadingPoint;
@@ -45,7 +45,7 @@ class Create extends Component
         $this->validate();
 
         $this->project->status = 1;
-        
+
         try{
             $this->project->save();
         } catch(\Illuminate\Database\QueryException $ex)

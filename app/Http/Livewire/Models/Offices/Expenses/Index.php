@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\Offices\Expenses;
 
-use App\Models\Expense;
+use App\Domain\Expense\Models\Expense;
 use Livewire\Component;
 use Livewire\WithPagination;
 

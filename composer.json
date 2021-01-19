@@ -8,18 +8,23 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
+        "blade-ui-kit/blade-ui-kit": "^0.2.0",
         "fideloper/proxy": "4.*",
         "fruitcake/laravel-cors": "2.*",
         "guzzlehttp/guzzle": "7.2.0",
         "laravel/framework": "8.*",
         "laravel/jetstream": "1.*",
         "laravel/sanctum": "2.*",
+        "laravel/tinker": "^2.5",
         "livewire/livewire": "2.*",
-        "spatie/laravel-permission": "3.*"
+        "lorisleiva/laravel-actions": "^2.0",
+        "owenvoke/blade-fontawesome": "^1.6",
+        "santigarcor/laratrust": "^6.3"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.8",
+        "barryvdh/laravel-debugbar": "^3.5",
+        "barryvdh/laravel-ide-helper": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.2",
@@ -61,6 +66,13 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models",
+            "@php artisan ide-helper:eloquent"
+    ]
     }
 }

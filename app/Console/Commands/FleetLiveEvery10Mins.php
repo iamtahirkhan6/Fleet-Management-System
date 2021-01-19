@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Fleet;
-use App\Models\FleetLive;
-use App\Models\FleetVehicle;
-use App\Models\FleetTripCatcher;
+use App\Domain\Fleet\Models\Fleet;
+use App\Domain\Fleet\Models\FleetLive;
+use App\Domain\Fleet\Models\FleetVehicle;
+use App\Domain\Fleet\Models\FleetTripCatcher;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -64,7 +64,7 @@ class FleetLiveEvery10Mins extends Command
         $response = $response->json();
         return $response[0];
     }
-    
+
     public function handle()
     {
         $fleets = Fleet::all();
@@ -130,7 +130,7 @@ class FleetLiveEvery10Mins extends Command
                 );
                 sleep(5);
             }
-            
+
         }
         return 0;
     }

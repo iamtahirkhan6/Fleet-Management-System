@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Models\Sectors;
 
-use App\Models\Mine;
 use App\Models\Sector;
 use Livewire\Component;
 
@@ -46,8 +45,7 @@ class Create extends Component
     {
         $this->sector = new Sector();
     }
-
-
+    
     public function render()
     {
         return view('livewire.models.sectors.create');

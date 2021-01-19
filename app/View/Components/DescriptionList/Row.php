@@ -15,13 +15,15 @@ class Row extends Component
     public $amount;
     public $link;
     public $background;
+    public $photo;
     
-    public function __construct($value, $background, $amount = null, $link = null)
+    public function __construct($value, $background, $amount = null, $link = null, $photo = null)
     {
-        $this->value = $value;
-        $this->background = $background;
-        $this->amount = $amount;
-        $this->link = $link;
+        $this->value        = $value;
+        $this->background   = $background;
+        $this->amount       = $amount;
+        $this->link         = $link;
+        $this->photo        = $photo;
     }
 
     /**

@@ -13,10 +13,12 @@ class Dropdown extends Component
      */
     public $title;
     public $array;
-    public function __construct($title = null, $array = null)
+    public $arrayTwo;
+    public function __construct($title = null, $array = null, $arrayTwo = null)
     {
         $this->title = $title;
         $this->array = $array;
+        $this->arrayTwo = $arrayTwo;
     }
 
     /**
