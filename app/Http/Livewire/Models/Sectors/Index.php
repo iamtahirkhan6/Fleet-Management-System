@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\Sectors;
 
-use App\Models\Sector;
+use App\Domain\General\Models\Sector;
 use Livewire\Component;
 
 class Index extends Component

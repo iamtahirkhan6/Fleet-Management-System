@@ -21,10 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Company $Company
- * @property-read \App\Models\Consignee|null $Consignee
- * @property-read \App\Models\UnloadingPoint|null $Destination
- * @property-read \App\Models\Material|null $Material
- * @property-read \App\Models\Mine|null $Source
+ * @property-read \App\Domain\Consignee\Models\Consignee|null $Consignee
+ * @property-read \App\Domain\General\Models\UnloadingPoint|null $Destination
+ * @property-read \App\Domain\General\Models\Material|null $Material
+ * @property-read \App\Domain\General\Models\Mine|null $Source
  * @property-read \Illuminate\Database\Eloquent\Collection|Trip[] $trips
  * @property-read int|null $trips_count
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
@@ -50,22 +50,22 @@ class Project extends Model
 
     public function Source()
     {
-        return $this->hasOne('App\Models\Mine', 'id', 'mine_id');
+        return $this->hasOne('App\Domain\General\Models\Mine', 'id', 'mine_id');
     }
 
     public function Destination()
     {
-        return $this->hasOne('App\Models\UnloadingPoint', 'id', 'unloading_point_id');
+        return $this->hasOne('App\Domain\General\Models\UnloadingPoint', 'id', 'unloading_point_id');
     }
 
     public function Consignee()
     {
-        return $this->hasOne('App\Models\Consignee', 'id', 'consignee_id');
+        return $this->hasOne('App\Domain\Consignee\Models\Consignee', 'id', 'consignee_id');
     }
 
     public function Material()
     {
-        return $this->hasOne('App\Models\Material', 'id', 'material_id');
+        return $this->hasOne('App\Domain\General\Models\Material', 'id', 'material_id');
     }
 
     public function Company()

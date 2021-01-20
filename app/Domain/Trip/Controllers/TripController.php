@@ -13,22 +13,32 @@ class TripController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Domain\Project\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Project $project)
     {
-        return view('models.trips.index', ['project' => $project]);
+        return view('page')
+            ->with('livewire', 'models.projects.index')
+            ->with('title',  'View Trips')
+            ->with('description', 'View all the performed trips in the project')
+            ->with('key', 'project')
+            ->with('val', $project);
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @param  \App\Domain\Project\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create(Project $project, Trip $trip)
     {
-        return view('models.trips.create', ['project' => $project]);
+        return view('page')
+            ->with('livewire', 'models.projects.create')
+            ->with('title',  'Create a Trip')
+            ->with('description', 'Add a new trip entry for this project')
+            ->with('key', 'project')
+            ->with('val', $project);
     }
 
     /**
@@ -40,7 +50,7 @@ class TripController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -48,11 +58,16 @@ class TripController extends Controller
      *
      * @param  \App\Domain\Project\Models\Project  $project
      * @param  \App\Domain\Trip\Models\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Project $project, Trip $trip)
     {
-        return view('models.trips.show', ['trip' => $trip]);
+        return view('page')
+            ->with('livewire', 'models.trips.show')
+            ->with('title',  'View Trip')
+            ->with('description', 'View the details regarding this trip')
+            ->with('key', 'trip')
+            ->with('val', $trip);
     }
 
     /**
@@ -64,7 +79,7 @@ class TripController extends Controller
      */
     public function edit(Project $project, Trip $trip)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -77,7 +92,7 @@ class TripController extends Controller
      */
     public function update(Request $request, Project $project, Trip $trip)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -89,6 +104,6 @@ class TripController extends Controller
      */
     public function destroy(Project $project, Trip $trip)
     {
-        //
+        abort(404);
     }
 }

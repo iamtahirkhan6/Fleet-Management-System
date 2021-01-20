@@ -10,12 +10,6 @@ class Index extends Component
 {
     public function render()
     {
-        if(Auth::user()->hasRole('admin'))
-        {
-            return view('livewire.models.company.index', ['companies' => Company::paginate(10)]);
-        } else {
-            return view('livewire.models.company.index', ['companies' => Company::where('user_id', Auth::id())->paginate(10)]);
-        }
-
+        return view('livewire.models.company.index', ['companies' => Company::where('user_id', Auth::id())->paginate(10)]);
     }
 }

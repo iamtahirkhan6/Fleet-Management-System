@@ -53,8 +53,8 @@ final class Versions
   'jaybizzle/crawler-detect' => 'v1.2.103@3efa2860959cc971f17624b40bf0699823f9d0f3',
   'jenssegers/agent' => 'v2.6.4@daa11c43729510b3700bc34d414664966b03bffe',
   'kkszymanowski/traitor' => '0.2.5@9770fc7de72ff585601dc9c42b31715d9fc40a24',
-  'laravel/fortify' => 'v1.7.4@2ca0c06bf7385d26730cfc3783865a9c06a51f63',
-  'laravel/framework' => 'v8.22.1@5c70991b96c5722afed541a996479b5112654c8b',
+  'laravel/fortify' => 'v1.7.5@12c33249673f16cc1e01d6a3a0e92372153a2f92',
+  'laravel/framework' => 'v8.23.1@a813df1b248ca305e5f5ce23ea981ed6c6905504',
   'laravel/jetstream' => 'v1.6.6@9de2b4555b34a857465b14d1ada66c9b672f4251',
   'laravel/sanctum' => 'v2.8.2@331bd6572610b06ad6dd6b2a7c15a0465a3ca9c9',
   'laravel/tinker' => 'v2.5.0@45884b526e10a88a1b179fa1a1a24d5468c668c2',
@@ -135,7 +135,7 @@ final class Versions
   'filp/whoops' => '2.9.1@307fb34a5ab697461ec4c9db865b20ff2fd40771',
   'hamcrest/hamcrest-php' => 'v2.0.1@8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
   'justinrainbow/json-schema' => '5.2.10@2ba9c8c862ecd5510ed16c6340aa9f6eadb4f31b',
-  'maximebf/debugbar' => 'v1.16.4@c86c717e4bf3c6d98422da5c38bfa7b0f494b04c',
+  'maximebf/debugbar' => 'v1.16.5@6d51ee9e94cff14412783785e79a4e7ef97b9d62',
   'mockery/mockery' => '1.4.2@20cab678faed06fac225193be281ea0fddb43b93',
   'myclabs/deep-copy' => '1.10.2@776f831124e9c62e1a2c601ecc52e776d8bb7220',
   'nunomaduro/collision' => 'v5.2.0@aca954fd03414ba0dd85d7d8e42ba9b251893d1f',
@@ -173,7 +173,7 @@ final class Versions
   'symfony/debug' => 'v4.4.18@5dfc7825f3bfe9bb74b23d8b8ce0e0894e32b544',
   'symfony/filesystem' => 'v5.2.1@fa8f8cab6b65e2d99a118e082935344c5ba8c60d',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'laravel/laravel' => 'dev-master@e3adc00ba8e672ce2cefa9506f9aaeb0d4682901',
+  'laravel/laravel' => 'dev-master@3e3769db72953f6d36486cb4f25e7d670c167fbd',
 );
 
     private function __construct()

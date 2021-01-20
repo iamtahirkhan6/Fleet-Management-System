@@ -22,14 +22,14 @@
 
             <div class="inline-flex flex-1 mt-1 ml-5">
               <span class="mt-2 mr-3 text-gray-500">Per Page</span>
-              <select wire:model="perPage" id="location" name="location" class="block py-2 pl-3 pr-10 mt-1 text-base border-gray-300 rounded-md w-min h-4/6 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select wire:model="perPage" id="location" name="location" class="block py-2 pl-3 pr-10 text-base border-gray-300 rounded-md w-min h-10 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                   <option selected value="5">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
                 </select>
             </div>
 
-            @role('admin')
+            @role('admin|manager')
             <div class="flex-1 mt-1">
                 <span class="inline-flex float-right mb-4 rounded-md shadow-sm">
                     <a href="/employees/create"
@@ -62,9 +62,9 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($employees as $employee)
-                <tr>
-                    <x-tables.basic.row avatar="true" :val="$employee->phoneNumber->first()->phone_number" :url="$employee->profile_photo_url()">{{ $employee->name }}</x-tables.basic.rowavatar>
+            @forelse ($employees as $employee)
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl" >
+                    <x-tables.basic.row avatar="true" :val="$employee->phoneNumber->phone_number ?? null" :url="$employee->profile_photo_url()">{{ $employee->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $employee->designation->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $employee->office->name }}</x-tables.basic.row>
                     @role('admin')
@@ -74,7 +74,13 @@
                     <x-tables.basic.row :color_toggle="$employee->is_currently_hired" true_val="Hired" false_val="Dismissed">{{ $employee->is_currently_hired }}</x-tables.basic.row>
                     <x-tables.basic.row link="/employees/{{ $employee->id }}">View</x-tables.basic.row>
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
 

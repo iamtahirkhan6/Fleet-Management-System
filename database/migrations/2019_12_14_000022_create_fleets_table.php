@@ -16,6 +16,7 @@ class CreateFleetsTable extends Migration
         Schema::create('fleets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

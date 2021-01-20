@@ -42,7 +42,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($market_vehicles as $vehicle)
+            @forelse ($market_vehicles as $vehicle)
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $vehicle->number }}</x-tables.basic.row>
@@ -52,7 +52,13 @@
                     <x-tables.basic.row>{{ $vehicle->trips($vehicle->party->first()->id) }}</x-tables.basic.row>
                     <x-tables.basic.row link="/vehicles/{{ $vehicle->id }}">View</x-tables.basic.row>
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

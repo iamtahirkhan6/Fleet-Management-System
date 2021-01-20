@@ -24,10 +24,10 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($trips as $trip)
+            @forelse ($trips as $trip)
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $trip->get_loading_date() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->vehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->tp_number }}/{{ $trip->tp_serial }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->net_weight }}</x-tables.basic.row>
@@ -38,7 +38,13 @@
                     <x-tables.basic.row :color_toggle="$trip->step_payment" true_val="Processed" false_val="Pending">{{ $trip->step_payment }}</x-tables.basic.row>
                     <x-tables.basic.row link="/projects/{{ $project->id }}/trips/{{ $trip->id }}">View</x-tables.basic.row>
                 </tr>
-             @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

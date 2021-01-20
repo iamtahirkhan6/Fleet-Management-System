@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\RcSearch;
 
-use App\Models\VehicleRC;
+use App\Domain\VehicleRC\Models\VehicleRC;
 use Livewire\Component;
 
 class Index extends Component

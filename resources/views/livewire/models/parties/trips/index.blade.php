@@ -19,7 +19,7 @@
             @foreach ($trips as $trip)
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $trip->get_loading_date() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->vehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->tp_number }}/{{ $trip->tp_serial }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->net_weight }}</x-tables.basic.row>

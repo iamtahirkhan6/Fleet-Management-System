@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\Mines;
 
-use App\Models\Mine;
+use App\Domain\General\Models\Mine;
 use Livewire\Component;
 use Livewire\WithPagination;
 

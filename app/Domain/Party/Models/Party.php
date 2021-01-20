@@ -2,7 +2,7 @@
 
 namespace App\Domain\Party\Models;
 
-use App\Models\MarketVehicle;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Payment\Models\BankAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $bank_accounts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|Trip[] $trips
  * @property-read int|null $trips_count
- * @property-read \Illuminate\Database\Eloquent\Collection|MarketVehicle[] $vehicles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domain\MarketVehicle\Models\MarketVehicle[] $vehicles
  * @property-read int|null $vehicles_count
  * @method static \Illuminate\Database\Eloquent\Builder|Party newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Party newQuery()
@@ -42,7 +42,7 @@ class Party extends Model
 
     public function vehicles()
     {
-        return $this->hasMany(MarketVehicle::class);
+        return $this->hasMany(\App\Domain\MarketVehicle\Models\MarketVehicle::class);
     }
 
     public function bankAccounts()
@@ -55,12 +55,12 @@ class Party extends Model
         return $this->hasMany(Trip::class);
     }
 
-    public function total_business()
+    public function totalBusiness()
     {
         return \App\Domain\Trip\Models\Trip::where('party_id', $this->id)->sum('amount');
     }
 
-    public function total_weight_transported()
+    public function totalWeightTransported()
     {
         return \App\Domain\Trip\Models\Trip::where('party_id', $this->id)->sum('net_weight');
     }

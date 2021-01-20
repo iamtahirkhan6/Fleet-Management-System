@@ -14,6 +14,6 @@ class FleetSeeder extends Seeder
      */
     public function run()
     {
-        Fleet::create(["name" => "29X - TATA 3525"]);
+        Fleet::create(["name" => "29X - TATA 3525", "company_id" => 2]);
     }
 }

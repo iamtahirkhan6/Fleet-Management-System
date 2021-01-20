@@ -12,7 +12,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($payments as $payment)
+            @forelse ($payments as $payment)
                 <tr>
                     <x-tables.basic.row>
                         <a href="/payments/{{ $payment->trip_id }}" class="inline-flex space-x-2 text-sm truncate group">
@@ -24,13 +24,19 @@
                     </x-tables.basic.row>
                     <x-tables.basic.row money="true" :moneyBool="1" :moneyVal="$payment->amount"></x-tables.basic.row>
                     <x-tables.basic.row link="/trips/{{ $payment->trip_id }}">{{ $payment->trip_id }}</x-tables.basic.row>
-                    <x-tables.basic.row :colorToggle="$payment->status" trueVal="Paid" falseVal="Pending"></x-tables.basic.>
-                    <x-tables.basic.row>{{ $payment->payment_method->name }}</x-tables.basic.>
+                    <x-tables.basic.row :colorToggle="$payment->status" trueVal="Paid" falseVal="Pending"></x-tables.basic.row>
+                    <x-tables.basic.row>{{ $payment->payment_method->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ App\Helper\Helper::human_date($payment->created_at) }}</x-tables.basic.row>
                     <x-tables.basic.row link="/payments/{{ $payment->trip_id }}">View</x-tables.basic.row>
 
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

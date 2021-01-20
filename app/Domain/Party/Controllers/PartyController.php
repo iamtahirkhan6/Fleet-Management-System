@@ -11,11 +11,14 @@ class PartyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('models.parties.index');
+        return view('page')
+            ->with('livewire', 'models.parties.index')
+            ->with('title',  'Parties')
+            ->with('description', 'View all the parties that have worked with your company');
     }
 
     /**
@@ -25,7 +28,7 @@ class PartyController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -36,18 +39,23 @@ class PartyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Party $party)
     {
-        return view('models.parties.show', ['party' => $party]);
+        return view('page')
+            ->with('livewire', 'models.parties.show')
+            ->with('title',  'View Party Information')
+            ->with('description', 'View the information regarding this party')
+            ->with('key', 'party')
+            ->with('val', $party);
     }
 
     /**
@@ -58,7 +66,7 @@ class PartyController extends Controller
      */
     public function edit(Party $party)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -70,7 +78,7 @@ class PartyController extends Controller
      */
     public function update(Request $request, Party $party)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -81,6 +89,6 @@ class PartyController extends Controller
      */
     public function destroy(Party $party)
     {
-        //
+        abort(404);
     }
 }

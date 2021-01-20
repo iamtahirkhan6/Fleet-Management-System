@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Models\UnloadingPoint;
 
-use App\Models\UnloadingPoint;
+use App\Domain\General\Models\UnloadingPoint;
 use Livewire\Component;
 
 class Index extends Component

@@ -19,7 +19,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($mines as $mine)
+            @forelse ($mines as $mine)
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $mine->name }}</x-tables.basic.row>
@@ -29,7 +29,13 @@
                     {{-- <x-tables.basic.row link="/mines/{{ $mine->id }}">View</x-tables.basic.row> --}}
 
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire\Models\Trips;
 
-use App\Models\Mine;
+use App\Domain\General\Models\Mine;
 use App\Domain\Project\Models\Project;
-use App\Models\UnloadingPoint;
+use App\Domain\General\Models\UnloadingPoint;
 use Livewire\Component;
 
 class Show extends Component

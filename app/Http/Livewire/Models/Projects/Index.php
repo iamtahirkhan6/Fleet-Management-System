@@ -13,15 +13,11 @@ class Index extends Component
 
     public function render()
     {
-        if (Auth::user()->hasRole('admin'))
-        {
-            return view('livewire.models.projects.index',[
-                'projects' => Project::orderByDesc('id')->with(['Source', 'Destination', 'Consignee', 'Material', 'Company'])->paginate(15)
-            ]);
-        } else {
-            return view('livewire.models.projects.index',[
-                'projects' => Project::whereCompanyId(Auth::user()->company_id)->orderByDesc('id')->with(['Source', 'Destination', 'Consignee', 'Material', 'Company'])->paginate(15)
-            ]);
-        }
+        return view('livewire.models.projects.index',[
+                'projects' => Project::whereCompanyId(Auth::user()->company_id)
+                    ->orderByDesc('id')
+                    ->with(['Source', 'Destination', 'Consignee', 'Material', 'Company']
+                    )->paginate(15)
+                ]);
     }
 }

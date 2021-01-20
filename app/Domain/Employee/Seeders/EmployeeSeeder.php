@@ -2,7 +2,7 @@
 
 namespace App\Domain\Employee\Seeders;
 
-use App\Models\PhoneNumber;
+use App\Domain\General\Models\PhoneNumber;
 use Illuminate\Database\Seeder;
 use App\Domain\Office\Models\Office;
 use App\Domain\Employee\Models\Employee;

@@ -21,7 +21,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($projects as $project)
+            @forelse($projects as $project)
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Source->name }}</x-tables.basic.row>
@@ -33,7 +33,13 @@
                     </x-tables.basic.row>
                     <x-tables.basic.row link="/projects/{{ $project->id }}"><x-svg.view-list/></x-tables.basic.row>
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
 

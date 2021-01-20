@@ -43,13 +43,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $finished_by
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Agent|null $agent
- * @property-read \App\Models\Consignee|null $consignee
+ * @property-read \App\Domain\Agent\Models\Agent|null $agent
+ * @property-read \App\Domain\Consignee\Models\Consignee|null $consignee
  * @property-read Model|\Eloquent $driverable
  * @property-read \App\Domain\Project\Models\Project|null $project
  * @property-write mixed $loading_date
  * @property-read \App\Domain\Trip\Models\TripPaymentTransaction|null $txn
- * @property-read \App\Models\MarketVehicle|null $vehicle
+ * @property-read \App\Domain\MarketVehicle\Models\MarketVehicle|null $vehicle
  * @method static \Illuminate\Database\Eloquent\Builder|Trip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Trip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Trip query()
@@ -95,12 +95,12 @@ class Trip extends Model
 
     public function vehicle()
     {
-        return $this->hasOne('App\Models\MarketVehicle', 'id', 'vehicle_id');
+        return $this->hasOne('App\Domain\MarketVehicle\Models\MarketVehicle', 'id', 'vehicle_id');
     }
 
     public function consignee()
     {
-        return $this->hasOne('App\Models\Consignee');
+        return $this->hasOne('App\Domain\Consignee\Models\Consignee');
     }
 
     public function driverable()
@@ -110,10 +110,10 @@ class Trip extends Model
 
     public function agent()
     {
-        return $this->hasOne('App\Models\Agent');
+        return $this->hasOne('App\Domain\Agent\Models\Agent');
     }
 
-    public function challan_doc()
+    public function challanDocuments()
     {
         return $this->hasMany('App\Models\TripDocuments');
     }
@@ -128,15 +128,14 @@ class Trip extends Model
         return $this->hasOne('App\Domain\Trip\Models\TripPaymentTransaction');
     }
 
-    public function get_loading_date()
+    public function getDateAttribute()
     {
         return Carbon::createFromFormat("Y-m-d", $this->date)->format('d F, Y');
     }
 
-    public function setLoadingDateAttribute($value)
+    public function setDateAttribute($value)
     {
-        $this->attributes['loading_date'] = Carbon::parse($value)->format('Y-m-d');
-        return ;
+        return $this->attributes['date'] = Carbon::parse($value)->format('Y-m-d');
     }
 
 

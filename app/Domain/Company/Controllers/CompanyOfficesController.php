@@ -13,11 +13,13 @@ class CompanyOfficesController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Domain\Company\Models\Company  $company
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Company $company)
     {
-        //
+        return view('page')
+            ->with('livewire', 'models.company.offices.index')
+            ->with('title', 'Offices');
     }
 
     /**
@@ -28,7 +30,7 @@ class CompanyOfficesController extends Controller
      */
     public function create(Company $company)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -40,7 +42,7 @@ class CompanyOfficesController extends Controller
      */
     public function store(Request $request, Company $company)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -52,7 +54,7 @@ class CompanyOfficesController extends Controller
      */
     public function show(Company $company, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -64,7 +66,7 @@ class CompanyOfficesController extends Controller
      */
     public function edit(Company $company, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -77,7 +79,7 @@ class CompanyOfficesController extends Controller
      */
     public function update(Request $request, Company $company, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -89,6 +91,6 @@ class CompanyOfficesController extends Controller
      */
     public function destroy(Company $company, Office $office)
     {
-        //
+        abort(404);
     }
 }

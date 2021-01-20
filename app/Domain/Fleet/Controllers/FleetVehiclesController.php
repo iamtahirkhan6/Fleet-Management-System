@@ -14,11 +14,16 @@ class FleetVehiclesController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Domain\Fleet\Models\Fleet  $fleet
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Fleet $fleet)
     {
-        return view('models.fleets.vehicles.index', ['fleet' => $fleet]);
+        return view('page')
+            ->with('livewire', 'models.fleets.vehicles.index')
+            ->with('title', 'Fleet Vehicles')
+            ->with('description', 'View all the vehicles in your fleet')
+            ->with('key', 'fleet')
+            ->with('val', $fleet);
     }
 
     /**
@@ -29,7 +34,7 @@ class FleetVehiclesController extends Controller
      */
     public function create(Fleet $fleet)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -41,7 +46,7 @@ class FleetVehiclesController extends Controller
      */
     public function store(Request $request, Fleet $fleet)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -53,7 +58,7 @@ class FleetVehiclesController extends Controller
      */
     public function show(Fleet $fleet, FleetVehicle $vehicle)
     {
-        dd("Show Vehicle Record");
+        abort(404);
     }
 
     /**
@@ -65,7 +70,7 @@ class FleetVehiclesController extends Controller
      */
     public function edit(Fleet $fleet, FleetVehicle $vehicle)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -78,7 +83,7 @@ class FleetVehiclesController extends Controller
      */
     public function update(Request $request, Fleet $fleet, VeFleetVehiclehicle $vehicle)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -90,6 +95,6 @@ class FleetVehiclesController extends Controller
      */
     public function destroy(Fleet $fleet, FleetVehicle $vehicle)
     {
-        //
+        abort(404);
     }
 }

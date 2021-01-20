@@ -2,8 +2,8 @@
 
 namespace App\Domain\Trip\Seeders;
 
-use App\Models\Agent;
-use App\Models\MarketVehicle;
+use App\Domain\Agent\Models\Agent;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
 use Illuminate\Database\Seeder;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Party\Models\Party;
@@ -946,7 +946,7 @@ class TripSeeder extends Seeder
         AddBankAccountToModels::run($party_name, $acc_num, $ifsc_code, $party);
         $trip->party_id = $party->id;
 
-        $trip->vehicle_id = MarketVehicle::firstOrcreate(['number' => $vehicle_num, 'party_id' => $trip->party_id])->id;
+        $trip->vehicle_id = MarketVehicle::firstOrcreate(['number' => $vehicle_num, 'party_id' => $trip->party_id, 'company_id' => "2"])->id;
         $trip->project_id = Project::firstOrCreate(['name' => $project])->id;
         $trip->tp_number = $tp_num;
         $trip->tp_serial = $tp_ser;
@@ -971,7 +971,7 @@ class TripSeeder extends Seeder
         $trip->step_loading = 1;
         $trip->step_payment = 1;
 
-        $trip->agent_id = Agent::firstOrCreate(['name' => ucfirst($agent)])->id;
+        $trip->agent_id = Agent::firstOrCreate(['name' => ucfirst($agent), 'company_id' => "2"])->id;
         $trip->created_by = 5;
         $trip->finished_by = 3;
         $trip->company_id = 2;

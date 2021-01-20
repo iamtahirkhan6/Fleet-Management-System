@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire\Models\Sectors;
 
-use App\Models\Sector;
+use App\Domain\General\Models\Sector;
 use Livewire\Component;
 
 class Create extends Component
 {
     public Sector $sector;
-    
+
     public $createSuccess = false;
     public $createFail = false;
 
@@ -24,7 +24,7 @@ class Create extends Component
     public function createSector()
     {
         $this->validate();
-        
+
         try{
             $this->sector->visible = 1;
             $this->sector->save();
@@ -45,7 +45,7 @@ class Create extends Component
     {
         $this->sector = new Sector();
     }
-    
+
     public function render()
     {
         return view('livewire.models.sectors.create');

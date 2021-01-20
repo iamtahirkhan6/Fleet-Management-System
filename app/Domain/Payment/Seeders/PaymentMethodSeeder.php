@@ -15,8 +15,9 @@ class PaymentMethodSeeder extends Seeder
     public function run()
     {
         PaymentMethod::create(['name' => 'Cash']);
-        PaymentMethod::create(['name' => 'Bank Transfer']);
         PaymentMethod::create(['name' => 'Cheque']);
+        PaymentMethod::create(['name' => 'Razorpay']);
+        PaymentMethod::create(['name' => 'Bank Transfer']);
         PaymentMethod::create(["name" => "Bank Transfer via BBSR Office"]);
         PaymentMethod::create(["name" => "Bank Transfer via 3rd Party"]);
     }

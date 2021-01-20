@@ -3,20 +3,20 @@
 namespace App\Http\Livewire\Models\Trips;
 
 use Carbon\Carbon;
-use App\Models\Mine;
+use App\Domain\General\Models\Mine;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Fleet\Models\Fleet;
 use App\Models\Mines;
-use App\Models\Agent;
+use App\Domain\Agent\Models\Agent;
 use App\Models\Driver;
 use App\Domain\Party\Models\Party;
 use App\Models\Docuent;
 use App\Domain\Employee\Models\Employee;
-use App\Models\Consignee;
-use App\Models\PhoneNumber;
+use App\Domain\Consignee\Models\Consignee;
+use App\Domain\General\Models\PhoneNumber;
 use App\Models\TripDocuments;
-use App\Models\MarketVehicle;
-use App\Models\UnloadingPoint;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
+use App\Domain\General\Models\UnloadingPoint;
 use Illuminate\Support\Facades\Auth;
 
 use Livewire\Component;

@@ -9,25 +9,20 @@ use App\Domain\Company\Actions\AddRazorPayToCompany;
 class Settings extends Component
 {
     public Company $company;
-    public ?string $use_razorpay = null;
-    public ?string $razorpay_key_id = null;
-    public ?string $razorpay_key_secret = null;
 
     public bool $createSuccess = false;
     public bool $createFail = false;
 
+    public ?array $input = ["use_razorpay" => null, "razorpay_key_id" => null, "razorpay_key_secret" => null];
+
     protected function rules()
     {
-        return AddRazorPayToCompany::rules();
+        return AddRazorPayToCompany::rules(True, "input.");
     }
     public function AddRazorPay()
     {
         $this->validate();
-        $add_razorpay = AddRazorPayToCompany::run($this->company->id, [
-            "use_razorpay"    => $this->use_razorpay,
-            "razorpay_key_id" => $this->razorpay_key_id,
-            "razorpay_key_secret" => $this->razorpay_key_secret
-        ]);
+        $add_razorpay = AddRazorPayToCompany::run($this->company->id, $this->input);
 
         if($add_razorpay != false)
         {
@@ -35,11 +30,6 @@ class Settings extends Component
         } else {
             $this->createFail = true;
         }
-    }
-
-    public function mount($company)
-    {
-        $this->company = $company;
     }
 
     public function render()

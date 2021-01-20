@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\Models\Fleets;
 
-use App\Domain\Fleet\Models\Fleet;
-use Livewire\WithPagination;
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Domain\Fleet\Models\Fleet;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -12,6 +13,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.fleets.index', ['fleets' => Fleet::latest()->paginate(10)])->layout('layouts.app', ['header' => 'Fleets']);
+        return view('livewire.models.fleets.index', ['fleets' => Fleet::whereCompanyId(Auth::user()->company_id)->paginate(10)]);
     }
 }

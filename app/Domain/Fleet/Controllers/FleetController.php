@@ -11,16 +11,24 @@ class FleetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('models.fleets.index');
+        return view('page')
+            ->with('livewire', 'models.fleets.index')
+            ->with('title', 'Your Fleets')
+            ->with('description', 'View all the fleets in your company');
     }
 
     public function live(Fleet $fleet)
     {
-        return view('models.fleets.live.index', ['fleet' => $fleet]);
+        return view('page')
+            ->with('livewire', 'models.fleets.live.index')
+            ->with('title', 'Your Fleets')
+            ->with('description', 'View all the fleets in your company')
+            ->with('key', 'fleet')
+            ->with('val', $fleet);
     }
 
     /**
@@ -30,7 +38,7 @@ class FleetController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -41,7 +49,7 @@ class FleetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -52,7 +60,7 @@ class FleetController extends Controller
      */
     public function show(Fleet $fleet)
     {
-
+        abort(404);
     }
 
     /**
@@ -63,7 +71,7 @@ class FleetController extends Controller
      */
     public function edit(Fleet $fleet)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -75,7 +83,7 @@ class FleetController extends Controller
      */
     public function update(Request $request, Fleet $fleet)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -86,6 +94,6 @@ class FleetController extends Controller
      */
     public function destroy(Fleet $fleet)
     {
-        //
+        abort(404);
     }
 }

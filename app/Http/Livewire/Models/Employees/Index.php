@@ -10,7 +10,6 @@ use App\Domain\Employee\Models\Employee;
 
 class Index extends Component
 {
-
     use WithPagination;
 
     public $perPage;
@@ -24,28 +23,16 @@ class Index extends Component
 
     public function render()
     {
-        if ($this->officeParameter == null) {
-            if (Auth::user()->hasRole('admin')) {
-                return view('livewire.models.employees.index', [
-                    'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')->paginate($this->perPage)
-                ]);
-            } else {
-                return view('livewire.models.employees.index', [
-                    'employees' => Employee::whereCompanyId(Auth::user()->company_id)->where('name', 'like', '%' . $this->searchTerm . '%')->paginate($this->perPage)
-                ]);
-            }
-        } else {
-            if (Auth::user()->hasRole('admin')) {
-                return view('livewire.models.employees.index', [
-                    'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')->where('office_id', $this->officeParameter->id)->paginate($this->perPage)
-                ]);
-            } else {
-                return view('livewire.models.employees.index', [
-                    'employees' => Employee::whereCompanyId(Auth::user()->company_id)->where('name', 'like', '%' . $this->searchTerm . '%')->where('office_id', $this->officeParameter->id)->paginate($this->perPage)
-                ]);
-            }
-
-        }
+        return $this->officeParameter == null ? view('livewire.models.employees.index', [
+            'employees' => Employee::whereCompanyId(Auth::user()->company_id)
+                ->where('name', 'like', '%' . $this->searchTerm . '%')
+                ->paginate($this->perPage)
+        ]) : view('livewire.models.employees.index', [
+            'employees' => Employee::whereCompanyId(Auth::user()->company_id)
+                ->where('name', 'like', '%' . $this->searchTerm . '%')
+                ->where('office_id', $this->officeParameter->id)
+                ->paginate($this->perPage)
+        ]);
     }
 
     public function updatingSearch()

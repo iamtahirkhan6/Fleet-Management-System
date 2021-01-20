@@ -18,6 +18,7 @@ class CreateMarketVehiclesTable extends Migration
             $table->id();
             $table->string("number");
             $table->foreignId('party_id')->references('id')->on('parties');
+            $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

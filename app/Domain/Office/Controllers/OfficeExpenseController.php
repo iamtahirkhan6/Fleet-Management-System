@@ -13,22 +13,32 @@ class OfficeExpenseController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Office $office)
     {
-        return view("models.offices.expenses.index", ["office" => $office]);
+        return view('page')
+            ->with('livewire', 'models.offices.expenses.index')
+            ->with('title', $office->name . ' Office')
+            ->with('description', 'View all the offices in your company')
+            ->with('key', 'office')
+            ->with('val', $office);
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create(Office $office)
     {
-        return view("models.offices.expenses.create", ["office" => $office]);
+        return view('page')
+            ->with('livewire', 'models.offices.expenses.create')
+            ->with('title', 'Add an Expense')
+            ->with('description', 'Enter all the details of the expense.')
+            ->with('key', 'office')
+            ->with('val', $office);
     }
 
     /**
@@ -40,7 +50,7 @@ class OfficeExpenseController extends Controller
      */
     public function store(Request $request, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -48,11 +58,11 @@ class OfficeExpenseController extends Controller
      *
      * @param  \App\Domain\Office\Models\Office  $office
      * @param  \App\Domain\Expense\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|void
      */
     public function show(Office $office, Expense $expense)
     {
-        return dd("show specific expense of an office");
+        return abort('404', 'Show specific expense of an office');
     }
 
     /**
@@ -64,7 +74,7 @@ class OfficeExpenseController extends Controller
      */
     public function edit(Office $office, Expense $expense)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -77,7 +87,7 @@ class OfficeExpenseController extends Controller
      */
     public function update(Request $request, Office $office, Expense $expense)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -89,6 +99,6 @@ class OfficeExpenseController extends Controller
      */
     public function destroy(Office $office, Expense $expense)
     {
-        //
+        abort(404);
     }
 }

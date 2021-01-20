@@ -2,53 +2,55 @@
 
 namespace App\Http\Livewire\Models\Employees;
 
-use App\Domain\Company\Models\Company;
 use Auth;
 use Livewire\Component;
+use Illuminate\Database\Eloquent\Collection;
 use App\Domain\Employee\Actions\CreateEmployee;
 use App\Domain\Employee\Models\EmployeesDesignation;
 use App\Domain\Office\Models\Office;
 
 class Create extends Component
 {
-    public ?string $name = null;
-    public ?string $salary = null;
-    public ?string $email = null;
-    public ?string $office_id = null;
-    public ?string $company_id = null;
-    public ?string $employee_designation_id = null;
-
-    public ?string $phone_number = null;
-
-    public $offices;
-    public $companies;
-    public $designations;
+    public Collection $offices;
+    public Collection $designations;
 
     public bool $createSuccess = false;
     public bool $createFail = false;
+    public bool $bankBool = false;
 
-    public function rules() : array
+    public ?array $input = [
+        "name" => null,
+        "salary" => null,
+        "email" => null,
+        "office_id" => null,
+        "company_id" => null,
+        "employee_designation_id" => null,
+        "phone_number" => null,
+        "bank_bool" => null,
+        "account_name" => null,
+        "account_number" => null,
+        "ifsc_code" => null,
+    ];
+    /**
+     * @var int|mixed|null
+     */
+
+    /**
+     * @var int|mixed|null
+     */
+
+    public function rules(): array
     {
-
-        return \App\Domain\Employee\Actions\CreateEmployee::rules();
+        return CreateEmployee::rules(True, "input.");
     }
 
     public function createEmployee()
     {
         $this->validate();
+        $this->input["bank_bool"] = $this->bankBool;
         $employee = CreateEmployee::run($this->input);
-       $employee = CreateEmployee::run([
-           "name" => $this->name,
-           "email" => $this->email,
-           "salary" => $this->salary,
-           "office_id" => $this->office_id,
-           "company_id" => $this->company_id,
-           "employee_designation_id" => $this->employee_designation_id,
-           "phone_number" => $this->phone_number,
-       ]);
 
-        if($employee != False)
-        {
+        if ($employee != False) {
             $this->createSuccess = true;
         } else {
             $this->createFail = true;
@@ -57,22 +59,14 @@ class Create extends Component
 
     public function mount()
     {
-        $this->company_id = Auth::user()->company_id;   // Get the company id of the user
-
-
-        if(Auth::user()->hasRole('admin'))              // If Admin then display All Offices
-        {
-            $this->offices = Office::get(['id', 'name']);
-            $this->companies = Company::get(['id', 'name']);
-        } else {
-            $this->offices = Office::whereCompanyId(Auth::user()->company_id)->get(['id', 'name']);
-        }
-        $this->designations = EmployeesDesignation::get(['id', 'name']);
+        $this->input["company_id"] = Auth::user()->company_id;   // Get the company id of the user
+        $this->offices = Office::whereCompanyId(Auth::user()->company_id)->get(['id', 'name']);
+        $this->designations = EmployeesDesignation::get(['id','name']);
     }
 
     public function render()
     {
-        return view('livewire.models.employees.create');
+        return view('livewire.models.company.employees.create');
     }
 
     public function updated($propertyName)

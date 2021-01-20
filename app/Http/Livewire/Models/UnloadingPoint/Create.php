@@ -3,12 +3,12 @@
 namespace App\Http\Livewire\Models\UnloadingPoint;
 
 use Livewire\Component;
-use App\Models\UnloadingPoint;
+use App\Domain\General\Models\UnloadingPoint;
 
 class Create extends Component
 {
     public UnloadingPoint $unloadingPoint;
-    
+
     public $createSuccess = false;
     public $createFail = false;
 
@@ -27,7 +27,7 @@ class Create extends Component
     public function createUnloadingPoint()
     {
         $this->validate();
-        
+
         try{
             // $this->unloadingPoint->visible = 1;
             $this->unloadingPoint->save();

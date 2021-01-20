@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Models\Parties;
 use Livewire\Component;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Party\Models\Party;
-use App\Models\MarketVehicle;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
 use App\Models\PartiesBankAccount;
 
 class Show extends Component

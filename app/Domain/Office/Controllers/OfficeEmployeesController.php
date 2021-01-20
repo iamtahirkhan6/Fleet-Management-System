@@ -13,11 +13,16 @@ class OfficeEmployeesController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Office $office)
     {
-        return view('models.offices.employees.index', ['office' => $office]);
+        return view('page')
+            ->with('livewire', 'models.offices.employees.index')
+            ->with('title',  'Employees')
+            ->with('description', 'View all the employees in this office')
+            ->with('key', 'office')
+            ->with('val', $office);
     }
 
     /**
@@ -28,7 +33,7 @@ class OfficeEmployeesController extends Controller
      */
     public function create(Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -40,7 +45,7 @@ class OfficeEmployeesController extends Controller
      */
     public function store(Request $request, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -52,7 +57,7 @@ class OfficeEmployeesController extends Controller
      */
     public function show(Office $office, Employee $employee)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -64,7 +69,7 @@ class OfficeEmployeesController extends Controller
      */
     public function edit(Office $office, Employee $employee)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -77,7 +82,7 @@ class OfficeEmployeesController extends Controller
      */
     public function update(Request $request, Office $office, Employee $employee)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -89,6 +94,6 @@ class OfficeEmployeesController extends Controller
      */
     public function destroy(Office $office, Employee $employee)
     {
-        //
+        abort(404);
     }
 }

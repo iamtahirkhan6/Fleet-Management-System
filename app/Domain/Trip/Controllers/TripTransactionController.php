@@ -11,11 +11,14 @@ class TripTransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('models.payments.trips.index');
+        return view('page')
+            ->with('livewire', 'models.payments.trips.index')
+            ->with('title',  'Payments for Trips')
+            ->with('description', 'View all the payments done against trips');
     }
 
     /**
@@ -25,7 +28,7 @@ class TripTransactionController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -36,18 +39,23 @@ class TripTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Domain\Trip\Models\TripPaymentTransaction  $tripPaymentTransaction
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(TripPaymentTransaction $payment)
     {
-        return view('models.payments.trips.show', ['transaction' => $payment]);
+        return view('page')
+            ->with('livewire', 'models.payments.trips.show')
+            ->with('title',  'Trip Payment')
+            ->with('description', 'View payment details of a trip')
+            ->with('key', 'transaction')
+            ->with('val', $payment);
     }
 
     /**
@@ -58,7 +66,7 @@ class TripTransactionController extends Controller
      */
     public function edit(TripPaymentTransaction $payment)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -70,7 +78,7 @@ class TripTransactionController extends Controller
      */
     public function update(Request $request, TripPaymentTransaction $payment)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -81,6 +89,6 @@ class TripTransactionController extends Controller
      */
     public function destroy(TripPaymentTransaction $payment)
     {
-        //
+        abort(404);
     }
 }

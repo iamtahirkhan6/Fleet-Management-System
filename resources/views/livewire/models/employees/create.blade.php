@@ -1,73 +1,87 @@
 <div class="overflow-hidden bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg"
-    x-data="{createSuccess: @entangle('createSuccess'), createFail: @entangle('createFail')}">
+    x-data="{createSuccess: @entangle('createSuccess'), createFail: @entangle('createFail'), bankBool: @entangle('bankBool')}">
 
     <x-forms.basic-stacked.form wire:submit.prevent='createEmployee()' :backLink="route('employees.index')"
         backLinkTitle="Go Back">
 
         <!-- Name -->
-        <x-forms.basic-stacked.column title="Employee Name">
+        <x-forms.basic-stacked.column title="Employee Name" error="input.name">
             <x-forms.basic-stacked.input-basic wire:model.lazy="input.name" type="text" placeholder="Enter the employee name"></x-forms.basic-stacked.input-basic>
-                @error('name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
         <!-- Salary -->
-        <x-forms.basic-stacked.column title="Salary">
-            <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="salary" placeholder="Enter the salary"></x-forms.basic-stacked.input-basic>
-            @error('salary') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+        <x-forms.basic-stacked.column title="Salary" error="input.salary">
+            <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="input.salary" placeholder="Enter the salary"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Phone Number -->
-        <x-forms.basic-stacked.column title="Phone Number">
-            <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="phone_number" placeholder="Enter the phone number"></x-forms.basic-stacked.input-basic>
-            @error('phone_number') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+        <x-forms.basic-stacked.column title="Phone Number" error="input.phone_number">
+            <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="input.phone_number" placeholder="Enter the phone number"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Phone Number -->
-        <x-forms.basic-stacked.column title="Email Address">
-            <x-forms.basic-stacked.input-basic type="email" wire:model.lazy="email" placeholder="Enter the email"></x-forms.basic-stacked.input-basic>
-            @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+        <x-forms.basic-stacked.column title="Email Address" error="input.email">
+            <x-forms.basic-stacked.input-basic type="email" wire:model.lazy="input.email" placeholder="Enter the email"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Office -->
-        <x-forms.basic-stacked.column title="Office">
+        <x-forms.basic-stacked.column title="Office" error="input.office_id">
             <x-forms.basic-stacked.dropdown
-                wire:model="office_id"
+                wire:model="input.office_id"
                 :array="$offices"
-                :arrayTwo="$companies"
                 joinColumn="true"
                 title="Choose an office"
                 arrayKey="name">
             </x-forms.basic-stacked.dropdown>
-            @error('office_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
         <!-- Hidden Company ID -->
-        <input type="hidden" wire:model="company_id">
+        <input type="hidden" wire:model="input.company_id">
 
-        @role('admin')
         <!-- Company ID -->
-        <x-forms.basic-stacked.column title="Company">
+        @role('admin')
+        <x-forms.basic-stacked.column title="Company" error="input.company_id">
             <x-forms.basic-stacked.dropdown
-                wire:model="company_id"
+                wire:model="input.company_id"
                 :array="$companies"
                 title="Choose a company"
                 arrayKey="name">
             </x-forms.basic-stacked.dropdown>
-            @error('company_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
         @endrole
 
         <!-- Designation -->
-        <x-forms.basic-stacked.column title="Designation">
+        <x-forms.basic-stacked.column title="Designation" error="input.employee_designation_id">
             <x-forms.basic-stacked.dropdown
-                wire:model="employee_designation_id"
+                wire:model="input.employee_designation_id"
                 :array="$designations"
                 title="Choose a designation"
                 arrayKey="employee_designation_id">
             </x-forms.basic-stacked.dropdown>
-            @error('employee_designation_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
+        <!-- Bank Details? -->
+        <x-forms.basic-stacked.column title="Add Bank Account?" error="input.bank_bool">
+            <x-forms.basic-stacked.toggle>Add Bank Account?</x-forms.basic-stacked.toggle>
+        </x-forms.basic-stacked.column>
+
+        <div x-show="bankBool" x-cloak>
+            <!-- Bank Account Name -->
+            <x-forms.basic-stacked.column title="Bank Account Name" error="input.account_name">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_name" type="text" placeholder="Enter the name on bank account"></x-forms.basic-stacked.input-basic>
+            </x-forms.basic-stacked.column>
+
+            <!-- Bank Account Number -->
+            <x-forms.basic-stacked.column title="Bank Account Number" error="input.account_number">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_number" type="number" placeholder="Enter the bank account number"></x-forms.basic-stacked.input-basic>
+            </x-forms.basic-stacked.column>
+
+            <!-- Bank IFSC Code -->
+            <x-forms.basic-stacked.column title="Bank IFSC Code" error="input.ifsc_code">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_number" type="text" placeholder="Enter the IFSC Code"></x-forms.basic-stacked.input-basic>
+            </x-forms.basic-stacked.column>
+        </div>
+        {{ $bankBool }}
     </x-forms.basic-stacked.form>
 
     <!-- Success Modal -->

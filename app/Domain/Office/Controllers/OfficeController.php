@@ -11,11 +11,14 @@ class OfficeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('models.offices.index');
+        return view('page')
+            ->with('livewire', 'models.offices.index')
+            ->with('title', 'Offices')
+            ->with('description', 'View all the offices in your company');
     }
 
     /**
@@ -25,7 +28,7 @@ class OfficeController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -36,7 +39,7 @@ class OfficeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -47,7 +50,7 @@ class OfficeController extends Controller
      */
     public function show(Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -58,7 +61,7 @@ class OfficeController extends Controller
      */
     public function edit(Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -70,7 +73,7 @@ class OfficeController extends Controller
      */
     public function update(Request $request, Office $office)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -81,6 +84,6 @@ class OfficeController extends Controller
      */
     public function destroy(Office $office)
     {
-        //
+        abort(404);
     }
 }

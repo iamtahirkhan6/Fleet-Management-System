@@ -6,6 +6,9 @@
         <div class="mt-1 sm:mt-0 sm:col-span-2">
             <div class="w-2/6">
                 {{ $slot }}
+                @if($attributes["error"])
+                    @error($attributes["error"])<p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                @endif
             </div>
         </div>
     </div>

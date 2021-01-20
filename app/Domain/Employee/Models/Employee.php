@@ -5,7 +5,7 @@ namespace App\Domain\Employee\Models;
 use App\Domain\Payment\Models\BankAccount;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Payment\Models\PaymentMethod;
-use App\Models\PhoneNumber;
+use App\Domain\General\Models\PhoneNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read BankAccount|null $bankAccount
  * @property-read \App\Domain\Employee\Models\EmployeesDesignation|null $designation
  * @property-read \App\Domain\Office\Models\Office|null $office
- * @property-read \Illuminate\Database\Eloquent\Collection|PhoneNumber[] $phoneNumber
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domain\General\Models\PhoneNumber[] $phoneNumber
  * @property-read int|null $phone_number_count
  * @property-read \Illuminate\Database\Eloquent\Collection|Trip[] $trips
  * @property-read int|null $trips_count
@@ -74,7 +74,7 @@ class Employee extends Model
 
     public function phoneNumber()
     {
-        return $this->morphMany(PhoneNumber::class, 'phoneable');
+        return $this->morphOne(PhoneNumber::class, 'phoneable');
     }
 
     public function profile_photo_url()

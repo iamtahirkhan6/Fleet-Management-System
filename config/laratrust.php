@@ -269,7 +269,7 @@ return [
         | will be accessible from.
         |
         */
-        'path' => 'admin',
+        'path' => 'roles',
 
         /*
         |--------------------------------------------------------------------------
@@ -289,7 +289,7 @@ return [
         | These middleware will get attached onto each Laratrust panel route.
         |
         */
-        'middleware' => ['web', 'auth:sanctum', 'verified', 'admin'],
+        'middleware' => ['web', 'auth:sanctum', 'verified', 'role:admin'],
 
         /*
         |--------------------------------------------------------------------------

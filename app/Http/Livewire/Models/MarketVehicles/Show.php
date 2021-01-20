@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Models\MarketVehicles;
 
 use Livewire\Component;
-use App\Models\VehicleRC;
+use App\Domain\VehicleRC\Models\VehicleRC;
 
 class Show extends Component
 {

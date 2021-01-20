@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Models\Projects;
 
-use App\Models\Mine;
+use App\Domain\General\Models\Mine;
 use App\Domain\Project\Models\Project;
 use App\Domain\Company\Models\Company;
-use App\Models\Material;
-use App\Models\Consignee;
-use App\Models\UnloadingPoint;
+use App\Domain\General\Models\Material;
+use App\Domain\Consignee\Models\Consignee;
+use App\Domain\General\Models\UnloadingPoint;
 
 use Livewire\Component;
 

@@ -17,7 +17,8 @@
 				<div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
 					<div class="flex items-center flex-shrink-0 px-4"> <img class="w-auto h-8" src="http://127.0.0.1:8000/img/theme/asklogistiek.png" alt="Workflow"> </div>
 					<nav class="px-2 mt-5 space-y-1">
-                        <x-sidebar.link href="/employees"><x-svg.employees class="w-6 h-6 mr-3 text-indigo-300" /> Employees</x-sidebar.link>
+                        <x-sidebar.link href="/dashboard"><x-svg.dashboard class="w-6 h-6 mr-3 text-indigo-300" /> Dashboard</x-sidebar.link>
+                        <x-sidebar.link href="/company"><x-svg.company class="w-6 h-6 mr-3 text-indigo-300" /> My Company</x-sidebar.link>
 						<x-sidebar.link href="/projects"><x-svg.projects class="w-6 h-6 mr-3 text-indigo-300" /> Projects</x-sidebar.link>
 						<x-sidebar.link href="/consignees"><x-svg.consignees class="w-6 h-6 mr-3 text-indigo-300" /> Consignees</x-sidebar.link>
 						<x-sidebar.link href="/parties"><x-svg.parties class="w-6 h-6 mr-3 text-indigo-300" /> Parties</x-sidebar.link>
@@ -60,7 +61,8 @@
 				<div class="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
 					<div class="flex items-center flex-shrink-0 px-4"> <img class="w-auto h-8" src="{{ env('APP_URL') }}/img/theme/asklogistiek.png" alt="Workflow"> </div>
 					<nav class="flex-1 px-2 mt-5 space-y-1">
-                        <x-sidebar.link href="/employees"><x-svg.employees class="w-6 h-6 mr-3 text-indigo-300" /> Employees</x-sidebar.link>
+                        <x-sidebar.link href="/dashboard"><x-svg.dashboard class="w-6 h-6 mr-3 text-indigo-300" /> Dashboard</x-sidebar.link>
+                        <x-sidebar.link href="/company"><x-svg.company class="w-6 h-6 mr-3 text-indigo-300" /> My Company</x-sidebar.link>
 						<x-sidebar.link href="/projects"><x-svg.projects class="w-6 h-6 mr-3 text-indigo-300" /> Projects</x-sidebar.link>
 						<x-sidebar.link href="/consignees"><x-svg.consignees class="w-6 h-6 mr-3 text-indigo-300" /> Consignees</x-sidebar.link>
 						<x-sidebar.link href="/parties"><x-svg.parties class="w-6 h-6 mr-3 text-indigo-300" /> Parties</x-sidebar.link>

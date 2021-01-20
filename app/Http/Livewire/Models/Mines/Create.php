@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire\Models\Mines;
 
-use App\Models\Mine;
-use App\Models\Sector;
+use App\Domain\General\Models\Mine;
+use App\Domain\General\Models\Sector;
 use Livewire\Component;
 
 class Create extends Component
 {
     public Mine $mine;
-    
+
     public $createSuccess = false;
     public $createFail = false;
 
@@ -26,7 +26,7 @@ class Create extends Component
     public function createMine()
     {
         $this->validate();
-        
+
         try{
             $this->mine->visible = 1;
             $this->mine->save();
