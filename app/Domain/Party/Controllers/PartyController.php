@@ -2,29 +2,28 @@
 
 namespace App\Domain\Party\Controllers;
 
-use App\Domain\Party\Models\Party;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Domain\Party\Models\Party;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class PartyController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.parties.index')
-            ->with('title',  'Parties')
-            ->with('description', 'View all the parties that have worked with your company');
+        return view('page')->with('livewire', 'models.parties.index')->with('title', 'Parties')->with('description', 'View all the parties that have worked with your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,8 +33,9 @@ class PartyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -45,24 +45,21 @@ class PartyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Party $party
+     *
+     * @return Application|Factory|View
      */
     public function show(Party $party)
     {
-        return view('page')
-            ->with('livewire', 'models.parties.show')
-            ->with('title',  'View Party Information')
-            ->with('description', 'View the information regarding this party')
-            ->with('key', 'party')
-            ->with('val', $party);
+        return view('page')->with('livewire', 'models.parties.show')->with('title', 'View Party Information')->with('description', 'View the information regarding this party')->with('key', 'party')->with('val', $party);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Http\Response
+     * @param Party $party
+     *
+     * @return Response
      */
     public function edit(Party $party)
     {
@@ -72,9 +69,10 @@ class PartyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Party   $party
+     *
+     * @return Response
      */
     public function update(Request $request, Party $party)
     {
@@ -84,8 +82,9 @@ class PartyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Http\Response
+     * @param Party $party
+     *
+     * @return Response
      */
     public function destroy(Party $party)
     {

@@ -12,6 +12,8 @@
 namespace Symfony\Component\Mime\Encoder;
 
 use Symfony\Component\Mime\CharacterStream;
+use function ord;
+use function chr;
 
 /**
  * @author Chris Corbyn
@@ -21,7 +23,7 @@ class QpEncoder implements EncoderInterface
     /**
      * Pre-computed QP for HUGE optimization.
      */
-    private static $qpMap = [
+    private const QP_MAP = [
         0 => '=00', 1 => '=01', 2 => '=02', 3 => '=03', 4 => '=04',
         5 => '=05', 6 => '=06', 7 => '=07', 8 => '=08', 9 => '=09',
         10 => '=0A', 11 => '=0B', 12 => '=0C', 13 => '=0D', 14 => '=0E',
@@ -101,7 +103,7 @@ class QpEncoder implements EncoderInterface
     protected function initSafeMap(): void
     {
         foreach (array_merge([0x09, 0x20], range(0x21, 0x3C), range(0x3E, 0x7E)) as $byte) {
-            $this->safeMap[$byte] = \chr($byte);
+            $this->safeMap[$byte] = chr($byte);
         }
     }
 
@@ -170,7 +172,7 @@ class QpEncoder implements EncoderInterface
                 $ret .= $this->safeMap[$b];
                 ++$size;
             } else {
-                $ret .= self::$qpMap[$b];
+                $ret .= self::QP_MAP[$b];
                 $size += 3;
             }
         }
@@ -184,10 +186,10 @@ class QpEncoder implements EncoderInterface
     private function standardize(string $string): string
     {
         $string = str_replace(["\t=0D=0A", ' =0D=0A', '=0D=0A'], ["=09\r\n", "=20\r\n", "\r\n"], $string);
-        switch ($end = \ord(substr($string, -1))) {
+        switch ($end = ord(substr($string, -1))) {
             case 0x09:
             case 0x20:
-                $string = substr_replace($string, self::$qpMap[$end], -1);
+                $string = substr_replace($string, self::QP_MAP[$end], -1);
         }
 
         return $string;

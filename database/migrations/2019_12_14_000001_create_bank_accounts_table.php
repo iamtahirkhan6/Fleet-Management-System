@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateBankAccountsTable extends Migration
 {
@@ -19,6 +19,8 @@ class CreateBankAccountsTable extends Migration
             $table->string('account_number');
             $table->string('ifsc_code');
             $table->morphs('bankable');
+            $table->string('fund_account_id')->nullable();
+            $table->foreignId('company_id')->constrained('companies');
             $table->unique(["account_number", "ifsc_code", "bankable_id", "bankable_type"], "unique_bank");
             $table->timestamps();
         });

@@ -12,6 +12,8 @@
 
 namespace Composer\Util;
 
+use Exception;
+use LogicException;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Downloader\TransportException;
@@ -20,6 +22,8 @@ use Composer\Composer;
 use Composer\Package\Version\VersionParser;
 use Composer\Semver\Constraint\Constraint;
 use React\Promise\Promise;
+use function function_exists;
+use function extension_loaded;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -85,7 +89,7 @@ class HttpDownloader
      */
     public function get($url, $options = array())
     {
-        list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
+        [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
         $this->wait($job['id']);
 
         $response = $this->getResponse($job['id']);
@@ -102,7 +106,7 @@ class HttpDownloader
 
             $this->curl = null;
 
-            list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
+            [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
             $this->wait($job['id']);
 
             $response = $this->getResponse($job['id']);
@@ -123,7 +127,7 @@ class HttpDownloader
      */
     public function add($url, $options = array())
     {
-        list(, $promise) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false));
+        [, $promise] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false));
 
         return $promise;
     }
@@ -141,7 +145,7 @@ class HttpDownloader
      */
     public function copy($url, $to, $options = array())
     {
-        list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to), true);
+        [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to), true);
         $this->wait($job['id']);
 
         return $this->getResponse($job['id']);
@@ -160,7 +164,7 @@ class HttpDownloader
      */
     public function addCopy($url, $to, $options = array())
     {
-        list(, $promise) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to));
+        [, $promise] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to));
 
         return $promise;
     }
@@ -198,7 +202,7 @@ class HttpDownloader
         );
 
         if (!$sync && !$this->allowAsync) {
-            throw new \LogicException('You must use the HttpDownloader instance which is part of a Composer\Loop instance to be able to run async http requests');
+            throw new LogicException('You must use the HttpDownloader instance which is part of a Composer\Loop instance to be able to run async http requests');
         }
 
         // capture username/password from URL if there is one
@@ -316,7 +320,7 @@ class HttpDownloader
             } else {
                 $job['curl_id'] = $this->curl->download($resolve, $reject, $origin, $url, $options);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $reject($exception);
         }
     }
@@ -336,13 +340,9 @@ class HttpDownloader
      */
     public function wait($index = null)
     {
-        while (true) {
-            if (!$this->countActiveJobs($index)) {
-                return;
-            }
-
-            usleep(1000);
-        }
+        do {
+            $jobCount = $this->countActiveJobs($index);
+        } while ($jobCount);
     }
 
     /**
@@ -392,7 +392,7 @@ class HttpDownloader
     private function getResponse($index)
     {
         if (!isset($this->jobs[$index])) {
-            throw new \LogicException('Invalid request id');
+            throw new LogicException('Invalid request id');
         }
 
         if ($this->jobs[$index]['status'] === self::STATUS_FAILED) {
@@ -400,7 +400,7 @@ class HttpDownloader
         }
 
         if (!isset($this->jobs[$index]['response'])) {
-            throw new \LogicException('Response not available yet, call wait() first');
+            throw new LogicException('Response not available yet, call wait() first');
         }
 
         $resp = $this->jobs[$index]['response'];
@@ -436,7 +436,7 @@ class HttpDownloader
     /**
      * @internal
      */
-    public static function getExceptionHints(\Exception $e)
+    public static function getExceptionHints(Exception $e)
     {
         if (!$e instanceof TransportException) {
             return;
@@ -486,6 +486,6 @@ class HttpDownloader
      */
     public static function isCurlEnabled()
     {
-        return \extension_loaded('curl') && \function_exists('curl_multi_exec') && \function_exists('curl_multi_init');
+        return extension_loaded('curl') && function_exists('curl_multi_exec') && function_exists('curl_multi_init');
     }
 }

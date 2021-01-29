@@ -15,9 +15,9 @@
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $company->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $company->totalProjects() }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $company->totalOffices() }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $company->totalEmployees() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $company->projects()->count() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $company->offices()->count() }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $company->employees()->count() }}</x-tables.basic.row>
                     <x-tables.basic.row link="/company/{{ $company->id }}">View</x-tables.basic.row>
                 </tr>
             @empty

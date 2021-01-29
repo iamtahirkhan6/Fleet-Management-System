@@ -18,6 +18,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.trips.index', ['trips' => Trip::where('project_id', $this->project->id)->with('vehicle')->paginate(25)]);
+        return view('livewire.models.trips.index', ['trips' => Trip::where('project_id', $this->project->id)->paginate(25)]);
     }
 }

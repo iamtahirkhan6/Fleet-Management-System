@@ -2,51 +2,48 @@
 
 namespace App\Domain\Office\Controllers;
 
-use App\Domain\Expense\Models\Expense;
-use App\Domain\Office\Models\Office;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Domain\Office\Models\Office;
+use App\Domain\Expense\Models\Expense;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class OfficeExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Office $office
+     *
+     * @return Application|Factory|View
      */
     public function index(Office $office)
     {
-        return view('page')
-            ->with('livewire', 'models.offices.expenses.index')
-            ->with('title', $office->name . ' Office')
-            ->with('description', 'View all the offices in your company')
-            ->with('key', 'office')
-            ->with('val', $office);
+        return view('page')->with('livewire', 'models.offices.expenses.index')->with('title', $office->name . ' Office')->with('description', 'View all the offices in your company')->with('key', 'office')->with('val', $office);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Office $office
+     *
+     * @return Application|Factory|View
      */
     public function create(Office $office)
     {
-        return view('page')
-            ->with('livewire', 'models.offices.expenses.create')
-            ->with('title', 'Add an Expense')
-            ->with('description', 'Enter all the details of the expense.')
-            ->with('key', 'office')
-            ->with('val', $office);
+        return view('page')->with('livewire', 'models.offices.expenses.create')->with('title', 'Add an Expense')->with('description', 'Enter all the details of the expense.')->with('key', 'office')->with('val', $office);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Office  $office
+     *
+     * @return Response
      */
     public function store(Request $request, Office $office)
     {
@@ -56,9 +53,10 @@ class OfficeExpenseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Expense\Models\Expense  $expense
-     * @return \Illuminate\Http\Response|void
+     * @param Office  $office
+     * @param Expense $expense
+     *
+     * @return Response|void
      */
     public function show(Office $office, Expense $expense)
     {
@@ -68,9 +66,10 @@ class OfficeExpenseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Expense\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
+     * @param Office  $office
+     * @param Expense $expense
+     *
+     * @return Response
      */
     public function edit(Office $office, Expense $expense)
     {
@@ -80,10 +79,11 @@ class OfficeExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Expense\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Office  $office
+     * @param Expense $expense
+     *
+     * @return Response
      */
     public function update(Request $request, Office $office, Expense $expense)
     {
@@ -93,9 +93,10 @@ class OfficeExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Expense\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
+     * @param Office  $office
+     * @param Expense $expense
+     *
+     * @return Response
      */
     public function destroy(Office $office, Expense $expense)
     {

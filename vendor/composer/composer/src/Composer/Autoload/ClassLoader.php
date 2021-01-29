@@ -12,29 +12,24 @@
 
 namespace Composer\Autoload;
 
+use InvalidArgumentException;
+
 /**
  * ClassLoader implements a PSR-0, PSR-4 and classmap class loader.
- *
  *     $loader = new \Composer\Autoload\ClassLoader();
- *
  *     // register classes with namespaces
  *     $loader->add('Symfony\Component', __DIR__.'/component');
  *     $loader->add('Symfony',           __DIR__.'/framework');
- *
  *     // activate the autoloader
  *     $loader->register();
- *
  *     // to enable searching the include path (eg. for PEAR packages)
  *     $loader->setUseIncludePath(true);
- *
  * In this example, if you try to use a class in the Symfony\Component
  * namespace or one of its children (Symfony\Component\Console for instance),
  * the autoloader will first look for the class under the component/
  * directory, and it will then fallback to the framework/ directory if not
  * found before giving up.
- *
  * This class is loosely based on the Symfony UniversalClassLoader.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @see    https://www.php-fig.org/psr/psr-0/
@@ -42,6 +37,8 @@ namespace Composer\Autoload;
  */
 class ClassLoader
 {
+    private $vendorDir;
+
     // PSR-4
     private $prefixLengthsPsr4 = array();
     private $prefixDirsPsr4 = array();
@@ -56,6 +53,13 @@ class ClassLoader
     private $classMapAuthoritative = false;
     private $missingClasses = array();
     private $apcuPrefix;
+
+    private static $registeredLoaders = array();
+
+    public function __construct($vendorDir = null)
+    {
+        $this->vendorDir = $vendorDir;
+    }
 
     public function getPrefixes()
     {
@@ -151,7 +155,7 @@ class ClassLoader
      * @param array|string $paths   The PSR-4 base directories
      * @param bool         $prepend Whether to prepend the directories
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addPsr4($prefix, $paths, $prepend = false)
     {
@@ -172,7 +176,7 @@ class ClassLoader
             // Register directories for a new namespace.
             $length = strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
-                throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+                throw new InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
             }
             $this->prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
             $this->prefixDirsPsr4[$prefix] = (array) $paths;
@@ -214,7 +218,7 @@ class ClassLoader
      * @param string       $prefix The prefix/namespace, with trailing '\\'
      * @param array|string $paths  The PSR-4 base directories
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setPsr4($prefix, $paths)
     {
@@ -223,7 +227,7 @@ class ClassLoader
         } else {
             $length = strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
-                throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+                throw new InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
             }
             $this->prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
             $this->prefixDirsPsr4[$prefix] = (array) $paths;
@@ -300,6 +304,15 @@ class ClassLoader
     public function register($prepend = false)
     {
         spl_autoload_register(array($this, 'loadClass'), true, $prepend);
+
+        if (null === $this->vendorDir) {
+            //no-op
+        } elseif ($prepend) {
+            self::$registeredLoaders = array($this->vendorDir => $this) + self::$registeredLoaders;
+        } else {
+            unset(self::$registeredLoaders[$this->vendorDir]);
+            self::$registeredLoaders[$this->vendorDir] = $this;
+        }
     }
 
     /**
@@ -308,6 +321,10 @@ class ClassLoader
     public function unregister()
     {
         spl_autoload_unregister(array($this, 'loadClass'));
+
+        if (null !== $this->vendorDir) {
+            unset(self::$registeredLoaders[$this->vendorDir]);
+        }
     }
 
     /**
@@ -365,6 +382,16 @@ class ClassLoader
         }
 
         return $file;
+    }
+
+    /**
+     * Returns the currently registered loaders indexed by their corresponding vendor directories.
+     *
+     * @return self[]
+     */
+    public static function getRegisteredLoaders()
+    {
+        return self::$registeredLoaders;
     }
 
     private function findFileWithExtension($class, $ext)

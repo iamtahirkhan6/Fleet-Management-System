@@ -12,6 +12,7 @@
 namespace Symfony\Component\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
+use function array_key_exists;
 
 /**
  * Holds information about the current request.
@@ -293,7 +294,7 @@ class RequestContext
      */
     public function getParameter(string $name)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : null;
+        return $this->parameters[$name] ?? null;
     }
 
     /**
@@ -303,7 +304,7 @@ class RequestContext
      */
     public function hasParameter(string $name)
     {
-        return \array_key_exists($name, $this->parameters);
+        return array_key_exists($name, $this->parameters);
     }
 
     /**

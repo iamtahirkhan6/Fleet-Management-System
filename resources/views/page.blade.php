@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __($title) }}
+        {{ $title ?? '' }}
     </x-slot>
 
     <x-slot name="desc">
-        {{ __(isset($description) ? $description : null) }}
+        {{ $description ?? '' }}
     </x-slot>
 
     @if (isset($key) && isset($val))

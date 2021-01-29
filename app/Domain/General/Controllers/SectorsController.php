@@ -2,43 +2,40 @@
 
 namespace App\Domain\General\Controllers;
 
-use App\Domain\General\Models\Sector;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Domain\General\Models\Sector;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class SectorsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.sectors.index')
-            ->with('title', 'Sectors')
-            ->with('description', 'View the list of all sectors');
+        return view('page')->with('livewire', 'models.sectors.index')->with('title', 'Sectors')->with('description', 'View the list of all sectors');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
-        return view('page')
-            ->with('livewire', 'models.sectors.create')
-            ->with('title', 'Add a Sector')
-            ->with('description', 'Enter a new sector to your application');
+        return view('page')->with('livewire', 'models.sectors.create')->with('title', 'Add a Sector')->with('description', 'Enter a new sector to your application');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -48,24 +45,21 @@ class SectorsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\General\Models\Sector  $sector
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Sector $sector
+     *
+     * @return Application|Factory|View
      */
     public function show(Sector $sector)
     {
-        return view('page')
-            ->with('livewire', 'models.sectors.show')
-            ->with('title', 'View Sector')
-            ->with('description', 'View all the details of this sector')
-            ->with('key', 'sector')
-            ->with('val', $sector);
+        return view('page')->with('livewire', 'models.sectors.show')->with('title', 'View Sector')->with('description', 'View all the details of this sector')->with('key', 'sector')->with('val', $sector);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\General\Models\Sector  $sector
-     * @return \Illuminate\Http\Response
+     * @param Sector $sector
+     *
+     * @return Response
      */
     public function edit(Sector $sector)
     {
@@ -75,9 +69,10 @@ class SectorsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\General\Models\Sector  $sector
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Sector  $sector
+     *
+     * @return Response
      */
     public function update(Request $request, Sector $sector)
     {
@@ -87,8 +82,9 @@ class SectorsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\General\Models\Sector  $sector
-     * @return \Illuminate\Http\Response
+     * @param Sector $sector
+     *
+     * @return Response
      */
     public function destroy(Sector $sector)
     {

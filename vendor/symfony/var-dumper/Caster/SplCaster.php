@@ -11,7 +11,21 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
+use Error;
+use Iterator;
+use Exception;
+use ArrayObject;
+use SplFileInfo;
+use WeakReference;
+use OuterIterator;
+use SplFileObject;
+use ArrayIterator;
+use SplObjectStorage;
+use RuntimeException;
+use SplDoublyLinkedList;
 use Symfony\Component\VarDumper\Cloner\Stub;
+use function get_class;
+use const PHP_VERSION_ID;
 
 /**
  * Casts SPL related classes to array representation.
@@ -22,24 +36,24 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class SplCaster
 {
-    private static $splFileObjectFlags = [
-        \SplFileObject::DROP_NEW_LINE => 'DROP_NEW_LINE',
-        \SplFileObject::READ_AHEAD => 'READ_AHEAD',
-        \SplFileObject::SKIP_EMPTY => 'SKIP_EMPTY',
-        \SplFileObject::READ_CSV => 'READ_CSV',
+    private const SPL_FILE_OBJECT_FLAGS = [
+        SplFileObject::DROP_NEW_LINE => 'DROP_NEW_LINE',
+        SplFileObject::READ_AHEAD => 'READ_AHEAD',
+        SplFileObject::SKIP_EMPTY => 'SKIP_EMPTY',
+        SplFileObject::READ_CSV => 'READ_CSV',
     ];
 
-    public static function castArrayObject(\ArrayObject $c, array $a, Stub $stub, bool $isNested)
+    public static function castArrayObject(ArrayObject $c, array $a, Stub $stub, bool $isNested)
     {
         return self::castSplArray($c, $a, $stub, $isNested);
     }
 
-    public static function castArrayIterator(\ArrayIterator $c, array $a, Stub $stub, bool $isNested)
+    public static function castArrayIterator(ArrayIterator $c, array $a, Stub $stub, bool $isNested)
     {
         return self::castSplArray($c, $a, $stub, $isNested);
     }
 
-    public static function castHeap(\Iterator $c, array $a, Stub $stub, $isNested)
+    public static function castHeap(Iterator $c, array $a, Stub $stub, $isNested)
     {
         $a += [
             Caster::PREFIX_VIRTUAL.'heap' => iterator_to_array(clone $c),
@@ -48,14 +62,14 @@ class SplCaster
         return $a;
     }
 
-    public static function castDoublyLinkedList(\SplDoublyLinkedList $c, array $a, Stub $stub, bool $isNested)
+    public static function castDoublyLinkedList(SplDoublyLinkedList $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
         $mode = $c->getIteratorMode();
-        $c->setIteratorMode(\SplDoublyLinkedList::IT_MODE_KEEP | $mode & ~\SplDoublyLinkedList::IT_MODE_DELETE);
+        $c->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP | $mode & ~SplDoublyLinkedList::IT_MODE_DELETE);
 
         $a += [
-            $prefix.'mode' => new ConstStub((($mode & \SplDoublyLinkedList::IT_MODE_LIFO) ? 'IT_MODE_LIFO' : 'IT_MODE_FIFO').' | '.(($mode & \SplDoublyLinkedList::IT_MODE_DELETE) ? 'IT_MODE_DELETE' : 'IT_MODE_KEEP'), $mode),
+            $prefix.'mode' => new ConstStub((($mode & SplDoublyLinkedList::IT_MODE_LIFO) ? 'IT_MODE_LIFO' : 'IT_MODE_FIFO').' | '.(($mode & SplDoublyLinkedList::IT_MODE_DELETE) ? 'IT_MODE_DELETE' : 'IT_MODE_KEEP'), $mode),
             $prefix.'dllist' => iterator_to_array($c),
         ];
         $c->setIteratorMode($mode);
@@ -63,7 +77,7 @@ class SplCaster
         return $a;
     }
 
-    public static function castFileInfo(\SplFileInfo $c, array $a, Stub $stub, bool $isNested)
+    public static function castFileInfo(SplFileInfo $c, array $a, Stub $stub, bool $isNested)
     {
         static $map = [
             'path' => 'getPath',
@@ -94,7 +108,7 @@ class SplCaster
         unset($a["\0SplFileInfo\0fileName"]);
         unset($a["\0SplFileInfo\0pathName"]);
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (PHP_VERSION_ID < 80000) {
             if (false === $c->getPathname()) {
                 $a[$prefix.'⚠'] = 'The parent constructor was not called: the object is in an invalid state';
 
@@ -103,7 +117,7 @@ class SplCaster
         } else {
             try {
                 $c->isReadable();
-            } catch (\RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 if ('Object not initialized' !== $e->getMessage()) {
                     throw $e;
                 }
@@ -111,7 +125,7 @@ class SplCaster
                 $a[$prefix.'⚠'] = 'The parent constructor was not called: the object is in an invalid state';
 
                 return $a;
-            } catch (\Error $e) {
+            } catch (Error $e) {
                 if ('Object not initialized' !== $e->getMessage()) {
                     throw $e;
                 }
@@ -125,7 +139,7 @@ class SplCaster
         foreach ($map as $key => $accessor) {
             try {
                 $a[$prefix.$key] = $c->$accessor();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
 
@@ -147,7 +161,7 @@ class SplCaster
         return $a;
     }
 
-    public static function castFileObject(\SplFileObject $c, array $a, Stub $stub, bool $isNested)
+    public static function castFileObject(SplFileObject $c, array $a, Stub $stub, bool $isNested)
     {
         static $map = [
             'csvControl' => 'getCsvControl',
@@ -163,13 +177,13 @@ class SplCaster
         foreach ($map as $key => $accessor) {
             try {
                 $a[$prefix.$key] = $c->$accessor();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
 
         if (isset($a[$prefix.'flags'])) {
             $flagsArray = [];
-            foreach (self::$splFileObjectFlags as $value => $name) {
+            foreach (self::SPL_FILE_OBJECT_FLAGS as $value => $name) {
                 if ($a[$prefix.'flags'] & $value) {
                     $flagsArray[] = $name;
                 }
@@ -184,7 +198,7 @@ class SplCaster
         return $a;
     }
 
-    public static function castObjectStorage(\SplObjectStorage $c, array $a, Stub $stub, bool $isNested)
+    public static function castObjectStorage(SplObjectStorage $c, array $a, Stub $stub, bool $isNested)
     {
         $storage = [];
         unset($a[Caster::PREFIX_DYNAMIC."\0gcdata"]); // Don't hit https://bugs.php.net/65967
@@ -205,14 +219,14 @@ class SplCaster
         return $a;
     }
 
-    public static function castOuterIterator(\OuterIterator $c, array $a, Stub $stub, bool $isNested)
+    public static function castOuterIterator(OuterIterator $c, array $a, Stub $stub, bool $isNested)
     {
         $a[Caster::PREFIX_VIRTUAL.'innerIterator'] = $c->getInnerIterator();
 
         return $a;
     }
 
-    public static function castWeakReference(\WeakReference $c, array $a, Stub $stub, bool $isNested)
+    public static function castWeakReference(WeakReference $c, array $a, Stub $stub, bool $isNested)
     {
         $a[Caster::PREFIX_VIRTUAL.'object'] = $c->get();
 
@@ -224,19 +238,19 @@ class SplCaster
         $prefix = Caster::PREFIX_VIRTUAL;
         $flags = $c->getFlags();
 
-        if (!($flags & \ArrayObject::STD_PROP_LIST)) {
-            $c->setFlags(\ArrayObject::STD_PROP_LIST);
-            $a = Caster::castObject($c, \get_class($c), method_exists($c, '__debugInfo'), $stub->class);
+        if (!($flags & ArrayObject::STD_PROP_LIST)) {
+            $c->setFlags(ArrayObject::STD_PROP_LIST);
+            $a = Caster::castObject($c, get_class($c), method_exists($c, '__debugInfo'), $stub->class);
             $c->setFlags($flags);
         }
-        if (\PHP_VERSION_ID < 70400) {
+        if (PHP_VERSION_ID < 70400) {
             $a[$prefix.'storage'] = $c->getArrayCopy();
         }
         $a += [
-            $prefix.'flag::STD_PROP_LIST' => (bool) ($flags & \ArrayObject::STD_PROP_LIST),
-            $prefix.'flag::ARRAY_AS_PROPS' => (bool) ($flags & \ArrayObject::ARRAY_AS_PROPS),
+            $prefix.'flag::STD_PROP_LIST' => (bool) ($flags & ArrayObject::STD_PROP_LIST),
+            $prefix.'flag::ARRAY_AS_PROPS' => (bool) ($flags & ArrayObject::ARRAY_AS_PROPS),
         ];
-        if ($c instanceof \ArrayObject) {
+        if ($c instanceof ArrayObject) {
             $a[$prefix.'iteratorClass'] = new ClassStub($c->getIteratorClass());
         }
 

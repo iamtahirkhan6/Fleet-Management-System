@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateMarketVehiclesTable extends Migration
 {
@@ -17,8 +17,9 @@ class CreateMarketVehiclesTable extends Migration
         Schema::create('market_vehicles', function (Blueprint $table) {
             $table->id();
             $table->string("number");
-            $table->foreignId('party_id')->references('id')->on('parties');
-            $table->foreignId('company_id')->references('id')->on('companies');
+            $table->foreignId('party_id')->constrained('parties');
+            $table->foreignId('company_id')->constrained('companies');
+            $table->unique(['number','party_id','company_id'], 'num_party_comp');
             $table->timestamps();
         });
     }

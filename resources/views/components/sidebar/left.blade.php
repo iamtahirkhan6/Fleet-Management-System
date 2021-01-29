@@ -27,11 +27,6 @@
 {{--						<x-sidebar.link href="/expenses"><x-svg.expenses class="w-6 h-6 mr-3 text-indigo-300" /> Expenses</x-sidebar.link>--}}
 						<x-sidebar.link href="/fleets"><x-svg.fleets class="w-6 h-6 mr-3 text-indigo-300" /> Fleets</x-sidebar.link>
 						<x-sidebar.link href="/search_vehicle_rc"><x-svg.search class="w-6 h-6 mr-3 text-indigo-300" /> Search RC</x-sidebar.link>
-						@role('admin')
-						<x-sidebar.link href="/sectors"><x-svg.sectors class="w-6 h-6 mr-3 text-indigo-300" /> Sectors</x-sidebar.link>
-						<x-sidebar.link href="/mines"><x-svg.mines class="w-6 h-6 mr-3 text-indigo-300" /> Mines</x-sidebar.link>
-						<x-sidebar.link href="/unloading-points"><x-svg.unloading-points class="w-6 h-6 mr-3 text-indigo-300" /> Unloading Points</x-sidebar.link>
-						@endrole
 					</nav>
 					</nav>
 				</div>
@@ -71,11 +66,6 @@
 {{--						<x-sidebar.link href="/expenses"><x-svg.expenses class="w-6 h-6 mr-3 text-indigo-300" /> Expenses</x-sidebar.link>--}}
 						<x-sidebar.link href="/fleets"><x-svg.fleets class="w-6 h-6 mr-3 text-indigo-300" /> Fleets</x-sidebar.link>
 						<x-sidebar.link href="/search_vehicle_rc"><x-svg.search class="w-6 h-6 mr-3 text-indigo-300" /> Search RC</x-sidebar.link>
-						@role('admin')
-						<x-sidebar.link href="/sectors"><x-svg.sectors class="w-6 h-6 mr-3 text-indigo-300" /> Sectors</x-sidebar.link>
-						<x-sidebar.link href="/mines"><x-svg.mines class="w-6 h-6 mr-3 text-indigo-300" /> Mines</x-sidebar.link>
-						<x-sidebar.link href="/unloading-points"><x-svg.unloading-points class="w-6 h-6 mr-3 text-indigo-300" /> Unloading Points</x-sidebar.link>
-						@endrole
 					</nav>
 				</div>
 				<div class="flex flex-shrink-0 p-4 border-t border-indigo-600">

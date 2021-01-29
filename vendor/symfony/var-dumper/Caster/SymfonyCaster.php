@@ -13,13 +13,16 @@ namespace Symfony\Component\VarDumper\Caster;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\VarDumper\Cloner\Stub;
+use function count;
+use function get_class;
+use function array_key_exists;
 
 /**
  * @final
  */
 class SymfonyCaster
 {
-    private static $requestGetters = [
+    private const REQUEST_GETTERS = [
         'pathInfo' => 'getPathInfo',
         'requestUri' => 'getRequestUri',
         'baseUrl' => 'getBaseUrl',
@@ -32,9 +35,9 @@ class SymfonyCaster
     {
         $clone = null;
 
-        foreach (self::$requestGetters as $prop => $getter) {
+        foreach (self::REQUEST_GETTERS as $prop => $getter) {
             $key = Caster::PREFIX_PROTECTED.$prop;
-            if (\array_key_exists($key, $a) && null === $a[$key]) {
+            if (array_key_exists($key, $a) && null === $a[$key]) {
                 if (null === $clone) {
                     $clone = clone $request;
                 }
@@ -47,7 +50,7 @@ class SymfonyCaster
 
     public static function castHttpClient($client, array $a, Stub $stub, bool $isNested)
     {
-        $multiKey = sprintf("\0%s\0multi", \get_class($client));
+        $multiKey = sprintf("\0%s\0multi", get_class($client));
         if (isset($a[$multiKey])) {
             $a[$multiKey] = new CutStub($a[$multiKey]);
         }
@@ -57,7 +60,7 @@ class SymfonyCaster
 
     public static function castHttpClientResponse($response, array $a, Stub $stub, bool $isNested)
     {
-        $stub->cut += \count($a);
+        $stub->cut += count($a);
         $a = [];
 
         foreach ($response->getInfo() as $k => $v) {

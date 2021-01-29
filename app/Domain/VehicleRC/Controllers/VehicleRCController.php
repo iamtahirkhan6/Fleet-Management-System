@@ -2,23 +2,20 @@
 
 namespace App\Domain\VehicleRC\Controllers;
 
-use App\Domain\VehicleRC\Models\VehicleRC;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 
 class VehicleRCController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.rc-search.index')
-            ->with('title', 'Search Vehicle Registration')
-            ->with('description', 'View the details regarding the registration certificate');
+        return view('page')->with('livewire', 'models.rc-search.index')->with('title', 'Search Vehicle Registration')->with('description', 'View the details regarding the registration certificate');
     }
 }

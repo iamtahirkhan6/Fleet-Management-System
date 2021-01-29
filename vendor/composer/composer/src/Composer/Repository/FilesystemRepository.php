@@ -12,7 +12,11 @@
 
 namespace Composer\Repository;
 
+use Exception;
 use Composer\Json\JsonFile;
+use UnexpectedValueException;
+use InvalidArgumentException;
+use Composer\InstalledVersions;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\AliasPackage;
@@ -46,7 +50,7 @@ class FilesystemRepository extends WritableArrayRepository
         $this->dumpVersions = $dumpVersions;
         $this->rootPackage = $rootPackage;
         if ($dumpVersions && !$rootPackage) {
-            throw new \InvalidArgumentException('Expected a root package instance if $dumpVersions is true');
+            throw new InvalidArgumentException('Expected a root package instance if $dumpVersions is true');
         }
     }
 
@@ -74,9 +78,9 @@ class FilesystemRepository extends WritableArrayRepository
             }
 
             if (!is_array($packages)) {
-                throw new \UnexpectedValueException('Could not parse package list from the repository');
+                throw new UnexpectedValueException('Could not parse package list from the repository');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new InvalidRepositoryException('Invalid repository data in '.$this->file->getPath().', packages could not be loaded: ['.get_class($e).'] '.$e->getMessage());
         }
 
@@ -204,6 +208,9 @@ class FilesystemRepository extends WritableArrayRepository
 
             $fs->filePutContentsIfModified($repoDir.'/installed.php', '<?php return '.var_export($versions, true).';'."\n");
             $installedVersionsClass = file_get_contents(__DIR__.'/../InstalledVersions.php');
+            // while not strictly needed since https://github.com/composer/composer/pull/9635 - we keep this for BC
+            // and overall broader compatibility with people that may not use Composer's ClassLoader. They can
+            // simply include InstalledVersions.php manually and have it working in a basic way.
             $installedVersionsClass = str_replace('private static $installed;', 'private static $installed = '.var_export($versions, true).';', $installedVersionsClass);
             $fs->filePutContentsIfModified($repoDir.'/InstalledVersions.php', $installedVersionsClass);
 
@@ -212,7 +219,7 @@ class FilesystemRepository extends WritableArrayRepository
             if (!class_exists('Composer\InstalledVersions', false)) {
                 include $repoDir.'/InstalledVersions.php';
             } else {
-                \Composer\InstalledVersions::reload($versions);
+                InstalledVersions::reload($versions);
             }
         }
     }

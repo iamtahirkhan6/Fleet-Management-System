@@ -2,15 +2,16 @@
 
 namespace Laravel\Sanctum;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class Guard
 {
     /**
      * The authentication factory implementation.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
+     * @var AuthFactory
      */
     protected $auth;
 
@@ -31,9 +32,10 @@ class Guard
     /**
      * Create a new guard instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
-     * @param  int  $expiration
-     * @param  string  $provider
+     * @param  AuthFactory $auth
+     * @param  int         $expiration
+     * @param  string      $provider
+     *
      * @return void
      */
     public function __construct(AuthFactory $auth, $expiration = null, $provider = null)
@@ -46,15 +48,17 @@ class Guard
     /**
      * Retrieve the authenticated user for the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return mixed
      */
     public function __invoke(Request $request)
     {
-        if ($user = $this->auth->guard(config('sanctum.guard', 'web'))->user()) {
-            return $this->supportsTokens($user)
-                        ? $user->withAccessToken(new TransientToken)
-                        : $user;
+        foreach (Arr::wrap(config('sanctum.guard', 'web')) as $guard) {
+            if ($user = $this->auth->guard($guard)->user()) {
+                return $this->supportsTokens($user)
+                    ? $user->withAccessToken(new TransientToken)
+                    : $user;
+            }
         }
 
         if ($token = $request->bearerToken()) {
@@ -91,7 +95,7 @@ class Guard
     /**
      * Determine if the tokenable model matches the provider's model type.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $tokenable
+     * @param  Model  $tokenable
      * @return bool
      */
     protected function hasValidProvider($tokenable)

@@ -42,7 +42,7 @@
                             {{ App\Helper\Helper::rupee_format($moneyVal) }}
                         @endif
                     @elseif($amount == "true")
-                        @if($amountVal > 0)
+                        @if(isset($amountVal) && $amountVal > 0)
                             {{ App\Helper\Helper::rupee_format($amountVal) }}
                         @else
                             <x-svg.red-cross />

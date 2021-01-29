@@ -11,6 +11,20 @@
 
 namespace Symfony\Component\VarDumper\Cloner;
 
+use ReflectionReference;
+use __PHP_Incomplete_Class;
+use function count;
+use function strlen;
+use function is_int;
+use function is_bool;
+use function is_array;
+use function is_float;
+use function get_class;
+use function is_object;
+use function is_string;
+use function array_slice;
+use const PHP_VERSION_ID;
+
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -65,8 +79,8 @@ class VarCloner extends AbstractCloner
             foreach ($vals as $k => $v) {
                 // $v is the original value or a stub object in case of hard references
 
-                if (\PHP_VERSION_ID >= 70400) {
-                    $zvalIsRef = null !== \ReflectionReference::fromArrayElement($vals, $k);
+                if (PHP_VERSION_ID >= 70400) {
+                    $zvalIsRef = null !== ReflectionReference::fromArrayElement($vals, $k);
                 } else {
                     $refs[$k] = $cookie;
                     $zvalIsRef = $vals[$k] === $cookie;
@@ -94,11 +108,11 @@ class VarCloner extends AbstractCloner
                 // If $v is a nested structure, put that structure in array $a
                 switch (true) {
                     case null === $v:
-                    case \is_bool($v):
-                    case \is_int($v):
-                    case \is_float($v):
+                    case is_bool($v):
+                    case is_int($v):
+                    case is_float($v):
                         continue 2;
-                    case \is_string($v):
+                    case is_string($v):
                         if ('' === $v) {
                             continue 2;
                         }
@@ -106,7 +120,7 @@ class VarCloner extends AbstractCloner
                             $stub = new Stub();
                             $stub->type = Stub::TYPE_STRING;
                             $stub->class = Stub::STRING_BINARY;
-                            if (0 <= $maxString && 0 < $cut = \strlen($v) - $maxString) {
+                            if (0 <= $maxString && 0 < $cut = strlen($v) - $maxString) {
                                 $stub->cut = $cut;
                                 $stub->value = substr($v, 0, -$cut);
                             } else {
@@ -124,7 +138,7 @@ class VarCloner extends AbstractCloner
                         $a = null;
                         break;
 
-                    case \is_array($v):
+                    case is_array($v):
                         if (!$v) {
                             continue 2;
                         }
@@ -143,13 +157,19 @@ class VarCloner extends AbstractCloner
                         if (Stub::ARRAY_ASSOC === $stub->class) {
                             // Copies of $GLOBALS have very strange behavior,
                             // let's detect them with some black magic
-                            $a[$gid] = true;
-
-                            // Happens with copies of $GLOBALS
-                            if (isset($v[$gid])) {
+                            if (PHP_VERSION_ID < 80100 && ($a[$gid] = true) && isset($v[$gid])) {
                                 unset($v[$gid]);
                                 $a = [];
                                 foreach ($v as $gk => &$gv) {
+                                    if ($v === $gv) {
+                                        unset($v);
+                                        $v = new Stub();
+                                        $v->value = [$v->cut = count($gv), Stub::TYPE_ARRAY => 0];
+                                        $v->handle = -1;
+                                        $gv = &$hardRefs[spl_object_id($v)];
+                                        $gv = $v;
+                                    }
+
                                     $a[$gk] = &$gv;
                                 }
                                 unset($gv);
@@ -159,12 +179,12 @@ class VarCloner extends AbstractCloner
                         }
                         break;
 
-                    case \is_object($v):
-                    case $v instanceof \__PHP_Incomplete_Class:
+                    case is_object($v):
+                    case $v instanceof __PHP_Incomplete_Class:
                         if (empty($objRefs[$h = spl_object_id($v)])) {
                             $stub = new Stub();
                             $stub->type = Stub::TYPE_OBJECT;
-                            $stub->class = \get_class($v);
+                            $stub->class = get_class($v);
                             $stub->value = $v;
                             $stub->handle = $h;
                             $a = $this->castObject($stub, 0 < $i);
@@ -176,7 +196,7 @@ class VarCloner extends AbstractCloner
                             }
                             $stub->value = null;
                             if (0 <= $maxItems && $maxItems <= $pos && $minimumDepthReached) {
-                                $stub->cut = \count($a);
+                                $stub->cut = count($a);
                                 $a = null;
                             }
                         }
@@ -202,7 +222,7 @@ class VarCloner extends AbstractCloner
                             $a = $this->castResource($stub, 0 < $i);
                             $stub->value = null;
                             if (0 <= $maxItems && $maxItems <= $pos && $minimumDepthReached) {
-                                $stub->cut = \count($a);
+                                $stub->cut = count($a);
                                 $a = null;
                             }
                         }
@@ -221,8 +241,8 @@ class VarCloner extends AbstractCloner
                         $queue[$len] = $a;
                         $stub->position = $len++;
                     } elseif ($pos < $maxItems) {
-                        if ($maxItems < $pos += \count($a)) {
-                            $a = \array_slice($a, 0, $maxItems - $pos, true);
+                        if ($maxItems < $pos += count($a)) {
+                            $a = array_slice($a, 0, $maxItems - $pos, true);
                             if ($stub->cut >= 0) {
                                 $stub->cut += $pos - $maxItems;
                             }
@@ -230,7 +250,7 @@ class VarCloner extends AbstractCloner
                         $queue[$len] = $a;
                         $stub->position = $len++;
                     } elseif ($stub->cut >= 0) {
-                        $stub->cut += \count($a);
+                        $stub->cut += count($a);
                         $stub->position = 0;
                     }
                 }

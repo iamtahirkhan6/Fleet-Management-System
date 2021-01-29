@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateFleetVehiclesTable extends Migration
 {
@@ -16,7 +16,6 @@ class CreateFleetVehiclesTable extends Migration
         Schema::create('fleet_vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
-            $table->foreignId('fleet_id')->references('id')->on('fleets');
             $table->string('owner_name');
             $table->string('reg_date');
             $table->string('model');
@@ -27,6 +26,8 @@ class CreateFleetVehiclesTable extends Migration
             $table->string('engine_number');
             $table->string('authority');
             $table->string('rto_code');
+            $table->foreignId('fleet_id')->references('id')->on('fleets')->onDelete('cascade');
+            $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
     }

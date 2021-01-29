@@ -3,12 +3,12 @@
 namespace Illuminate\Support\Testing\Fakes;
 
 use Closure;
-use Illuminate\Bus\PendingBatch;
-use Illuminate\Contracts\Bus\QueueingDispatcher;
 use Illuminate\Support\Arr;
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Illuminate\Support\Traits\ReflectsClosures;
+use Illuminate\Contracts\Bus\QueueingDispatcher;
 
 class BusFake implements QueueingDispatcher
 {
@@ -200,6 +200,14 @@ class BusFake implements QueueingDispatcher
 
         if ($command instanceof Closure) {
             [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        } elseif (! is_string($command)) {
+            $instance = $command;
+
+            $command = get_class($instance);
+
+            $callback = function ($job) use ($instance) {
+                return serialize($this->resetChainPropertiesToDefaults($job)) === serialize($instance);
+            };
         }
 
         PHPUnit::assertTrue(
@@ -215,6 +223,22 @@ class BusFake implements QueueingDispatcher
         $this->isChainOfObjects($expectedChain)
             ? $this->assertDispatchedWithChainOfObjects($command, $expectedChain, $callback)
             : $this->assertDispatchedWithChainOfClasses($command, $expectedChain, $callback);
+    }
+
+    /**
+     * Reset the chain properties to their default values on the job.
+     *
+     * @param  mixed  $job
+     * @return mixed
+     */
+    protected function resetChainPropertiesToDefaults($job)
+    {
+        return tap(clone $job, function ($job) {
+            $job->chainConnection = null;
+            $job->chainQueue = null;
+            $job->chainCatchCallbacks = null;
+            $job->chained = [];
+        });
     }
 
     /**

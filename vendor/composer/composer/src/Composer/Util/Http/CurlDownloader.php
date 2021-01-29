@@ -12,15 +12,18 @@
 
 namespace Composer\Util\Http;
 
+use Exception;
+use LogicException;
 use Composer\Config;
-use Composer\Downloader\MaxFileSizeExceededException;
-use Composer\IO\IOInterface;
-use Composer\Downloader\TransportException;
-use Composer\Util\StreamContextFactory;
-use Composer\Util\AuthHelper;
+use RuntimeException;
 use Composer\Util\Url;
+use Composer\IO\IOInterface;
+use Composer\Util\AuthHelper;
 use Composer\Util\HttpDownloader;
-use React\Promise\Promise;
+use Composer\Util\StreamContextFactory;
+use Composer\Downloader\TransportException;
+use Composer\Downloader\MaxFileSizeExceededException;
+use function defined;
 
 /**
  * @internal
@@ -178,7 +181,7 @@ class CurlDownloader
 
         $version = curl_version();
         $features = $version['features'];
-        if (0 === strpos($url, 'https://') && \defined('CURL_VERSION_HTTP2') && \defined('CURL_HTTP_VERSION_2_0') && (CURL_VERSION_HTTP2 & $features)) {
+        if (0 === strpos($url, 'https://') && defined('CURL_VERSION_HTTP2') && defined('CURL_HTTP_VERSION_2_0') && (CURL_VERSION_HTTP2 & $features)) {
             curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
         }
 
@@ -311,7 +314,7 @@ class CurlDownloader
                 fclose($job['headerHandle']);
 
                 if ($statusCode === 0) {
-                    throw new \LogicException('Received unexpected http status code 0 without error for '.Url::sanitize($progress['url']).': headers '.var_export($headers, true).' curl info '.var_export($progress, true));
+                    throw new LogicException('Received unexpected http status code 0 without error for '.Url::sanitize($progress['url']).': headers '.var_export($headers, true).' curl info '.var_export($progress, true));
                 }
 
                 // prepare response object
@@ -321,12 +324,12 @@ class CurlDownloader
                         rewind($job['bodyHandle']);
                         $contents = stream_get_contents($job['bodyHandle']);
                     }
-                    $response = new Response(array('url' => $progress['url']), $statusCode, $headers, $contents);
+                    $response = new CurlResponse(array('url' => $progress['url']), $statusCode, $headers, $contents, $progress);
                     $this->io->writeError('['.$statusCode.'] '.Url::sanitize($progress['url']), true, IOInterface::DEBUG);
                 } else {
                     rewind($job['bodyHandle']);
                     $contents = stream_get_contents($job['bodyHandle']);
-                    $response = new Response(array('url' => $progress['url']), $statusCode, $headers, $contents);
+                    $response = new CurlResponse(array('url' => $progress['url']), $statusCode, $headers, $contents, $progress);
                     $this->io->writeError('['.$statusCode.'] '.Url::sanitize($progress['url']), true, IOInterface::DEBUG);
                 }
                 fclose($job['bodyHandle']);
@@ -366,13 +369,16 @@ class CurlDownloader
                 } else {
                     call_user_func($job['resolve'], $response);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if ($e instanceof TransportException && $headers) {
                     $e->setHeaders($headers);
                     $e->setStatusCode($statusCode);
                 }
                 if ($e instanceof TransportException && $response) {
                     $e->setResponse($response->getBody());
+                }
+                if ($e instanceof TransportException && $progress) {
+                    $e->setResponseInfo($progress);
                 }
 
                 if (is_resource($job['headerHandle'])) {
@@ -511,13 +517,18 @@ class CurlDownloader
             @unlink($job['filename'].'~');
         }
 
-        return new TransportException('The "'.$job['url'].'" file could not be downloaded ('.$errorMessage.')', $response->getStatusCode());
+        $details = '';
+        if ($response->getHeader('content-type') === 'application/json') {
+            $details = ':'.PHP_EOL.substr($response->getBody(), 0, 200).(strlen($response->getBody()) > 200 ? '...' : '');
+        }
+
+        return new TransportException('The "'.$job['url'].'" file could not be downloaded ('.$errorMessage.')' . $details, $response->getStatusCode());
     }
 
     private function checkCurlResult($code)
     {
         if ($code != CURLM_OK && $code != CURLM_CALL_MULTI_PERFORM) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 isset($this->multiErrors[$code])
                 ? "cURL error: {$code} ({$this->multiErrors[$code][0]}): cURL message: {$this->multiErrors[$code][1]}"
                 : 'Unexpected cURL error: ' . $code

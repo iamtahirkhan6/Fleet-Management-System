@@ -28,14 +28,15 @@
                 <tr>
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $trip->vehicle->number }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->market_vehicle_number ?? $trip->fleetVehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->tp_number }}/{{ $trip->tp_serial }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->net_weight }}</x-tables.basic.row>
-                    <x-tables.basic.row amount="true" :amountVal="$trip->rate"></x-tables.basic.row>
-                    <x-tables.basic.row amount="true" :amountVal="$trip->hsd"></x-tables.basic.row>
-                    <x-tables.basic.row amount="true" :amountVal="$trip->cash"></x-tables.basic.row>
-                    <x-tables.basic.row amount="true" :amountVal="$trip->two_pay"></x-tables.basic.row>
-                    <x-tables.basic.row :color_toggle="$trip->step_payment" true_val="Processed" false_val="Pending">{{ $trip->step_payment }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->rate }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->hsd }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->cash }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->two_pay }}</x-tables.basic.row>
+                    <x-tables.basic.row :color_toggle="$trip->payment_done" true_val="Processed"
+                                        false_val="Pending">{{ $trip->step_payment }}</x-tables.basic.row>
                     <x-tables.basic.row link="/projects/{{ $project->id }}/trips/{{ $trip->id }}">View</x-tables.basic.row>
                 </tr>
             @empty

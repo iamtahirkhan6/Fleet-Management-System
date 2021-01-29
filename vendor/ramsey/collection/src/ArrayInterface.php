@@ -14,13 +14,15 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection;
 
-use ArrayAccess;
 use Countable;
-use IteratorAggregate;
+use ArrayAccess;
 use Serializable;
+use IteratorAggregate;
 
 /**
  * `ArrayInterface` provides traversable array functionality to data types.
+ *
+ * @template T
  */
 interface ArrayInterface extends
     ArrayAccess,
@@ -36,7 +38,7 @@ interface ArrayInterface extends
     /**
      * Returns a native PHP array representation of this array object.
      *
-     * @return mixed[]
+     * @return array<array-key, T>
      */
     public function toArray(): array;
 

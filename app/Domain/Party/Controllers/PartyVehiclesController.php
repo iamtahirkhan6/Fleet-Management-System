@@ -2,34 +2,35 @@
 
 namespace App\Domain\Party\Controllers;
 
-use App\Domain\Party\Models\Party;
-use App\Http\Controllers\Controller;
-use App\Domain\MarketVehicle\Models\MarketVehicle;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Domain\Party\Models\Party;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
 
 class PartyVehiclesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Party $party
+     *
+     * @return Application|Factory|View
      */
     public function index(Party $party)
     {
-        return view('page')
-            ->with('livewire', 'models.parties.vehicles.index')
-            ->with('title',  'Vehicles by '. $party->name)
-            ->with('description', 'View all the vehicles by this party')
-            ->with('key', 'party')
-            ->with('val', $party);
+        return view('page')->with('livewire', 'models.parties.vehicles.index')->with('title', 'Vehicles by ' . $party->name)->with('description', 'View all the vehicles by this party')->with('key', 'party')->with('val', $party);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @return \Illuminate\Http\Response
+     * @param Party $party
+     *
+     * @return Response
      */
     public function create(Party $party)
     {
@@ -39,9 +40,10 @@ class PartyVehiclesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Party\Models\Party  $Party
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Party   $Party
+     *
+     * @return Response
      */
     public function store(Request $request, Party $Party)
     {
@@ -51,9 +53,10 @@ class PartyVehiclesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param Party         $party
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function show(Party $party, MarketVehicle $market_vehicle)
     {
@@ -63,9 +66,10 @@ class PartyVehiclesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Party\Models\Party  $Party
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param Party         $Party
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function edit(Party $party, MarketVehicle $market_vehicle)
     {
@@ -75,10 +79,11 @@ class PartyVehiclesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param Request       $request
+     * @param Party         $party
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function update(Request $request, Party $party, MarketVehicle $market_vehicle)
     {
@@ -88,9 +93,10 @@ class PartyVehiclesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Party\Models\Party  $party
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param Party         $party
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function destroy(Party $party, MarketVehicle $market_vehicle)
     {

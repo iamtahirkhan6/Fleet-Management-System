@@ -12,6 +12,8 @@
 
 namespace Composer\Command;
 
+use Exception;
+use RuntimeException;
 use Composer\DependencyResolver\Request;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -188,9 +190,9 @@ EOT
                 !$input->getOption('no-update'),
                 $input->getOption('fixed')
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($this->newlyCreated) {
-                throw new \RuntimeException('No composer.json present in the current directory, this may be the cause of the following exception.', 0, $e);
+                throw new RuntimeException('No composer.json present in the current directory ('.$this->file.'), this may be the cause of the following exception.', 0, $e);
             }
 
             throw $e;
@@ -241,7 +243,7 @@ EOT
 
         try {
             return $this->doUpdate($input, $output, $io, $requirements, $requireKey, $removeKey);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->revertComposerFile(false);
             throw $e;
         }

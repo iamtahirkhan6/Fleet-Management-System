@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+use Throwable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleEvent;
@@ -20,6 +21,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use function is_int;
+use function defined;
+use function is_array;
+use function in_array;
+use const E_ALL;
+use const PHP_SAPI;
+use const E_DEPRECATED;
+use const E_USER_DEPRECATED;
 
 /**
  * Configures errors and exceptions handlers.
@@ -30,6 +39,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class DebugHandlersListener implements EventSubscriberInterface
 {
+    private $earlyHandler;
     private $exceptionHandler;
     private $logger;
     private $deprecationLogger;
@@ -49,12 +59,16 @@ class DebugHandlersListener implements EventSubscriberInterface
      * @param string|FileLinkFormatter|null $fileLinkFormat   The format for links to source files
      * @param bool                          $scope            Enables/disables scoping mode
      */
-    public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = \E_ALL, ?int $throwAt = \E_ALL, bool $scream = true, $fileLinkFormat = null, bool $scope = true, LoggerInterface $deprecationLogger = null)
+    public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = E_ALL, ?int $throwAt = E_ALL, bool $scream = true, $fileLinkFormat = null, bool $scope = true, LoggerInterface $deprecationLogger = null)
     {
+        $handler = set_exception_handler('var_dump');
+        $this->earlyHandler = is_array($handler) ? $handler[0] : null;
+        restore_exception_handler();
+
         $this->exceptionHandler = $exceptionHandler;
         $this->logger = $logger;
-        $this->levels = null === $levels ? \E_ALL : $levels;
-        $this->throwAt = \is_int($throwAt) ? $throwAt : (null === $throwAt ? null : ($throwAt ? \E_ALL : null));
+        $this->levels = null === $levels ? E_ALL : $levels;
+        $this->throwAt = is_int($throwAt) ? $throwAt : (null === $throwAt ? null : ($throwAt ? E_ALL : null));
         $this->scream = $scream;
         $this->fileLinkFormat = $fileLinkFormat;
         $this->scope = $scope;
@@ -66,7 +80,7 @@ class DebugHandlersListener implements EventSubscriberInterface
      */
     public function configure(object $event = null)
     {
-        if ($event instanceof ConsoleEvent && !\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
+        if ($event instanceof ConsoleEvent && !in_array(PHP_SAPI, [ 'cli', 'phpdbg'], true)) {
             return;
         }
         if (!$event instanceof KernelEvent ? !$this->firstCall : !$event->isMasterRequest()) {
@@ -75,13 +89,17 @@ class DebugHandlersListener implements EventSubscriberInterface
         $this->firstCall = $this->hasTerminatedWithException = false;
 
         $handler = set_exception_handler('var_dump');
-        $handler = \is_array($handler) ? $handler[0] : null;
+        $handler = is_array($handler) ? $handler[0] : null;
         restore_exception_handler();
+
+        if (!$handler instanceof ErrorHandler) {
+            $handler = $this->earlyHandler;
+        }
 
         if ($handler instanceof ErrorHandler) {
             if ($this->logger || $this->deprecationLogger) {
                 $this->setDefaultLoggers($handler);
-                if (\is_array($this->levels)) {
+                if (is_array($this->levels)) {
                     $levels = 0;
                     foreach ($this->levels as $type => $log) {
                         $levels |= $type;
@@ -94,7 +112,7 @@ class DebugHandlersListener implements EventSubscriberInterface
                     $handler->screamAt($levels);
                 }
                 if ($this->scope) {
-                    $handler->scopeAt($levels & ~\E_USER_DEPRECATED & ~\E_DEPRECATED);
+                    $handler->scopeAt($levels & ~E_USER_DEPRECATED & ~E_DEPRECATED);
                 } else {
                     $handler->scopeAt(0, true);
                 }
@@ -109,7 +127,7 @@ class DebugHandlersListener implements EventSubscriberInterface
                 if (method_exists($kernel = $event->getKernel(), 'terminateWithException')) {
                     $request = $event->getRequest();
                     $hasRun = &$this->hasTerminatedWithException;
-                    $this->exceptionHandler = static function (\Throwable $e) use ($kernel, $request, &$hasRun) {
+                    $this->exceptionHandler = static function (Throwable $e) use ($kernel, $request, &$hasRun) {
                         if ($hasRun) {
                             throw $e;
                         }
@@ -123,7 +141,7 @@ class DebugHandlersListener implements EventSubscriberInterface
                 if ($output instanceof ConsoleOutputInterface) {
                     $output = $output->getErrorOutput();
                 }
-                $this->exceptionHandler = static function (\Throwable $e) use ($app, $output) {
+                $this->exceptionHandler = static function (Throwable $e) use ($app, $output) {
                     $app->renderThrowable($e, $output);
                 };
             }
@@ -138,19 +156,19 @@ class DebugHandlersListener implements EventSubscriberInterface
 
     private function setDefaultLoggers(ErrorHandler $handler): void
     {
-        if (\is_array($this->levels)) {
+        if (is_array($this->levels)) {
             $levelsDeprecatedOnly = [];
             $levelsWithoutDeprecated = [];
             foreach ($this->levels as $type => $log) {
-                if (\E_DEPRECATED == $type || \E_USER_DEPRECATED == $type) {
+                if (E_DEPRECATED == $type || E_USER_DEPRECATED == $type) {
                     $levelsDeprecatedOnly[$type] = $log;
                 } else {
                     $levelsWithoutDeprecated[$type] = $log;
                 }
             }
         } else {
-            $levelsDeprecatedOnly = $this->levels & (\E_DEPRECATED | \E_USER_DEPRECATED);
-            $levelsWithoutDeprecated = $this->levels & ~\E_DEPRECATED & ~\E_USER_DEPRECATED;
+            $levelsDeprecatedOnly = $this->levels & (E_DEPRECATED | E_USER_DEPRECATED);
+            $levelsWithoutDeprecated = $this->levels & ~E_DEPRECATED & ~E_USER_DEPRECATED;
         }
 
         $defaultLoggerLevels = $this->levels;
@@ -168,7 +186,7 @@ class DebugHandlersListener implements EventSubscriberInterface
     {
         $events = [KernelEvents::REQUEST => ['configure', 2048]];
 
-        if (\defined('Symfony\Component\Console\ConsoleEvents::COMMAND')) {
+        if (defined('Symfony\Component\Console\ConsoleEvents::COMMAND')) {
             $events[ConsoleEvents::COMMAND] = ['configure', 2048];
         }
 

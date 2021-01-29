@@ -2,29 +2,29 @@
 
 namespace App\Domain\MarketVehicle\Controllers;
 
-use App\Domain\MarketVehicle\Models\MarketVehicle;
-use App\Http\Controllers\Controller;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
+use App\Domain\MarketVehicle\Models\MarketVehicle;
 
 class MarketVehiclesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.market-vehicles.index')
-            ->with('title',  'Market Vehicles')
-            ->with('description', 'View all the market vehicles that have worked with your company');
+        return view('page')->with('livewire', 'models.market-vehicles.index')->with('title', 'Market Vehicles')->with('description', 'View all the market vehicles that have worked with your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,8 +34,9 @@ class MarketVehiclesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -45,24 +46,21 @@ class MarketVehiclesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Application|Factory|View
      */
     public function show(MarketVehicle $market_vehicle)
     {
-        return view('page')
-            ->with('livewire', 'models.market-vehicles.show')
-            ->with('title',  'View Vehicles')
-            ->with('description', 'View all the details regarding this vehicle')
-            ->with('key', 'MarketVehicle')
-            ->with('val', $market_vehicle);
+        return view('page')->with('livewire', 'models.market-vehicles.show')->with('title', 'View Vehicles')->with('description', 'View all the details regarding this vehicle')->with('key', 'MarketVehicle')->with('val', $market_vehicle);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function edit(MarketVehicle $market_vehicle)
     {
@@ -72,9 +70,10 @@ class MarketVehiclesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\MarketVehicle\Models\MarketVehicle  $market_vehicle
-     * @return \Illuminate\Http\Response
+     * @param Request       $request
+     * @param MarketVehicle $market_vehicle
+     *
+     * @return Response
      */
     public function update(Request $request, MarketVehicle $market_vehicle)
     {
@@ -84,8 +83,9 @@ class MarketVehiclesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Vehicle  $vehicle
-     * @return \Illuminate\Http\Response
+     * @param Vehicle $vehicle
+     *
+     * @return Response
      */
     public function destroy(MarketVehicle $vehicle)
     {

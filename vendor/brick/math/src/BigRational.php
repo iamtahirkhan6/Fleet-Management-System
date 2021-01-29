@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\DivisionByZeroException;
+use LogicException;
+use InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use function explode;
 
 /**
  * An arbitrarily large rational number.
@@ -108,7 +111,10 @@ final class BigRational extends BigNumber
      */
     public static function zero() : BigRational
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigRational|null $zero
+         */
         static $zero;
 
         if ($zero === null) {
@@ -127,7 +133,10 @@ final class BigRational extends BigNumber
      */
     public static function one() : BigRational
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigRational|null $one
+         */
         static $one;
 
         if ($one === null) {
@@ -146,7 +155,10 @@ final class BigRational extends BigNumber
      */
     public static function ten() : BigRational
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigRational|null $ten
+         */
         static $ten;
 
         if ($ten === null) {
@@ -287,7 +299,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power(int $exponent) : BigRational
     {
@@ -458,20 +470,21 @@ final class BigRational extends BigNumber
      * This method is only here to implement interface Serializable and cannot be accessed directly.
      *
      * @internal
+     * @psalm-suppress RedundantPropertyInitializationCheck
      *
      * @param string $value
      *
      * @return void
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function unserialize($value) : void
     {
         if (isset($this->numerator)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
+            throw new LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
-        [$numerator, $denominator] = \explode('/', $value);
+        [$numerator, $denominator] = explode('/', $value);
 
         $this->numerator   = BigInteger::of($numerator);
         $this->denominator = BigInteger::of($denominator);

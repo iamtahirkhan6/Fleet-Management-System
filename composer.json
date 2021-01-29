@@ -20,7 +20,9 @@
         "livewire/livewire": "2.*",
         "lorisleiva/laravel-actions": "^2.0",
         "owenvoke/blade-fontawesome": "^1.6",
-        "santigarcor/laratrust": "^6.3"
+        "santigarcor/laratrust": "^6.3",
+        "spatie/laravel-medialibrary": "^9.0.0",
+        "spatie/laravel-medialibrary-pro": "1.*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -74,5 +76,12 @@
             "@php artisan ide-helper:models",
             "@php artisan ide-helper:eloquent"
     ]
-    }
+    },
+    "repositories": [{
+        "type": "composer",
+        "url": "https://satis.spatie.be",
+        "require": {
+            "spatie/laravel-medialibrary-pros": "dev-master"
+        }
+    }]
 }

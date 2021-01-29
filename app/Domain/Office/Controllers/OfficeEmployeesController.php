@@ -2,34 +2,35 @@
 
 namespace App\Domain\Office\Controllers;
 
-use App\Domain\Employee\Models\Employee;
-use App\Domain\Office\Models\Office;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Domain\Office\Models\Office;
+use Illuminate\Contracts\View\Factory;
+use App\Domain\Employee\Models\Employee;
+use Illuminate\Contracts\Foundation\Application;
 
 class OfficeEmployeesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Office $office
+     *
+     * @return Application|Factory|View
      */
     public function index(Office $office)
     {
-        return view('page')
-            ->with('livewire', 'models.offices.employees.index')
-            ->with('title',  'Employees')
-            ->with('description', 'View all the employees in this office')
-            ->with('key', 'office')
-            ->with('val', $office);
+        return view('page')->with('livewire', 'models.offices.employees.index')->with('title', 'Employees')->with('description', 'View all the employees in this office')->with('key', 'office')->with('val', $office);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     *
+     * @return Response
      */
     public function create(Office $office)
     {
@@ -39,9 +40,10 @@ class OfficeEmployeesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Office  $office
+     *
+     * @return Response
      */
     public function store(Request $request, Office $office)
     {
@@ -51,9 +53,10 @@ class OfficeEmployeesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Employee\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * @param Office   $office
+     * @param Employee $employee
+     *
+     * @return Response
      */
     public function show(Office $office, Employee $employee)
     {
@@ -63,9 +66,10 @@ class OfficeEmployeesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Employee\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * @param Office   $office
+     * @param Employee $employee
+     *
+     * @return Response
      */
     public function edit(Office $office, Employee $employee)
     {
@@ -75,10 +79,11 @@ class OfficeEmployeesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Employee\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * @param Request  $request
+     * @param Office   $office
+     * @param Employee $employee
+     *
+     * @return Response
      */
     public function update(Request $request, Office $office, Employee $employee)
     {
@@ -88,9 +93,10 @@ class OfficeEmployeesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @param  \App\Domain\Employee\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * @param Office   $office
+     * @param Employee $employee
+     *
+     * @return Response
      */
     public function destroy(Office $office, Employee $employee)
     {

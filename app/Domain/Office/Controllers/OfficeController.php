@@ -2,29 +2,28 @@
 
 namespace App\Domain\Office\Controllers;
 
-use App\Domain\Office\Models\Office;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Domain\Office\Models\Office;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class OfficeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.offices.index')
-            ->with('title', 'Offices')
-            ->with('description', 'View all the offices in your company');
+        return view('page')->with('livewire', 'models.offices.index')->with('title', 'Offices')->with('description', 'View all the offices in your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,8 +33,9 @@ class OfficeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -45,8 +45,9 @@ class OfficeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     *
+     * @return Response
      */
     public function show(Office $office)
     {
@@ -56,8 +57,9 @@ class OfficeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     *
+     * @return Response
      */
     public function edit(Office $office)
     {
@@ -67,9 +69,10 @@ class OfficeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Office  $office
+     *
+     * @return Response
      */
     public function update(Request $request, Office $office)
     {
@@ -79,8 +82,9 @@ class OfficeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Office\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     *
+     * @return Response
      */
     public function destroy(Office $office)
     {

@@ -48,7 +48,7 @@
                     <x-tables.basic.row>{{ $party->vehicles->count() }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $party->bankAccounts->count() }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $party->trips->count() }}</x-tables.basic.row>
-                    <x-tables.basic.row amount="true" :amountVal="$party->total_business()"></x-tables.basic.row>
+                    <x-tables.basic.row amount="true" :amountVal="$party->totalBusiness()"></x-tables.basic.row>
                     <x-tables.basic.row link="/parties/{{ $party->id }}">View</x-tables.basic.row>
 
                 </tr>

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateEmployeesTable extends Migration
 {
@@ -22,7 +22,6 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('employee_designation_id')->constrained('employees_designations');
             $table->boolean('is_currently_hired')->default(0)->nullable();
-            // $table->text('profile_photo_path')->nullable();
             $table->timestamps();
         });
     }

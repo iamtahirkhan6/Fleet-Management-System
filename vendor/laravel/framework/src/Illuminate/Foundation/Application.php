@@ -3,28 +3,28 @@
 namespace Illuminate\Foundation;
 
 use Closure;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Illuminate\Contracts\Foundation\CachesConfiguration;
-use Illuminate\Contracts\Foundation\CachesRoutes;
-use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
-use Illuminate\Events\EventServiceProvider;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
-use Illuminate\Foundation\Events\LocaleUpdated;
-use Illuminate\Http\Request;
-use Illuminate\Log\LogServiceProvider;
-use Illuminate\Routing\RoutingServiceProvider;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Env;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Env;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Container\Container;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Log\LogServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Events\EventServiceProvider;
+use Illuminate\Routing\RoutingServiceProvider;
+use Illuminate\Foundation\Events\LocaleUpdated;
+use Illuminate\Contracts\Foundation\CachesRoutes;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Illuminate\Contracts\Foundation\CachesConfiguration;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract, CachesConfiguration, CachesRoutes, HttpKernelInterface
 {
@@ -33,7 +33,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      *
      * @var string
      */
-    const VERSION = '8.23.1';
+    const VERSION = '8.25.0';
 
     /**
      * The base path for the Laravel installation.
@@ -111,6 +111,13 @@ class Application extends Container implements ApplicationContract, CachesConfig
      * @var string
      */
     protected $databasePath;
+
+    /**
+     * The custom language file path defined by the developer.
+     *
+     * @var string
+     */
+    protected $langPath;
 
     /**
      * The custom storage path defined by the developer.
@@ -407,7 +414,30 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function langPath()
     {
-        return $this->resourcePath().DIRECTORY_SEPARATOR.'lang';
+        if ($this->langPath) {
+            return $this->langPath;
+        }
+
+        if (is_dir($path = $this->resourcePath().DIRECTORY_SEPARATOR.'lang')) {
+            return $path;
+        }
+
+        return $this->basePath().DIRECTORY_SEPARATOR.'lang';
+    }
+
+    /**
+     * Set the language file directory.
+     *
+     * @param  string  $path
+     * @return $this
+     */
+    public function useLangPath($path)
+    {
+        $this->langPath = $path;
+
+        $this->instance('path.lang', $path);
+
+        return $this;
     }
 
     /**

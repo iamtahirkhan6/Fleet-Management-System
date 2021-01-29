@@ -11,11 +11,17 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+use Throwable;
+use ErrorException;
 use Symfony\Component\ErrorHandler\Exception\SilencedErrorContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
+use function in_array;
+use const E_DEPRECATED;
+use const E_USER_DEPRECATED;
+use const FILE_IGNORE_NEW_LINES;
 
 /**
  * LogDataCollector.
@@ -44,7 +50,7 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, Throwable $exception = null)
     {
         $this->currentRequest = $this->requestStack && $this->requestStack->getMasterRequest() !== $request ? $request : null;
     }
@@ -79,32 +85,32 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
 
     public function getLogs()
     {
-        return isset($this->data['logs']) ? $this->data['logs'] : [];
+        return $this->data['logs'] ?? [];
     }
 
     public function getPriorities()
     {
-        return isset($this->data['priorities']) ? $this->data['priorities'] : [];
+        return $this->data['priorities'] ?? [];
     }
 
     public function countErrors()
     {
-        return isset($this->data['error_count']) ? $this->data['error_count'] : 0;
+        return $this->data['error_count'] ?? 0;
     }
 
     public function countDeprecations()
     {
-        return isset($this->data['deprecation_count']) ? $this->data['deprecation_count'] : 0;
+        return $this->data['deprecation_count'] ?? 0;
     }
 
     public function countWarnings()
     {
-        return isset($this->data['warning_count']) ? $this->data['warning_count'] : 0;
+        return $this->data['warning_count'] ?? 0;
     }
 
     public function countScreams()
     {
-        return isset($this->data['scream_count']) ? $this->data['scream_count'] : 0;
+        return $this->data['scream_count'] ?? 0;
     }
 
     public function getCompilerLogs()
@@ -153,7 +159,7 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
         }
 
         $logs = [];
-        foreach (file($compilerLogsFilepath, \FILE_IGNORE_NEW_LINES) as $log) {
+        foreach (file($compilerLogsFilepath, FILE_IGNORE_NEW_LINES) as $log) {
             $log = explode(': ', $log, 2);
             if (!isset($log[1]) || !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*+(?:\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*+)++$/', $log[0])) {
                 $log = ['Unknown Compiler Pass', implode(': ', $log)];
@@ -226,7 +232,7 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
             return true;
         }
 
-        if ($exception instanceof \ErrorException && \in_array($exception->getSeverity(), [\E_DEPRECATED, \E_USER_DEPRECATED], true)) {
+        if ($exception instanceof ErrorException && in_array($exception->getSeverity(), [ E_DEPRECATED, E_USER_DEPRECATED], true)) {
             return true;
         }
 

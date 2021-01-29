@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Models\Payments\Trips;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Domain\Trip\Models\TripPaymentTransaction;
+use App\Domain\Payment\Models\Payment;
 
 class Index extends Component
 {
@@ -12,6 +12,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.payments.trips.index', ['payments' => TripPaymentTransaction::with(['trip', 'party', 'bank'])->latest()->paginate(25)]);
+        return view('livewire.models.payments.trips.index', ['payments' => Payment::paginate(25)]);
     }
 }

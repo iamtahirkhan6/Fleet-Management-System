@@ -2,43 +2,40 @@
 
 namespace App\Domain\General\Controllers;
 
-use App\Domain\General\Models\Mine;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Domain\General\Models\Mine;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class MinesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.mines.index')
-            ->with('title', 'Mines')
-            ->with('description', 'View the list of all mines');
+        return view('page')->with('livewire', 'models.mines.index')->with('title', 'Mines')->with('description', 'View the list of all mines');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
-        return view('page')
-            ->with('livewire', 'models.mines.create')
-            ->with('title', 'Add a Mine')
-            ->with('description', 'Enter a new mine to a sector');
+        return view('page')->with('livewire', 'models.mines.create')->with('title', 'Add a Mine')->with('description', 'Enter a new mine to a sector');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -48,24 +45,21 @@ class MinesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\General\Models\Mine  $mine
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Mine $mine
+     *
+     * @return Application|Factory|View
      */
     public function show(Mine $mine)
     {
-        return view('page')
-            ->with('livewire', 'models.mines.show')
-            ->with('title', 'View Mine')
-            ->with('description', 'View all the details of this mine')
-            ->with('key', 'mine')
-            ->with('val', $mine);
+        return view('page')->with('livewire', 'models.mines.show')->with('title', 'View Mine')->with('description', 'View all the details of this mine')->with('key', 'mine')->with('val', $mine);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\General\Models\Mine  $mine
-     * @return \Illuminate\Http\Response
+     * @param Mine $mine
+     *
+     * @return Response
      */
     public function edit(Mine $mine)
     {
@@ -75,9 +69,10 @@ class MinesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\General\Models\Mine  $mine
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Mine    $mine
+     *
+     * @return Response
      */
     public function update(Request $request, Mine $mine)
     {
@@ -87,8 +82,9 @@ class MinesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\General\Models\Mine  $mine
-     * @return \Illuminate\Http\Response
+     * @param Mine $mine
+     *
+     * @return Response
      */
     public function destroy(Mine $mine)
     {

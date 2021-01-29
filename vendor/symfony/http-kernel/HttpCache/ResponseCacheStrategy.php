@@ -12,6 +12,7 @@
 namespace Symfony\Component\HttpKernel\HttpCache;
 
 use Symfony\Component\HttpFoundation\Response;
+use function in_array;
 
 /**
  * ResponseCacheStrategy knows how to compute the Response cache HTTP header
@@ -27,12 +28,12 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
     /**
      * Cache-Control headers that are sent to the final response if they appear in ANY of the responses.
      */
-    private static $overrideDirectives = ['private', 'no-cache', 'no-store', 'no-transform', 'must-revalidate', 'proxy-revalidate'];
+    private const OVERRIDE_DIRECTIVES = ['private', 'no-cache', 'no-store', 'no-transform', 'must-revalidate', 'proxy-revalidate'];
 
     /**
      * Cache-Control headers that are sent to the final response if they appear in ALL of the responses.
      */
-    private static $inheritDirectives = ['public', 'immutable'];
+    private const INHERIT_DIRECTIVES = ['public', 'immutable'];
 
     private $embeddedResponses = 0;
     private $isNotCacheableResponseEmbedded = false;
@@ -60,13 +61,13 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
     {
         ++$this->embeddedResponses;
 
-        foreach (self::$overrideDirectives as $directive) {
+        foreach (self::OVERRIDE_DIRECTIVES as $directive) {
             if ($response->headers->hasCacheControlDirective($directive)) {
                 $this->flagDirectives[$directive] = true;
             }
         }
 
-        foreach (self::$inheritDirectives as $directive) {
+        foreach (self::INHERIT_DIRECTIVES as $directive) {
             if (false !== $this->flagDirectives[$directive]) {
                 $this->flagDirectives[$directive] = $response->headers->hasCacheControlDirective($directive);
             }
@@ -166,7 +167,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
 
         // Last-Modified and Etag headers cannot be merged, they render the response uncacheable
         // by default (except if the response also has max-age etc.).
-        if (\in_array($response->getStatusCode(), [200, 203, 300, 301, 410])
+        if (in_array($response->getStatusCode(), [ 200, 203, 300, 301, 410])
             && null === $response->getLastModified()
             && null === $response->getEtag()
         ) {

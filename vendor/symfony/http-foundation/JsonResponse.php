@@ -11,15 +11,24 @@
 
 namespace Symfony\Component\HttpFoundation;
 
+use Exception;
+use TypeError;
+use ArrayObject;
+use InvalidArgumentException;
+use function in_array;
+use function get_class;
+use function is_string;
+use function is_callable;
+use const PHP_VERSION_ID;
+use const JSON_ERROR_NONE;
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Response represents an HTTP response in JSON format.
- *
  * Note that this class does not force the returned JSON content to be an
  * object. It is however recommended that you do return an object as it
  * protects yourself against XSSI and JSON-JavaScript Hijacking.
- *
  * @see https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/AJAX_Security_Cheat_Sheet.md#always-return-json-with-an-object-on-the-outside
- *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class JsonResponse extends Response
@@ -43,12 +52,12 @@ class JsonResponse extends Response
     {
         parent::__construct('', $status, $headers);
 
-        if ($json && !\is_string($data) && !is_numeric($data) && !\is_callable([$data, '__toString'])) {
-            throw new \TypeError(sprintf('"%s": If $json is set to true, argument $data must be a string or object implementing __toString(), "%s" given.', __METHOD__, get_debug_type($data)));
+        if ($json && !is_string($data) && !is_numeric($data) && !is_callable([ $data, '__toString'])) {
+            throw new TypeError(sprintf('"%s": If $json is set to true, argument $data must be a string or object implementing __toString(), "%s" given.', __METHOD__, get_debug_type($data)));
         }
 
         if (null === $data) {
-            $data = new \ArrayObject();
+            $data = new ArrayObject();
         }
 
         $json ? $this->setJson($data) : $this->setData($data);
@@ -72,7 +81,7 @@ class JsonResponse extends Response
      */
     public static function create($data = null, int $status = 200, array $headers = [])
     {
-        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, \get_called_class());
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
 
         return new static($data, $status, $headers);
     }
@@ -103,7 +112,7 @@ class JsonResponse extends Response
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException When the callback name is not valid
+     * @throws InvalidArgumentException When the callback name is not valid
      */
     public function setCallback(string $callback = null)
     {
@@ -120,8 +129,8 @@ class JsonResponse extends Response
             ];
             $parts = explode('.', $callback);
             foreach ($parts as $part) {
-                if (!preg_match($pattern, $part) || \in_array($part, $reserved, true)) {
-                    throw new \InvalidArgumentException('The callback name is not valid.');
+                if (!preg_match($pattern, $part) || in_array($part, $reserved, true)) {
+                    throw new InvalidArgumentException('The callback name is not valid.');
                 }
             }
         }
@@ -150,25 +159,25 @@ class JsonResponse extends Response
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setData($data = [])
     {
         try {
             $data = json_encode($data, $this->encodingOptions);
-        } catch (\Exception $e) {
-            if ('Exception' === \get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
+        } catch (Exception $e) {
+            if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
                 throw $e->getPrevious() ?: $e;
             }
             throw $e;
         }
 
-        if (\PHP_VERSION_ID >= 70300 && (\JSON_THROW_ON_ERROR & $this->encodingOptions)) {
+        if (PHP_VERSION_ID >= 70300 && (JSON_THROW_ON_ERROR & $this->encodingOptions)) {
             return $this->setJson($data);
         }
 
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(json_last_error_msg());
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new InvalidArgumentException(json_last_error_msg());
         }
 
         return $this->setJson($data);

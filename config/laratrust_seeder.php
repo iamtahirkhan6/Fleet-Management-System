@@ -15,12 +15,23 @@ return [
         'admin' => [
             'users' => 'c,r,u,d',
             'payments' => 'c,r,u,d',
+            'projects' => 'c,r,u,d',
+            'employees' => 'c,r,u,d',
+            'trips' => 'c,r,u,d'
         ],
         'manager' => [
             'users' => 'c,r,u',
+            'projects' => 'c,r,u',
             'employees' => 'c,r,u',
         ],
-        'employee' => [
+        'trips_entry_manager' => [
+            'projects' => 'r',
+            'trips' => 'c,r,u'
+        ],
+        'trips_payment_executive' => [
+            'trips' => 'r',
+            'projects' => 'r',
+            'payments' => 'c','r','u'
         ]
     ],
 

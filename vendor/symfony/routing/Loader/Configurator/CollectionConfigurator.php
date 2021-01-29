@@ -11,8 +11,11 @@
 
 namespace Symfony\Component\Routing\Loader\Configurator;
 
+use LogicException;
+use BadMethodCallException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use function is_array;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
@@ -36,6 +39,16 @@ class CollectionConfigurator
         $this->route = new Route('');
         $this->parentConfigurator = $parentConfigurator; // for GC control
         $this->parentPrefixes = $parentPrefixes;
+    }
+
+    public function __sleep()
+    {
+        throw new BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    public function __wakeup()
+    {
+        throw new BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
 
     public function __destruct()
@@ -67,15 +80,15 @@ class CollectionConfigurator
      */
     final public function prefix($prefix): self
     {
-        if (\is_array($prefix)) {
+        if (is_array($prefix)) {
             if (null === $this->parentPrefixes) {
                 // no-op
             } elseif ($missing = array_diff_key($this->parentPrefixes, $prefix)) {
-                throw new \LogicException(sprintf('Collection "%s" is missing prefixes for locale(s) "%s".', $this->name, implode('", "', array_keys($missing))));
+                throw new LogicException(sprintf('Collection "%s" is missing prefixes for locale(s) "%s".', $this->name, implode('", "', array_keys($missing))));
             } else {
                 foreach ($prefix as $locale => $localePrefix) {
                     if (!isset($this->parentPrefixes[$locale])) {
-                        throw new \LogicException(sprintf('Collection "%s" with locale "%s" is missing a corresponding prefix in its parent collection.', $this->name, $locale));
+                        throw new LogicException(sprintf('Collection "%s" with locale "%s" is missing a corresponding prefix in its parent collection.', $this->name, $locale));
                     }
 
                     $prefix[$locale] = $this->parentPrefixes[$locale].$localePrefix;

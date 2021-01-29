@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Console\Helper;
 
+use Exception;
 use Symfony\Component\Console\Cursor;
 use Symfony\Component\Console\Exception\MissingInputException;
 use Symfony\Component\Console\Exception\RuntimeException;
@@ -24,7 +25,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Terminal;
+use function ord;
+use function count;
+use function strlen;
+use function in_array;
+use function call_user_func;
+use function function_exists;
 use function Symfony\Component\String\s;
+use const STDIN;
+use const PHP_EOL;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
@@ -107,10 +117,10 @@ class QuestionHelper extends Helper
     {
         $this->writePrompt($output, $question);
 
-        $inputStream = $this->inputStream ?: \STDIN;
+        $inputStream = $this->inputStream ?: STDIN;
         $autocomplete = $question->getAutocompleterCallback();
 
-        if (\function_exists('sapi_windows_cp_set')) {
+        if (function_exists('sapi_windows_cp_set')) {
             // Codepage used by cmd.exe on Windows to allow special characters (éàüñ).
             @sapi_windows_cp_set(1252);
         }
@@ -146,7 +156,7 @@ class QuestionHelper extends Helper
             $output->addContent($ret);
         }
 
-        $ret = \strlen($ret) > 0 ? $ret : $question->getDefault();
+        $ret = strlen($ret) > 0 ? $ret : $question->getDefault();
 
         if ($normalizer = $question->getNormalizer()) {
             return $normalizer($ret);
@@ -167,18 +177,18 @@ class QuestionHelper extends Helper
         }
 
         if ($validator = $question->getValidator()) {
-            return \call_user_func($question->getValidator(), $default);
+            return call_user_func($question->getValidator(), $default);
         } elseif ($question instanceof ChoiceQuestion) {
             $choices = $question->getChoices();
 
             if (!$question->isMultiselect()) {
-                return isset($choices[$default]) ? $choices[$default] : $default;
+                return $choices[$default] ?? $default;
             }
 
             $default = explode(',', $default);
             foreach ($default as $k => $v) {
                 $v = $question->isTrimmable() ? trim($v) : $v;
-                $default[$k] = isset($choices[$v]) ? $choices[$v] : $v;
+                $default[$k] = $choices[$v] ?? $v;
             }
         }
 
@@ -224,7 +234,7 @@ class QuestionHelper extends Helper
     /**
      * Outputs an error message.
      */
-    protected function writeError(OutputInterface $output, \Exception $error)
+    protected function writeError(OutputInterface $output, Exception $error)
     {
         if (null !== $this->getHelperSet() && $this->getHelperSet()->has('formatter')) {
             $message = $this->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error');
@@ -250,7 +260,7 @@ class QuestionHelper extends Helper
         $i = 0;
         $ofs = -1;
         $matches = $autocomplete($ret);
-        $numMatches = \count($matches);
+        $numMatches = count($matches);
 
         $sttyMode = shell_exec('stty -g');
 
@@ -279,7 +289,7 @@ class QuestionHelper extends Helper
                 if (0 === $i) {
                     $ofs = -1;
                     $matches = $autocomplete($ret);
-                    $numMatches = \count($matches);
+                    $numMatches = count($matches);
                 } else {
                     $numMatches = 0;
                 }
@@ -303,12 +313,12 @@ class QuestionHelper extends Helper
                     $ofs += ('A' === $c[2]) ? -1 : 1;
                     $ofs = ($numMatches + $ofs) % $numMatches;
                 }
-            } elseif (\ord($c) < 32) {
+            } elseif (ord($c) < 32) {
                 if ("\t" === $c || "\n" === $c) {
                     if ($numMatches > 0 && -1 !== $ofs) {
                         $ret = (string) $matches[$ofs];
                         // Echo out remaining chars for current match
-                        $remainingCharacters = substr($ret, \strlen(trim($this->mostRecentlyEnteredValue($fullChoice))));
+                        $remainingCharacters = substr($ret, strlen(trim($this->mostRecentlyEnteredValue($fullChoice))));
                         $output->write($remainingCharacters);
                         $fullChoice .= $remainingCharacters;
                         $i = self::strlen($fullChoice);
@@ -319,7 +329,7 @@ class QuestionHelper extends Helper
                                 return '' === $ret || 0 === strpos($match, $ret);
                             }
                         );
-                        $numMatches = \count($matches);
+                        $numMatches = count($matches);
                         $ofs = -1;
                     }
 
@@ -364,7 +374,7 @@ class QuestionHelper extends Helper
             if ($numMatches > 0 && -1 !== $ofs) {
                 $cursor->savePosition();
                 // Write highlighted text, complete the partially entered response
-                $charactersEntered = \strlen(trim($this->mostRecentlyEnteredValue($fullChoice)));
+                $charactersEntered = strlen(trim($this->mostRecentlyEnteredValue($fullChoice)));
                 $output->write('<hl>'.OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $charactersEntered)).'</hl>');
                 $cursor->restorePosition();
             }
@@ -384,7 +394,7 @@ class QuestionHelper extends Helper
         }
 
         $choices = explode(',', $entered);
-        if (\strlen($lastChoice = trim($choices[\count($choices) - 1])) > 0) {
+        if (strlen($lastChoice = trim($choices[count($choices) - 1])) > 0) {
             return $lastChoice;
         }
 
@@ -401,7 +411,7 @@ class QuestionHelper extends Helper
      */
     private function getHiddenResponse(OutputInterface $output, $inputStream, bool $trimmable = true): string
     {
-        if ('\\' === \DIRECTORY_SEPARATOR) {
+        if ('\\' === DIRECTORY_SEPARATOR) {
             $exe = __DIR__.'/../Resources/bin/hiddeninput.exe';
 
             // handle code running from a phar
@@ -453,7 +463,7 @@ class QuestionHelper extends Helper
      *
      * @return mixed The validated response
      *
-     * @throws \Exception In case the max number of attempts has been reached and no valid response has been given
+     * @throws Exception In case the max number of attempts has been reached and no valid response has been given
      */
     private function validateAttempts(callable $interviewer, OutputInterface $output, Question $question)
     {
@@ -469,7 +479,7 @@ class QuestionHelper extends Helper
                 return $question->getValidator()($interviewer());
             } catch (RuntimeException $e) {
                 throw $e;
-            } catch (\Exception $error) {
+            } catch (Exception $error) {
             }
         }
 
@@ -486,15 +496,15 @@ class QuestionHelper extends Helper
             return self::$stdinIsInteractive;
         }
 
-        if (\function_exists('stream_isatty')) {
+        if (function_exists('stream_isatty')) {
             return self::$stdinIsInteractive = stream_isatty(fopen('php://stdin', 'r'));
         }
 
-        if (\function_exists('posix_isatty')) {
+        if (function_exists('posix_isatty')) {
             return self::$stdinIsInteractive = posix_isatty(fopen('php://stdin', 'r'));
         }
 
-        if (!\function_exists('exec')) {
+        if (!function_exists('exec')) {
             return self::$stdinIsInteractive = true;
         }
 
@@ -524,7 +534,7 @@ class QuestionHelper extends Helper
 
         $ret = '';
         while (false !== ($char = fgetc($multiLineStreamReader))) {
-            if (\PHP_EOL === "{$ret}{$char}") {
+            if (PHP_EOL === "{$ret}{$char}") {
                 break;
             }
             $ret .= $char;
@@ -556,7 +566,7 @@ class QuestionHelper extends Helper
 
         // For seekable and writable streams, add all the same data to the
         // cloned stream and then seek to the same offset.
-        if (true === $seekable && !\in_array($mode, ['r', 'rb', 'rt'])) {
+        if (true === $seekable && !in_array($mode, [ 'r', 'rb', 'rt'])) {
             $offset = ftell($inputStream);
             rewind($inputStream);
             stream_copy_to_stream($inputStream, $cloneStream);

@@ -10,18 +10,22 @@ class PostgresSchemaState extends SchemaState
     /**
      * Dump the database's schema into a file.
      *
-     * @param  \Illuminate\Database\Connection  $connection
-     * @param  string  $path
+     * @param Connection $connection
+     * @param  string    $path
      * @return void
      */
     public function dump(Connection $connection, $path)
     {
+        $schema = $connection->getConfig('schema', 'public');
+
+        $schema = $schema === 'public' ? '' : $schema.'.';
+
         $excludedTables = collect($connection->getSchemaBuilder()->getAllTables())
                         ->map->tablename
                         ->reject(function ($table) {
                             return $table === $this->migrationTable;
-                        })->map(function ($table) {
-                            return '--exclude-table-data='.$table;
+                        })->map(function ($table) use ($schema) {
+                            return '--exclude-table-data='.$schema.$table;
                         })->implode(' ');
 
         $this->makeProcess(

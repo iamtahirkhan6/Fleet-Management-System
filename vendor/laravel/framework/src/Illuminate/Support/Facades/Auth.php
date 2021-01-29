@@ -2,16 +2,22 @@
 
 namespace Illuminate\Support\Facades;
 
-use Laravel\Ui\UiServiceProvider;
+use Closure;
 use RuntimeException;
+use Illuminate\Auth\AuthManager;
+use Laravel\Ui\UiServiceProvider;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
- * @method static \Illuminate\Auth\AuthManager extend(string $driver, \Closure $callback)
- * @method static \Illuminate\Auth\AuthManager provider(string $name, \Closure $callback)
- * @method static \Illuminate\Contracts\Auth\Authenticatable loginUsingId(mixed $id, bool $remember = false)
- * @method static \Illuminate\Contracts\Auth\Authenticatable|null user()
- * @method static \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard guard(string|null $name = null)
- * @method static \Illuminate\Contracts\Auth\UserProvider|null createUserProvider(string $provider = null)
+ * @method static AuthManager extend(string $driver, Closure $callback)
+ * @method static AuthManager provider(string $name, Closure $callback)
+ * @method static Authenticatable loginUsingId(mixed $id, bool $remember = false)
+ * @method static Authenticatable|null user()
+ * @method static Guard|StatefulGuard guard(string|null $name = null)
+ * @method static UserProvider|null createUserProvider(string $provider = null)
  * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email',array $extraConditions = [])
  * @method static bool attempt(array $credentials = [], bool $remember = false)
  * @method static bool check()
@@ -22,11 +28,11 @@ use RuntimeException;
  * @method static bool viaRemember()
  * @method static bool|null logoutOtherDevices(string $password, string $attribute = 'password')
  * @method static int|string|null id()
- * @method static void login(\Illuminate\Contracts\Auth\Authenticatable $user, bool $remember = false)
+ * @method static void login(Authenticatable $user, bool $remember = false)
  * @method static void logout()
- * @method static void setUser(\Illuminate\Contracts\Auth\Authenticatable $user)
+ * @method static void logoutCurrentDevice()
+ * @method static void setUser(Authenticatable $user)
  * @method static void shouldUse(string $name);
- *
  * @see \Illuminate\Auth\AuthManager
  * @see \Illuminate\Contracts\Auth\Factory
  * @see \Illuminate\Contracts\Auth\Guard

@@ -14,7 +14,7 @@ class RateLimitedWithRedis extends RateLimited
     /**
      * The Redis factory implementation.
      *
-     * @var \Illuminate\Contracts\Redis\Factory
+     * @var Redis
      */
     protected $redis;
 
@@ -87,5 +87,17 @@ class RateLimitedWithRedis extends RateLimited
     protected function getTimeUntilNextRetry($key)
     {
         return ($this->decaysAt[$key] - $this->currentTime()) + 3;
+    }
+
+    /**
+     * Prepare the object after unserialization.
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        parent::__wakeup();
+
+        $this->redis = Container::getInstance()->make(Redis::class);
     }
 }

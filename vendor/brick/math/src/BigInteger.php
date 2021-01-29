@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\DivisionByZeroException;
-use Brick\Math\Exception\IntegerOverflowException;
-use Brick\Math\Exception\MathException;
-use Brick\Math\Exception\NegativeNumberException;
-use Brick\Math\Exception\NumberFormatException;
+use LogicException;
+use InvalidArgumentException;
 use Brick\Math\Internal\Calculator;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\IntegerOverflowException;
+use function chr;
+use function ord;
+use function ltrim;
+use function strlen;
+use function intdiv;
+use function substr;
+use function hex2bin;
+use function bin2hex;
+use function sprintf;
+use function in_array;
+use function str_repeat;
+use function preg_match;
+use function preg_quote;
+use function strtolower;
 
 /**
  * An arbitrary-size integer.
@@ -74,7 +90,7 @@ final class BigInteger extends BigNumber
      * @return BigInteger
      *
      * @throws NumberFormatException     If the number is empty, or contains invalid chars for the given base.
-     * @throws \InvalidArgumentException If the base is out of range.
+     * @throws InvalidArgumentException If the base is out of range.
      *
      * @psalm-pure
      */
@@ -85,15 +101,15 @@ final class BigInteger extends BigNumber
         }
 
         if ($base < 2 || $base > 36) {
-            throw new \InvalidArgumentException(\sprintf('Base %d is not in range 2 to 36.', $base));
+            throw new InvalidArgumentException(sprintf('Base %d is not in range 2 to 36.', $base));
         }
 
         if ($number[0] === '-') {
             $sign = '-';
-            $number = \substr($number, 1);
+            $number = substr($number, 1);
         } elseif ($number[0] === '+') {
             $sign = '';
-            $number = \substr($number, 1);
+            $number = substr($number, 1);
         } else {
             $sign = '';
         }
@@ -102,7 +118,7 @@ final class BigInteger extends BigNumber
             throw new NumberFormatException('The number cannot be empty.');
         }
 
-        $number = \ltrim($number, '0');
+        $number = ltrim($number, '0');
 
         if ($number === '') {
             // The result will be the same in any base, avoid further calculation.
@@ -114,10 +130,10 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . '1');
         }
 
-        $pattern = '/[^' . \substr(Calculator::ALPHABET, 0, $base) . ']/';
+        $pattern = '/[^' . substr(Calculator::ALPHABET, 0, $base) . ']/';
 
-        if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
-            throw new NumberFormatException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
+        if (preg_match($pattern, strtolower($number), $matches) === 1) {
+            throw new NumberFormatException(sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
         }
 
         if ($base === 10) {
@@ -141,7 +157,7 @@ final class BigInteger extends BigNumber
      * @return BigInteger
      *
      * @throws NumberFormatException     If the given number is empty or contains invalid chars for the given alphabet.
-     * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars.
      *
      * @psalm-pure
      */
@@ -151,15 +167,15 @@ final class BigInteger extends BigNumber
             throw new NumberFormatException('The number cannot be empty.');
         }
 
-        $base = \strlen($alphabet);
+        $base = strlen($alphabet);
 
         if ($base < 2) {
-            throw new \InvalidArgumentException('The alphabet must contain at least 2 chars.');
+            throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
         }
 
-        $pattern = '/[^' . \preg_quote($alphabet, '/') . ']/';
+        $pattern = '/[^' . preg_quote($alphabet, '/') . ']/';
 
-        if (\preg_match($pattern, $number, $matches) === 1) {
+        if (preg_match($pattern, $number, $matches) === 1) {
             throw NumberFormatException::charNotInAlphabet($matches[0]);
         }
 
@@ -196,14 +212,14 @@ final class BigInteger extends BigNumber
         $twosComplement = false;
 
         if ($signed) {
-            $x = \ord($value[0]);
+            $x = ord($value[0]);
 
             if (($twosComplement = ($x >= 0x80))) {
                 $value = ~$value;
             }
         }
 
-        $number = self::fromBase(\bin2hex($value), 16);
+        $number = self::fromBase(bin2hex($value), 16);
 
         if ($twosComplement) {
             return $number->plus(1)->negated();
@@ -217,6 +233,8 @@ final class BigInteger extends BigNumber
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
+     * @psalm-param callable(int): string $randomBytesGenerator
+     *
      * @param int           $numBits              The number of bits.
      * @param callable|null $randomBytesGenerator A function that accepts a number of bytes as an integer, and returns a
      *                                            string of random bytes of the given length. Defaults to the
@@ -224,12 +242,12 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      *
-     * @throws \InvalidArgumentException If $numBits is negative.
+     * @throws InvalidArgumentException If $numBits is negative.
      */
     public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null) : BigInteger
     {
         if ($numBits < 0) {
-            throw new \InvalidArgumentException('The number of bits cannot be negative.');
+            throw new InvalidArgumentException('The number of bits cannot be negative.');
         }
 
         if ($numBits === 0) {
@@ -240,10 +258,10 @@ final class BigInteger extends BigNumber
             $randomBytesGenerator = 'random_bytes';
         }
 
-        $byteLength = \intdiv($numBits - 1, 8) + 1;
+        $byteLength = intdiv($numBits - 1, 8) + 1;
 
         $extraBits = ($byteLength * 8 - $numBits);
-        $bitmask   = \chr(0xFF >> $extraBits);
+        $bitmask   = chr(0xFF >> $extraBits);
 
         $randomBytes    = $randomBytesGenerator($byteLength);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
@@ -255,6 +273,8 @@ final class BigInteger extends BigNumber
      * Generates a pseudo-random number between `$min` and `$max`.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
+     *
+     * @psalm-param (callable(int): string)|null $randomBytesGenerator
      *
      * @param BigNumber|int|float|string $min                  The lower bound. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $max                  The upper bound. Must be convertible to a BigInteger.
@@ -300,7 +320,10 @@ final class BigInteger extends BigNumber
      */
     public static function zero() : BigInteger
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigInteger|null $zero
+         */
         static $zero;
 
         if ($zero === null) {
@@ -319,7 +342,10 @@ final class BigInteger extends BigNumber
      */
     public static function one() : BigInteger
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigInteger|null $one
+         */
         static $one;
 
         if ($one === null) {
@@ -338,7 +364,10 @@ final class BigInteger extends BigNumber
      */
     public static function ten() : BigInteger
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigInteger|null $ten
+         */
         static $ten;
 
         if ($ten === null) {
@@ -457,7 +486,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger The result.
      *
-     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power(int $exponent) : BigInteger
     {
@@ -470,7 +499,7 @@ final class BigInteger extends BigNumber
         }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'The exponent %d is not in the range 0 to %d.',
                 $exponent,
                 Calculator::MAX_POWER
@@ -840,7 +869,7 @@ final class BigInteger extends BigNumber
             return $this->abs()->minus(1)->getBitLength();
         }
 
-        return \strlen($this->toBase(2));
+        return strlen($this->toBase(2));
     }
 
     /**
@@ -873,7 +902,7 @@ final class BigInteger extends BigNumber
      */
     public function isEven() : bool
     {
-        return \in_array($this->value[-1], ['0', '2', '4', '6', '8'], true);
+        return in_array($this->value[-1], ['0', '2', '4', '6', '8'], true);
     }
 
     /**
@@ -883,7 +912,7 @@ final class BigInteger extends BigNumber
      */
     public function isOdd() : bool
     {
-        return \in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
+        return in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
     }
 
     /**
@@ -895,12 +924,12 @@ final class BigInteger extends BigNumber
      *
      * @return bool
      *
-     * @throws \InvalidArgumentException If the bit to test is negative.
+     * @throws InvalidArgumentException If the bit to test is negative.
      */
     public function testBit(int $n) : bool
     {
         if ($n < 0) {
-            throw new \InvalidArgumentException('The bit to test cannot be negative.');
+            throw new InvalidArgumentException('The bit to test cannot be negative.');
         }
 
         return $this->shiftedRight($n)->isOdd();
@@ -991,7 +1020,7 @@ final class BigInteger extends BigNumber
      *
      * @return string
      *
-     * @throws \InvalidArgumentException If the base is out of range.
+     * @throws InvalidArgumentException If the base is out of range.
      */
     public function toBase(int $base) : string
     {
@@ -1000,7 +1029,7 @@ final class BigInteger extends BigNumber
         }
 
         if ($base < 2 || $base > 36) {
-            throw new \InvalidArgumentException(\sprintf('Base %d is out of range [2, 36]', $base));
+            throw new InvalidArgumentException(sprintf('Base %d is out of range [2, 36]', $base));
         }
 
         return Calculator::get()->toBase($this->value, $base);
@@ -1017,14 +1046,14 @@ final class BigInteger extends BigNumber
      * @return string
      *
      * @throws NegativeNumberException   If this number is negative.
-     * @throws \InvalidArgumentException If the given alphabet does not contain at least 2 chars.
+     * @throws InvalidArgumentException If the given alphabet does not contain at least 2 chars.
      */
     public function toArbitraryBase(string $alphabet) : string
     {
-        $base = \strlen($alphabet);
+        $base = strlen($alphabet);
 
         if ($base < 2) {
-            throw new \InvalidArgumentException('The alphabet must contain at least 2 chars.');
+            throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
         }
 
         if ($this->value[0] === '-') {
@@ -1062,21 +1091,24 @@ final class BigInteger extends BigNumber
 
         $hex = $this->abs()->toBase(16);
 
-        if (\strlen($hex) % 2 !== 0) {
+        if (strlen($hex) % 2 !== 0) {
             $hex = '0' . $hex;
         }
 
-        $baseHexLength = \strlen($hex);
+        $baseHexLength = strlen($hex);
 
         if ($signed) {
             if ($this->isNegative()) {
-                $hex = \bin2hex(~\hex2bin($hex));
+                $bin = hex2bin($hex);
+                assert($bin !== false);
+
+                $hex = bin2hex(~$bin);
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
 
-                $hexLength = \strlen($hex);
+                $hexLength = strlen($hex);
 
                 if ($hexLength < $baseHexLength) {
-                    $hex = \str_repeat('0', $baseHexLength - $hexLength) . $hex;
+                    $hex = str_repeat('0', $baseHexLength - $hexLength) . $hex;
                 }
 
                 if ($hex[0] < '8') {
@@ -1089,7 +1121,7 @@ final class BigInteger extends BigNumber
             }
         }
 
-        return \hex2bin($hex);
+        return hex2bin($hex);
     }
 
     /**
@@ -1116,17 +1148,18 @@ final class BigInteger extends BigNumber
      * This method is only here to implement interface Serializable and cannot be accessed directly.
      *
      * @internal
+     * @psalm-suppress RedundantPropertyInitializationCheck
      *
      * @param string $value
      *
      * @return void
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function unserialize($value) : void
     {
         if (isset($this->value)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
+            throw new LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
         $this->value = $value;

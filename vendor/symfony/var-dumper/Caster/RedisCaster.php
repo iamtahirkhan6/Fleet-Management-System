@@ -11,7 +11,12 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
+use Redis;
+use RedisArray;
+use RedisCluster;
 use Symfony\Component\VarDumper\Cloner\Stub;
+use function defined;
+use function is_array;
 
 /**
  * Casts Redis class from ext-redis to array representation.
@@ -22,31 +27,31 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class RedisCaster
 {
-    private static $serializer = [
-        \Redis::SERIALIZER_NONE => 'NONE',
-        \Redis::SERIALIZER_PHP => 'PHP',
+    private const SERIALIZERS = [
+        Redis::SERIALIZER_NONE => 'NONE',
+        Redis::SERIALIZER_PHP => 'PHP',
         2 => 'IGBINARY', // Optional Redis::SERIALIZER_IGBINARY
     ];
 
-    private static $mode = [
-        \Redis::ATOMIC => 'ATOMIC',
-        \Redis::MULTI => 'MULTI',
-        \Redis::PIPELINE => 'PIPELINE',
+    private const MODES = [
+        Redis::ATOMIC => 'ATOMIC',
+        Redis::MULTI => 'MULTI',
+        Redis::PIPELINE => 'PIPELINE',
     ];
 
-    private static $compression = [
+    private const COMPRESSION_MODES = [
         0 => 'NONE', // Redis::COMPRESSION_NONE
         1 => 'LZF',  // Redis::COMPRESSION_LZF
     ];
 
-    private static $failover = [
-        \RedisCluster::FAILOVER_NONE => 'NONE',
-        \RedisCluster::FAILOVER_ERROR => 'ERROR',
-        \RedisCluster::FAILOVER_DISTRIBUTE => 'DISTRIBUTE',
-        \RedisCluster::FAILOVER_DISTRIBUTE_SLAVES => 'DISTRIBUTE_SLAVES',
+    private const FAILOVER_OPTIONS = [
+        RedisCluster::FAILOVER_NONE => 'NONE',
+        RedisCluster::FAILOVER_ERROR => 'ERROR',
+        RedisCluster::FAILOVER_DISTRIBUTE => 'DISTRIBUTE',
+        RedisCluster::FAILOVER_DISTRIBUTE_SLAVES => 'DISTRIBUTE_SLAVES',
     ];
 
-    public static function castRedis(\Redis $c, array $a, Stub $stub, bool $isNested)
+    public static function castRedis(Redis $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -63,7 +68,7 @@ class RedisCaster
             $prefix.'host' => $c->getHost(),
             $prefix.'port' => $c->getPort(),
             $prefix.'auth' => $c->getAuth(),
-            $prefix.'mode' => isset(self::$mode[$mode]) ? new ConstStub(self::$mode[$mode], $mode) : $mode,
+            $prefix.'mode' => isset(self::MODES[$mode]) ? new ConstStub(self::MODES[$mode], $mode) : $mode,
             $prefix.'dbNum' => $c->getDbNum(),
             $prefix.'timeout' => $c->getTimeout(),
             $prefix.'lastError' => $c->getLastError(),
@@ -72,7 +77,7 @@ class RedisCaster
         ];
     }
 
-    public static function castRedisArray(\RedisArray $c, array $a, Stub $stub, bool $isNested)
+    public static function castRedisArray(RedisArray $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -84,10 +89,10 @@ class RedisCaster
         ];
     }
 
-    public static function castRedisCluster(\RedisCluster $c, array $a, Stub $stub, bool $isNested)
+    public static function castRedisCluster(RedisCluster $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
-        $failover = $c->getOption(\RedisCluster::OPT_SLAVE_FAILOVER);
+        $failover = $c->getOption(RedisCluster::OPT_SLAVE_FAILOVER);
 
         $a += [
             $prefix.'_masters' => $c->_masters(),
@@ -95,7 +100,7 @@ class RedisCaster
             $prefix.'mode' => new ConstStub($c->getMode() ? 'MULTI' : 'ATOMIC', $c->getMode()),
             $prefix.'lastError' => $c->getLastError(),
             $prefix.'options' => self::getRedisOptions($c, [
-                'SLAVE_FAILOVER' => isset(self::$failover[$failover]) ? new ConstStub(self::$failover[$failover], $failover) : $failover,
+                'SLAVE_FAILOVER' => isset(self::FAILOVER_OPTIONS[$failover]) ? new ConstStub(self::FAILOVER_OPTIONS[$failover], $failover) : $failover,
             ]),
         ];
 
@@ -103,34 +108,34 @@ class RedisCaster
     }
 
     /**
-     * @param \Redis|\RedisArray|\RedisCluster $redis
+     * @param Redis|RedisArray|RedisCluster $redis
      */
     private static function getRedisOptions($redis, array $options = []): EnumStub
     {
-        $serializer = $redis->getOption(\Redis::OPT_SERIALIZER);
-        if (\is_array($serializer)) {
+        $serializer = $redis->getOption(Redis::OPT_SERIALIZER);
+        if (is_array($serializer)) {
             foreach ($serializer as &$v) {
-                if (isset(self::$serializer[$v])) {
-                    $v = new ConstStub(self::$serializer[$v], $v);
+                if (isset(self::SERIALIZERS[$v])) {
+                    $v = new ConstStub(self::SERIALIZERS[$v], $v);
                 }
             }
-        } elseif (isset(self::$serializer[$serializer])) {
-            $serializer = new ConstStub(self::$serializer[$serializer], $serializer);
+        } elseif (isset(self::SERIALIZERS[$serializer])) {
+            $serializer = new ConstStub(self::SERIALIZERS[$serializer], $serializer);
         }
 
-        $compression = \defined('Redis::OPT_COMPRESSION') ? $redis->getOption(\Redis::OPT_COMPRESSION) : 0;
-        if (\is_array($compression)) {
+        $compression = defined('Redis::OPT_COMPRESSION') ? $redis->getOption(Redis::OPT_COMPRESSION) : 0;
+        if (is_array($compression)) {
             foreach ($compression as &$v) {
-                if (isset(self::$compression[$v])) {
-                    $v = new ConstStub(self::$compression[$v], $v);
+                if (isset(self::COMPRESSION_MODES[$v])) {
+                    $v = new ConstStub(self::COMPRESSION_MODES[$v], $v);
                 }
             }
-        } elseif (isset(self::$compression[$compression])) {
-            $compression = new ConstStub(self::$compression[$compression], $compression);
+        } elseif (isset(self::COMPRESSION_MODES[$compression])) {
+            $compression = new ConstStub(self::COMPRESSION_MODES[$compression], $compression);
         }
 
-        $retry = \defined('Redis::OPT_SCAN') ? $redis->getOption(\Redis::OPT_SCAN) : 0;
-        if (\is_array($retry)) {
+        $retry = defined('Redis::OPT_SCAN') ? $redis->getOption(Redis::OPT_SCAN) : 0;
+        if (is_array($retry)) {
             foreach ($retry as &$v) {
                 $v = new ConstStub($v ? 'RETRY' : 'NORETRY', $v);
             }
@@ -139,11 +144,11 @@ class RedisCaster
         }
 
         $options += [
-            'TCP_KEEPALIVE' => \defined('Redis::OPT_TCP_KEEPALIVE') ? $redis->getOption(\Redis::OPT_TCP_KEEPALIVE) : 0,
-            'READ_TIMEOUT' => $redis->getOption(\Redis::OPT_READ_TIMEOUT),
+            'TCP_KEEPALIVE' => defined('Redis::OPT_TCP_KEEPALIVE') ? $redis->getOption(Redis::OPT_TCP_KEEPALIVE) : 0,
+            'READ_TIMEOUT' => $redis->getOption(Redis::OPT_READ_TIMEOUT),
             'COMPRESSION' => $compression,
             'SERIALIZER' => $serializer,
-            'PREFIX' => $redis->getOption(\Redis::OPT_PREFIX),
+            'PREFIX' => $redis->getOption(Redis::OPT_PREFIX),
             'SCAN' => $retry,
         ];
 

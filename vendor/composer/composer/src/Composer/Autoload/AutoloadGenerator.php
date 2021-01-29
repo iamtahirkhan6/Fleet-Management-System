@@ -13,19 +13,21 @@
 namespace Composer\Autoload;
 
 use Composer\Config;
-use Composer\EventDispatcher\EventDispatcher;
-use Composer\Installer\InstallationManager;
+use RuntimeException;
 use Composer\IO\IOInterface;
+use InvalidArgumentException;
+use Composer\Util\Filesystem;
+use Composer\Util\PackageSorter;
+use Composer\Script\ScriptEvents;
 use Composer\Package\AliasPackage;
+use Composer\Semver\Constraint\Bound;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Installer\InstallationManager;
 use Composer\Repository\PlatformRepository;
-use Composer\Semver\Constraint\Bound;
+use Composer\EventDispatcher\EventDispatcher;
 use Composer\Semver\Constraint\MatchAllConstraint;
-use Composer\Util\Filesystem;
-use Composer\Script\ScriptEvents;
-use Composer\Util\PackageSorter;
+use Composer\Repository\InstalledRepositoryInterface;
 
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
@@ -275,7 +277,7 @@ EOF;
 
         $excluded = null;
         if (!empty($autoloads['exclude-from-classmap'])) {
-            $excluded = '{(' . implode('|', $autoloads['exclude-from-classmap']) . ')}';
+            $excluded = $autoloads['exclude-from-classmap'];
         }
 
         $classMap = array();
@@ -398,8 +400,31 @@ EOF;
         return $classMap;
     }
 
+    /**
+     * @param ?array $excluded
+     */
     private function generateClassMap($dir, $excluded, $namespaceFilter, $autoloadType, $showAmbiguousWarning, array &$scannedFiles)
     {
+        if ($excluded) {
+            // filter excluded patterns here to only use those matching $dir
+            // exclude-from-classmap patterns are all realpath'd so we can only filter them if $dir exists so that realpath($dir) will work
+            // if $dir does not exist, it should anyway not find anything there so no trouble
+            if (file_exists($dir)) {
+                // transform $dir in the same way that exclude-from-classmap patterns are transformed so we can match them against each other
+                $dirMatch = preg_quote(strtr(realpath($dir), '\\', '/'));
+                foreach ($excluded as $index => $pattern) {
+                    // extract the constant string prefix of the pattern here, until we reach a non-escaped regex special character
+                    $pattern = preg_replace('{^(([^.+*?\[^\]$(){}=!<>|:\\\\#-]+|\\\\[.+*?\[^\]$(){}=!<>|:#-])*).*}', '$1', $pattern);
+                    // if the pattern is not a subset or superset of $dir, it is unrelated and we skip it
+                    if (0 !== strpos($pattern, $dirMatch) && 0 !== strpos($dirMatch, $pattern)) {
+                        unset($excluded[$index]);
+                    }
+                }
+            }
+
+            $excluded = $excluded ? '{(' . implode('|', $excluded) . ')}' : null;
+        }
+
         return ClassMapGenerator::createMap($dir, $excluded, $showAmbiguousWarning ? $this->io : null, $namespaceFilter, $autoloadType, $scannedFiles);
     }
 
@@ -429,7 +454,7 @@ EOF;
     /**
      * @param PackageInterface $package
      *
-     * @throws \InvalidArgumentException Throws an exception, if the package has illegal settings.
+     * @throws InvalidArgumentException Throws an exception, if the package has illegal settings.
      */
     protected function validatePackage(PackageInterface $package)
     {
@@ -437,12 +462,12 @@ EOF;
         if (!empty($autoload['psr-4']) && null !== $package->getTargetDir()) {
             $name = $package->getName();
             $package->getTargetDir();
-            throw new \InvalidArgumentException("PSR-4 autoloading is incompatible with the target-dir property, remove the target-dir in package '$name'.");
+            throw new InvalidArgumentException("PSR-4 autoloading is incompatible with the target-dir property, remove the target-dir in package '$name'.");
         }
         if (!empty($autoload['psr-4'])) {
             foreach ($autoload['psr-4'] as $namespace => $dirs) {
                 if ($namespace !== '' && '\\' !== substr($namespace, -1)) {
-                    throw new \InvalidArgumentException("psr-4 namespaces must end with a namespace separator, '$namespace' does not, use '$namespace\\'.");
+                    throw new InvalidArgumentException("psr-4 namespaces must end with a namespace separator, '$namespace' does not, use '$namespace\\'.");
                 }
             }
         }
@@ -513,14 +538,14 @@ EOF;
         if (isset($autoloads['classmap'])) {
             $excluded = null;
             if (!empty($autoloads['exclude-from-classmap'])) {
-                $excluded = '{(' . implode('|', $autoloads['exclude-from-classmap']) . ')}';
+                $excluded = $autoloads['exclude-from-classmap'];
             }
 
             $scannedFiles = array();
             foreach ($autoloads['classmap'] as $dir) {
                 try {
                     $loader->addClassMap($this->generateClassMap($dir, $excluded, null, null, false, $scannedFiles));
-                } catch (\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     $this->io->writeError('<warning>'.$e->getMessage().'</warning>');
                 }
             }
@@ -534,7 +559,7 @@ EOF;
         $includePaths = array();
 
         foreach ($packageMap as $item) {
-            list($package, $installPath) = $item;
+            [$package, $installPath] = $item;
 
             if (null !== $package->getTargetDir() && strlen($package->getTargetDir()) > 0) {
                 $installPath = substr($installPath, 0, -strlen('/'.$package->getTargetDir()));
@@ -838,7 +863,7 @@ PLATFORM_CHECK;
 
         $file .= <<<CLASSLOADER_INIT
         spl_autoload_register(array('ComposerAutoloaderInit$suffix', 'loadClassLoader'), true, $prependAutoloader);
-        self::\$loader = \$loader = new \\Composer\\Autoload\\ClassLoader();
+        self::\$loader = \$loader = new \\Composer\\Autoload\\ClassLoader(\\dirname(\\dirname(__FILE__)));
         spl_autoload_unregister(array('ComposerAutoloaderInit$suffix', 'loadClassLoader'));
 
 
@@ -1073,7 +1098,7 @@ INITIALIZER;
         $autoloads = array();
 
         foreach ($packageMap as $item) {
-            list($package, $installPath) = $item;
+            [$package, $installPath] = $item;
 
             $autoload = $package->getAutoload();
             if ($this->devMode && $package === $rootPackage) {
@@ -1222,7 +1247,7 @@ INITIALIZER;
         $paths = array();
 
         foreach ($packageMap as $item) {
-            list($package, $path) = $item;
+            [$package, $path] = $item;
             $name = $package->getName();
             $packages[$name] = $package;
             $paths[$name] = $path;

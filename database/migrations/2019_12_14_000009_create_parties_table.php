@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreatePartiesTable extends Migration
 {
@@ -13,11 +13,12 @@ class CreatePartiesTable extends Migration
      */
     public function up()
     {
-        Schema::enableForeignKeyConstraints();
         Schema::create('parties', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('pan')->nullable();
+            $table->string('razorpay_contact_id');
+            $table->unique(['pan', 'company_id']);
             $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });

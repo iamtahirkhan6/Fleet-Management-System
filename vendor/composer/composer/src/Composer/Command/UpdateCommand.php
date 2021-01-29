@@ -12,13 +12,17 @@
 
 namespace Composer\Command;
 
+use RuntimeException;
 use Composer\Composer;
+use InvalidArgumentException;
+use UnexpectedValueException;
 use Composer\DependencyResolver\Request;
 use Composer\Installer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
 use Composer\Package\Version\VersionParser;
+use Composer\Util\HttpDownloader;
 use Composer\Semver\Constraint\MultiConstraint;
 use Composer\Package\Link;
 use Symfony\Component\Console\Helper\Table;
@@ -114,6 +118,10 @@ EOT
 
         $composer = $this->getComposer(true, $input->getOption('no-plugins'));
 
+        if (!HttpDownloader::isCurlEnabled()) {
+            $io->writeError('<warning>Composer is operating significantly slower than normal because you do not have the PHP curl extension enabled.</warning>');
+        }
+
         $packages = $input->getArgument('packages');
         $reqs = $this->formatRequirements($input->getOption('with'));
 
@@ -142,7 +150,7 @@ EOT
             } elseif (isset($rootDevRequires[$package])) {
                 $rootDevRequires[$package] = $this->appendConstraintToLink($rootDevRequires[$package], $constraint);
             } else {
-                throw new \UnexpectedValueException('Only root package requirements can receive temporary constraints and '.$package.' is not one');
+                throw new UnexpectedValueException('Only root package requirements can receive temporary constraints and '.$package.' is not one');
             }
         }
         $composer->getPackage()->setRequires($rootRequires);
@@ -187,7 +195,7 @@ EOT
         $install = Installer::create($io, $composer);
 
         $config = $composer->getConfig();
-        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($config, $input);
+        [$preferSource, $preferDist] = $this->getPreferredInstallOptions($config, $input);
 
         $optimize = $input->getOption('optimize-autoloader') || $config->get('optimize-autoloader');
         $authoritative = $input->getOption('classmap-authoritative') || $config->get('classmap-authoritative');
@@ -234,7 +242,7 @@ EOT
     private function getPackagesInteractively(IOInterface $io, InputInterface $input, OutputInterface $output, Composer $composer, array $packages)
     {
         if (!$input->isInteractive()) {
-            throw new \InvalidArgumentException('--interactive cannot be used in non-interactive terminals.');
+            throw new InvalidArgumentException('--interactive cannot be used in non-interactive terminals.');
         }
 
         $requires = array_merge(
@@ -274,7 +282,7 @@ EOT
 
         $packages = array_filter($packages);
         if (!$packages) {
-            throw new \InvalidArgumentException('You must enter minimum one package.');
+            throw new InvalidArgumentException('You must enter minimum one package.');
         }
 
         $table = new Table($output);
@@ -291,7 +299,7 @@ EOT
             return $packages;
         }
 
-        throw new \RuntimeException('Installation aborted.');
+        throw new RuntimeException('Installation aborted.');
     }
 
     private function appendConstraintToLink(Link $link, $constraint)

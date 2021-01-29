@@ -12,6 +12,10 @@
 
 namespace Composer;
 
+use Exception;
+use RuntimeException;
+use InvalidArgumentException;
+use UnexpectedValueException;
 use Composer\Config\JsonConfigSource;
 use Composer\Json\JsonFile;
 use Composer\IO\IOInterface;
@@ -50,7 +54,7 @@ use Seld\JsonLint\JsonParser;
 class Factory
 {
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      * @return string
      */
     protected static function getHomeDir()
@@ -62,7 +66,7 @@ class Factory
 
         if (Platform::isWindows()) {
             if (!getenv('APPDATA')) {
-                throw new \RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
+                throw new RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
             }
 
             return rtrim(strtr(getenv('APPDATA'), '\\', '/'), '/') . '/Composer';
@@ -85,7 +89,7 @@ class Factory
 
         // select first dir which exists of: $XDG_CONFIG_HOME/composer or ~/.composer
         foreach ($dirs as $dir) {
-            if (is_dir($dir)) {
+            if (Silencer::call('is_dir', $dir)) {
                 return $dir;
             }
         }
@@ -218,7 +222,7 @@ class Factory
             $authData = json_decode($composerAuthEnv, true);
 
             if (null === $authData) {
-                throw new \UnexpectedValueException('COMPOSER_AUTH environment variable is malformed, should be a valid JSON object');
+                throw new UnexpectedValueException('COMPOSER_AUTH environment variable is malformed, should be a valid JSON object');
             }
 
             if ($io && $io->isDebug()) {
@@ -271,8 +275,8 @@ class Factory
      *                                                   read from the default filename
      * @param  bool                      $disablePlugins Whether plugins should not be loaded
      * @param  bool                      $fullLoad       Whether to initialize everything or only main project stuff (used when loading the global composer)
-     * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
+     * @throws InvalidArgumentException
+     * @throws UnexpectedValueException
      * @return Composer
      */
     public function createComposer(IOInterface $io, $localConfig = null, $disablePlugins = false, $cwd = null, $fullLoad = true)
@@ -295,8 +299,8 @@ class Factory
                 } else {
                     $message = 'Composer could not find the config file: '.$localConfig;
                 }
-                $instructions = 'To initialize a project, please create a composer.json file as described in the https://getcomposer.org/ "Getting Started" section';
-                throw new \InvalidArgumentException($message.PHP_EOL.$instructions);
+                $instructions = $fullLoad ? 'To initialize a project, please create a composer.json file as described in the https://getcomposer.org/ "Getting Started" section' : '';
+                throw new InvalidArgumentException($message.PHP_EOL.$instructions);
             }
 
             $file->validateSchema(JsonFile::LAX_SCHEMA);
@@ -315,7 +319,7 @@ class Factory
         $config = static::createConfig($io, $cwd);
         $config->merge($localConfig);
         if (isset($composerFile)) {
-            $io->writeError('Loading config file ' . $composerFile, true, IOInterface::DEBUG);
+            $io->writeError('Loading config file ' . $composerFile .' ('.realpath($composerFile).')', true, IOInterface::DEBUG);
             $config->setConfigSource(new JsonConfigSource(new JsonFile(realpath($composerFile), null, $io)));
 
             $localAuthFile = new JsonFile(dirname(realpath($composerFile)) . '/auth.json', null, $io);
@@ -456,7 +460,7 @@ class Factory
         $composer = null;
         try {
             $composer = $this->createComposer($io, $config->get('home') . '/composer.json', $disablePlugins, $config->get('home'), $fullLoad);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->writeError('Failed to initialize global composer: '.$e->getMessage(), true, IOInterface::DEBUG);
         }
 
@@ -659,7 +663,7 @@ class Factory
             }
         }
 
-        if (is_dir('/etc/xdg')) {
+        if (Silencer::call('is_dir', '/etc/xdg')) {
             return true;
         }
 
@@ -667,14 +671,14 @@ class Factory
     }
 
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      * @return string
      */
     private static function getUserDir()
     {
         $home = getenv('HOME');
         if (!$home) {
-            throw new \RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
+            throw new RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
         }
 
         return rtrim(strtr($home, '\\', '/'), '/');

@@ -11,9 +11,20 @@
 
 namespace Symfony\Component\ErrorHandler\Exception;
 
+use Throwable;
+use Exception;
+use ArrayObject;
+use __PHP_Incomplete_Class;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use function is_int;
+use function is_bool;
+use function is_float;
+use function is_array;
+use function get_class;
+use function is_object;
+use function is_resource;
 
 /**
  * FlattenException wraps a PHP Error or Exception to be able to serialize it.
@@ -40,7 +51,7 @@ class FlattenException
     /**
      * @return static
      */
-    public static function create(\Exception $exception, $statusCode = null, array $headers = []): self
+    public static function create(Exception $exception, $statusCode = null, array $headers = []): self
     {
         return static::createFromThrowable($exception, $statusCode, $headers);
     }
@@ -48,7 +59,7 @@ class FlattenException
     /**
      * @return static
      */
-    public static function createFromThrowable(\Throwable $exception, int $statusCode = null, array $headers = []): self
+    public static function createFromThrowable(Throwable $exception, int $statusCode = null, array $headers = []): self
     {
         $e = new static();
         $e->setMessage($exception->getMessage());
@@ -81,7 +92,7 @@ class FlattenException
 
         $previous = $exception->getPrevious();
 
-        if ($previous instanceof \Throwable) {
+        if ($previous instanceof Throwable) {
             $e->setPrevious(static::createFromThrowable($previous));
         }
 
@@ -265,7 +276,7 @@ class FlattenException
     /**
      * @return $this
      */
-    public function setTraceFromThrowable(\Throwable $throwable): self
+    public function setTraceFromThrowable(Throwable $throwable): self
     {
         $this->traceAsString = $throwable->getTraceAsString();
 
@@ -300,11 +311,11 @@ class FlattenException
             $this->trace[] = [
                 'namespace' => $namespace,
                 'short_class' => $class,
-                'class' => isset($entry['class']) ? $entry['class'] : '',
-                'type' => isset($entry['type']) ? $entry['type'] : '',
-                'function' => isset($entry['function']) ? $entry['function'] : null,
-                'file' => isset($entry['file']) ? $entry['file'] : null,
-                'line' => isset($entry['line']) ? $entry['line'] : null,
+                'class' => $entry['class'] ?? '',
+                'type' => $entry['type'] ?? '',
+                'function' => $entry['function'] ?? null,
+                'file' => $entry['file'] ?? null,
+                'line' => $entry['line'] ?? null,
                 'args' => isset($entry['args']) ? $this->flattenArgs($entry['args']) : [],
             ];
         }
@@ -319,12 +330,12 @@ class FlattenException
             if (++$count > 1e4) {
                 return ['array', '*SKIPPED over 10000 entries*'];
             }
-            if ($value instanceof \__PHP_Incomplete_Class) {
+            if ($value instanceof __PHP_Incomplete_Class) {
                 // is_object() returns false on PHP<=7.1
                 $result[$key] = ['incomplete-object', $this->getClassNameFromIncomplete($value)];
-            } elseif (\is_object($value)) {
-                $result[$key] = ['object', \get_class($value)];
-            } elseif (\is_array($value)) {
+            } elseif (is_object($value)) {
+                $result[$key] = ['object', get_class($value)];
+            } elseif (is_array($value)) {
                 if ($level > 10) {
                     $result[$key] = ['array', '*DEEP NESTED ARRAY*'];
                 } else {
@@ -332,13 +343,13 @@ class FlattenException
                 }
             } elseif (null === $value) {
                 $result[$key] = ['null', null];
-            } elseif (\is_bool($value)) {
+            } elseif (is_bool($value)) {
                 $result[$key] = ['boolean', $value];
-            } elseif (\is_int($value)) {
+            } elseif (is_int($value)) {
                 $result[$key] = ['integer', $value];
-            } elseif (\is_float($value)) {
+            } elseif (is_float($value)) {
                 $result[$key] = ['float', $value];
-            } elseif (\is_resource($value)) {
+            } elseif (is_resource($value)) {
                 $result[$key] = ['resource', get_resource_type($value)];
             } else {
                 $result[$key] = ['string', (string) $value];
@@ -348,9 +359,9 @@ class FlattenException
         return $result;
     }
 
-    private function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value): string
+    private function getClassNameFromIncomplete(__PHP_Incomplete_Class $value): string
     {
-        $array = new \ArrayObject($value);
+        $array = new ArrayObject($value);
 
         return $array['__PHP_Incomplete_Class_Name'];
     }

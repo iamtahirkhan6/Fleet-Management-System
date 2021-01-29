@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\VarDumper\Dumper;
 
+use RuntimeException;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\DumperInterface;
+use function is_string;
+use function is_callable;
+use function function_exists;
+use const LC_NUMERIC;
 
 /**
  * Abstract mechanism for dumping a Data object.
@@ -49,7 +54,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
         $this->decimalPoint = localeconv();
         $this->decimalPoint = $this->decimalPoint['decimal_point'];
         $this->setOutput($output ?: static::$defaultOutput);
-        if (!$output && \is_string(static::$defaultOutput)) {
+        if (!$output && is_string(static::$defaultOutput)) {
             static::$defaultOutput = $this->outputStream;
         }
     }
@@ -65,12 +70,12 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
     {
         $prev = null !== $this->outputStream ? $this->outputStream : $this->lineDumper;
 
-        if (\is_callable($output)) {
+        if (is_callable($output)) {
             $this->outputStream = null;
             $this->lineDumper = $output;
         } else {
-            if (\is_string($output)) {
-                $output = fopen($output, 'wb');
+            if (is_string($output)) {
+                $output = fopen($output, 'w');
             }
             $this->outputStream = $output;
             $this->lineDumper = [$this, 'echoLine'];
@@ -123,12 +128,12 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
         $this->decimalPoint = localeconv();
         $this->decimalPoint = $this->decimalPoint['decimal_point'];
 
-        if ($locale = $this->flags & (self::DUMP_COMMA_SEPARATOR | self::DUMP_TRAILING_COMMA) ? setlocale(\LC_NUMERIC, 0) : null) {
-            setlocale(\LC_NUMERIC, 'C');
+        if ($locale = $this->flags & (self::DUMP_COMMA_SEPARATOR | self::DUMP_TRAILING_COMMA) ? setlocale(LC_NUMERIC, 0) : null) {
+            setlocale(LC_NUMERIC, 'C');
         }
 
         if ($returnDump = true === $output) {
-            $output = fopen('php://memory', 'r+b');
+            $output = fopen('php://memory', 'r+');
         }
         if ($output) {
             $prevOutput = $this->setOutput($output);
@@ -148,7 +153,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
                 $this->setOutput($prevOutput);
             }
             if ($locale) {
-                setlocale(\LC_NUMERIC, $locale);
+                setlocale(LC_NUMERIC, $locale);
             }
         }
 
@@ -188,8 +193,8 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
             return $s;
         }
 
-        if (!\function_exists('iconv')) {
-            throw new \RuntimeException('Unable to convert a non-UTF-8 string to UTF-8: required function iconv() does not exist. You should install ext-iconv or symfony/polyfill-iconv.');
+        if (!function_exists('iconv')) {
+            throw new RuntimeException('Unable to convert a non-UTF-8 string to UTF-8: required function iconv() does not exist. You should install ext-iconv or symfony/polyfill-iconv.');
         }
 
         if (false !== $c = @iconv($this->charset, 'UTF-8', $s)) {

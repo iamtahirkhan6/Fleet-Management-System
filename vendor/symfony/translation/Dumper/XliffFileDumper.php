@@ -11,8 +11,14 @@
 
 namespace Symfony\Component\Translation\Dumper;
 
+use Locale;
+use Traversable;
+use DOMDocument;
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\MessageCatalogue;
+use function strlen;
+use function is_array;
+use function array_key_exists;
 
 /**
  * XliffFileDumper generates xliff files from a message catalogue.
@@ -27,14 +33,14 @@ class XliffFileDumper extends FileDumper
     public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
     {
         $xliffVersion = '1.2';
-        if (\array_key_exists('xliff_version', $options)) {
+        if (array_key_exists('xliff_version', $options)) {
             $xliffVersion = $options['xliff_version'];
         }
 
-        if (\array_key_exists('default_locale', $options)) {
+        if (array_key_exists('default_locale', $options)) {
             $defaultLocale = $options['default_locale'];
         } else {
-            $defaultLocale = \Locale::getDefault();
+            $defaultLocale = Locale::getDefault();
         }
 
         if ('1.2' === $xliffVersion) {
@@ -58,11 +64,11 @@ class XliffFileDumper extends FileDumper
     private function dumpXliff1(string $defaultLocale, MessageCatalogue $messages, ?string $domain, array $options = [])
     {
         $toolInfo = ['tool-id' => 'symfony', 'tool-name' => 'Symfony'];
-        if (\array_key_exists('tool_info', $options)) {
+        if (array_key_exists('tool_info', $options)) {
             $toolInfo = array_merge($toolInfo, $options['tool_info']);
         }
 
-        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom = new DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
 
         $xliff = $dom->appendChild($dom->createElement('xliff'));
@@ -131,7 +137,7 @@ class XliffFileDumper extends FileDumper
 
     private function dumpXliff2(string $defaultLocale, MessageCatalogue $messages, ?string $domain)
     {
-        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom = new DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
 
         $xliff = $dom->appendChild($dom->createElement('xliff'));
@@ -141,7 +147,7 @@ class XliffFileDumper extends FileDumper
         $xliff->setAttribute('trgLang', str_replace('_', '-', $messages->getLocale()));
 
         $xliffFile = $xliff->appendChild($dom->createElement('file'));
-        if (MessageCatalogue::INTL_DOMAIN_SUFFIX === substr($domain, -($suffixLength = \strlen(MessageCatalogue::INTL_DOMAIN_SUFFIX)))) {
+        if (MessageCatalogue::INTL_DOMAIN_SUFFIX === substr($domain, -($suffixLength = strlen(MessageCatalogue::INTL_DOMAIN_SUFFIX)))) {
             $xliffFile->setAttribute('id', substr($domain, 0, -$suffixLength).'.'.$messages->getLocale());
         } else {
             $xliffFile->setAttribute('id', $domain.'.'.$messages->getLocale());
@@ -151,7 +157,7 @@ class XliffFileDumper extends FileDumper
             $translation = $dom->createElement('unit');
             $translation->setAttribute('id', strtr(substr(base64_encode(hash('sha256', $source, true)), 0, 7), '/+', '._'));
             $name = $source;
-            if (\strlen($source) > 80) {
+            if (strlen($source) > 80) {
                 $name = substr(md5($source), -7);
             }
             $translation->setAttribute('name', $name);
@@ -162,7 +168,7 @@ class XliffFileDumper extends FileDumper
                 $notesElement = $dom->createElement('notes');
                 foreach ($metadata['notes'] as $note) {
                     $n = $dom->createElement('note');
-                    $n->appendChild($dom->createTextNode(isset($note['content']) ? $note['content'] : ''));
+                    $n->appendChild($dom->createTextNode($note['content'] ?? ''));
                     unset($note['content']);
 
                     foreach ($note as $name => $value) {
@@ -198,6 +204,6 @@ class XliffFileDumper extends FileDumper
 
     private function hasMetadataArrayInfo(string $key, array $metadata = null): bool
     {
-        return null !== $metadata && \array_key_exists($key, $metadata) && ($metadata[$key] instanceof \Traversable || \is_array($metadata[$key]));
+        return null !== $metadata && array_key_exists($key, $metadata) && ($metadata[$key] instanceof Traversable || is_array($metadata[$key]));
     }
 }

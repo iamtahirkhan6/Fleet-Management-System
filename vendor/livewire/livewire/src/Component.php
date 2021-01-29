@@ -2,6 +2,7 @@
 
 namespace Livewire;
 
+use Exception;
 use Illuminate\View\View;
 use BadMethodCallException;
 use Illuminate\Support\Str;
@@ -9,8 +10,8 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Container\Container;
-use Livewire\Exceptions\CannotUseReservedLivewireComponentProperties;
 use Livewire\Exceptions\PropertyNotFoundException;
+use Livewire\Exceptions\CannotUseReservedLivewireComponentProperties;
 
 abstract class Component
 {
@@ -58,7 +59,7 @@ abstract class Component
             'view' => $this->initialLayoutConfiguration['view'] ?? config('livewire.layout', 'layouts.app'),
             'params' => $this->initialLayoutConfiguration['params'] ?? [],
             'slotOrSection' => $this->initialLayoutConfiguration['slotOrSection'] ?? [
-                'extends' => 'content', 'component' => 'default',
+                'extends' => 'content', 'component' => 'slot',
             ][$layoutType],
             'manager' => $manager,
         ]);
@@ -123,7 +124,7 @@ abstract class Component
         }
 
         throw_unless($view instanceof View,
-            new \Exception('"render" method on ['.get_class($this).'] must return instance of ['.View::class.']'));
+            new Exception('"render" method on ['.get_class($this).'] must return instance of ['.View::class.']'));
 
         // Get the layout config from the view.
         if ($view->livewireLayout) {

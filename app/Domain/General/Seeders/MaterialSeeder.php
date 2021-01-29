@@ -9,12 +9,11 @@ class MaterialSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
      * @return void
      */
     public function run()
     {
-        Material::create(['name' => 'Iron']);
-        Material::create(['name' => 'Coal']);
+        Material::create([ 'name' => 'Iron' ]);
+        Material::create([ 'name' => 'Coal' ]);
     }
 }

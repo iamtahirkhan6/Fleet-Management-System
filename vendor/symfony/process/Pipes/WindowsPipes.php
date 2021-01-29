@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\Process\Pipes;
 
+use BadMethodCallException;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
+use function strlen;
+use const LOCK_UN;
+use const LOCK_NB;
+use const LOCK_EX;
 
 /**
  * WindowsPipes implementation uses temporary files as handles.
@@ -62,17 +67,17 @@ class WindowsPipes extends AbstractPipes
                         restore_error_handler();
                         throw new RuntimeException('A temporary file could not be opened to write the process output: '.$lastError);
                     }
-                    if (!flock($h, \LOCK_EX | \LOCK_NB)) {
+                    if (!flock($h, LOCK_EX | LOCK_NB)) {
                         continue 2;
                     }
                     if (isset($this->lockHandles[$pipe])) {
-                        flock($this->lockHandles[$pipe], \LOCK_UN);
+                        flock($this->lockHandles[$pipe], LOCK_UN);
                         fclose($this->lockHandles[$pipe]);
                     }
                     $this->lockHandles[$pipe] = $h;
 
                     if (!fclose(fopen($file, 'w')) || !$h = fopen($file, 'r')) {
-                        flock($this->lockHandles[$pipe], \LOCK_UN);
+                        flock($this->lockHandles[$pipe], LOCK_UN);
                         fclose($this->lockHandles[$pipe]);
                         unset($this->lockHandles[$pipe]);
                         continue 2;
@@ -86,6 +91,16 @@ class WindowsPipes extends AbstractPipes
         }
 
         parent::__construct($input);
+    }
+
+    public function __sleep()
+    {
+        throw new BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    public function __wakeup()
+    {
+        throw new BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
 
     public function __destruct()
@@ -146,13 +161,13 @@ class WindowsPipes extends AbstractPipes
             $data = stream_get_contents($fileHandle, -1, $this->readBytes[$type]);
 
             if (isset($data[0])) {
-                $this->readBytes[$type] += \strlen($data);
+                $this->readBytes[$type] += strlen($data);
                 $read[$type] = $data;
             }
             if ($close) {
                 ftruncate($fileHandle, 0);
                 fclose($fileHandle);
-                flock($this->lockHandles[$type], \LOCK_UN);
+                flock($this->lockHandles[$type], LOCK_UN);
                 fclose($this->lockHandles[$type]);
                 unset($this->fileHandles[$type], $this->lockHandles[$type]);
             }
@@ -186,7 +201,7 @@ class WindowsPipes extends AbstractPipes
         foreach ($this->fileHandles as $type => $handle) {
             ftruncate($handle, 0);
             fclose($handle);
-            flock($this->lockHandles[$type], \LOCK_UN);
+            flock($this->lockHandles[$type], LOCK_UN);
             fclose($this->lockHandles[$type]);
         }
         $this->fileHandles = $this->lockHandles = [];

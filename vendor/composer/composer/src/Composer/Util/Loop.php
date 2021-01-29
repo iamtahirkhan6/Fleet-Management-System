@@ -12,8 +12,10 @@
 
 namespace Composer\Util;
 
+use Exception;
 use React\Promise\Promise;
 use Symfony\Component\Console\Helper\ProgressBar;
+use function React\Promise\all;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -58,10 +60,10 @@ class Loop
 
     public function wait(array $promises, ProgressBar $progress = null)
     {
-        /** @var \Exception|null */
+        /** @var Exception|null */
         $uncaught = null;
 
-        \React\Promise\all($promises)->then(
+        all($promises)->then(
             function () {
             },
             function ($e) use (&$uncaught) {
@@ -85,6 +87,7 @@ class Loop
             $progress->start($totalJobs);
         }
 
+        $lastUpdate = 0;
         while (true) {
             $activeJobs = 0;
 
@@ -95,15 +98,19 @@ class Loop
                 $activeJobs += $this->processExecutor->countActiveJobs();
             }
 
-            if ($progress) {
+            if ($progress && microtime(true) - $lastUpdate > 0.1) {
+                $lastUpdate = microtime(true);
                 $progress->setProgress($progress->getMaxSteps() - $activeJobs);
             }
 
             if (!$activeJobs) {
                 break;
             }
+        }
 
-            usleep(5000);
+        // as we skip progress updates if they are too quick, make sure we do one last one here at 100%
+        if ($progress) {
+            $progress->setProgress($progress->getMaxSteps());
         }
 
         unset($this->currentPromises[$waitIndex]);

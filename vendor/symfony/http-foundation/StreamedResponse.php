@@ -11,17 +11,13 @@
 
 namespace Symfony\Component\HttpFoundation;
 
-/**
+use LogicException;/**
  * StreamedResponse represents a streamed HTTP response.
- *
  * A StreamedResponse uses a callback for its content.
- *
  * The callback should use the standard PHP functions like echo
  * to stream the response back to the client. The flush() function
  * can also be used if needed.
- *
  * @see flush()
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class StreamedResponse extends Response
@@ -52,7 +48,7 @@ class StreamedResponse extends Response
      */
     public static function create($callback = null, int $status = 200, array $headers = [])
     {
-        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, \get_called_class());
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
 
         return new static($callback, $status, $headers);
     }
@@ -103,7 +99,7 @@ class StreamedResponse extends Response
         $this->streamed = true;
 
         if (null === $this->callback) {
-            throw new \LogicException('The Response callback must not be null.');
+            throw new LogicException('The Response callback must not be null.');
         }
 
         ($this->callback)();
@@ -114,14 +110,14 @@ class StreamedResponse extends Response
     /**
      * {@inheritdoc}
      *
-     * @throws \LogicException when the content is not null
+     * @throws LogicException when the content is not null
      *
      * @return $this
      */
     public function setContent(?string $content)
     {
         if (null !== $content) {
-            throw new \LogicException('The content cannot be set on a StreamedResponse instance.');
+            throw new LogicException('The content cannot be set on a StreamedResponse instance.');
         }
 
         $this->streamed = true;

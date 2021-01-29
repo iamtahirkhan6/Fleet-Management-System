@@ -4,12 +4,11 @@ namespace App\Http\Livewire\Models\Offices\Expenses;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Domain\Expense\Models\Expense;
 use Livewire\WithFileUploads;
-use App\Models\ExpenseReceipt;
+use App\Domain\Expense\Models\Expense;
+use app\Domain\Payment\Models\PaymentMethod;
 use App\Domain\Expense\Models\ExpenseCategory;
 use App\Domain\Expense\Models\ExpenseIndividual;
-use App\Domain\Payment\Models\PaymentMethod;
 
 class Create extends Component
 {

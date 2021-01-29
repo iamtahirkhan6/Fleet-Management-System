@@ -5,8 +5,16 @@ declare(strict_types=1);
 namespace Dotenv\Util;
 
 use GrahamCampbell\ResultType\Error;
+use GrahamCampbell\ResultType\Result;
 use GrahamCampbell\ResultType\Success;
 use PhpOption\Option;
+use function sprintf;
+use function in_array;
+use function mb_strlen;
+use function mb_substr;
+use function mb_strpos;
+use function mb_list_encodings;
+use function mb_convert_encoding;
 
 /**
  * @internal
@@ -31,41 +39,21 @@ final class Str
      * @param string      $input
      * @param string|null $encoding
      *
-     * @return \GrahamCampbell\ResultType\Result<string,string>
+     * @return Result<string,string>
      */
     public static function utf8(string $input, string $encoding = null)
     {
-        if ($encoding !== null && !\in_array($encoding, \mb_list_encodings(), true)) {
-            /** @var \GrahamCampbell\ResultType\Result<string,string> */
+        if ($encoding !== null && !in_array($encoding, mb_list_encodings(), true)) {
+            /** @var Result<string,string> */
             return Error::create(
-                \sprintf('Illegal character encoding [%s] specified.', $encoding)
+                sprintf('Illegal character encoding [%s] specified.', $encoding)
             );
         }
 
-        /** @var \GrahamCampbell\ResultType\Result<string,string> */
+        /** @var Result<string,string> */
         return Success::create(
-            $encoding === null ? @\mb_convert_encoding($input, 'UTF-8') : @\mb_convert_encoding($input, 'UTF-8', $encoding)
+            $encoding === null ? @mb_convert_encoding($input, 'UTF-8') : @mb_convert_encoding($input, 'UTF-8', $encoding)
         );
-    }
-
-    /**
-     * Split the given string into an array of characters.
-     *
-     * @param string $input
-     *
-     * @return \GrahamCampbell\ResultType\Result<string[],string>
-     */
-    public static function split(string $input)
-    {
-        $result = \mb_str_split($input, 1, 'UTF-8');
-
-        if ($result === false) {
-            /** @var \GrahamCampbell\ResultType\Result<string[],string> */
-            return Error::create('Multibyte split failed.');
-        }
-
-        /** @var \GrahamCampbell\ResultType\Result<string[],string> */
-        return Success::create($result);
     }
 
     /**
@@ -74,12 +62,12 @@ final class Str
      * @param string $haystack
      * @param string $needle
      *
-     * @return \PhpOption\Option<int>
+     * @return Option
      */
     public static function pos(string $haystack, string $needle)
     {
-        /** @var \PhpOption\Option<int> */
-        return Option::fromValue(\mb_strpos($haystack, $needle, 0, 'UTF-8'), false);
+        /** @var Option */
+        return Option::fromValue(mb_strpos($haystack, $needle, 0, 'UTF-8'), false);
     }
 
     /**
@@ -93,7 +81,7 @@ final class Str
      */
     public static function substr(string $input, int $start, int $length = null)
     {
-        return \mb_substr($input, $start, $length, 'UTF-8');
+        return mb_substr($input, $start, $length, 'UTF-8');
     }
 
     /**
@@ -105,6 +93,6 @@ final class Str
      */
     public static function len(string $input)
     {
-        return \mb_strlen($input, 'UTF-8');
+        return mb_strlen($input, 'UTF-8');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateProjectsTable extends Migration
 {
@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->foreignId('mine_id')->references('id')->on('mines');
             $table->foreignId('unloading_point_id')->references('id')->on('unloading_points');
             $table->foreignId('consignee_id')->references('id')->on('consignees');
-            $table->foreignId('company_id')->references('id')->on('companies');
+            $table->foreignId('company_id')->constrained('companies');
             $table->boolean('status');
 
             $table->unique(['material_id', 'mine_id', 'unloading_point_id', 'consignee_id', 'company_id', 'status'], 'unique_project');

@@ -5,8 +5,8 @@ namespace Illuminate\Events;
 use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CallQueuedListener implements ShouldQueue
 {
@@ -60,6 +60,13 @@ class CallQueuedListener implements ShouldQueue
      * @var int
      */
     public $timeout;
+
+    /**
+     * Indicates if the job should be encrypted.
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
 
     /**
      * Create a new job instance.

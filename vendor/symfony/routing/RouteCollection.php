@@ -11,7 +11,16 @@
 
 namespace Symfony\Component\Routing;
 
+use Countable;
+use ArrayIterator;
+use ReflectionMethod;
+use IteratorAggregate;
+use Mockery\MockInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\Prophecy\ProphecySubjectInterface;
 use Symfony\Component\Config\Resource\ResourceInterface;
+use function count;
+use function func_num_args;
 
 /**
  * A RouteCollection represents a set of Route instances.
@@ -23,7 +32,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class RouteCollection implements \IteratorAggregate, \Countable
+class RouteCollection implements IteratorAggregate, Countable
 {
     /**
      * @var Route[]
@@ -54,11 +63,11 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * @see all()
      *
-     * @return \ArrayIterator|Route[] An \ArrayIterator object for iterating over routes
+     * @return ArrayIterator|Route[] An \ArrayIterator object for iterating over routes
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->all());
+        return new ArrayIterator($this->all());
     }
 
     /**
@@ -68,7 +77,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      */
     public function count()
     {
-        return \count($this->routes);
+        return count($this->routes);
     }
 
     /**
@@ -76,7 +85,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      */
     public function add(string $name, Route $route/*, int $priority = 0*/)
     {
-        if (\func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface && !$this instanceof \Mockery\MockInterface) {
+        if (func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof MockObject && !$this instanceof ProphecySubjectInterface && !$this instanceof MockInterface) {
             trigger_deprecation('symfony/routing', '5.1', 'The "%s()" method will have a new "int $priority = 0" argument in version 6.0, not defining it is deprecated.', __METHOD__);
         }
 
@@ -84,7 +93,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
         $this->routes[$name] = $route;
 
-        if ($priority = 3 <= \func_num_args() ? func_get_arg(2) : 0) {
+        if ($priority = 3 <= func_num_args() ? func_get_arg(2) : 0) {
             $this->priorities[$name] = $priority;
         }
     }
@@ -114,7 +123,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      */
     public function get(string $name)
     {
-        return isset($this->routes[$name]) ? $this->routes[$name] : null;
+        return $this->routes[$name] ?? null;
     }
 
     /**

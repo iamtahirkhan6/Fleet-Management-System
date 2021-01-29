@@ -12,6 +12,8 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Psr\Log\LoggerInterface;
+use UnexpectedValueException;
+use InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,6 +33,8 @@ use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RequestContextAwareInterface;
+use function dirname;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Initializes the context from the request and sets request attributes based on a matching route.
@@ -54,16 +58,16 @@ class RouterListener implements EventSubscriberInterface
      * @param RequestContext|null                         $context    The RequestContext (can be null when $matcher implements RequestContextAwareInterface)
      * @param string                                      $projectDir
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($matcher, RequestStack $requestStack, RequestContext $context = null, LoggerInterface $logger = null, string $projectDir = null, bool $debug = true)
     {
         if (!$matcher instanceof UrlMatcherInterface && !$matcher instanceof RequestMatcherInterface) {
-            throw new \InvalidArgumentException('Matcher must either implement UrlMatcherInterface or RequestMatcherInterface.');
+            throw new InvalidArgumentException('Matcher must either implement UrlMatcherInterface or RequestMatcherInterface.');
         }
 
         if (null === $context && !$matcher instanceof RequestContextAwareInterface) {
-            throw new \InvalidArgumentException('You must either pass a RequestContext or the matcher must implement RequestContextAwareInterface.');
+            throw new InvalidArgumentException('You must either pass a RequestContext or the matcher must implement RequestContextAwareInterface.');
         }
 
         $this->matcher = $matcher;
@@ -79,7 +83,7 @@ class RouterListener implements EventSubscriberInterface
         if (null !== $request) {
             try {
                 $this->context->fromRequest($request);
-            } catch (\UnexpectedValueException $e) {
+            } catch (UnexpectedValueException $e) {
                 throw new BadRequestHttpException($e->getMessage(), $e, $e->getCode());
             }
         }
@@ -116,7 +120,7 @@ class RouterListener implements EventSubscriberInterface
 
             if (null !== $this->logger) {
                 $this->logger->info('Matched route "{route}".', [
-                    'route' => isset($parameters['_route']) ? $parameters['_route'] : 'n/a',
+                    'route' => $parameters['_route'] ?? 'n/a',
                     'route_parameters' => $parameters,
                     'request_uri' => $request->getUri(),
                     'method' => $request->getMethod(),
@@ -164,11 +168,11 @@ class RouterListener implements EventSubscriberInterface
     private function createWelcomeResponse(): Response
     {
         $version = Kernel::VERSION;
-        $projectDir = realpath($this->projectDir).\DIRECTORY_SEPARATOR;
+        $projectDir = realpath($this->projectDir). DIRECTORY_SEPARATOR;
         $docVersion = substr(Kernel::VERSION, 0, 3);
 
         ob_start();
-        include \dirname(__DIR__).'/Resources/welcome.html.php';
+        include dirname(__DIR__).'/Resources/welcome.html.php';
 
         return new Response(ob_get_clean(), Response::HTTP_NOT_FOUND);
     }

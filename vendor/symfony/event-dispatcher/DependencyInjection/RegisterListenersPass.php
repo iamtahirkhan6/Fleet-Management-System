@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\EventDispatcher\DependencyInjection;
 
+use ReflectionNamedType;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\Event;
+use function count;
 
 /**
  * Compiler pass to register tagged services for an event dispatcher.
@@ -83,7 +85,7 @@ class RegisterListenersPass implements CompilerPassInterface
             $noPreload = 0;
 
             foreach ($events as $event) {
-                $priority = isset($event['priority']) ? $event['priority'] : 0;
+                $priority = $event['priority'] ?? 0;
 
                 if (!isset($event['event'])) {
                     if ($container->getDefinition($id)->hasTag($this->subscriberTag)) {
@@ -122,7 +124,7 @@ class RegisterListenersPass implements CompilerPassInterface
                 }
             }
 
-            if ($noPreload && \count($events) === $noPreload) {
+            if ($noPreload && count($events) === $noPreload) {
                 $container->getDefinition($id)->addTag($this->noPreloadTagName);
             }
         }
@@ -172,7 +174,7 @@ class RegisterListenersPass implements CompilerPassInterface
                     ++$noPreload;
                 }
             }
-            if ($noPreload && \count($extractingDispatcher->listeners) === $noPreload) {
+            if ($noPreload && count($extractingDispatcher->listeners) === $noPreload) {
                 $container->getDefinition($id)->addTag($this->noPreloadTagName);
             }
             $extractingDispatcher->listeners = [];
@@ -187,7 +189,7 @@ class RegisterListenersPass implements CompilerPassInterface
             || !($r = $container->getReflectionClass($class, false))
             || !$r->hasMethod($method)
             || 1 > ($m = $r->getMethod($method))->getNumberOfParameters()
-            || !($type = $m->getParameters()[0]->getType()) instanceof \ReflectionNamedType
+            || !($type = $m->getParameters()[0]->getType()) instanceof ReflectionNamedType
             || $type->isBuiltin()
             || Event::class === ($name = $type->getName())
         ) {

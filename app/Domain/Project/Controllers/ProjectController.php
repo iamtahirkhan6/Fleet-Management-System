@@ -2,43 +2,43 @@
 
 namespace App\Domain\Project\Controllers;
 
-use App\Domain\Project\Models\Project;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Domain\Project\Models\Project;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return void
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.projects.index')
-            ->with('title', 'Projects')
-            ->with('description', 'View all the projects of your company');
+       if (!Auth::user()->isAbleTo("projects-read")) return abort(403);
+        return view('page')->with('livewire', 'models.projects.index')->with('title', 'Projects')->with('description', 'View all the projects of your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
-        return view('page')
-            ->with('livewire', 'models.projects.create')
-            ->with('title', 'Create Project')
-            ->with('description', 'Create a new project for your company');
+        if (!Auth::user()->isAbleTo("projects-create")) return abort(403);
+        return view('page')->with('livewire', 'models.projects.create')->with('title', 'Create Project')->with('description', 'Create a new project for your company');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -48,24 +48,22 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Domain\Project\Models\Project $project
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Project $project
+     *
+     * @return Application|Factory|View|void
      */
     public function show(Project $project)
     {
-        return view('page')
-            ->with('livewire', 'models.projects.show')
-            ->with('title', 'View Project')
-            ->with('description', 'View all the details regarding the project')
-            ->with('key', 'project')
-            ->with('val', $project);
+        if (!Auth::user()->isAbleTo("projects-read")) return abort(403);
+        return view('page')->with('livewire', 'models.projects.show')->with('title', 'View Project')->with('description', 'View all the details regarding the project')->with('key', 'project')->with('val', $project);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Domain\Project\Models\Project $project
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Project $project
+     *
+     * @return Application|Factory|View
      */
     public function edit(Project $project)
     {
@@ -75,9 +73,10 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Domain\Project\Models\Project $project
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return Response
      */
     public function update(Request $request, Project $project)
     {
@@ -87,8 +86,9 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Domain\Project\Models\Project $project
-     * @return \Illuminate\Http\Response
+     * @param Project $project
+     *
+     * @return Response
      */
     public function destroy(Project $project)
     {

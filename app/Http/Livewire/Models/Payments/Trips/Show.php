@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Models\Payments\Trips;
 
 use Livewire\Component;
 use App\Helper\Helper;
-use App\Domain\Trip\Models\TripPaymentTransaction;
 
 class Show extends Component
 {

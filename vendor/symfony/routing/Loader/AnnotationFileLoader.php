@@ -11,10 +11,31 @@
 
 namespace Symfony\Component\Routing\Loader;
 
-use Symfony\Component\Config\FileLocatorInterface;
-use Symfony\Component\Config\Loader\FileLoader;
-use Symfony\Component\Config\Resource\FileResource;
+use LogicException;
+use ReflectionClass;
+use RuntimeException;
+use InvalidArgumentException;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Config\Loader\FileLoader;
+use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Config\Resource\FileResource;
+use function count;
+use function defined;
+use function in_array;
+use function is_string;
+use function function_exists;
+use const T_NEW;
+use const T_CLASS;
+use const T_STRING;
+use const T_COMMENT;
+use const T_NAMESPACE;
+use const T_WHITESPACE;
+use const T_DOC_COMMENT;
+use const T_INLINE_HTML;
+use const T_DOUBLE_COLON;
+use const T_NS_SEPARATOR;
+use const T_NAME_QUALIFIED;
+use const PATHINFO_EXTENSION;
 
 /**
  * AnnotationFileLoader loads routing information from annotations set
@@ -27,12 +48,12 @@ class AnnotationFileLoader extends FileLoader
     protected $loader;
 
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function __construct(FileLocatorInterface $locator, AnnotationClassLoader $loader)
     {
-        if (!\function_exists('token_get_all')) {
-            throw new \LogicException('The Tokenizer extension is required for the routing annotation loaders.');
+        if (!function_exists('token_get_all')) {
+            throw new LogicException('The Tokenizer extension is required for the routing annotation loaders.');
         }
 
         parent::__construct($locator);
@@ -48,7 +69,7 @@ class AnnotationFileLoader extends FileLoader
      *
      * @return RouteCollection|null A RouteCollection instance
      *
-     * @throws \InvalidArgumentException When the file does not exist or its routes cannot be parsed
+     * @throws InvalidArgumentException When the file does not exist or its routes cannot be parsed
      */
     public function load($file, string $type = null)
     {
@@ -56,7 +77,7 @@ class AnnotationFileLoader extends FileLoader
 
         $collection = new RouteCollection();
         if ($class = $this->findClass($path)) {
-            $refl = new \ReflectionClass($class);
+            $refl = new ReflectionClass($class);
             if ($refl->isAbstract()) {
                 return null;
             }
@@ -75,7 +96,7 @@ class AnnotationFileLoader extends FileLoader
      */
     public function supports($resource, string $type = null)
     {
-        return \is_string($resource) && 'php' === pathinfo($resource, \PATHINFO_EXTENSION) && (!$type || 'annotation' === $type);
+        return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'annotation' === $type);
     }
 
     /**
@@ -89,12 +110,12 @@ class AnnotationFileLoader extends FileLoader
         $namespace = false;
         $tokens = token_get_all(file_get_contents($file));
 
-        if (1 === \count($tokens) && \T_INLINE_HTML === $tokens[0][0]) {
-            throw new \InvalidArgumentException(sprintf('The file "%s" does not contain PHP code. Did you forgot to add the "<?php" start tag at the beginning of the file?', $file));
+        if (1 === count($tokens) && T_INLINE_HTML === $tokens[0][0]) {
+            throw new InvalidArgumentException(sprintf('The file "%s" does not contain PHP code. Did you forgot to add the "<?php" start tag at the beginning of the file?', $file));
         }
 
-        $nsTokens = [\T_NS_SEPARATOR => true, \T_STRING => true];
-        if (\defined('T_NAME_QUALIFIED')) {
+        $nsTokens = [ T_NS_SEPARATOR => true, T_STRING => true];
+        if (defined('T_NAME_QUALIFIED')) {
             $nsTokens[T_NAME_QUALIFIED] = true;
         }
 
@@ -105,7 +126,7 @@ class AnnotationFileLoader extends FileLoader
                 continue;
             }
 
-            if (true === $class && \T_STRING === $token[0]) {
+            if (true === $class && T_STRING === $token[0]) {
                 return $namespace.'\\'.$token[1];
             }
 
@@ -117,7 +138,7 @@ class AnnotationFileLoader extends FileLoader
                 $token = $tokens[$i];
             }
 
-            if (\T_CLASS === $token[0]) {
+            if (T_CLASS === $token[0]) {
                 // Skip usage of ::class constant and anonymous classes
                 $skipClassToken = false;
                 for ($j = $i - 1; $j > 0; --$j) {
@@ -125,10 +146,10 @@ class AnnotationFileLoader extends FileLoader
                         break;
                     }
 
-                    if (\T_DOUBLE_COLON === $tokens[$j][0] || \T_NEW === $tokens[$j][0]) {
+                    if (T_DOUBLE_COLON === $tokens[$j][0] || T_NEW === $tokens[$j][0]) {
                         $skipClassToken = true;
                         break;
-                    } elseif (!\in_array($tokens[$j][0], [\T_WHITESPACE, \T_DOC_COMMENT, \T_COMMENT])) {
+                    } elseif (!in_array($tokens[$j][0], [ T_WHITESPACE, T_DOC_COMMENT, T_COMMENT])) {
                         break;
                     }
                 }
@@ -138,7 +159,7 @@ class AnnotationFileLoader extends FileLoader
                 }
             }
 
-            if (\T_NAMESPACE === $token[0]) {
+            if (T_NAMESPACE === $token[0]) {
                 $namespace = true;
             }
         }

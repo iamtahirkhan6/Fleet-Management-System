@@ -9,12 +9,11 @@ class ExpenseCategoryTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
      * @return void
      */
     public function run()
     {
-        ExpenseCategoryType::create(['name' => 'Office']);
-        ExpenseCategoryType::create(['name' => 'Maintenance']);
+        ExpenseCategoryType::create([ 'name' => 'Office' ]);
+        ExpenseCategoryType::create([ 'name' => 'Maintenance' ]);
     }
 }

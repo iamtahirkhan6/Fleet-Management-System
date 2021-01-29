@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
+use Memcached;
+use InvalidArgumentException;
+
 /**
  * Memcached based session storage handler based on the Memcached class
  * provided by the PHP memcached extension.
- *
  * @see https://php.net/memcached
- *
  * @author Drak <drak@zikula.org>
  */
 class MemcachedSessionHandler extends AbstractSessionHandler
@@ -40,18 +41,18 @@ class MemcachedSessionHandler extends AbstractSessionHandler
      *  * prefix: The prefix to use for the memcached keys in order to avoid collision
      *  * expiretime: The time to live in seconds.
      *
-     * @throws \InvalidArgumentException When unsupported options are passed
+     * @throws InvalidArgumentException When unsupported options are passed
      */
-    public function __construct(\Memcached $memcached, array $options = [])
+    public function __construct(Memcached $memcached, array $options = [])
     {
         $this->memcached = $memcached;
 
         if ($diff = array_diff(array_keys($options), ['prefix', 'expiretime'])) {
-            throw new \InvalidArgumentException(sprintf('The following options are not supported "%s".', implode(', ', $diff)));
+            throw new InvalidArgumentException(sprintf('The following options are not supported "%s".', implode(', ', $diff)));
         }
 
         $this->ttl = isset($options['expiretime']) ? (int) $options['expiretime'] : 86400;
-        $this->prefix = isset($options['prefix']) ? $options['prefix'] : 'sf2s';
+        $this->prefix = $options['prefix'] ?? 'sf2s';
     }
 
     /**
@@ -95,7 +96,7 @@ class MemcachedSessionHandler extends AbstractSessionHandler
     {
         $result = $this->memcached->delete($this->prefix.$sessionId);
 
-        return $result || \Memcached::RES_NOTFOUND == $this->memcached->getResultCode();
+        return $result || Memcached::RES_NOTFOUND == $this->memcached->getResultCode();
     }
 
     /**
@@ -110,7 +111,7 @@ class MemcachedSessionHandler extends AbstractSessionHandler
     /**
      * Return a Memcached instance.
      *
-     * @return \Memcached
+     * @return Memcached
      */
     protected function getMemcached()
     {

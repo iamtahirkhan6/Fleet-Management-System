@@ -5,7 +5,7 @@
             <x-tables.basic.column>Transaction</x-tables.basic.column>
             <x-tables.basic.column>Amount</x-tables.basic.column>
             <x-tables.basic.column>Trip</x-tables.basic.column>
-            <x-tables.basic.column>Status</x-tables.basic.column>
+{{--            <x-tables.basic.column>Status</x-tables.basic.column>--}}
             <x-tables.basic.column>Method</x-tables.basic.column>
             <x-tables.basic.column>Date</x-tables.basic.column>
             <x-tables.basic.column></x-tables.basic.column>
@@ -24,9 +24,9 @@
                     </x-tables.basic.row>
                     <x-tables.basic.row money="true" :moneyBool="1" :moneyVal="$payment->amount"></x-tables.basic.row>
                     <x-tables.basic.row link="/trips/{{ $payment->trip_id }}">{{ $payment->trip_id }}</x-tables.basic.row>
-                    <x-tables.basic.row :colorToggle="$payment->status" trueVal="Paid" falseVal="Pending"></x-tables.basic.row>
+{{--                    <x-tables.basic.row :colorToggle="$payment->status" trueVal="Paid" falseVal="Pending"></x-tables.basic.row>--}}
                     <x-tables.basic.row>{{ $payment->payment_method->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ App\Helper\Helper::human_date($payment->created_at) }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $payment->created_at->format('d-M-Y') }}</x-tables.basic.row>
                     <x-tables.basic.row link="/payments/{{ $payment->trip_id }}">View</x-tables.basic.row>
 
                 </tr>

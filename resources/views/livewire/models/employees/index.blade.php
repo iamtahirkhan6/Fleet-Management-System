@@ -53,9 +53,6 @@
             <x-tables.basic.column>Name</x-tables.basic.column>
             <x-tables.basic.column>Designation</x-tables.basic.column>
             <x-tables.basic.column>Office</x-tables.basic.column>
-            @role('admin')
-            <x-tables.basic.column>Company</x-tables.basic.column>
-            @endrole('admin')
             <x-tables.basic.column>Salary</x-tables.basic.column>
             <x-tables.basic.column>Status</x-tables.basic.column>
             <x-tables.basic.column>Actions</x-tables.basic.column>
@@ -67,9 +64,6 @@
                     <x-tables.basic.row avatar="true" :val="$employee->phoneNumber->phone_number ?? null" :url="$employee->profile_photo_url()">{{ $employee->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $employee->designation->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $employee->office->name }}</x-tables.basic.row>
-                    @role('admin')
-                    <x-tables.basic.row>{{ $employee->office->company->name }}</x-tables.basic.row>
-                    @endrole
                     <x-tables.basic.row amount="true" :amountVal="$employee->salary"></x-tables.basic.row>
                     <x-tables.basic.row :color_toggle="$employee->is_currently_hired" true_val="Hired" false_val="Dismissed">{{ $employee->is_currently_hired }}</x-tables.basic.row>
                     <x-tables.basic.row link="/employees/{{ $employee->id }}">View</x-tables.basic.row>

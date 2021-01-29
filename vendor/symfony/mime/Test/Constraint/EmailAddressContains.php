@@ -11,10 +11,12 @@
 
 namespace Symfony\Component\Mime\Test\Constraint;
 
+use LogicException;
 use PHPUnit\Framework\Constraint\Constraint;
 use Symfony\Component\Mime\Header\MailboxHeader;
 use Symfony\Component\Mime\Header\MailboxListHeader;
 use Symfony\Component\Mime\RawMessage;
+use function get_class;
 
 final class EmailAddressContains extends Constraint
 {
@@ -42,8 +44,8 @@ final class EmailAddressContains extends Constraint
      */
     protected function matches($message): bool
     {
-        if (RawMessage::class === \get_class($message)) {
-            throw new \LogicException('Unable to test a message address on a RawMessage instance.');
+        if (RawMessage::class === get_class($message)) {
+            throw new LogicException('Unable to test a message address on a RawMessage instance.');
         }
 
         $header = $message->getHeaders()->get($this->headerName);
@@ -59,7 +61,7 @@ final class EmailAddressContains extends Constraint
             return false;
         }
 
-        throw new \LogicException(sprintf('Unable to test a message address on a non-address header.'));
+        throw new LogicException('Unable to test a message address on a non-address header.');
     }
 
     /**

@@ -38,18 +38,6 @@
         <!-- Hidden Company ID -->
         <input type="hidden" wire:model="input.company_id">
 
-        <!-- Company ID -->
-        @role('admin')
-        <x-forms.basic-stacked.column title="Company" error="input.company_id">
-            <x-forms.basic-stacked.dropdown
-                wire:model="input.company_id"
-                :array="$companies"
-                title="Choose a company"
-                arrayKey="name">
-            </x-forms.basic-stacked.dropdown>
-        </x-forms.basic-stacked.column>
-        @endrole
-
         <!-- Designation -->
         <x-forms.basic-stacked.column title="Designation" error="input.employee_designation_id">
             <x-forms.basic-stacked.dropdown
@@ -62,7 +50,7 @@
 
         <!-- Bank Details? -->
         <x-forms.basic-stacked.column title="Add Bank Account?" error="input.bank_bool">
-            <x-forms.basic-stacked.toggle>Add Bank Account?</x-forms.basic-stacked.toggle>
+            <x-forms.basic-stacked.toggle alpineBool="bankBool">Add Bank Account?</x-forms.basic-stacked.toggle>
         </x-forms.basic-stacked.column>
 
         <div x-show="bankBool" x-cloak>

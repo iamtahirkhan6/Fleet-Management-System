@@ -11,16 +11,24 @@
 
 namespace Symfony\Component\Console\Command;
 
+use Closure;
+use TypeError;
+use Exception;
+use ReflectionFunction;
+use ReflectionProperty;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Exception\LogicException;
-use Symfony\Component\Console\Helper\HelperSet;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+use function is_int;
+use function function_exists;
+use const PHP_OS;
 
 /**
  * Base class for all commands.
@@ -29,6 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Command
 {
+    // see https://tldp.org/LDP/abs/html/exitcodes.html
     public const SUCCESS = 0;
     public const FAILURE = 1;
 
@@ -58,7 +67,7 @@ class Command
     public static function getDefaultName()
     {
         $class = static::class;
-        $r = new \ReflectionProperty($class, 'defaultName');
+        $r = new ReflectionProperty($class, 'defaultName');
 
         return $class === $r->class ? static::$defaultName : null;
     }
@@ -199,7 +208,7 @@ class Command
      *
      * @return int The command exit code
      *
-     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     * @throws Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
      *
      * @see setCode()
      * @see execute()
@@ -221,15 +230,15 @@ class Command
         $this->initialize($input, $output);
 
         if (null !== $this->processTitle) {
-            if (\function_exists('cli_set_process_title')) {
+            if (function_exists('cli_set_process_title')) {
                 if (!@cli_set_process_title($this->processTitle)) {
-                    if ('Darwin' === \PHP_OS) {
+                    if ('Darwin' === PHP_OS) {
                         $output->writeln('<comment>Running "cli_set_process_title" as an unprivileged user is not supported on MacOS.</comment>', OutputInterface::VERBOSITY_VERY_VERBOSE);
                     } else {
                         cli_set_process_title($this->processTitle);
                     }
                 }
-            } elseif (\function_exists('setproctitle')) {
+            } elseif (function_exists('setproctitle')) {
                 setproctitle($this->processTitle);
             } elseif (OutputInterface::VERBOSITY_VERY_VERBOSE === $output->getVerbosity()) {
                 $output->writeln('<comment>Install the proctitle PECL to be able to change the process title.</comment>');
@@ -254,8 +263,8 @@ class Command
         } else {
             $statusCode = $this->execute($input, $output);
 
-            if (!\is_int($statusCode)) {
-                throw new \TypeError(sprintf('Return value of "%s::execute()" must be of the type int, "%s" returned.', static::class, get_debug_type($statusCode)));
+            if (!is_int($statusCode)) {
+                throw new TypeError(sprintf('Return value of "%s::execute()" must be of the type int, "%s" returned.', static::class, get_debug_type($statusCode)));
             }
         }
 
@@ -278,10 +287,17 @@ class Command
      */
     public function setCode(callable $code)
     {
-        if ($code instanceof \Closure) {
-            $r = new \ReflectionFunction($code);
+        if ($code instanceof Closure) {
+            $r = new ReflectionFunction($code);
             if (null === $r->getClosureThis()) {
-                $code = \Closure::bind($code, $this);
+                set_error_handler(static function () {});
+                try {
+                    if ($c = Closure::bind($code, $this)) {
+                        $code = $c;
+                    }
+                } finally {
+                    restore_error_handler();
+                }
             }
         }
 

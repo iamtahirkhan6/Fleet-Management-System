@@ -2,16 +2,16 @@
 
 namespace Illuminate\View\Compilers;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\View\AnonymousComponent;
-use Illuminate\View\DynamicComponent;
-use Illuminate\View\ViewFinderInterface;
-use InvalidArgumentException;
 use ReflectionClass;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
+use Illuminate\Container\Container;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\View\DynamicComponent;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\View\AnonymousComponent;
+use Illuminate\View\ViewFinderInterface;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * @author Spatie bvba <info@spatie.be>
@@ -21,8 +21,7 @@ class ComponentTagCompiler
 {
     /**
      * The Blade compiler instance.
-     *
-     * @var \Illuminate\View\Compilers\BladeCompiler
+     * @var BladeCompiler
      */
     protected $blade;
 
@@ -50,9 +49,10 @@ class ComponentTagCompiler
     /**
      * Create new component tag compiler.
      *
-     * @param  array  $aliases
-     * @param  array  $namespaces
-     * @param  \Illuminate\View\Compilers\BladeCompiler|null $blade
+     * @param  array              $aliases
+     * @param  array              $namespaces
+     * @param  BladeCompiler|null $blade
+     *
      * @return void
      */
     public function __construct(array $aliases = [], array $namespaces = [], ?BladeCompiler $blade = null)
@@ -80,9 +80,9 @@ class ComponentTagCompiler
      * Compile the tags within the given string.
      *
      * @param  string  $value
-     * @return string
      *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws InvalidArgumentException
      */
     public function compileTags(string $value)
     {
@@ -97,9 +97,9 @@ class ComponentTagCompiler
      * Compile the opening tags within the given string.
      *
      * @param  string  $value
-     * @return string
      *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws InvalidArgumentException
      */
     protected function compileOpeningTags(string $value)
     {
@@ -149,9 +149,9 @@ class ComponentTagCompiler
      * Compile the self-closing tags within the given string.
      *
      * @param  string  $value
-     * @return string
      *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws InvalidArgumentException
      */
     protected function compileSelfClosingTags(string $value)
     {
@@ -202,9 +202,9 @@ class ComponentTagCompiler
      *
      * @param  string  $component
      * @param  array  $attributes
-     * @return string
      *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws InvalidArgumentException
      */
     protected function componentString(string $component, array $attributes)
     {
@@ -238,9 +238,9 @@ class ComponentTagCompiler
      * Get the component class for a given component alias.
      *
      * @param  string  $component
-     * @return string
      *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws InvalidArgumentException
      */
     public function componentClass(string $component)
     {
@@ -460,6 +460,10 @@ class ComponentTagCompiler
                 $value = "'".$this->compileAttributeEchos($value)."'";
             }
 
+            if (Str::startsWith($attribute, '::')) {
+                $attribute = substr($attribute, 1);
+            }
+
             return [$attribute => $value];
         })->toArray();
     }
@@ -490,7 +494,7 @@ class ComponentTagCompiler
     {
         $pattern = "/
             (?:^|\s+)     # start of the string or whitespace between attributes
-            :             # attribute needs to start with a semicolon
+            :(?!:)        # attribute needs to start with a single colon
             ([\w\-:.@]+)  # match the actual attribute name
             =             # only match attributes that have a value
         /xm";

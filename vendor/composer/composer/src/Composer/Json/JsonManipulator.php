@@ -12,6 +12,8 @@
 
 namespace Composer\Json;
 
+use RuntimeException;
+use InvalidArgumentException;
 use Composer\Repository\PlatformRepository;
 
 /**
@@ -20,13 +22,13 @@ use Composer\Repository\PlatformRepository;
 class JsonManipulator
 {
     private static $DEFINES = '(?(DEFINE)
-       (?<number>   -? (?= [1-9]|0(?!\d) ) \d+ (\.\d+)? ([eE] [+-]? \d+)? )
+       (?<number>    -? (?= [1-9]|0(?!\d) ) \d++ (\.\d++)? ([eE] [+-]?+ \d++)? )
        (?<boolean>   true | false | null )
-       (?<string>    " ([^"\\\\]* | \\\\ ["\\\\bfnrt\/] | \\\\ u [0-9A-Fa-f]{4} )* " )
-       (?<array>     \[  (?:  (?&json) \s* (?: , (?&json) \s* )*  )?  \s* \] )
-       (?<pair>      \s* (?&string) \s* : (?&json) \s* )
-       (?<object>    \{  (?:  (?&pair)  (?: , (?&pair)  )*  )?  \s* \} )
-       (?<json>   \s* (?: (?&number) | (?&boolean) | (?&string) | (?&array) | (?&object) ) )
+       (?<string>    " ([^"\\\\]*+ | \\\\ ["\\\\bfnrt\/] | \\\\ u [0-9A-Fa-f]{4} )* " )
+       (?<array>     \[  (?:  (?&json) \s*+ (?: , (?&json) \s*+ )*+  )?+  \s*+ \] )
+       (?<pair>      \s*+ (?&string) \s*+ : (?&json) \s*+ )
+       (?<object>    \{  (?:  (?&pair)  (?: , (?&pair)  )*+  )?+  \s*+ \} )
+       (?<json>      \s*+ (?: (?&number) | (?&boolean) | (?&string) | (?&array) | (?&object) ) )
     )';
 
     private $contents;
@@ -40,7 +42,7 @@ class JsonManipulator
             $contents = '{}';
         }
         if (!$this->pregMatch('#^\{(.*)\}$#s', $contents)) {
-            throw new \InvalidArgumentException('The json file must be an object ({})');
+            throw new InvalidArgumentException('The json file must be an object ({})');
         }
         $this->newline = false !== strpos($contents, "\r\n") ? "\r\n" : "\n";
         $this->contents = $contents === '{}' ? '{' . $this->newline . '}' : $contents;
@@ -205,7 +207,7 @@ class JsonManipulator
 
         $subName = null;
         if (in_array($mainNode, array('config', 'extra', 'scripts')) && false !== strpos($name, '.')) {
-            list($name, $subName) = explode('.', $name, 2);
+            [$name, $subName] = explode('.', $name, 2);
         }
 
         // no main node yet
@@ -227,7 +229,7 @@ class JsonManipulator
             if (!$this->pregMatch($nodeRegex, $this->contents, $match)) {
                 return false;
             }
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             if ($e->getCode() === PREG_BACKTRACK_LIMIT_ERROR) {
                 return false;
             }
@@ -322,7 +324,7 @@ class JsonManipulator
             if (!$this->pregMatch($nodeRegex, $this->contents, $match)) {
                 return false;
             }
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             if ($e->getCode() === PREG_BACKTRACK_LIMIT_ERROR) {
                 return false;
             }
@@ -338,7 +340,7 @@ class JsonManipulator
 
         $subName = null;
         if (in_array($mainNode, array('config', 'extra', 'scripts')) && false !== strpos($name, '.')) {
-            list($name, $subName) = explode('.', $name, 2);
+            [$name, $subName] = explode('.', $name, 2);
         }
 
         // no node to remove
@@ -370,7 +372,7 @@ class JsonManipulator
         }
 
         if (!isset($childrenClean)) {
-            throw new \InvalidArgumentException("JsonManipulator: \$childrenClean is not defined. Please report at https://github.com/composer/composer/issues/new.");
+            throw new InvalidArgumentException("JsonManipulator: \$childrenClean is not defined. Please report at https://github.com/composer/composer/issues/new.");
         }
 
         // no child data left, $name was the only key in
@@ -536,24 +538,24 @@ class JsonManipulator
         if ($count === false) {
             switch (preg_last_error()) {
                 case PREG_NO_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_NO_ERROR', PREG_NO_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_NO_ERROR', PREG_NO_ERROR);
                 case PREG_INTERNAL_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_INTERNAL_ERROR', PREG_INTERNAL_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_INTERNAL_ERROR', PREG_INTERNAL_ERROR);
                 case PREG_BACKTRACK_LIMIT_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_BACKTRACK_LIMIT_ERROR', PREG_BACKTRACK_LIMIT_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_BACKTRACK_LIMIT_ERROR', PREG_BACKTRACK_LIMIT_ERROR);
                 case PREG_RECURSION_LIMIT_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_RECURSION_LIMIT_ERROR', PREG_RECURSION_LIMIT_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_RECURSION_LIMIT_ERROR', PREG_RECURSION_LIMIT_ERROR);
                 case PREG_BAD_UTF8_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_BAD_UTF8_ERROR', PREG_BAD_UTF8_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_BAD_UTF8_ERROR', PREG_BAD_UTF8_ERROR);
                 case PREG_BAD_UTF8_OFFSET_ERROR:
-                    throw new \RuntimeException('Failed to execute regex: PREG_BAD_UTF8_OFFSET_ERROR', PREG_BAD_UTF8_OFFSET_ERROR);
+                    throw new RuntimeException('Failed to execute regex: PREG_BAD_UTF8_OFFSET_ERROR', PREG_BAD_UTF8_OFFSET_ERROR);
                 case 6: // PREG_JIT_STACKLIMIT_ERROR
                     if (PHP_VERSION_ID > 70000) {
-                        throw new \RuntimeException('Failed to execute regex: PREG_JIT_STACKLIMIT_ERROR', 6);
+                        throw new RuntimeException('Failed to execute regex: PREG_JIT_STACKLIMIT_ERROR', 6);
                     }
                     // no break
                 default:
-                    throw new \RuntimeException('Failed to execute regex: Unknown error');
+                    throw new RuntimeException('Failed to execute regex: Unknown error');
             }
         }
 

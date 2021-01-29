@@ -12,12 +12,16 @@
                         @if($link != null)
                             <a href="{{ $link }}" class="text-indigo-600 hover:text-indigo-900">{{ App\Helper\Helper::rupee_format($value) }}</a>
                         @else
+                            @if(is_numeric($value))
                             ₹{{ number_format($value) }}
+                            @else
+                                {{$value}}
+                            @endif
                         @endif
                     @else
                         <x-svg.red-cross />
                     @endif
-                
+
                 @elseif($photo != null)
                     Uploaded
                 @else

@@ -2,29 +2,28 @@
 
 namespace App\Domain\Trip\Controllers;
 
-use App\Domain\Trip\Models\TripPaymentTransaction;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
+use App\Domain\Trip\Models\TripPaymentTransaction;
 
 class TripTransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')
-            ->with('livewire', 'models.payments.trips.index')
-            ->with('title',  'Payments for Trips')
-            ->with('description', 'View all the payments done against trips');
+        return view('page')->with('livewire', 'models.payments.trips.index')->with('title', 'Payments for Trips')->with('description', 'View all the payments done against trips');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,8 +33,9 @@ class TripTransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -45,24 +45,21 @@ class TripTransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Trip\Models\TripPaymentTransaction  $tripPaymentTransaction
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param TripPaymentTransaction $tripPaymentTransaction
+     *
+     * @return Application|Factory|View
      */
     public function show(TripPaymentTransaction $payment)
     {
-        return view('page')
-            ->with('livewire', 'models.payments.trips.show')
-            ->with('title',  'Trip Payment')
-            ->with('description', 'View payment details of a trip')
-            ->with('key', 'transaction')
-            ->with('val', $payment);
+        return view('page')->with('livewire', 'models.payments.trips.show')->with('title', 'Trip Payment')->with('description', 'View payment details of a trip')->with('key', 'transaction')->with('val', $payment);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Trip\Models\TripPaymentTransaction  $tripPaymentTransaction
-     * @return \Illuminate\Http\Response
+     * @param TripPaymentTransaction $tripPaymentTransaction
+     *
+     * @return Response
      */
     public function edit(TripPaymentTransaction $payment)
     {
@@ -72,9 +69,10 @@ class TripTransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Trip\Models\TripPaymentTransaction  $tripPaymentTransaction
-     * @return \Illuminate\Http\Response
+     * @param Request                $request
+     * @param TripPaymentTransaction $tripPaymentTransaction
+     *
+     * @return Response
      */
     public function update(Request $request, TripPaymentTransaction $payment)
     {
@@ -84,8 +82,9 @@ class TripTransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Trip\Models\TripPaymentTransaction  $tripPaymentTransaction
-     * @return \Illuminate\Http\Response
+     * @param TripPaymentTransaction $tripPaymentTransaction
+     *
+     * @return Response
      */
     public function destroy(TripPaymentTransaction $payment)
     {

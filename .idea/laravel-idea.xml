@@ -3,11 +3,19 @@
   <component name="LaravelIdeaMainSettings">
     <option name="directoryModuleAlwaysAllowAppModule" value="true" />
     <option name="frameworkFound" value="true" />
+    <option name="generationBooleanSettings">
+      <map>
+        <entry key="createLaravelAction:inModules" value="true" />
+        <entry key="createModel:inModules" value="true" />
+        <entry key="createRule:inModules" value="true" />
+      </map>
+    </option>
     <option name="generationStringSettings">
       <map>
         <entry key="createModel:namespace" value="Models" />
       </map>
     </option>
+    <option name="helperCodeCreateHighOrderCollectionProxies" value="true" />
     <option name="moduleSystemName" value="directory" />
     <option name="userClassName" value="App\Models\User" />
   </component>

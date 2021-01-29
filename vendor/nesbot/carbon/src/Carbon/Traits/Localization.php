@@ -20,6 +20,11 @@ use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInterface;
+use function gettype;
+use function is_array;
+use function get_class;
+use function is_object;
+use function func_num_args;
 
 if (!interface_exists('Symfony\\Component\\Translation\\TranslatorInterface')) {
     class_alias(
@@ -37,15 +42,13 @@ trait Localization
 {
     /**
      * Default translator.
-     *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      */
     protected static $translator;
 
     /**
      * Specific translator of the current instance.
-     *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      */
     protected $localTranslator;
 
@@ -105,7 +108,7 @@ trait Localization
     /**
      * Get the default translator instance in use.
      *
-     * @return \Symfony\Component\Translation\TranslatorInterface
+     * @return TranslatorInterface
      */
     public static function getTranslator()
     {
@@ -115,7 +118,7 @@ trait Localization
     /**
      * Set the default translator instance to use.
      *
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param TranslatorInterface $translator
      *
      * @return void
      */
@@ -137,7 +140,7 @@ trait Localization
     /**
      * Get the translator of the current instance or the default if none set.
      *
-     * @return \Symfony\Component\Translation\TranslatorInterface
+     * @return TranslatorInterface
      */
     public function getLocalTranslator()
     {
@@ -147,7 +150,7 @@ trait Localization
     /**
      * Set the translator for the current instance.
      *
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param TranslatorInterface $translator
      *
      * @return $this
      */
@@ -161,10 +164,10 @@ trait Localization
     /**
      * Returns raw translation message for a given key.
      *
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator the translator to use
-     * @param string                                             $key        key to find
-     * @param string|null                                        $locale     current locale used if null
-     * @param string|null                                        $default    default value if translation returns the key
+     * @param TranslatorInterface $translator the translator to use
+     * @param string              $key        key to find
+     * @param string|null         $locale     current locale used if null
+     * @param string|null         $default    default value if translation returns the key
      *
      * @return string
      */
@@ -173,7 +176,7 @@ trait Localization
         if (!($translator instanceof TranslatorBagInterface && $translator instanceof TranslatorInterface)) {
             throw new InvalidTypeException(
                 'Translator does not implement '.TranslatorInterface::class.' and '.TranslatorBagInterface::class.'. '.
-                (\is_object($translator) ? \get_class($translator) : \gettype($translator)).' has been given.'
+                (is_object($translator) ? get_class($translator) : gettype($translator)).' has been given.'
             );
         }
 
@@ -189,10 +192,10 @@ trait Localization
     /**
      * Returns raw translation message for a given key.
      *
-     * @param string                                             $key        key to find
-     * @param string|null                                        $locale     current locale used if null
-     * @param string|null                                        $default    default value if translation returns the key
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator an optional translator to use
+     * @param string              $key        key to find
+     * @param string|null         $locale     current locale used if null
+     * @param string|null         $default    default value if translation returns the key
+     * @param TranslatorInterface $translator an optional translator to use
      *
      * @return string
      */
@@ -204,10 +207,10 @@ trait Localization
     /**
      * Translate using translation string or callback available.
      *
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     * @param string                                             $key
-     * @param array                                              $parameters
-     * @param null                                               $number
+     * @param TranslatorInterface $translator
+     * @param string              $key
+     * @param array               $parameters
+     * @param null                $number
      *
      * @return string
      */
@@ -237,10 +240,10 @@ trait Localization
     /**
      * Translate using translation string or callback available.
      *
-     * @param string                                             $key
-     * @param array                                              $parameters
-     * @param null                                               $number
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param string              $key
+     * @param array               $parameters
+     * @param null                $number
+     * @param TranslatorInterface $translator
      *
      * @return string
      */
@@ -387,7 +390,7 @@ trait Localization
                     'second',
                 ], $messages, $key) : [],
                 $mode & CarbonInterface::TRANSLATE_MERIDIEM ? array_map(function ($hour) use ($meridiem) {
-                    if (\is_array($meridiem)) {
+                    if (is_array($meridiem)) {
                         return $meridiem[$hour < 12 ? 0 : 1];
                     }
 
@@ -396,11 +399,11 @@ trait Localization
             );
         }
 
-        return substr(preg_replace_callback('/(?<=[\d\s+.\/,_-])('.implode('|', $fromTranslations).')(?=[\d\s+.\/,_-])/i', function ($match) use ($fromTranslations, $toTranslations) {
+        return substr(preg_replace_callback('/(?<=[\d\s+.\/,_-])('.implode('|', $fromTranslations).')(?=[\d\s+.\/,_-])/iu', function ($match) use ($fromTranslations, $toTranslations) {
             [$chunk] = $match;
 
             foreach ($fromTranslations as $index => $word) {
-                if (preg_match("/^$word\$/i", $chunk)) {
+                if (preg_match("/^$word\$/iu", $chunk)) {
                     return $toTranslations[$index] ?? '';
                 }
             }
@@ -683,7 +686,7 @@ trait Localization
     /**
      * Initialize the default translator instance if necessary.
      *
-     * @return \Symfony\Component\Translation\TranslatorInterface
+     * @return TranslatorInterface
      */
     protected static function translator()
     {
@@ -706,7 +709,7 @@ trait Localization
      */
     protected function getTranslatorLocale($translator = null): ?string
     {
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             $translator = $this->getLocalTranslator();
         }
 
@@ -724,7 +727,7 @@ trait Localization
      */
     protected static function getLocaleAwareTranslator($translator = null)
     {
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             $translator = static::translator();
         }
 
@@ -792,7 +795,7 @@ trait Localization
     {
         $filler = '>>DO NOT REPLACE<<';
 
-        if (\is_array($translation)) {
+        if (is_array($translation)) {
             return array_pad($translation, $length, $filler);
         }
 

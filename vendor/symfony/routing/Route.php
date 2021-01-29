@@ -11,13 +11,19 @@
 
 namespace Symfony\Component\Routing;
 
+use Serializable;
+use LogicException;
+use InvalidArgumentException;
+use function strlen;
+use function in_array;
+use function array_key_exists;
+
 /**
  * A Route describes a route and its parameters.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class Route implements \Serializable
+class Route implements Serializable
 {
     private $path = '/';
     private $host = '';
@@ -201,7 +207,7 @@ class Route implements \Serializable
      */
     public function hasScheme(string $scheme)
     {
-        return \in_array(strtolower($scheme), $this->schemes, true);
+        return in_array(strtolower($scheme), $this->schemes, true);
     }
 
     /**
@@ -300,7 +306,7 @@ class Route implements \Serializable
      */
     public function getOption(string $name)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : null;
+        return $this->options[$name] ?? null;
     }
 
     /**
@@ -310,7 +316,7 @@ class Route implements \Serializable
      */
     public function hasOption(string $name)
     {
-        return \array_key_exists($name, $this->options);
+        return array_key_exists($name, $this->options);
     }
 
     /**
@@ -369,7 +375,7 @@ class Route implements \Serializable
      */
     public function getDefault(string $name)
     {
-        return isset($this->defaults[$name]) ? $this->defaults[$name] : null;
+        return $this->defaults[$name] ?? null;
     }
 
     /**
@@ -379,7 +385,7 @@ class Route implements \Serializable
      */
     public function hasDefault(string $name)
     {
-        return \array_key_exists($name, $this->defaults);
+        return array_key_exists($name, $this->defaults);
     }
 
     /**
@@ -457,7 +463,7 @@ class Route implements \Serializable
      */
     public function getRequirement(string $key)
     {
-        return isset($this->requirements[$key]) ? $this->requirements[$key] : null;
+        return $this->requirements[$key] ?? null;
     }
 
     /**
@@ -467,7 +473,7 @@ class Route implements \Serializable
      */
     public function hasRequirement(string $key)
     {
-        return \array_key_exists($key, $this->requirements);
+        return array_key_exists($key, $this->requirements);
     }
 
     /**
@@ -517,7 +523,7 @@ class Route implements \Serializable
      *
      * @return CompiledRoute A CompiledRoute instance
      *
-     * @throws \LogicException If the Route cannot be compiled because the
+     * @throws LogicException If the Route cannot be compiled because the
      *                         path or host pattern is invalid
      *
      * @see RouteCompiler which is responsible for the compilation process
@@ -563,12 +569,12 @@ class Route implements \Serializable
 
         if ('$' === substr($regex, -1)) {
             $regex = substr($regex, 0, -1);
-        } elseif (\strlen($regex) - 2 === strpos($regex, '\\z')) {
+        } elseif (strlen($regex) - 2 === strpos($regex, '\\z')) {
             $regex = substr($regex, 0, -2);
         }
 
         if ('' === $regex) {
-            throw new \InvalidArgumentException(sprintf('Routing requirement for "%s" cannot be empty.', $key));
+            throw new InvalidArgumentException(sprintf('Routing requirement for "%s" cannot be empty.', $key));
         }
 
         return $regex;

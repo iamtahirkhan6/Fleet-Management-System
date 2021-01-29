@@ -14,6 +14,8 @@ namespace Symfony\Component\CssSelector\Parser;
 use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
 use Symfony\Component\CssSelector\Node;
 use Symfony\Component\CssSelector\Parser\Tokenizer\Tokenizer;
+use function count;
+use function in_array;
 
 /**
  * CSS selector parser.
@@ -84,7 +86,7 @@ class Parser implements ParserInterface
         }
 
         $split = explode('n', $joined);
-        $first = isset($split[0]) ? $split[0] : null;
+        $first = $split[0] ?? null;
 
         return [
             $first ? ('-' === $first || '+' === $first ? $int($first.'1') : $int($first)) : 1,
@@ -150,7 +152,7 @@ class Parser implements ParserInterface
     {
         $stream->skipWhitespace();
 
-        $selectorStart = \count($stream->getUsed());
+        $selectorStart = count($stream->getUsed());
         $result = $this->parseElementNode($stream);
         $pseudoElement = null;
 
@@ -187,7 +189,7 @@ class Parser implements ParserInterface
                 }
 
                 $identifier = $stream->getNextIdentifier();
-                if (\in_array(strtolower($identifier), ['first-line', 'first-letter', 'before', 'after'])) {
+                if (in_array(strtolower($identifier), [ 'first-line', 'first-letter', 'before', 'after'])) {
                     // Special case: CSS 2.1 pseudo-elements can have a single ':'.
                     // Any new pseudo-element must have two.
                     $pseudoElement = $identifier;
@@ -253,7 +255,7 @@ class Parser implements ParserInterface
             }
         }
 
-        if (\count($stream->getUsed()) === $selectorStart) {
+        if (count($stream->getUsed()) === $selectorStart) {
             throw SyntaxErrorException::unexpectedToken('selector', $stream->getPeek());
         }
 

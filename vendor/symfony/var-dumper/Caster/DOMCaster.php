@@ -11,7 +11,58 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
+use DOMText;
+use DOMAttr;
+use DOMNode;
+use DOMXPath;
+use DOMEntity;
+use DOMLocator;
+use DOMElement;
+use DOMNotation;
+use DOMDomError;
+use DOMTypeinfo;
+use DOMDocument;
+use DOMException;
+use DOMDocumentType;
+use DOMCharacterData;
+use DOMNameSpaceNode;
+use DOMProcessingInstruction;
 use Symfony\Component\VarDumper\Cloner\Stub;
+use const XML_PI_NODE;
+use const DOM_PHP_ERR;
+use const XML_DTD_NODE;
+use const XML_TEXT_NODE;
+use const DOM_SYNTAX_ERR;
+use const XML_ENTITY_NODE;
+use const XML_COMMENT_NODE;
+use const XML_ELEMENT_NODE;
+use const XML_NOTATION_NODE;
+use const XML_DOCUMENT_NODE;
+use const DOM_NAMESPACE_ERR;
+use const DOM_NOT_FOUND_ERR;
+use const XML_ATTRIBUTE_NODE;
+use const DOM_VALIDATION_ERR;
+use const DOMSTRING_SIZE_ERR;
+use const DOM_INDEX_SIZE_ERR;
+use const XML_ENTITY_REF_NODE;
+use const XML_ENTITY_DECL_NODE;
+use const XML_ELEMENT_DECL_NODE;
+use const DOM_INVALID_STATE_ERR;
+use const DOM_NOT_SUPPORTED_ERR;
+use const XML_HTML_DOCUMENT_NODE;
+use const XML_DOCUMENT_FRAG_NODE;
+use const XML_DOCUMENT_TYPE_NODE;
+use const XML_CDATA_SECTION_NODE;
+use const DOM_INVALID_ACCESS_ERR;
+use const DOM_WRONG_DOCUMENT_ERR;
+use const XML_NAMESPACE_DECL_NODE;
+use const XML_ATTRIBUTE_DECL_NODE;
+use const DOM_INUSE_ATTRIBUTE_ERR;
+use const DOM_NO_DATA_ALLOWED_ERR;
+use const DOM_INVALID_CHARACTER_ERR;
+use const DOM_HIERARCHY_REQUEST_ERR;
+use const DOM_INVALID_MODIFICATION_ERR;
+use const DOM_NO_MODIFICATION_ALLOWED_ERR;
 
 /**
  * Casts DOM related classes to array representation.
@@ -22,52 +73,52 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DOMCaster
 {
-    private static $errorCodes = [
-        \DOM_PHP_ERR => 'DOM_PHP_ERR',
-        \DOM_INDEX_SIZE_ERR => 'DOM_INDEX_SIZE_ERR',
-        \DOMSTRING_SIZE_ERR => 'DOMSTRING_SIZE_ERR',
-        \DOM_HIERARCHY_REQUEST_ERR => 'DOM_HIERARCHY_REQUEST_ERR',
-        \DOM_WRONG_DOCUMENT_ERR => 'DOM_WRONG_DOCUMENT_ERR',
-        \DOM_INVALID_CHARACTER_ERR => 'DOM_INVALID_CHARACTER_ERR',
-        \DOM_NO_DATA_ALLOWED_ERR => 'DOM_NO_DATA_ALLOWED_ERR',
-        \DOM_NO_MODIFICATION_ALLOWED_ERR => 'DOM_NO_MODIFICATION_ALLOWED_ERR',
-        \DOM_NOT_FOUND_ERR => 'DOM_NOT_FOUND_ERR',
-        \DOM_NOT_SUPPORTED_ERR => 'DOM_NOT_SUPPORTED_ERR',
-        \DOM_INUSE_ATTRIBUTE_ERR => 'DOM_INUSE_ATTRIBUTE_ERR',
-        \DOM_INVALID_STATE_ERR => 'DOM_INVALID_STATE_ERR',
-        \DOM_SYNTAX_ERR => 'DOM_SYNTAX_ERR',
-        \DOM_INVALID_MODIFICATION_ERR => 'DOM_INVALID_MODIFICATION_ERR',
-        \DOM_NAMESPACE_ERR => 'DOM_NAMESPACE_ERR',
-        \DOM_INVALID_ACCESS_ERR => 'DOM_INVALID_ACCESS_ERR',
-        \DOM_VALIDATION_ERR => 'DOM_VALIDATION_ERR',
+    private const ERROR_CODES = [
+        DOM_PHP_ERR => 'DOM_PHP_ERR',
+        DOM_INDEX_SIZE_ERR => 'DOM_INDEX_SIZE_ERR',
+        DOMSTRING_SIZE_ERR => 'DOMSTRING_SIZE_ERR',
+        DOM_HIERARCHY_REQUEST_ERR => 'DOM_HIERARCHY_REQUEST_ERR',
+        DOM_WRONG_DOCUMENT_ERR => 'DOM_WRONG_DOCUMENT_ERR',
+        DOM_INVALID_CHARACTER_ERR => 'DOM_INVALID_CHARACTER_ERR',
+        DOM_NO_DATA_ALLOWED_ERR => 'DOM_NO_DATA_ALLOWED_ERR',
+        DOM_NO_MODIFICATION_ALLOWED_ERR => 'DOM_NO_MODIFICATION_ALLOWED_ERR',
+        DOM_NOT_FOUND_ERR => 'DOM_NOT_FOUND_ERR',
+        DOM_NOT_SUPPORTED_ERR => 'DOM_NOT_SUPPORTED_ERR',
+        DOM_INUSE_ATTRIBUTE_ERR => 'DOM_INUSE_ATTRIBUTE_ERR',
+        DOM_INVALID_STATE_ERR => 'DOM_INVALID_STATE_ERR',
+        DOM_SYNTAX_ERR => 'DOM_SYNTAX_ERR',
+        DOM_INVALID_MODIFICATION_ERR => 'DOM_INVALID_MODIFICATION_ERR',
+        DOM_NAMESPACE_ERR => 'DOM_NAMESPACE_ERR',
+        DOM_INVALID_ACCESS_ERR => 'DOM_INVALID_ACCESS_ERR',
+        DOM_VALIDATION_ERR => 'DOM_VALIDATION_ERR',
     ];
 
-    private static $nodeTypes = [
-        \XML_ELEMENT_NODE => 'XML_ELEMENT_NODE',
-        \XML_ATTRIBUTE_NODE => 'XML_ATTRIBUTE_NODE',
-        \XML_TEXT_NODE => 'XML_TEXT_NODE',
-        \XML_CDATA_SECTION_NODE => 'XML_CDATA_SECTION_NODE',
-        \XML_ENTITY_REF_NODE => 'XML_ENTITY_REF_NODE',
-        \XML_ENTITY_NODE => 'XML_ENTITY_NODE',
-        \XML_PI_NODE => 'XML_PI_NODE',
-        \XML_COMMENT_NODE => 'XML_COMMENT_NODE',
-        \XML_DOCUMENT_NODE => 'XML_DOCUMENT_NODE',
-        \XML_DOCUMENT_TYPE_NODE => 'XML_DOCUMENT_TYPE_NODE',
-        \XML_DOCUMENT_FRAG_NODE => 'XML_DOCUMENT_FRAG_NODE',
-        \XML_NOTATION_NODE => 'XML_NOTATION_NODE',
-        \XML_HTML_DOCUMENT_NODE => 'XML_HTML_DOCUMENT_NODE',
-        \XML_DTD_NODE => 'XML_DTD_NODE',
-        \XML_ELEMENT_DECL_NODE => 'XML_ELEMENT_DECL_NODE',
-        \XML_ATTRIBUTE_DECL_NODE => 'XML_ATTRIBUTE_DECL_NODE',
-        \XML_ENTITY_DECL_NODE => 'XML_ENTITY_DECL_NODE',
-        \XML_NAMESPACE_DECL_NODE => 'XML_NAMESPACE_DECL_NODE',
+    private const NODE_TYPES = [
+        XML_ELEMENT_NODE => 'XML_ELEMENT_NODE',
+        XML_ATTRIBUTE_NODE => 'XML_ATTRIBUTE_NODE',
+        XML_TEXT_NODE => 'XML_TEXT_NODE',
+        XML_CDATA_SECTION_NODE => 'XML_CDATA_SECTION_NODE',
+        XML_ENTITY_REF_NODE => 'XML_ENTITY_REF_NODE',
+        XML_ENTITY_NODE => 'XML_ENTITY_NODE',
+        XML_PI_NODE => 'XML_PI_NODE',
+        XML_COMMENT_NODE => 'XML_COMMENT_NODE',
+        XML_DOCUMENT_NODE => 'XML_DOCUMENT_NODE',
+        XML_DOCUMENT_TYPE_NODE => 'XML_DOCUMENT_TYPE_NODE',
+        XML_DOCUMENT_FRAG_NODE => 'XML_DOCUMENT_FRAG_NODE',
+        XML_NOTATION_NODE => 'XML_NOTATION_NODE',
+        XML_HTML_DOCUMENT_NODE => 'XML_HTML_DOCUMENT_NODE',
+        XML_DTD_NODE => 'XML_DTD_NODE',
+        XML_ELEMENT_DECL_NODE => 'XML_ELEMENT_DECL_NODE',
+        XML_ATTRIBUTE_DECL_NODE => 'XML_ATTRIBUTE_DECL_NODE',
+        XML_ENTITY_DECL_NODE => 'XML_ENTITY_DECL_NODE',
+        XML_NAMESPACE_DECL_NODE => 'XML_NAMESPACE_DECL_NODE',
     ];
 
-    public static function castException(\DOMException $e, array $a, Stub $stub, bool $isNested)
+    public static function castException(DOMException $e, array $a, Stub $stub, bool $isNested)
     {
         $k = Caster::PREFIX_PROTECTED.'code';
-        if (isset($a[$k], self::$errorCodes[$a[$k]])) {
-            $a[$k] = new ConstStub(self::$errorCodes[$a[$k]], $a[$k]);
+        if (isset($a[$k], self::ERROR_CODES[$a[$k]])) {
+            $a[$k] = new ConstStub(self::ERROR_CODES[$a[$k]], $a[$k]);
         }
 
         return $a;
@@ -92,12 +143,12 @@ class DOMCaster
         return $a;
     }
 
-    public static function castNode(\DOMNode $dom, array $a, Stub $stub, bool $isNested)
+    public static function castNode(DOMNode $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'nodeName' => $dom->nodeName,
             'nodeValue' => new CutStub($dom->nodeValue),
-            'nodeType' => new ConstStub(self::$nodeTypes[$dom->nodeType], $dom->nodeType),
+            'nodeType' => new ConstStub(self::NODE_TYPES[$dom->nodeType], $dom->nodeType),
             'parentNode' => new CutStub($dom->parentNode),
             'childNodes' => $dom->childNodes,
             'firstChild' => new CutStub($dom->firstChild),
@@ -116,12 +167,12 @@ class DOMCaster
         return $a;
     }
 
-    public static function castNameSpaceNode(\DOMNameSpaceNode $dom, array $a, Stub $stub, bool $isNested)
+    public static function castNameSpaceNode(DOMNameSpaceNode $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'nodeName' => $dom->nodeName,
             'nodeValue' => new CutStub($dom->nodeValue),
-            'nodeType' => new ConstStub(self::$nodeTypes[$dom->nodeType], $dom->nodeType),
+            'nodeType' => new ConstStub(self::NODE_TYPES[$dom->nodeType], $dom->nodeType),
             'prefix' => $dom->prefix,
             'localName' => $dom->localName,
             'namespaceURI' => $dom->namespaceURI,
@@ -132,7 +183,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castDocument(\DOMDocument $dom, array $a, Stub $stub, bool $isNested, int $filter = 0)
+    public static function castDocument(DOMDocument $dom, array $a, Stub $stub, bool $isNested, int $filter = 0)
     {
         $a += [
             'doctype' => $dom->doctype,
@@ -166,7 +217,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castCharacterData(\DOMCharacterData $dom, array $a, Stub $stub, bool $isNested)
+    public static function castCharacterData(DOMCharacterData $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'data' => $dom->data,
@@ -176,7 +227,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castAttr(\DOMAttr $dom, array $a, Stub $stub, bool $isNested)
+    public static function castAttr(DOMAttr $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'name' => $dom->name,
@@ -189,7 +240,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castElement(\DOMElement $dom, array $a, Stub $stub, bool $isNested)
+    public static function castElement(DOMElement $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'tagName' => $dom->tagName,
@@ -199,7 +250,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castText(\DOMText $dom, array $a, Stub $stub, bool $isNested)
+    public static function castText(DOMText $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'wholeText' => $dom->wholeText,
@@ -208,7 +259,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castTypeinfo(\DOMTypeinfo $dom, array $a, Stub $stub, bool $isNested)
+    public static function castTypeinfo(DOMTypeinfo $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'typeName' => $dom->typeName,
@@ -218,7 +269,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castDomError(\DOMDomError $dom, array $a, Stub $stub, bool $isNested)
+    public static function castDomError(DOMDomError $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'severity' => $dom->severity,
@@ -232,7 +283,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castLocator(\DOMLocator $dom, array $a, Stub $stub, bool $isNested)
+    public static function castLocator(DOMLocator $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'lineNumber' => $dom->lineNumber,
@@ -245,7 +296,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castDocumentType(\DOMDocumentType $dom, array $a, Stub $stub, bool $isNested)
+    public static function castDocumentType(DOMDocumentType $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'name' => $dom->name,
@@ -259,7 +310,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castNotation(\DOMNotation $dom, array $a, Stub $stub, bool $isNested)
+    public static function castNotation(DOMNotation $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'publicId' => $dom->publicId,
@@ -269,7 +320,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castEntity(\DOMEntity $dom, array $a, Stub $stub, bool $isNested)
+    public static function castEntity(DOMEntity $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'publicId' => $dom->publicId,
@@ -283,7 +334,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castProcessingInstruction(\DOMProcessingInstruction $dom, array $a, Stub $stub, bool $isNested)
+    public static function castProcessingInstruction(DOMProcessingInstruction $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'target' => $dom->target,
@@ -293,7 +344,7 @@ class DOMCaster
         return $a;
     }
 
-    public static function castXPath(\DOMXPath $dom, array $a, Stub $stub, bool $isNested)
+    public static function castXPath(DOMXPath $dom, array $a, Stub $stub, bool $isNested)
     {
         $a += [
             'document' => $dom->document,

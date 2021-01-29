@@ -2,14 +2,13 @@
 
 namespace App\Http\Livewire\Models\Company;
 
+use Auth;
 use Livewire\Component;
-use App\Domain\Company\Models\Company;
 use App\Domain\Company\Actions\AddRazorPayToCompany;
 
 class Settings extends Component
 {
-    public Company $company;
-
+    public $company;
     public bool $createSuccess = false;
     public bool $createFail = false;
 
@@ -30,6 +29,11 @@ class Settings extends Component
         } else {
             $this->createFail = true;
         }
+    }
+
+    public function mount()
+    {
+        $this->company = Auth::user()->company;
     }
 
     public function render()

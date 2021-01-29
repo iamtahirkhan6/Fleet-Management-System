@@ -13,6 +13,8 @@ namespace Symfony\Component\Console\Input;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
+use function count;
+use function array_key_exists;
 
 /**
  * Input is the base class for all concrete Input classes.
@@ -69,10 +71,10 @@ abstract class Input implements InputInterface, StreamableInputInterface
         $givenArguments = $this->arguments;
 
         $missingArguments = array_filter(array_keys($definition->getArguments()), function ($argument) use ($definition, $givenArguments) {
-            return !\array_key_exists($argument, $givenArguments) && $definition->getArgument($argument)->isRequired();
+            return !array_key_exists($argument, $givenArguments) && $definition->getArgument($argument)->isRequired();
         });
 
-        if (\count($missingArguments) > 0) {
+        if (count($missingArguments) > 0) {
             throw new RuntimeException(sprintf('Not enough arguments (missing: "%s").', implode(', ', $missingArguments)));
         }
     }
@@ -110,7 +112,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
-        return isset($this->arguments[$name]) ? $this->arguments[$name] : $this->definition->getArgument($name)->getDefault();
+        return $this->arguments[$name] ?? $this->definition->getArgument($name)->getDefault();
     }
 
     /**
@@ -150,7 +152,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
             throw new InvalidArgumentException(sprintf('The "%s" option does not exist.', $name));
         }
 
-        return \array_key_exists($name, $this->options) ? $this->options[$name] : $this->definition->getOption($name)->getDefault();
+        return array_key_exists($name, $this->options) ? $this->options[$name] : $this->definition->getOption($name)->getDefault();
     }
 
     /**

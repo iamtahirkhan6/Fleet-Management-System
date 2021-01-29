@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateInvoicesTable extends Migration
 {
@@ -34,7 +34,7 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('received_amount');
 
             $table->foreignId('consignee_id')->constrained('consignees');
-
+            $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
     }

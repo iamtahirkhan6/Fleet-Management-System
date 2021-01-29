@@ -12,6 +12,8 @@
 
 namespace Composer\Package\Loader;
 
+use RuntimeException;
+use UnexpectedValueException;
 use Composer\Package\BasePackage;
 use Composer\Package\AliasPackage;
 use Composer\Config;
@@ -68,16 +70,14 @@ class RootPackageLoader extends ArrayLoader
         if (!isset($config['name'])) {
             $config['name'] = '__root__';
         } elseif ($err = ValidatingArrayLoader::hasPackageNamingError($config['name'])) {
-            throw new \RuntimeException('Your package name '.$err);
+            throw new RuntimeException('Your package name '.$err);
         }
         $autoVersioned = false;
         if (!isset($config['version'])) {
             $commit = null;
 
-            if (isset($config['extra']['branch-version'])) {
-                $config['version'] = preg_replace('{(\.x)?(-dev)?$}', '', $config['extra']['branch-version']).'.x-dev';
-            } elseif (getenv('COMPOSER_ROOT_VERSION')) {
-                // override with env var if available
+            // override with env var if available
+            if (getenv('COMPOSER_ROOT_VERSION')) {
                 $config['version'] = getenv('COMPOSER_ROOT_VERSION');
             } else {
                 $versionData = $this->versionGuesser->guessVersion($config, $cwd ?: getcwd());
@@ -136,7 +136,7 @@ class RootPackageLoader extends ArrayLoader
                 $references = $this->extractReferences($links, $references);
 
                 if (isset($links[$config['name']])) {
-                    throw new \RuntimeException(sprintf('Root package \'%s\' cannot require itself in its composer.json' . PHP_EOL .
+                    throw new RuntimeException(sprintf('Root package \'%s\' cannot require itself in its composer.json' . PHP_EOL .
                                 'Did you accidentally name your root package after an external package?', $config['name']));
                 }
             }
@@ -146,7 +146,7 @@ class RootPackageLoader extends ArrayLoader
             if (isset($config[$linkType])) {
                 foreach ($config[$linkType] as $linkName => $constraint) {
                     if ($err = ValidatingArrayLoader::hasPackageNamingError($linkName, true)) {
-                        throw new \RuntimeException($linkType.'.'.$err);
+                        throw new RuntimeException($linkType.'.'.$err);
                     }
                 }
             }
@@ -184,7 +184,7 @@ class RootPackageLoader extends ArrayLoader
                     'alias_normalized' => $this->versionParser->normalize($match[2], $reqVersion),
                 );
             } elseif (strpos($reqVersion, ' as ') !== false) {
-                throw new \UnexpectedValueException('Invalid alias definition in "'.$reqName.'": "'.$reqVersion.'". Aliases should be in the form "exact-version as other-exact-version".');
+                throw new UnexpectedValueException('Invalid alias definition in "'.$reqName.'": "'.$reqVersion.'". Aliases should be in the form "exact-version as other-exact-version".');
             }
         }
 

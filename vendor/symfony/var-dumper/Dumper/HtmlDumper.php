@@ -11,8 +11,14 @@
 
 namespace Symfony\Component\VarDumper\Dumper;
 
+use InvalidArgumentException;
 use Symfony\Component\VarDumper\Cloner\Cursor;
 use Symfony\Component\VarDumper\Cloner\Data;
+use function ord;
+use function strlen;
+use function is_string;
+use const ENT_QUOTES;
+use const JSON_FORCE_OBJECT;
 
 /**
  * HtmlDumper dumps variables as HTML.
@@ -97,7 +103,7 @@ class HtmlDumper extends CliDumper
     public function setTheme(string $themeName)
     {
         if (!isset(static::$themes[$themeName])) {
-            throw new \InvalidArgumentException(sprintf('Theme "%s" does not exist in class "%s".', $themeName, static::class));
+            throw new InvalidArgumentException(sprintf('Theme "%s" does not exist in class "%s".', $themeName, static::class));
         }
 
         $this->setStyles(static::$themes[$themeName]);
@@ -159,7 +165,7 @@ class HtmlDumper extends CliDumper
             return $this->dumpHeader;
         }
 
-        $line = str_replace('{$options}', json_encode($this->displayOptions, \JSON_FORCE_OBJECT), <<<'EOHTML'
+        $line = str_replace('{$options}', json_encode($this->displayOptions, JSON_FORCE_OBJECT), <<<'EOHTML'
 <script>
 Sfdump = window.Sfdump || (function (doc) {
 
@@ -877,7 +883,7 @@ EOHTML
         } elseif ('note' === $style && 0 < ($attr['depth'] ?? 0) && false !== $c = strrpos($value, '\\')) {
             $style .= ' title=""';
             $attr += [
-                'ellipsis' => \strlen($value) - $c,
+                'ellipsis' => strlen($value) - $c,
                 'ellipsis-type' => 'note',
                 'ellipsis-tail' => 1,
             ];
@@ -897,10 +903,10 @@ EOHTML
             }
             $label = esc(substr($value, -$attr['ellipsis']));
             $style = str_replace(' title="', " title=\"$v\n", $style);
-            $v = sprintf('<span class=%s>%s</span>', $class, substr($v, 0, -\strlen($label)));
+            $v = sprintf('<span class=%s>%s</span>', $class, substr($v, 0, -strlen($label)));
 
             if (!empty($attr['ellipsis-tail'])) {
-                $tail = \strlen(esc(substr($value, -$attr['ellipsis'], $attr['ellipsis-tail'])));
+                $tail = strlen(esc(substr($value, -$attr['ellipsis'], $attr['ellipsis-tail'])));
                 $v .= sprintf('<span class=%s>%s</span>%s', $class, substr($label, 0, $tail), substr($label, $tail));
             } else {
                 $v .= $label;
@@ -923,13 +929,13 @@ EOHTML
                     $s .= '">';
                 }
 
-                $s .= isset($map[$c[$i]]) ? $map[$c[$i]] : sprintf('\x%02X', \ord($c[$i]));
+                $s .= $map[$c[$i]] ?? sprintf('\x%02X', ord($c[$i]));
             } while (isset($c[++$i]));
 
             return $s.'</span>';
         }, $v).'</span>';
 
-        if (isset($attr['file']) && $href = $this->getSourceLink($attr['file'], isset($attr['line']) ? $attr['line'] : 0)) {
+        if (isset($attr['file']) && $href = $this->getSourceLink($attr['file'], $attr['line'] ?? 0)) {
             $attr['href'] = $href;
         }
         if (isset($attr['href'])) {
@@ -958,7 +964,7 @@ EOHTML
         if (-1 === $depth) {
             $args = ['"'.$this->dumpId.'"'];
             if ($this->extraDisplayOptions) {
-                $args[] = json_encode($this->extraDisplayOptions, \JSON_FORCE_OBJECT);
+                $args[] = json_encode($this->extraDisplayOptions, JSON_FORCE_OBJECT);
             }
             // Replace is for BC
             $this->line .= sprintf(str_replace('"%s"', '%s', $this->dumpSuffix), implode(', ', $args));
@@ -978,7 +984,7 @@ EOHTML
         $options = $this->extraDisplayOptions + $this->displayOptions;
 
         if ($fmt = $options['fileLinkFormat']) {
-            return \is_string($fmt) ? strtr($fmt, ['%f' => $file, '%l' => $line]) : $fmt->format($file, $line);
+            return is_string($fmt) ? strtr($fmt, ['%f' => $file, '%l' => $line]) : $fmt->format($file, $line);
         }
 
         return false;
@@ -987,5 +993,5 @@ EOHTML
 
 function esc($str)
 {
-    return htmlspecialchars($str, \ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }

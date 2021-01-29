@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateAgentsTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreateAgentsTable extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('company_id')->nullable()->constrained('companies');
+            $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
     }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCompaniesTable extends Migration
 {
@@ -25,6 +25,7 @@ class CreateCompaniesTable extends Migration
             $table->boolean('use_razorpay')->default(0);
             $table->string('razorpay_key_id')->nullable();
             $table->string('razorpay_key_secret')->nullable();
+            $table->string('razorpay_account_number')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
