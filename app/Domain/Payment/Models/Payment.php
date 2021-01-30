@@ -3,6 +3,7 @@
 namespace App\Domain\Payment\Models;
 
 use App\Helper\Helper;
+use App\Traits\MultiTenable;
 use App\Domain\Trip\Models\Trip;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;

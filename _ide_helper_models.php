@@ -16,7 +16,7 @@ namespace App\Domain\Agent\Models{
  *
  * @property int $id
  * @property string $name
- * @property int|null $company_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Domain\General\Models\PhoneNumber|null $phoneNumber
@@ -117,30 +117,12 @@ namespace App\Domain\Document\Models{
 /**
  * App\Domain\Document\Models\Document
  *
- * @property int $id
- * @property string|null $uid_num
- * @property string $path
- * @property int $document_category_id
- * @property int|null $trip_id
- * @property string $documentable_type
- * @property int $documentable_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domain\Document\Models\DocumentCategory[] $categories
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $documentable
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereDocumentCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereDocumentableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereDocumentableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereTripId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereUidNum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
  */
 	class Document extends \Eloquent {}
 }
@@ -149,18 +131,10 @@ namespace App\Domain\Document\Models{
 /**
  * App\Domain\Document\Models\DocumentCategory
  *
- * @property int $id
- * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Domain\Document\Models\Document $categories
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereUpdatedAt($value)
  */
 	class DocumentCategory extends \Eloquent {}
 }
@@ -291,8 +265,8 @@ namespace App\Domain\Expense\Models{
  * @property int $expense_category_id
  * @property int $expense_individual_id
  * @property int $office_id
- * @property int $company_id
  * @property int $payment_method_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Domain\Expense\Models\ExpenseCategory $category
@@ -578,7 +552,6 @@ namespace App\Domain\Fleet\Models{
  *
  * @property int $id
  * @property string $number
- * @property int $fleet_id
  * @property string $owner_name
  * @property string $reg_date
  * @property string $model
@@ -589,6 +562,8 @@ namespace App\Domain\Fleet\Models{
  * @property string $engine_number
  * @property string $authority
  * @property string $rto_code
+ * @property int $fleet_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle newModelQuery()
@@ -597,6 +572,7 @@ namespace App\Domain\Fleet\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereAuthority($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereChassisNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereClass($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereEngineNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereFitnessUpto($value)
@@ -623,12 +599,14 @@ namespace App\Domain\General\Models{
  * @property string|null $city
  * @property string|null $state
  * @property string|null $zip
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address query()
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereState($value)
@@ -689,6 +667,7 @@ namespace App\Domain\General\Models{
  *
  * @property int $id
  * @property string $phone_number
+ * @property int $company_id
  * @property string $phoneable_type
  * @property int $phoneable_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -697,6 +676,7 @@ namespace App\Domain\General\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PhoneNumber wherePhoneNumber($value)
@@ -769,12 +749,14 @@ namespace App\Domain\Invoice\Models{
  * @property int $due_amount
  * @property int $received_amount
  * @property int $consignee_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice query()
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereBillNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereConsigneeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereDueAmount($value)
@@ -903,8 +885,8 @@ namespace App\Domain\Party\Models{
  * @property int $id
  * @property string $name
  * @property string|null $pan
- * @property int $company_id
  * @property string $razorpay_contact_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domain\Payment\Models\BankAccount[] $bankAccounts
@@ -939,8 +921,8 @@ namespace App\Domain\Payment\Models{
  * @property string $ifsc_code
  * @property string $bankable_type
  * @property int $bankable_id
- * @property int $company_id
  * @property string|null $fund_account_id
+ * @property int $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $bankable

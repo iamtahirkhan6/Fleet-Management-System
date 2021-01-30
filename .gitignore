@@ -1,3 +1,12 @@
+/node_modules
+/vendor
+/phpunit.xml
+/.idea
+/.vscode
+/storage/app
 auth.json
-.vscode
-node_modules
+composer.phar
+composer.lock
+.DS_Store
+Thumbs.db
+.phpunit.result.cache
