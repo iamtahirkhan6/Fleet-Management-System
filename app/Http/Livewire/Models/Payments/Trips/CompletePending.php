@@ -86,7 +86,7 @@ class CompletePending extends Component
         $this->input["tds_sbm_bool"] = $this->tds_sbm_bool;
         $this->fixInput();
         $this->validate($this->rules(), $this->messages());
-        $result = CompleteTripPayment::run($this->input, $this->trip);
+        $result = CompleteTripPayment::run($this->input, $this->trip, Auth::user()->company_id);
         if (!$result) {
             $this->showFail = true;
         } else {

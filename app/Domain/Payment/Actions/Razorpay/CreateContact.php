@@ -2,20 +2,21 @@
 
 namespace App\Domain\Payment\Actions\Razorpay;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Lorisleiva\Actions\Concerns\AsAction;
-use App\Domain\Payment\Razorpay\Actions\Party;
-use App\Domain\Payment\Razorpay\Actions\Company;
+use App\Domain\Party\Models\Party;
+use App\Domain\Company\Models\Company;
 
 
 class CreateContact
 {
     use AsAction;
 
-    public function handle($party_id, $company_id, $update_model = null) : int|bool
+    public function handle($party_id, $party = null, $update_model = null) : int|bool
     {
-        $party   = Party::find($party_id);
-        $company = Company::find($company_id);
+        if(!$party) $party   = Party::find($party_id);
+        $company = Auth::user()->company;
 
         if (isset($company->razorpay_key_id) && isset($company->razorpay_key_secret)) {
 
@@ -27,7 +28,7 @@ class CreateContact
             ]);
 
             if ($update_model) {
-                $party->razorpay_contact_id = (isset($response->id)) ? $response->id : '';
+                $party->razorpay_contact_id = (isset($response->id)) ? $response->id : null;
                 $party->save();
             }
 

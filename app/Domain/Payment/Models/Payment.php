@@ -16,9 +16,7 @@ class Payment extends Model implements HasMedia
     use MultiTenable;
     use InteractsWithMedia;
 
-    /*
-            Define Relationships
-    */
+    /*-- Define Relationships --*/
 
     public function trip()
     {
@@ -40,9 +38,7 @@ class Payment extends Model implements HasMedia
         return $this->hasOne(PaymentStatus::class, 'id', 'payment_status_id');
     }
 
-    /*
-        Define Functions
-    */
+    /*-- Define Functions --*/
 
     public function getAmountAttribute($amount)
     {

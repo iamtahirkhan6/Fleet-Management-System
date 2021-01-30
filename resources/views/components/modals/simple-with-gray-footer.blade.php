@@ -34,7 +34,7 @@
                         </h3>
                         <div class="mt-2">
                             <p class="text-sm text-gray-500">
-                                {{ $body }}
+                                {!! $body !!}
                             </p>
                         </div>
                     </div>

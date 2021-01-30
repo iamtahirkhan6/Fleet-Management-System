@@ -1,3 +1,4 @@
+{{-- If Avatar --}}
 @if ($avatar)
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
@@ -33,7 +34,7 @@
     <td class="px-6 py-4 whitespace-nowrap">
             <div class="text-sm text-gray-500">
                 @if($link)
-                    <a href="{{ $link }}" {{ $attributes }} class="text-indigo-600 hover:text-indigo-900">{{ $slot }}</a>
+                    <a href="{{ $link }}" {{ $attributes }} {{ $attributes->merge(['class' => 'text-indigo-600 hover:text-indigo-900']) }}>{{ $slot }}</a>
                 @else
                     @if($money == "true")
                         @if($moneyBool == 0 || $moneyBool == false)

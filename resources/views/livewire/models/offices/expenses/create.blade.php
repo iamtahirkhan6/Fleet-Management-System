@@ -160,13 +160,13 @@
         </div>
     </form>
     <!-- ON success -->
-    <x-modals.basic 
-        color="bg-green-100" 
-        title="Added Expense" 
+    <x-modals.basic
+        color="bg-green-100"
+        title="Added Expense"
         desc="The expense has been added to the database."
-        backTitle="Go back to Expenses" 
-        :link="url()->previous()" 
-        x-show="showSuccess" 
+        backTitle="Go back to Expenses"
+        :link="url()->previous()"
+        x-show="showSuccess"
         x-cloak
     >
         <x-slot name="icon">

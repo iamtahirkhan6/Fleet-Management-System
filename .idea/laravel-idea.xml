@@ -15,7 +15,7 @@
         <entry key="createModel:namespace" value="Models" />
       </map>
     </option>
-    <option name="helperCodeCreateHighOrderCollectionProxies" value="true" />
+    <option name="helperCodeModelsStyle" value="dynamic" />
     <option name="moduleSystemName" value="directory" />
     <option name="userClassName" value="App\Models\User" />
   </component>

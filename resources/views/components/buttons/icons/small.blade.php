@@ -1,7 +1,8 @@
 <div {{ $attributes }}>
     <a class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm
         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-        focus:ring-indigo-500" @if(isset($attributes["href"])) href="{!! $attributes["href"]  ?? '#' !!}" @endif>
+        focus:ring-indigo-500" @if(isset($attributes["href"])) href="{!! $attributes["href"]  ?? '#' !!}"
+        @endif>
 
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

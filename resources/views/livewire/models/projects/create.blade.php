@@ -1,15 +1,15 @@
 <div class="overflow-hidden bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg" x-data="{createSuccess: @entangle('createSuccess'), createFail: @entangle('createFail')}">
-    
+
     <x-forms.basic-stacked.form
-        wire:submit.prevent='createProject' 
+        wire:submit.prevent='createProject'
         :backLink="route('projects.index')"
         backLinkTitle="Go Back">
 
         <!-- Material -->
         <x-forms.basic-stacked.column title="Material">
-            <x-forms.basic-stacked.dropdown 
-                wire:model="project.material" 
-                title="Select the material" 
+            <x-forms.basic-stacked.dropdown
+                wire:model="project.material"
+                title="Select the material"
                 :array="$materials">
             </x-forms.basic-stacked.dropdown>
             @error('project.material') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -17,9 +17,9 @@
 
         <!-- Consignee -->
         <x-forms.basic-stacked.column title="Consignee">
-            <x-forms.basic-stacked.dropdown 
-                wire:model="project.consignee" 
-                title="Select the consignee" 
+            <x-forms.basic-stacked.dropdown
+                wire:model="project.consignee"
+                title="Select the consignee"
                 :array="$consignees">
             </x-forms.basic-stacked.dropdown>
             @error('project.consignee') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -27,9 +27,9 @@
 
         <!-- Source -->
         <x-forms.basic-stacked.column title="Source">
-            <x-forms.basic-stacked.dropdown 
-                wire:model="project.source" 
-                title="Select the source" 
+            <x-forms.basic-stacked.dropdown
+                wire:model="project.source"
+                title="Select the source"
                 :array="$sources">
             </x-forms.basic-stacked.dropdown>
             @error('project.source') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -47,9 +47,9 @@
 
         <!-- Destination -->
         <x-forms.basic-stacked.column title="Company">
-            <x-forms.basic-stacked.dropdown 
-                wire:model="project.company_id" 
-                title="Select the company" 
+            <x-forms.basic-stacked.dropdown
+                wire:model="project.company_id"
+                title="Select the company"
                 :array="$companies">
             </x-forms.basic-stacked.dropdown>
             @error('project.company_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -73,5 +73,5 @@
             <x-svg.cancel-circle />
         </x-slot>
     </x-modals.basic>
-    
+
 </div>

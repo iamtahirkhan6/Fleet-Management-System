@@ -1,8 +1,8 @@
 <div class="overflow-hidden bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg"
     x-data="{createSuccess: @entangle('createSuccess'), createFail: @entangle('createFail')}">
 
-    <x-forms.basic-stacked.form 
-        wire:submit.prevent='createUnloadingPoint' 
+    <x-forms.basic-stacked.form
+        wire:submit.prevent='createUnloadingPoint'
         :backLink="route('unloading-points.index')"
         backLinkTitle="Go Back">
 
@@ -21,7 +21,7 @@
         </x-forms.basic-stacked.column>
 
     </x-forms.basic-stacked.form>
-    
+
     <!-- Success Modal -->
     <x-modals.basic color="bg-green-100" title="Unloading Point Added" desc="The unloading point has been added to the database."
         backTitle="Go back to Unloading Points" link="{{ route('unloading-points.index') }}" x-show="createSuccess" x-cloak>

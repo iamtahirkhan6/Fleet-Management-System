@@ -943,7 +943,6 @@ class ComposerStaticInit7f940d01e181c4a4aac9dc795147609d
         'App\\View\\Components\\modals\\basic' => __DIR__ . '/../..' . '/app/View/Components/modals/basic.php',
         'App\\View\\Components\\modals\\basicWithFooter' => __DIR__ . '/../..' . '/app/View/Components/modals/basicWithFooter.php',
         'App\\View\\Components\\modals\\simpleWithGrayFooter' => __DIR__ . '/../..' . '/app/View/Components/modals/simpleWithGrayFooter.php',
-        'App\\View\\Components\\svg\\stepCompleted' => __DIR__ . '/../..' . '/app/View/Components/svg/stepCompleted.php',
         'App\\View\\Components\\tables\\basic\\column' => __DIR__ . '/../..' . '/app/View/Components/tables/basic/column.php',
         'App\\View\\Components\\tables\\basic\\main' => __DIR__ . '/../..' . '/app/View/Components/tables/basic/main.php',
         'App\\View\\Components\\tables\\basic\\row' => __DIR__ . '/../..' . '/app/View/Components/tables/basic/row.php',

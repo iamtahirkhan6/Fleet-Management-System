@@ -17,7 +17,7 @@ class CreatePartiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('pan')->nullable();
-            $table->string('razorpay_contact_id');
+            $table->string('razorpay_contact_id')->nullable();
             $table->unique(['pan', 'company_id']);
             $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();

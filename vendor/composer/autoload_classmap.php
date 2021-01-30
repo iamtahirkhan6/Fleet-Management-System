@@ -207,7 +207,6 @@ return array(
     'App\\View\\Components\\modals\\basic' => $baseDir . '/app/View/Components/modals/basic.php',
     'App\\View\\Components\\modals\\basicWithFooter' => $baseDir . '/app/View/Components/modals/basicWithFooter.php',
     'App\\View\\Components\\modals\\simpleWithGrayFooter' => $baseDir . '/app/View/Components/modals/simpleWithGrayFooter.php',
-    'App\\View\\Components\\svg\\stepCompleted' => $baseDir . '/app/View/Components/svg/stepCompleted.php',
     'App\\View\\Components\\tables\\basic\\column' => $baseDir . '/app/View/Components/tables/basic/column.php',
     'App\\View\\Components\\tables\\basic\\main' => $baseDir . '/app/View/Components/tables/basic/main.php',
     'App\\View\\Components\\tables\\basic\\row' => $baseDir . '/app/View/Components/tables/basic/row.php',
