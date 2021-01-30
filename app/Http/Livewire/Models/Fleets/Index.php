@@ -13,6 +13,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.fleets.index', ['fleets' => Fleet::whereCompanyId(Auth::user()->company_id)->paginate(10)]);
+        return view('livewire.models.fleets.index', ['fleets' => Fleet::paginate(10)]);
     }
 }

@@ -16,8 +16,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.models.consignees.index',
-            ['consignees' => Consignee::whereCompanyId(Auth::user()->company_id)
-                ->where('name', 'like', '%'.$this->searchTerm.'%')
+            ['consignees' => Consignee::where('name', 'like', '%'.$this->searchTerm.'%')
                 ->paginate(15)]);
     }
 }

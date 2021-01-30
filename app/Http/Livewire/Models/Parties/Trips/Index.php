@@ -19,6 +19,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.parties.trips.index', ['trips' => Trip::whereCompanyId(Auth::user()->company_id)->where('party_id', $this->party->id)->paginate(25)]);
+        return view('livewire.models.parties.trips.index', ['trips' => Trip::where('party_id', $this->party->id)->paginate(25)]);
     }
 }

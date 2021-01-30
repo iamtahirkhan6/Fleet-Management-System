@@ -10,6 +10,6 @@ class Index extends Component
 {
     public function render()
     {
-        return view('livewire.models.offices.index', ['offices' => Office::whereCompanyId(Auth::user()->company_id)->paginate(10)]);
+        return view('livewire.models.offices.index', ['offices' => Office::paginate(10)]);
     }
 }

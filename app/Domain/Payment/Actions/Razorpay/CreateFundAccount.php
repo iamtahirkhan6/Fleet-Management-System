@@ -3,6 +3,7 @@
 
 namespace App\Domain\Payment\Actions\Razorpay;
 
+use Auth;
 use App\Domain\Party\Models\Party;
 use Illuminate\Support\Facades\Http;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -16,7 +17,7 @@ class CreateFundAccount
 
     public function handle($account_name, $account_number, $ifsc_code, $party_id, $company_id, $razorpay_contact_id = null)
     {
-        $company = Company::find(Auth::user()->company_id);
+        $company = Company::find($company_id);
 
         if (isset($company->razorpay_key_id) && isset($company->razorpay_key_secret)) {
 
@@ -40,7 +41,7 @@ class CreateFundAccount
             ]);
             $response = $response->json();
 
-            $bank_account                  = BankAccount::whereAccountName($account_name)->whereAccountNumber($account_number)->whereIfscCode($ifsc_code)->whereCompanyId($company_id)->first();
+            $bank_account                  = BankAccount::whereAccountName($account_name)->whereAccountNumber($account_number)->whereIfscCode($ifsc_code)->first();
             $bank_account->fund_account_id = $response->id;
             $bank_account->save();
 

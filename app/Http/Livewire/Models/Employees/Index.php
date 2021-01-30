@@ -24,12 +24,10 @@ class Index extends Component
     public function render()
     {
         return $this->officeParameter == null ? view('livewire.models.employees.index', [
-            'employees' => Employee::whereCompanyId(Auth::user()->company_id)
-                ->where('name', 'like', '%' . $this->searchTerm . '%')
+            'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')
                 ->paginate($this->perPage)
         ]) : view('livewire.models.employees.index', [
-            'employees' => Employee::whereCompanyId(Auth::user()->company_id)
-                ->where('name', 'like', '%' . $this->searchTerm . '%')
+            'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')
                 ->where('office_id', $this->officeParameter->id)
                 ->paginate($this->perPage)
         ]);

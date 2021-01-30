@@ -17,6 +17,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.payments.index', ['payments' => Payment::whereCompanyId(Auth::user()->company_id)->paginate(15)]);
+        return view('livewire.models.payments.index', ['payments' => Payment::paginate(15)]);
     }
 }

@@ -66,9 +66,9 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-buttons.danger.medium @click="confirmingRazorPay = !confirmingRazorPay">Confirm Payment</x-buttons.danger.medium>
+            <x-buttons.danger.medium wire:click="" wire:loading.attr="disabled">Confirm Payment</x-buttons.danger.medium>
 
-            <x-jet-secondary-button wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingRazorPay')" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
             </x-jet-secondary-button>
 

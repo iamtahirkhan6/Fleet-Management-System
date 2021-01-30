@@ -53,7 +53,7 @@ class CompletePending extends Component
             'input.pan.alpha_num' => 'Pan Card can only be Alpha Numeric',
         ]);
         $this->panDiv = false; // Hide Pan Search Option
-        $party        = Party::wherePan($this->input['pan'])->whereCompanyId(Auth::user()->company_id)->first();
+        $party        = Party::wherePan($this->input['pan'])->first();
         if ($party) {
             $this->input["party_id"]     = $party->id;
             $this->input["name"]         = $party->name ?? null;

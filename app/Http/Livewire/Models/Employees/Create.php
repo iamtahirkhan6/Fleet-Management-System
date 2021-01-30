@@ -60,7 +60,7 @@ class Create extends Component
     public function mount()
     {
         $this->input["company_id"] = Auth::user()->company_id;   // Get the company id of the user
-        $this->offices = Office::whereCompanyId(Auth::user()->company_id)->get(['id', 'name']);
+        $this->offices = Office::get(['id', 'name']);
         $this->designations = EmployeesDesignation::get(['id','name']);
     }
 

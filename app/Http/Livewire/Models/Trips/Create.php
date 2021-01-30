@@ -84,14 +84,14 @@ class Create extends Component
     public function loadOwnedVehicleTripData()
     {
         $this->paid_drivers   = Employee::whereEmployeeDesignationId(7)->get();
-        $this->fleet_vehicles = Fleet::whereCompanyId(Auth::user()->company_id)->with('vehicles')->get()->map(function ($fleet) {
+        $this->fleet_vehicles = Fleet::with('vehicles')->get()->map(function ($fleet) {
             return $fleet->vehicles;
         })->collapse();
     }
 
     public function loadAgents()
     {
-        $this->agents = Agent::whereCompanyId(Auth::user()->company_id)->get([
+        $this->agents = Agent::get([
             'id',
             'name',
         ]);

@@ -17,7 +17,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.models.market-vehicles.index',[
-            'market_vehicles' => MarketVehicle::whereCompanyId(Auth::user()->company_id)->where('number','like', '%'.$this->searchTerm.'%')->with('party')->latest()->paginate($this->perPage)
+            'market_vehicles' => MarketVehicle::where('number','like', '%'.$this->searchTerm.'%')->with('party')->latest()->paginate($this->perPage)
         ]);
     }
 }

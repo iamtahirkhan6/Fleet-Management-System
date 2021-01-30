@@ -16,6 +16,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.models.parties.index', ['parties' => Party::whereCompanyId(Auth::user()->company_id)->where('name','like', '%'.$this->searchTerm.'%')->paginate($this->perPage)]);
+        return view('livewire.models.parties.index', ['parties' => Party::where('name','like', '%'.$this->searchTerm.'%')->paginate($this->perPage)]);
     }
 }

@@ -14,8 +14,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.models.projects.index',[
-                'projects' => Project::whereCompanyId(Auth::user()->company_id)
-                    ->orderByDesc('id')
+                'projects' => Project::orderByDesc('id')
                     ->with(['Source', 'Destination', 'Consignee', 'Material', 'Company']
                     )->paginate(15)
                 ]);

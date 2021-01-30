@@ -13,8 +13,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48edc710-3585-4245-b399-fabc6002437f" name="Default Changelist" comment="20 January&#10;1) Major Changes to views.models&#10;2) Remaining Models classified as General Domain">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Domain/Payment/Actions/Razorpay/CreateFundAccount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Domain/Payment/Actions/Razorpay/CreateFundAccount.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Consignees/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Consignees/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Employees/Create.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Employees/Create.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Employees/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Employees/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Fleets/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Fleets/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/MarketVehicles/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/MarketVehicles/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Offices/Expenses/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Offices/Expenses/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Offices/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Offices/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Trips/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Trips/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Vehicles/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Parties/Vehicles/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Trips/CompletePending.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Trips/CompletePending.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Trips/Pending.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Payments/Trips/Pending.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Projects/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Projects/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/Models/Trips/Create.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/Models/Trips/Create.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/models/payments/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/models/payments/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +279,7 @@
       <workItem from="1611226854715" duration="65476000" />
       <workItem from="1611381920985" duration="150724000" />
       <workItem from="1611857450269" duration="39550000" />
-      <workItem from="1611991178945" duration="1678000" />
+      <workItem from="1611991178945" duration="3378000" />
     </task>
     <task id="LOCAL-00001" summary="20 January&#10;1) Major Changes to views.models&#10;2) Remaining Models classified as General Domain">
       <created>1611149565534</created>
