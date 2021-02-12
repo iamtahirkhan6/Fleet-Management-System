@@ -28,7 +28,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

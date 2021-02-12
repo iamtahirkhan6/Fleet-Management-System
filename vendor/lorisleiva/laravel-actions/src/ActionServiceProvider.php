@@ -4,6 +4,7 @@ namespace Lorisleiva\Actions;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Lorisleiva\Actions\Console\MakeActionCommand;
 use Lorisleiva\Actions\DesignPatterns\CommandDesignPattern;
 use Lorisleiva\Actions\DesignPatterns\ControllerDesignPattern;
 use Lorisleiva\Actions\DesignPatterns\ListenerDesignPattern;
@@ -24,7 +25,17 @@ class ActionServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            // publish Stubs File
+            $this->publishes([
+                __DIR__ . '/Console/stubs/action.stub' => base_path('stubs/action.stub'),
+            ], 'stubs');
+
+            // Register the make:action generator command.
+            $this->commands([
+                MakeActionCommand::class,
+            ]);
+        }
     }
 
     protected function extendActions(ActionManager $manager)

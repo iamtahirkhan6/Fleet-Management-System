@@ -86,7 +86,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * Remove the base controller import if we are already in base namespace.
+     * Remove the base controller import if we are already in the base namespace.
      *
      * @param  string  $name
      * @return string
@@ -175,7 +175,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @param  string  $model
      * @return string
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function parseModel($model)
     {

@@ -17,10 +17,11 @@ class AddRazorPayToCompany
         if ($validator->fails()) {
             return false;
         } else {
-            $company                      = Company::find($company_id);
-            $company->use_razorpay        = $input["use_razorpay"];
-            $company->razorpay_key_id     = $input["razorpay_key_id"];
-            $company->razorpay_key_secret = $input["razorpay_key_secret"];
+            $company                          = Company::find($company_id);
+            $company->use_razorpay            = $input["use_razorpay"];
+            $company->razorpay_key_id         = $input["razorpay_key_id"];
+            $company->razorpay_key_secret     = $input["razorpay_key_secret"];
+            $company->razorpay_account_number = $input["razorpay_account_number"];
             $company->save();
 
             return $company->getChanges() > 0;
@@ -31,9 +32,10 @@ class AddRazorPayToCompany
     public static function rules($with_prefix = null, $prefix = null) : array
     {
         return [
-            $prefix . 'use_razorpay'        => 'required',
-            $prefix . 'razorpay_key_id'     => 'required_if:use_razorpay,1',
-            $prefix . 'razorpay_key_secret' => 'required_if:use_razorpay,1',
+            $prefix . 'use_razorpay'            => 'required',
+            $prefix . 'razorpay_key_id'         => 'required_if:use_razorpay,1',
+            $prefix . 'razorpay_key_secret'     => 'required_if:use_razorpay,1',
+            $prefix . 'razorpay_account_number' => 'required_if:use_razorpay,1',
         ];
     }
 

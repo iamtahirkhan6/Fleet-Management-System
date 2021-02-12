@@ -23,7 +23,7 @@ class ProjectTripController extends Controller
      */
     public function index(Project $project)
     {
-        if ((!Auth::user()->hasRole("admin")) && (!Auth::user()->hasCompanyId())) return abort(403);
+        if ((!Auth::user()->isAbleTo("trips-read"))) return abort(403);
         return view('page')->with('livewire', 'models.trips.index')->with('title', 'View Trips')->with('description', 'View all the performed trips in the project')->with('key', 'project')->with('val', $project);
     }
 

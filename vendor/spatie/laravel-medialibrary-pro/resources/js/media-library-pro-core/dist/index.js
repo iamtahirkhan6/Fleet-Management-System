@@ -5064,7 +5064,7 @@ function isObject$2(item) {
 /**
  * Deep merge two objects.
  * @param target
- * @param ...sources
+ * @param ...loading-points
  */
 function mergeDeep(target, source) {
     if (isObject$2(target) && isObject$2(source)) {
@@ -6048,7 +6048,7 @@ isIndex(key,length)))){result.push(key);}}return result;}/**
      * @param {Object} accumulator The initial aggregated object.
      * @returns {Function} Returns `accumulator`.
      */function baseAggregator(collection,setter,iteratee,accumulator){baseEach(collection,function(value,key,collection){setter(accumulator,value,iteratee(value),collection);});return accumulator;}/**
-     * The base implementation of `_.assign` without support for multiple sources
+     * The base implementation of `_.assign` without support for multiple loading-points
      * or `customizer` functions.
      *
      * @private
@@ -6056,7 +6056,7 @@ isIndex(key,length)))){result.push(key);}}return result;}/**
      * @param {Object} source The source object.
      * @returns {Object} Returns `object`.
      */function baseAssign(object,source){return object&&copyObject(source,keys(source),object);}/**
-     * The base implementation of `_.assignIn` without support for multiple sources
+     * The base implementation of `_.assignIn` without support for multiple loading-points
      * or `customizer` functions.
      *
      * @private
@@ -6448,7 +6448,7 @@ if(typeof value=='function'){return value;}if(value==null){return identity;}if(_
      * @param {*} srcValue The value to match.
      * @returns {Function} Returns the new spec function.
      */function baseMatchesProperty(path,srcValue){if(isKey(path)&&isStrictComparable(srcValue)){return matchesStrictComparable(toKey(path),srcValue);}return function(object){var objValue=get(object,path);return objValue===undefined$1&&objValue===srcValue?hasIn(object,path):baseIsEqual(srcValue,objValue,COMPARE_PARTIAL_FLAG|COMPARE_UNORDERED_FLAG);};}/**
-     * The base implementation of `_.merge` without support for multiple sources.
+     * The base implementation of `_.merge` without support for multiple loading-points.
      *
      * @private
      * @param {Object} object The destination object.
@@ -11687,8 +11687,8 @@ return isNumber(value)&&value!=+value;}/**
      * // => '1,2,3'
      */function toString(value){return value==null?'':baseToString(value);}/*------------------------------------------------------------------------*/ /**
      * Assigns own enumerable string keyed properties of source objects to the
-     * destination object. Source objects are applied from left to right.
-     * Subsequent sources overwrite property assignments of previous sources.
+     * destination object. LoadingPoints objects are applied from left to right.
+     * Subsequent loading-points overwrite property assignments of previous loading-points.
      *
      * **Note:** This method mutates `object` and is loosely based on
      * [`Object.assign`](https://mdn.io/Object/assign).
@@ -11698,7 +11698,7 @@ return isNumber(value)&&value!=+value;}/**
      * @since 0.10.0
      * @category Object
      * @param {Object} object The destination object.
-     * @param {...Object} [sources] The source objects.
+     * @param {...Object} [loading-points] The source objects.
      * @returns {Object} Returns `object`.
      * @see _.assignIn
      * @example
@@ -11853,7 +11853,7 @@ return isNumber(value)&&value!=+value;}/**
      */function create(prototype,properties){var result=baseCreate(prototype);return properties==null?result:baseAssign(result,properties);}/**
      * Assigns own and inherited enumerable string keyed properties of source
      * objects to the destination object for all destination properties that
-     * resolve to `undefined`. Source objects are applied from left to right.
+     * resolve to `undefined`. LoadingPoints objects are applied from left to right.
      * Once a property is set, additional values of the same property are ignored.
      *
      * **Note:** This method mutates `object`.
@@ -12337,11 +12337,11 @@ return isNumber(value)&&value!=+value;}/**
      */function mapValues(object,iteratee){var result={};iteratee=getIteratee(iteratee,3);baseForOwn(object,function(value,key,object){baseAssignValue(result,key,iteratee(value,key,object));});return result;}/**
      * This method is like `_.assign` except that it recursively merges own and
      * inherited enumerable string keyed properties of source objects into the
-     * destination object. Source properties that resolve to `undefined` are
+     * destination object. LoadingPoints properties that resolve to `undefined` are
      * skipped if a destination value exists. Array and plain object properties
      * are merged recursively. Other objects and value types are overridden by
-     * assignment. Source objects are applied from left to right. Subsequent
-     * sources overwrite property assignments of previous sources.
+     * assignment. LoadingPoints objects are applied from left to right. Subsequent
+     * loading-points overwrite property assignments of previous loading-points.
      *
      * **Note:** This method mutates `object`.
      *
@@ -12350,7 +12350,7 @@ return isNumber(value)&&value!=+value;}/**
      * @since 0.5.0
      * @category Object
      * @param {Object} object The destination object.
-     * @param {...Object} [sources] The source objects.
+     * @param {...Object} [loading-points] The source objects.
      * @returns {Object} Returns `object`.
      * @example
      *
@@ -13282,7 +13282,7 @@ if(!length){length=1;object=undefined$1;}while(++index<length){var value=object=
      * // Use the `sourceURL` option to specify a custom sourceURL for the template.
      * var compiled = _.template('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });
      * compiled(data);
-     * // => Find the source of "greeting.jst" under the Sources tab or Resources panel of the web inspector.
+     * // => Find the source of "greeting.jst" under the LoadingPoints tab or Resources panel of the web inspector.
      *
      * // Use the `variable` option to ensure a with-statement isn't used in the compiled template.
      * var compiled = _.template('hi <%= data.user %>!', { 'variable': 'data' });

@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->foreignId('payment_status_id')->constrained('payment_statuses');
             $table->double('fees')->nullable();
             $table->multiLineString('remarks')->nullable();
+            $table->string('utr_number')->nullable();
             $table->string('razorpay_payout_id')->nullable();
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('created_by')->nullable()->constrained('users');

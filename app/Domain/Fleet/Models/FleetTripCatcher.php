@@ -9,7 +9,7 @@ class FleetTripCatcher extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected array $fillable = [
         'vehicleno',
         'etpno',
         'source',

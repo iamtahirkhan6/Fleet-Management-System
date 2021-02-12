@@ -75,7 +75,7 @@ class Api implements ApiInterface
 
     /**
      * Perform image manipulations.
-     * @param  string $source Source image binary data.
+     * @param  string $source LoadingPoints image binary data.
      * @param  array  $params The manipulation params.
      * @return string Manipulated image binary data.
      */

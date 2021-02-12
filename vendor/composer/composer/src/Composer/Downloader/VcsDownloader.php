@@ -13,6 +13,9 @@
 namespace Composer\Downloader;
 
 use Composer\Config;
+use RuntimeException;
+use InvalidArgumentException;
+use PHPUnit\Framework\Exception;
 use Composer\Package\Dumper\ArrayDumper;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionGuesser;
@@ -63,7 +66,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
     public function download(PackageInterface $package, $path, PackageInterface $prevPackage = null)
     {
         if (!$package->getSourceReference()) {
-            throw new \InvalidArgumentException('Package '.$package->getPrettyName().' is missing reference information');
+            throw new InvalidArgumentException('Package '.$package->getPrettyName().' is missing reference information');
         }
 
         $urls = $this->prepareUrls($package->getSourceUrls());
@@ -73,7 +76,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
                 return $this->doDownload($package, $path, $url, $prevPackage);
             } catch (\Exception $e) {
                 // rethrow phpunit exceptions to avoid hard to debug bug failures
-                if ($e instanceof \PHPUnit\Framework\Exception) {
+                if ($e instanceof Exception) {
                     throw $e;
                 }
                 if ($this->io->isDebug()) {
@@ -120,7 +123,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
     public function install(PackageInterface $package, $path)
     {
         if (!$package->getSourceReference()) {
-            throw new \InvalidArgumentException('Package '.$package->getPrettyName().' is missing reference information');
+            throw new InvalidArgumentException('Package '.$package->getPrettyName().' is missing reference information');
         }
 
         $this->io->writeError("  - " . InstallOperation::format($package).': ', false);
@@ -132,7 +135,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
                 break;
             } catch (\Exception $e) {
                 // rethrow phpunit exceptions to avoid hard to debug bug failures
-                if ($e instanceof \PHPUnit\Framework\Exception) {
+                if ($e instanceof Exception) {
                     throw $e;
                 }
                 if ($this->io->isDebug()) {
@@ -153,7 +156,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
     public function update(PackageInterface $initial, PackageInterface $target, $path)
     {
         if (!$target->getSourceReference()) {
-            throw new \InvalidArgumentException('Package '.$target->getPrettyName().' is missing reference information');
+            throw new InvalidArgumentException('Package '.$target->getPrettyName().' is missing reference information');
         }
 
         $this->io->writeError("  - " . UpdateOperation::format($initial, $target).': ', false);
@@ -169,7 +172,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
                 break;
             } catch (\Exception $exception) {
                 // rethrow phpunit exceptions to avoid hard to debug bug failures
-                if ($exception instanceof \PHPUnit\Framework\Exception) {
+                if ($exception instanceof Exception) {
                     throw $exception;
                 }
                 if ($this->io->isDebug()) {
@@ -216,7 +219,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
     {
         $this->io->writeError("  - " . UninstallOperation::format($package));
         if (!$this->filesystem->removeDirectory($path)) {
-            throw new \RuntimeException('Could not completely delete '.$path.', aborting.');
+            throw new RuntimeException('Could not completely delete '.$path.', aborting.');
         }
     }
 
@@ -242,13 +245,13 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
      * @param  string            $path
      * @param  bool              $update  if true (update) the changes can be stashed and reapplied after an update,
      *                                    if false (remove) the changes should be assumed to be lost if the operation is not aborted
-     * @throws \RuntimeException in case the operation must be aborted
+     * @throws RuntimeException in case the operation must be aborted
      */
     protected function cleanChanges(PackageInterface $package, $path, $update)
     {
         // the default implementation just fails if there are any changes, override in child classes to provide stash-ability
         if (null !== $this->getLocalChanges($package, $path)) {
-            throw new \RuntimeException('Source directory ' . $path . ' has uncommitted changes.');
+            throw new RuntimeException('LoadingPoints directory ' . $path . ' has uncommitted changes.');
         }
     }
 
@@ -256,7 +259,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
      * Reapply previously stashes changes if applicable, only called after an update (regardless if successful or not)
      *
      * @param  string            $path
-     * @throws \RuntimeException in case the operation must be aborted or the patch does not apply cleanly
+     * @throws RuntimeException in case the operation must be aborted or the patch does not apply cleanly
      */
     protected function reapplyChanges($path)
     {

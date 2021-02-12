@@ -1,6 +1,6 @@
 {
     "name": "@spatie/media-library-pro-vue3",
-    "version": "1.1.8",
+    "version": "1.1.9",
     "author": "Adriaan Marain <adriaan@spatie.be>",
     "homepage": "https://medialibrary.pro",
     "publishConfig": {
@@ -22,7 +22,7 @@
         "run-link": "yarn link"
     },
     "dependencies": {
-        "@spatie/media-library-pro-core": "^1.1.8",
+        "@spatie/media-library-pro-core": "^1.1.9",
         "lodash": "^4.17.15"
     },
     "peerDependencies": {

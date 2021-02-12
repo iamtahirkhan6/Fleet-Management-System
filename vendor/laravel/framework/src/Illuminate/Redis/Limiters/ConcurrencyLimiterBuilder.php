@@ -2,6 +2,7 @@
 
 namespace Illuminate\Redis\Limiters;
 
+use Illuminate\Redis\Connections\Connection;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
 use Illuminate\Support\InteractsWithTime;
 
@@ -12,7 +13,7 @@ class ConcurrencyLimiterBuilder
     /**
      * The Redis connection.
      *
-     * @var \Illuminate\Redis\Connections\Connection
+     * @var Connection
      */
     public $connection;
 
@@ -47,7 +48,7 @@ class ConcurrencyLimiterBuilder
     /**
      * Create a new builder instance.
      *
-     * @param  \Illuminate\Redis\Connections\Connection  $connection
+     * @param  Connection  $connection
      * @param  string  $name
      * @return void
      */
@@ -58,7 +59,7 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
-     * Set the maximum number of locks that can obtained per time window.
+     * Set the maximum number of locks that can be obtained per time window.
      *
      * @param  int  $maxLocks
      * @return $this
@@ -103,7 +104,7 @@ class ConcurrencyLimiterBuilder
      * @param  callable|null  $failure
      * @return mixed
      *
-     * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
+     * @throws LimiterTimeoutException
      */
     public function then(callable $callback, callable $failure = null)
     {

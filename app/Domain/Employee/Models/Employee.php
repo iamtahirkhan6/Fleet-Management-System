@@ -2,6 +2,7 @@
 
 namespace App\Domain\Employee\Models;
 
+use App\Helper\Helper;
 use App\Traits\MultiTenable;
 use App\Domain\Trip\Models\Trip;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ class Employee extends Model
     use HasFactory;
     use MultiTenable;
 
-    protected $fillable = [
+    protected array $fillable = [
         'name',
         'salary',
         'email',
@@ -54,6 +55,12 @@ class Employee extends Model
     {
         return "https://ui-avatars.com/api/?name=" . $this->name . "&color=7F9CF5&background=EBF4FF";
     }
+
+    public function getSalaryAttribute($salary)
+    {
+        return Helper::rupee_format($salary);
+    }
+
 
     // public function getProfile_Photo_PathAttribute()
     // {

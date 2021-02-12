@@ -3692,7 +3692,7 @@ return resolve(null);}var reader=new FileReader();reader.onload=function(e){reso
  */function isObject$2(item){return item&&_typeof_1$1(item)==='object'&&!Array.isArray(item);}/**
  * Deep merge two objects.
  * @param target
- * @param ...sources
+ * @param ...loading-points
  */function mergeDeep(target,source){if(isObject$2(target)&&isObject$2(source)){for(var key in source){if(isObject$2(source[key])){if(!target[key])Object.assign(target,defineProperty({},key,{}));mergeDeep(target[key],source[key]);}else {if(source[key]!==undefined){Object.assign(target,defineProperty({},key,source[key]));}}}}return target;}function formatLaravelErrors(name,errors){var prefix="".concat(name,".");return Object.entries(errors).reduce(function(validationErrors,_ref2){var _ref3=slicedToArray(_ref2,2),key=_ref3[0],errors=_ref3[1];if(key.startsWith(prefix)){var newKey=key.replace(prefix,'');validationErrors[newKey]=errors;}return validationErrors;},{});}var defaultTranslations={fileTypeNotAllowed:'You must upload a file of type',tooLarge:'File too large, max',tooSmall:'File too small, min',tryAgain:'please try uploading this file again',somethingWentWrong:'Something went wrong while uploading this file',selectOrDragMax:'Select or drag max {maxItems} {file}',selectOrDrag:'Select or drag files',file:{singular:'file',plural:'files'},anyImage:'any image',anyVideo:'any video',goBack:'Go back',dropFile:'Drop file to upload',dragHere:'Drag file here',remove:'Remove',name:'Name'};var lodash=createCommonjsModule$1(function(module,exports){(function(){/** Used as a safe reference for `undefined` in pre-ES5 environments. */var undefined$1;/** Used as the semantic version number. */var VERSION='4.17.20';/** Used as the size to enable large array optimizations. */var LARGE_ARRAY_SIZE=200;/** Error message constants. */var CORE_ERROR_TEXT='Unsupported core-js use. Try https://npms.io/search?q=ponyfill.',FUNC_ERROR_TEXT='Expected a function';/** Used to stand-in for `undefined` hash values. */var HASH_UNDEFINED='__lodash_hash_undefined__';/** Used as the maximum memoize cache size. */var MAX_MEMOIZE_SIZE=500;/** Used as the internal argument placeholder. */var PLACEHOLDER='__lodash_placeholder__';/** Used to compose bitmasks for cloning. */var CLONE_DEEP_FLAG=1,CLONE_FLAT_FLAG=2,CLONE_SYMBOLS_FLAG=4;/** Used to compose bitmasks for value comparisons. */var COMPARE_PARTIAL_FLAG=1,COMPARE_UNORDERED_FLAG=2;/** Used to compose bitmasks for function metadata. */var WRAP_BIND_FLAG=1,WRAP_BIND_KEY_FLAG=2,WRAP_CURRY_BOUND_FLAG=4,WRAP_CURRY_FLAG=8,WRAP_CURRY_RIGHT_FLAG=16,WRAP_PARTIAL_FLAG=32,WRAP_PARTIAL_RIGHT_FLAG=64,WRAP_ARY_FLAG=128,WRAP_REARG_FLAG=256,WRAP_FLIP_FLAG=512;/** Used as default options for `_.truncate`. */var DEFAULT_TRUNC_LENGTH=30,DEFAULT_TRUNC_OMISSION='...';/** Used to detect hot functions by number of calls within a span of milliseconds. */var HOT_COUNT=800,HOT_SPAN=16;/** Used to indicate the type of lazy iteratees. */var LAZY_FILTER_FLAG=1,LAZY_MAP_FLAG=2,LAZY_WHILE_FLAG=3;/** Used as references for various `Number` constants. */var INFINITY=1/0,MAX_SAFE_INTEGER=9007199254740991,MAX_INTEGER=1.7976931348623157e+308,NAN=0/0;/** Used as references for the maximum length and index of an array. */var MAX_ARRAY_LENGTH=4294967295,MAX_ARRAY_INDEX=MAX_ARRAY_LENGTH-1,HALF_MAX_ARRAY_LENGTH=MAX_ARRAY_LENGTH>>>1;/** Used to associate wrap methods with their bit flags. */var wrapFlags=[['ary',WRAP_ARY_FLAG],['bind',WRAP_BIND_FLAG],['bindKey',WRAP_BIND_KEY_FLAG],['curry',WRAP_CURRY_FLAG],['curryRight',WRAP_CURRY_RIGHT_FLAG],['flip',WRAP_FLIP_FLAG],['partial',WRAP_PARTIAL_FLAG],['partialRight',WRAP_PARTIAL_RIGHT_FLAG],['rearg',WRAP_REARG_FLAG]];/** `Object#toString` result references. */var argsTag='[object Arguments]',arrayTag='[object Array]',asyncTag='[object AsyncFunction]',boolTag='[object Boolean]',dateTag='[object Date]',domExcTag='[object DOMException]',errorTag='[object Error]',funcTag='[object Function]',genTag='[object GeneratorFunction]',mapTag='[object Map]',numberTag='[object Number]',nullTag='[object Null]',objectTag='[object Object]',promiseTag='[object Promise]',proxyTag='[object Proxy]',regexpTag='[object RegExp]',setTag='[object Set]',stringTag='[object String]',symbolTag='[object Symbol]',undefinedTag='[object Undefined]',weakMapTag='[object WeakMap]',weakSetTag='[object WeakSet]';var arrayBufferTag='[object ArrayBuffer]',dataViewTag='[object DataView]',float32Tag='[object Float32Array]',float64Tag='[object Float64Array]',int8Tag='[object Int8Array]',int16Tag='[object Int16Array]',int32Tag='[object Int32Array]',uint8Tag='[object Uint8Array]',uint8ClampedTag='[object Uint8ClampedArray]',uint16Tag='[object Uint16Array]',uint32Tag='[object Uint32Array]';/** Used to match empty string literals in compiled template source. */var reEmptyStringLeading=/\b__p \+= '';/g,reEmptyStringMiddle=/\b(__p \+=) '' \+/g,reEmptyStringTrailing=/(__e\(.*?\)|\b__t\)) \+\n'';/g;/** Used to match HTML entities and HTML characters. */var reEscapedHtml=/&(?:amp|lt|gt|quot|#39);/g,reUnescapedHtml=/[&<>"']/g,reHasEscapedHtml=RegExp(reEscapedHtml.source),reHasUnescapedHtml=RegExp(reUnescapedHtml.source);/** Used to match template delimiters. */var reEscape=/<%-([\s\S]+?)%>/g,reEvaluate=/<%([\s\S]+?)%>/g,reInterpolate=/<%=([\s\S]+?)%>/g;/** Used to match property names within property paths. */var reIsDeepProp=/\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,reIsPlainProp=/^\w*$/,rePropName=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;/**
    * Used to match `RegExp`
    * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
@@ -4629,7 +4629,7 @@ isIndex(key,length)))){result.push(key);}}return result;}/**
      * @param {Object} accumulator The initial aggregated object.
      * @returns {Function} Returns `accumulator`.
      */function baseAggregator(collection,setter,iteratee,accumulator){baseEach(collection,function(value,key,collection){setter(accumulator,value,iteratee(value),collection);});return accumulator;}/**
-     * The base implementation of `_.assign` without support for multiple sources
+     * The base implementation of `_.assign` without support for multiple loading-points
      * or `customizer` functions.
      *
      * @private
@@ -4637,7 +4637,7 @@ isIndex(key,length)))){result.push(key);}}return result;}/**
      * @param {Object} source The source object.
      * @returns {Object} Returns `object`.
      */function baseAssign(object,source){return object&&copyObject(source,keys(source),object);}/**
-     * The base implementation of `_.assignIn` without support for multiple sources
+     * The base implementation of `_.assignIn` without support for multiple loading-points
      * or `customizer` functions.
      *
      * @private
@@ -5029,7 +5029,7 @@ if(typeof value=='function'){return value;}if(value==null){return identity;}if(_
      * @param {*} srcValue The value to match.
      * @returns {Function} Returns the new spec function.
      */function baseMatchesProperty(path,srcValue){if(isKey(path)&&isStrictComparable(srcValue)){return matchesStrictComparable(toKey(path),srcValue);}return function(object){var objValue=get(object,path);return objValue===undefined$1&&objValue===srcValue?hasIn(object,path):baseIsEqual(srcValue,objValue,COMPARE_PARTIAL_FLAG|COMPARE_UNORDERED_FLAG);};}/**
-     * The base implementation of `_.merge` without support for multiple sources.
+     * The base implementation of `_.merge` without support for multiple loading-points.
      *
      * @private
      * @param {Object} object The destination object.
@@ -10268,8 +10268,8 @@ return isNumber(value)&&value!=+value;}/**
      * // => '1,2,3'
      */function toString(value){return value==null?'':baseToString(value);}/*------------------------------------------------------------------------*/ /**
      * Assigns own enumerable string keyed properties of source objects to the
-     * destination object. Source objects are applied from left to right.
-     * Subsequent sources overwrite property assignments of previous sources.
+     * destination object. LoadingPoints objects are applied from left to right.
+     * Subsequent loading-points overwrite property assignments of previous loading-points.
      *
      * **Note:** This method mutates `object` and is loosely based on
      * [`Object.assign`](https://mdn.io/Object/assign).
@@ -10279,7 +10279,7 @@ return isNumber(value)&&value!=+value;}/**
      * @since 0.10.0
      * @category Object
      * @param {Object} object The destination object.
-     * @param {...Object} [sources] The source objects.
+     * @param {...Object} [loading-points] The source objects.
      * @returns {Object} Returns `object`.
      * @see _.assignIn
      * @example
@@ -10434,7 +10434,7 @@ return isNumber(value)&&value!=+value;}/**
      */function create(prototype,properties){var result=baseCreate(prototype);return properties==null?result:baseAssign(result,properties);}/**
      * Assigns own and inherited enumerable string keyed properties of source
      * objects to the destination object for all destination properties that
-     * resolve to `undefined`. Source objects are applied from left to right.
+     * resolve to `undefined`. LoadingPoints objects are applied from left to right.
      * Once a property is set, additional values of the same property are ignored.
      *
      * **Note:** This method mutates `object`.
@@ -10918,11 +10918,11 @@ return isNumber(value)&&value!=+value;}/**
      */function mapValues(object,iteratee){var result={};iteratee=getIteratee(iteratee,3);baseForOwn(object,function(value,key,object){baseAssignValue(result,key,iteratee(value,key,object));});return result;}/**
      * This method is like `_.assign` except that it recursively merges own and
      * inherited enumerable string keyed properties of source objects into the
-     * destination object. Source properties that resolve to `undefined` are
+     * destination object. LoadingPoints properties that resolve to `undefined` are
      * skipped if a destination value exists. Array and plain object properties
      * are merged recursively. Other objects and value types are overridden by
-     * assignment. Source objects are applied from left to right. Subsequent
-     * sources overwrite property assignments of previous sources.
+     * assignment. LoadingPoints objects are applied from left to right. Subsequent
+     * loading-points overwrite property assignments of previous loading-points.
      *
      * **Note:** This method mutates `object`.
      *
@@ -10931,7 +10931,7 @@ return isNumber(value)&&value!=+value;}/**
      * @since 0.5.0
      * @category Object
      * @param {Object} object The destination object.
-     * @param {...Object} [sources] The source objects.
+     * @param {...Object} [loading-points] The source objects.
      * @returns {Object} Returns `object`.
      * @example
      *
@@ -11863,7 +11863,7 @@ if(!length){length=1;object=undefined$1;}while(++index<length){var value=object=
      * // Use the `sourceURL` option to specify a custom sourceURL for the template.
      * var compiled = _.template('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });
      * compiled(data);
-     * // => Find the source of "greeting.jst" under the Sources tab or Resources panel of the web inspector.
+     * // => Find the source of "greeting.jst" under the LoadingPoints tab or Resources panel of the web inspector.
      *
      * // Use the `variable` option to ensure a with-statement isn't used in the compiled template.
      * var compiled = _.template('hi <%= data.user %>!', { 'variable': 'data' });
@@ -15938,7 +15938,8 @@ var script$a = {
   data: function data() {
     return {
       dragulaBagName: 'dragula-bag' + Math.random(),
-      mediaLibrary: null
+      mediaLibrary: null,
+      window: window
     };
   },
   created: function created() {
@@ -16085,13 +16086,13 @@ var __vue_staticRenderFns__$b = [];
   /* functional template */
   const __vue_is_functional_template__$b = false;
   /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
 
-  
+  /* style inject SSR */
+
+  /* style inject shadow dom */
+
+
+
   const __vue_component__$b = /*#__PURE__*/normalizeComponent$1(
     { render: __vue_render__$b, staticRenderFns: __vue_staticRenderFns__$b },
     __vue_inject_styles__$b,

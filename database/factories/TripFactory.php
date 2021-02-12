@@ -22,7 +22,7 @@ class TripFactory extends Factory
             'date'                  => \Carbon\Carbon::today()->subDays(rand(0, 365))->format('Y-m-d'),
             'challan_serial'        => $this->faker->randomNumber(5),
             //			'vehicle_id'                  => ''
-            'project_id'            => 15,
+            'project_id'            => $this->faker->numberBetween('1', '16'),
             'tp_number'             => 'L' . $this->faker->randomNumber(8),
             'tp_serial'             => $this->faker->randomNumber(3),
             //            'gross_weight'          => $this->faker->randomFloat(3, 11, 32),
@@ -41,7 +41,7 @@ class TripFactory extends Factory
             //			'final_payable'               => $this->faker->randomFloat(),
             //            'loading_done'          => 1,
             //			'step_payment'                => $this->faker->randomNumber(),
-            'company_id'            => 2,
+            'company_id'            => 1,
             //			'agent_id'                    => $this->faker->randomNumber(),
             //			'driver_type'                 => $this->faker->word,
             //			'driver_id'                   => $this->faker->randomNumber(),

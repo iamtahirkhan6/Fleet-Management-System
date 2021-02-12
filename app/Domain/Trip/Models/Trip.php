@@ -96,6 +96,11 @@ class Trip extends Model implements HasMedia
         return Helper::rupee_format($total_amount);
     }
 
+    public function getTwoPayAttribute($two_pay)
+    {
+        return Helper::rupee_format(isset($two_pay) ? $two_pay : 0);
+    }
+
     /* Create a new factory instance for the model.
     *
     * @return \Illuminate\Database\Eloquent\Factories\Factory

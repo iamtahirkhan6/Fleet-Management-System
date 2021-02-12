@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.25.0.
+ * Generated for Laravel 8.27.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -325,7 +325,7 @@
                         return $instance->environment(...$environments);
         }
                     /**
-         * Determine if application is in local environment.
+         * Determine if the application is in the local environment.
          *
          * @return bool 
          * @static 
@@ -336,7 +336,7 @@
                         return $instance->isLocal();
         }
                     /**
-         * Determine if application is in production environment.
+         * Determine if the application is in the production environment.
          *
          * @return bool 
          * @static 
@@ -858,7 +858,7 @@
                         $instance->setFallbackLocale($fallbackLocale);
         }
                     /**
-         * Determine if application locale is the given locale.
+         * Determine if the application locale is the given locale.
          *
          * @param string $locale
          * @return bool 
@@ -2051,7 +2051,7 @@
                         return $instance->setRequest($request);
         }
                     /**
-         * Determine if current user is authenticated. If not, throw an exception.
+         * Determine if the current user is authenticated. If not, throw an exception.
          *
          * @return \App\Models\User 
          * @throws \Illuminate\Auth\AuthenticationException
@@ -6450,7 +6450,7 @@
                         $instance->assertSent($callback);
         }
                     /**
-         * Assert that the given request were sent in the given order.
+         * Assert that the given request was sent in the given order.
          *
          * @param array $callbacks
          * @return void 
@@ -7347,7 +7347,7 @@
                     /**
          * Send a new message using a view.
          *
-         * @param string|array $view
+         * @param \Illuminate\Contracts\Mail\Mailable|string|array $view
          * @param array $data
          * @param \Closure|string|null $callback
          * @return void 
@@ -8578,7 +8578,7 @@
                         return $instance->routeIs(...$patterns);
         }
                     /**
-         * Determine if the current request URL and query string matches a pattern.
+         * Determine if the current request URL and query string match a pattern.
          *
          * @param mixed $patterns
          * @return bool 
@@ -8601,7 +8601,7 @@
                         return $instance->ajax();
         }
                     /**
-         * Determine if the request is the result of an PJAX call.
+         * Determine if the request is the result of a PJAX call.
          *
          * @return bool 
          * @static 
@@ -8612,7 +8612,7 @@
                         return $instance->pjax();
         }
                     /**
-         * Determine if the request is the result of an prefetch call.
+         * Determine if the request is the result of a prefetch call.
          *
          * @return bool 
          * @static 
@@ -10693,13 +10693,13 @@
             /**
      * 
      *
-     * @method static RouteRegistrar as(string $value)
-     * @method static RouteRegistrar domain(string $value)
-     * @method static RouteRegistrar middleware(array|string|null $middleware)
-     * @method static RouteRegistrar name(string $value)
-     * @method static RouteRegistrar namespace(string|null $value)
-     * @method static RouteRegistrar prefix(string  $prefix)
-     * @method static RouteRegistrar where(array  $where)
+     * @method static \Illuminate\Routing\RouteRegistrar as(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
+     * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
+     * @method static \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
+     * @method static \Illuminate\Routing\RouteRegistrar where(array  $where)
      * @see \Illuminate\Routing\Router
      */ 
         class Route {
@@ -11789,7 +11789,7 @@
          * Drop all types from the database.
          *
          * @return void 
-         * @throws LogicException
+         * @throws \LogicException
          * @static 
          */ 
         public static function dropAllTypes()
@@ -11839,8 +11839,8 @@
          * @param string $name
          * @param string $type
          * @return void 
-         * @throws DBALException
-         * @throws RuntimeException
+         * @throws \Doctrine\DBAL\DBALException
+         * @throws \RuntimeException
          * @static 
          */ 
         public static function registerCustomDoctrineType($class, $name, $type)
@@ -11851,7 +11851,7 @@
                     /**
          * Get the database connection instance.
          *
-         * @return \Illuminate\Database\Schema\Connection 
+         * @return \Illuminate\Database\Connection 
          * @static 
          */ 
         public static function getConnection()
@@ -11862,7 +11862,7 @@
                     /**
          * Set the database connection instance.
          *
-         * @param \Illuminate\Database\Schema\Connection $connection
+         * @param \Illuminate\Database\Connection $connection
          * @return \Illuminate\Database\Schema\MySqlBuilder 
          * @static 
          */ 
@@ -14362,7 +14362,7 @@
                         return \Illuminate\View\Factory::parentPlaceholder($section);
         }
                     /**
-         * Check if section exists.
+         * Check if the section exists.
          *
          * @param string $name
          * @return bool 
@@ -16002,6 +16002,27 @@
      
 }
 
+    namespace Kbs1\Abbreviations { 
+            /**
+     * 
+     *
+     */ 
+        class Abbreviation {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function make($string)
+        {
+                        /** @var \Kbs1\Abbreviations\AbbreviationsService $instance */
+                        return $instance->make($string);
+        }
+         
+    }
+     
+}
+
     namespace Livewire { 
             /**
      * 
@@ -16104,6 +16125,36 @@
          *
          * @static 
          */ 
+        public static function addPersistentMiddleware($middleware)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->addPersistentMiddleware($middleware);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setPersistentMiddleware($middleware)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->setPersistentMiddleware($middleware);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getPersistentMiddleware()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getPersistentMiddleware();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
         public static function styles($options = [])
         {
                         /** @var \Livewire\LivewireManager $instance */
@@ -16128,6 +16179,56 @@
         {
                         /** @var \Livewire\LivewireManager $instance */
                         return $instance->isLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isDefinitelyLivewireRequest()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isDefinitelyLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isProbablyLivewireRequest()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isProbablyLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalUrl()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalUrl();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalPath()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalPath();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalMethod()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalMethod();
         }
                     /**
          * 
@@ -16695,7 +16796,7 @@ namespace  {
                 /**
              * Add a basic where clause to the query.
              *
-             * @param \Closure|string|array|\Illuminate\Database\Eloquent\Expression $column
+             * @param \Closure|string|array|\Illuminate\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -16711,7 +16812,7 @@ namespace  {
                 /**
              * Add a basic where clause to the query, and return the first result.
              *
-             * @param \Closure|string|array|\Illuminate\Database\Eloquent\Expression $column
+             * @param \Closure|string|array|\Illuminate\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -16727,7 +16828,7 @@ namespace  {
                 /**
              * Add an "or where" clause to the query.
              *
-             * @param \Closure|array|string|\Illuminate\Database\Eloquent\Expression $column
+             * @param \Closure|array|string|\Illuminate\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Eloquent\Builder|static 
@@ -16742,7 +16843,7 @@ namespace  {
                 /**
              * Add an "order by" clause for a timestamp to the query.
              *
-             * @param string|\Illuminate\Database\Eloquent\Expression $column
+             * @param string|\Illuminate\Database\Query\Expression $column
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -16755,7 +16856,7 @@ namespace  {
                 /**
              * Add an "order by" clause for a timestamp to the query.
              *
-             * @param string|\Illuminate\Database\Eloquent\Expression $column
+             * @param string|\Illuminate\Database\Query\Expression $column
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -16809,7 +16910,7 @@ namespace  {
                 /**
              * Find multiple models by their primary keys.
              *
-             * @param \Illuminate\Database\Eloquent\Arrayable|array $ids
+             * @param \Illuminate\Contracts\Support\Arrayable|array $ids
              * @param array $columns
              * @return \Illuminate\Database\Eloquent\Collection 
              * @static 
@@ -16826,7 +16927,7 @@ namespace  {
              * @param mixed $id
              * @param array $columns
              * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static|static[] 
-             * @throws ModelNotFoundException
+             * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
              * @static 
              */ 
             public static function findOrFail($id, $columns = [])
@@ -16896,7 +16997,7 @@ namespace  {
              *
              * @param array $columns
              * @return \Illuminate\Database\Eloquent\Model|static 
-             * @throws ModelNotFoundException
+             * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
              * @static 
              */ 
             public static function firstOrFail($columns = [])
@@ -16924,8 +17025,8 @@ namespace  {
              *
              * @param array|string $columns
              * @return \Illuminate\Database\Eloquent\Model 
-             * @throws ModelNotFoundException
-             * @throws MultipleRecordsFoundException
+             * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+             * @throws \Illuminate\Database\MultipleRecordsFoundException
              * @static 
              */ 
             public static function sole($columns = [])
@@ -16937,7 +17038,7 @@ namespace  {
                 /**
              * Get a single column's value from the first result of a query.
              *
-             * @param string|\Illuminate\Database\Eloquent\Expression $column
+             * @param string|\Illuminate\Database\Query\Expression $column
              * @return mixed 
              * @static 
              */ 
@@ -16989,7 +17090,7 @@ namespace  {
                 /**
              * Get a lazy collection for the given query.
              *
-             * @return \Illuminate\Database\Eloquent\LazyCollection 
+             * @return \Illuminate\Support\LazyCollection 
              * @static 
              */ 
             public static function cursor()
@@ -17001,7 +17102,7 @@ namespace  {
                 /**
              * Get an array with the values of a given column.
              *
-             * @param string|\Illuminate\Database\Eloquent\Expression $column
+             * @param string|\Illuminate\Database\Query\Expression $column
              * @param string|null $key
              * @return \Illuminate\Support\Collection 
              * @static 
@@ -17019,8 +17120,8 @@ namespace  {
              * @param array $columns
              * @param string $pageName
              * @param int|null $page
-             * @return \Illuminate\Database\Eloquent\LengthAwarePaginator 
-             * @throws InvalidArgumentException
+             * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator 
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -17166,7 +17267,7 @@ namespace  {
                 /**
              * Get the underlying query builder instance.
              *
-             * @return \Illuminate\Database\Eloquent\QueryBuilder 
+             * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
             public static function getQuery()
@@ -17178,7 +17279,7 @@ namespace  {
                 /**
              * Set the underlying query builder instance.
              *
-             * @param \Illuminate\Database\Eloquent\QueryBuilder $query
+             * @param \Illuminate\Database\Query\Builder $query
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -17191,7 +17292,7 @@ namespace  {
                 /**
              * Get a base query builder instance.
              *
-             * @return \Illuminate\Database\Eloquent\QueryBuilder 
+             * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
             public static function toBase()
@@ -17673,6 +17774,20 @@ namespace  {
             }
              
                 /**
+             * Run a map over each item while chunking.
+             *
+             * @param callable $callback
+             * @param int $count
+             * @return \Illuminate\Support\Collection 
+             * @static 
+             */ 
+            public static function chunkMap($callback, $count = 1000)
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->chunkMap($callback, $count);
+            }
+             
+                /**
              * Execute a callback over each item while chunking.
              *
              * @param callable $callback
@@ -17808,7 +17923,7 @@ namespace  {
              * @param \Closure|\Illuminate\Database\Query\Builder|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function selectSub($query, $as)
@@ -17837,7 +17952,7 @@ namespace  {
              * @param \Closure|\Illuminate\Database\Query\Builder|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function fromSub($query, $as)
@@ -17937,7 +18052,7 @@ namespace  {
                 /**
              * Add a subquery join clause to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\EloquentBuilder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator
@@ -17945,7 +18060,7 @@ namespace  {
              * @param string $type
              * @param bool $where
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function joinSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
@@ -17989,7 +18104,7 @@ namespace  {
                 /**
              * Add a subquery left join to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\EloquentBuilder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator
@@ -18038,7 +18153,7 @@ namespace  {
                 /**
              * Add a subquery right join to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\EloquentBuilder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator
@@ -18103,7 +18218,7 @@ namespace  {
              * @param string $operator
              * @param bool $useDefault
              * @return array 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function prepareValueAndOperator($value, $operator, $useDefault = false)
@@ -18235,7 +18350,7 @@ namespace  {
              * Add a "where in raw" clause for integer values to the query.
              *
              * @param string $column
-             * @param \Illuminate\Database\Query\Arrayable|array $values
+             * @param \Illuminate\Contracts\Support\Arrayable|array $values
              * @param string $boolean
              * @param bool $not
              * @return \Illuminate\Database\Query\Builder 
@@ -18251,7 +18366,7 @@ namespace  {
              * Add an "or where in raw" clause for integer values to the query.
              *
              * @param string $column
-             * @param \Illuminate\Database\Query\Arrayable|array $values
+             * @param \Illuminate\Contracts\Support\Arrayable|array $values
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18265,7 +18380,7 @@ namespace  {
              * Add a "where not in raw" clause for integer values to the query.
              *
              * @param string $column
-             * @param \Illuminate\Database\Query\Arrayable|array $values
+             * @param \Illuminate\Contracts\Support\Arrayable|array $values
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18280,7 +18395,7 @@ namespace  {
              * Add an "or where not in raw" clause for integer values to the query.
              *
              * @param string $column
-             * @param \Illuminate\Database\Query\Arrayable|array $values
+             * @param \Illuminate\Contracts\Support\Arrayable|array $values
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18468,7 +18583,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18484,7 +18599,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18499,7 +18614,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18515,7 +18630,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18530,7 +18645,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18546,7 +18661,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18561,7 +18676,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18577,7 +18692,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|null $value
+             * @param \DateTimeInterface|string|null $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18592,7 +18707,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|int|null $value
+             * @param \DateTimeInterface|string|int|null $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -18608,7 +18723,7 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param \Illuminate\Database\Query\DateTimeInterface|string|int|null $value
+             * @param \DateTimeInterface|string|int|null $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18737,7 +18852,7 @@ namespace  {
              * @param array $values
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function whereRowValues($columns, $operator, $values, $boolean = 'and')
@@ -18974,7 +19089,7 @@ namespace  {
              * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string $column
              * @param string $direction
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function orderBy($column, $direction = 'asc')
@@ -19515,7 +19630,7 @@ namespace  {
              * @param array $bindings
              * @param string $type
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function setBindings($bindings, $type = 'where')
@@ -19530,7 +19645,7 @@ namespace  {
              * @param mixed $value
              * @param string $type
              * @return \Illuminate\Database\Query\Builder 
-             * @throws InvalidArgumentException
+             * @throws \InvalidArgumentException
              * @static 
              */ 
             public static function addBinding($value, $type = 'where')
@@ -19568,7 +19683,7 @@ namespace  {
                 /**
              * Get the database query processor instance.
              *
-             * @return \Illuminate\Database\Query\Processor 
+             * @return \Illuminate\Database\Query\Processors\Processor 
              * @static 
              */ 
             public static function getProcessor()
@@ -19580,7 +19695,7 @@ namespace  {
                 /**
              * Get the query grammar instance.
              *
-             * @return \Illuminate\Database\Query\Grammar 
+             * @return \Illuminate\Database\Query\Grammars\Grammar 
              * @static 
              */ 
             public static function getGrammar()
@@ -19732,6 +19847,7 @@ namespace  {
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Agent extends \Jenssegers\Agent\Facades\Agent {}
+            class Abbreviation extends \Kbs1\Abbreviations\Abbreviation {}
             class Livewire extends \Livewire\Livewire {}
             class Action extends \Lorisleiva\Actions\Facades\Actions {}
             class Laratrust extends \Laratrust\LaratrustFacade {}

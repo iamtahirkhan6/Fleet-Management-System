@@ -17,9 +17,6 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name');
-            $table->string('address')->nullable();
-            $table->string('city')->nullable()->nullable();
-            $table->string('state')->nullable();
             $table->string('gstin')->nullable();
             $table->string('pan')->nullable();
             $table->boolean('use_razorpay')->default(0);

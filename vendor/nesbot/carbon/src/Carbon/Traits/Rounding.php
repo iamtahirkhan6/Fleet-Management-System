@@ -10,6 +10,7 @@
  */
 namespace Carbon\Traits;
 
+use DateInterval;
 use Carbon\CarbonInterface;
 use Carbon\Exceptions\UnknownUnitException;
 
@@ -106,16 +107,19 @@ trait Rounding
         }
 
         [$value, $minimum] = $arguments;
+        $normalizedValue = floor($function(($value - $minimum) / $precision) * $precision + $minimum);
+
         /** @var CarbonInterface $result */
-        $result = $this->$normalizedUnit(
-            floor($function(($value - $minimum) / $precision) * $precision + $minimum)
-        );
+        $result = $this->$normalizedUnit($normalizedValue);
 
         foreach ($changes as $unit => $value) {
             $result = $result->$unit($value);
         }
 
-        return $result;
+        return $normalizedUnit === 'month'
+            // Re-run the change in case an overflow occurred
+            ? $result->$normalizedUnit($normalizedValue)
+            : $result;
     }
 
     /**
@@ -147,7 +151,7 @@ trait Rounding
     /**
      * Round the current instance second with given precision if specified.
      *
-     * @param float|int|string|\DateInterval|null $precision
+     * @param float|int|string|DateInterval|null  $precision
      * @param string                              $function
      *
      * @return CarbonInterface
@@ -160,7 +164,7 @@ trait Rounding
     /**
      * Round the current instance second with given precision if specified.
      *
-     * @param float|int|string|\DateInterval|null $precision
+     * @param float|int|string|DateInterval|null  $precision
      *
      * @return CarbonInterface
      */
@@ -172,7 +176,7 @@ trait Rounding
     /**
      * Ceil the current instance second with given precision if specified.
      *
-     * @param float|int|string|\DateInterval|null $precision
+     * @param float|int|string|DateInterval|null  $precision
      *
      * @return CarbonInterface
      */

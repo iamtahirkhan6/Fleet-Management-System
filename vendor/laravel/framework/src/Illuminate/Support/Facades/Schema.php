@@ -3,7 +3,9 @@
 namespace Illuminate\Support\Facades;
 
 use Closure;
-use Illuminate\Database\Schema\Builder;/**
+use Illuminate\Database\Schema\Builder;
+
+/**
  * @method static Builder create(string $table, Closure $callback)
  * @method static Builder createDatabase(string $name)
  * @method static Builder disableForeignKeyConstraints()
@@ -19,6 +21,7 @@ use Illuminate\Database\Schema\Builder;/**
  * @method static bool hasTable(string $table)
  * @method static void defaultStringLength(int $length)
  * @method static void registerCustomDoctrineType(string $class, string $name, string $type)
+ *
  * @see \Illuminate\Database\Schema\Builder
  */
 class Schema extends Facade

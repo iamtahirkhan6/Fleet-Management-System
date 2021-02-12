@@ -15,8 +15,9 @@ class CreateUnloadingPointsTable extends Migration
     {
         Schema::create('unloading_points', function (Blueprint $table) {
             $table->id();
-            $table->string('short_code')->nullable();
             $table->string('name');
+            $table->string('short_code')->unique();
+            $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

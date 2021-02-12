@@ -43,7 +43,7 @@
 
         <x-slot name="rows">
             @forelse ($market_vehicles as $vehicle)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $vehicle->number }}</x-tables.basic.row>
                     @if ($vehicle->party_id != null)
@@ -54,7 +54,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

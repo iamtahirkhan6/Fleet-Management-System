@@ -226,6 +226,7 @@ export default {
     data: () => ({
         dragulaBagName: 'dragula-bag' + Math.random(),
         mediaLibrary: null,
+        window,
     }),
 
     created() {

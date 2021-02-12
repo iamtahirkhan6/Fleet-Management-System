@@ -2,8 +2,8 @@
 
 namespace App\Domain\Project\Models;
 
-use App\Traits\MultiTenable;
 use DB;
+use App\Traits\MultiTenable;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Company\Models\Company;
 use Illuminate\Database\Eloquent\Model;
@@ -14,10 +14,10 @@ class Project extends Model
     use HasFactory;
     use MultiTenable;
 
-    protected $fillable = [
+    protected array $fillable = [
         "material_id",
-        "mine_id",
-        "unloading_point_id",
+        "source_id",
+        "destination_id",
         "consignee_id",
         "company_id",
         "status",
@@ -25,12 +25,12 @@ class Project extends Model
 
     public function source()
     {
-        return $this->hasOne('App\Domain\General\Models\Mine', 'id', 'mine_id');
+        return $this->hasOne('App\Domain\LoadingPoint\Models\LoadingPoint', 'id', 'source_id');
     }
 
     public function destination()
     {
-        return $this->hasOne('App\Domain\General\Models\UnloadingPoint', 'id', 'unloading_point_id');
+        return $this->hasOne('App\Domain\UnloadingPoint\Models\UnloadingPoint', 'id', 'destination_id');
     }
 
     public function consignee()
@@ -53,9 +53,19 @@ class Project extends Model
         return $this->hasMany(Trip::class);
     }
 
-    public function net_money()
+    public function transportVolume()
     {
-        $net_money = Trip::where('project_id', $this->id)->select(DB::raw('sum(net_weight * premium_rate) AS net_money'))->first();
-        return $net_money->net_money;
+        return Trip::whereProjectId($this->id)->get('net_weight')->sum('net_weight');
+    }
+
+    public function workDone()
+    {
+        $trips = Trip::whereProjectId($this->id)->wherePaymentDone('1')->select(DB::raw('sum(net_weight * premium_rate) AS net_money'))->first();
+        return $trips->net_money;
+    }
+
+    public function pendingPayments()
+    {
+        return Trip::whereProjectId($this->id)->wherePaymentDone(0)->get('id')->count();
     }
 }

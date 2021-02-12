@@ -38,6 +38,7 @@ use Illuminate\Filesystem\FilesystemManager;
  * @method static string getVisibility(string $path)
  * @method static string temporaryUrl(string $path, DateTimeInterface $expiration, array $options = [])
  * @method static string url(string $path)
+ *
  * @see \Illuminate\Filesystem\FilesystemManager
  */
 class Storage extends Facade

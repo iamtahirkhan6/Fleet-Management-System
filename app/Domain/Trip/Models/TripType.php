@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TripType extends Model
 {
-    protected $fillable = [
+    protected array $fillable = [
         "id",
         "name",
     ];

@@ -218,6 +218,7 @@ export default {
 
     data: () => ({
         mediaLibrary: null,
+        window,
     }),
 
     computed: {

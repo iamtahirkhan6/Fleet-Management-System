@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire\Models\Trips;
 
-use App\Domain\General\Models\Mine;
-use App\Domain\Project\Models\Project;
-use App\Domain\General\Models\UnloadingPoint;
 use Livewire\Component;
+use App\Domain\Project\Models\Project;
+use App\Domain\UnloadingPoint\Models\UnloadingPoint;
+use App\Domain\LoadingPoint\Models\LoadingPoint;
 
 class Show extends Component
 {
@@ -16,8 +16,8 @@ class Show extends Component
     {
         $this->trip = $trip;
         $project = Project::where('id', $trip->project_id)->first();
-        $this->source = Mine::where('id', $project->mine_id)->first()->name;
-        $this->destination = UnloadingPoint::where('id', $project->unloading_point_id)->first()->name;
+        $this->source = LoadingPoint::where('id', $project->source_id)->first()->name;
+        $this->destination = Destination::where('id', $project->destination_id)->first()->name;
     }
 
     public function render()

@@ -13,7 +13,7 @@ class VehicleRC extends Model
 
     protected $table = 'vehicle_rc_details';
 
-    protected $fillable = [
+    protected array $fillable = [
         "number",
         "owner_name",
         "reg_date",

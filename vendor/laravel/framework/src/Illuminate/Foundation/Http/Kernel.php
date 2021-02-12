@@ -2,8 +2,19 @@
 
 namespace Illuminate\Foundation\Http;
 
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Middleware\Authorize;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Bootstrap\BootProviders;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Foundation\Bootstrap\RegisterFacades;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Routing\Pipeline;
@@ -11,20 +22,26 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Facade;
 use InvalidArgumentException;
 use Throwable;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Foundation\Bootstrap\RegisterProviders;
+use Illuminate\Foundation\Bootstrap\LoadConfiguration;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 
 class Kernel implements KernelContract
 {
     /**
      * The application implementation.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The router instance.
      *
-     * @var \Illuminate\Routing\Router
+     * @var Router
      */
     protected $router;
 
@@ -34,12 +51,12 @@ class Kernel implements KernelContract
      * @var string[]
      */
     protected $bootstrappers = [
-        \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
-        \Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
-        \Illuminate\Foundation\Bootstrap\HandleExceptions::class,
-        \Illuminate\Foundation\Bootstrap\RegisterFacades::class,
-        \Illuminate\Foundation\Bootstrap\RegisterProviders::class,
-        \Illuminate\Foundation\Bootstrap\BootProviders::class,
+        LoadEnvironmentVariables::class,
+        LoadConfiguration::class,
+        HandleExceptions::class,
+        RegisterFacades::class,
+        RegisterProviders::class,
+        BootProviders::class,
     ];
 
     /**
@@ -71,21 +88,22 @@ class Kernel implements KernelContract
      * @var string[]
      */
     protected $middlewarePriority = [
-        \Illuminate\Cookie\Middleware\EncryptCookies::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
-        \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
+        EncryptCookies::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        AuthenticatesRequests::class,
+        ThrottleRequests::class,
+        AuthenticateSession::class,
+        SubstituteBindings::class,
+        Authorize::class,
     ];
 
     /**
      * Create a new HTTP kernel instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Application  $app
+     * @param  Router       $router
+     *
      * @return void
      */
     public function __construct(Application $app, Router $router)
@@ -99,7 +117,7 @@ class Kernel implements KernelContract
     /**
      * Handle an incoming HTTP request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function handle($request)
@@ -124,7 +142,7 @@ class Kernel implements KernelContract
     /**
      * Send the given request through the middleware / router.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     protected function sendRequestThroughRouter($request)
@@ -156,7 +174,7 @@ class Kernel implements KernelContract
     /**
      * Get the route dispatcher callback.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function dispatchToRouter()
     {
@@ -170,7 +188,7 @@ class Kernel implements KernelContract
     /**
      * Call the terminate method on any terminable middleware.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
@@ -184,7 +202,7 @@ class Kernel implements KernelContract
     /**
      * Call the terminate method on any terminable middleware.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
@@ -213,7 +231,7 @@ class Kernel implements KernelContract
     /**
      * Gather the route middleware for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     protected function gatherRouteMiddleware($request)
@@ -254,7 +272,7 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Add a new middleware to beginning of the stack if it does not already exist.
+     * Add a new middleware to the beginning of the stack if it does not already exist.
      *
      * @param  string  $middleware
      * @return $this
@@ -288,9 +306,10 @@ class Kernel implements KernelContract
      *
      * @param  string  $group
      * @param  string  $middleware
+     *
      * @return $this
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function prependMiddlewareToGroup($group, $middleware)
     {
@@ -312,9 +331,10 @@ class Kernel implements KernelContract
      *
      * @param  string  $group
      * @param  string  $middleware
+     *
      * @return $this
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function appendMiddlewareToGroup($group, $middleware)
     {
@@ -396,7 +416,8 @@ class Kernel implements KernelContract
     /**
      * Report the exception to the exception handler.
      *
-     * @param  \Throwable  $e
+     * @param  Throwable  $e
+     *
      * @return void
      */
     protected function reportException(Throwable $e)
@@ -407,9 +428,10 @@ class Kernel implements KernelContract
     /**
      * Render the exception to a response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $e
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  Request  $request
+     * @param  Throwable                 $e
+     *
+     * @return Response
      */
     protected function renderException($request, Throwable $e)
     {
@@ -439,7 +461,7 @@ class Kernel implements KernelContract
     /**
      * Get the Laravel application instance.
      *
-     * @return \Illuminate\Contracts\Foundation\Application
+     * @return Application
      */
     public function getApplication()
     {

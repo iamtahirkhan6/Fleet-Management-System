@@ -129,7 +129,7 @@ class ConfigurationUrlParser
      * @param  string  $url
      * @return array
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function parseUrl($url)
     {
@@ -170,7 +170,7 @@ class ConfigurationUrlParser
     }
 
     /**
-     * Get all of the current drivers aliases.
+     * Get all of the current drivers' aliases.
      *
      * @return array
      */

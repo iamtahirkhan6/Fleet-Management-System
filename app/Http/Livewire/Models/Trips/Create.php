@@ -25,7 +25,7 @@ class Create extends Component
     public Project    $project;
     public Collection $agents;
     public Collection $paid_drivers;
-    public $fleet_vehicles;
+    public            $fleet_vehicles;
 
     public string $consignee;
     public string $source;
@@ -58,56 +58,83 @@ class Create extends Component
 
     public function createTrip()
     {
-        if ($this->mActive)
-        {
+        if ($this->mActive) {
             $trip = CreateMarketVehicleTrip::run($this->project->id, $this->input);
             if ($trip != false) {
-                if(isset($this->challan_soft_copy)) {
-                    $trip->addFromMediaLibraryRequest($this->challan_soft_copy)->toMediaCollection('challan');
+                if (isset($this->challan_soft_copy)) {
+                    $trip->addFromMediaLibraryRequest($this->challan_soft_copy)
+                        ->withCustomProperties([
+                                                   'trip'                        => $trip->id,
+                                                   'trip_type'                   => 1,
+                                                   'fleet_market_vehicle_number' => $trip->fleet_driver_id,
+                                                   'company_id'                  => Auth::user()->company_id,
+                                               ])
+                        ->toMediaCollection('challan');
                 }
                 $this->createSuccess = true;
-            } else {
+            }
+            else {
                 $this->createFail = true;
             }
-        } elseif ($this->oActive)
-        {
+        }
+        elseif ($this->oActive) {
             $trip = CreateFleetTrip::run($this->project->id, $this->input);
             if ($trip != false) {
-                $trip->addFromMediaLibraryRequest($this->challan_soft_copy)->toMediaCollection('fleet_challan');
+                if (isset($this->challan_soft_copy)) {
+                    $trip->addFromMediaLibraryRequest($this->challan_soft_copy)
+                        ->withCustomProperties([
+                                                   'trip'             => $trip->id,
+                                                   'trip_type'        => 2,
+                                                   'fleet_vehicle_id' => $trip->fleet_vehicle_id,
+                                                   'fleet_driver_id'  => $trip->fleet_driver_id,
+                                                   'company_id'       => Auth::user()->company_id,
+                                               ])
+                        ->toMediaCollection('fleet_challan');
+                }
                 $this->createSuccess = true;
-            } else {
+            }
+            else {
                 $this->createFail = true;
             }
-        } else $this->createFail = true;
+        }
+        else {
+            $this->createFail = true;
+        }
     }
 
     public function loadOwnedVehicleTripData()
     {
-        $this->paid_drivers   = Employee::whereEmployeeDesignationId(7)->get();
-        $this->fleet_vehicles = Fleet::with('vehicles')->get()->map(function ($fleet) {
-            return $fleet->vehicles;
-        })->collapse();
+        $this->paid_drivers   = Employee::whereEmployeeDesignationId(7)
+            ->get();
+        $this->fleet_vehicles = Fleet::with('vehicles')
+            ->get()
+            ->map(function ($fleet) {
+                return $fleet->vehicles;
+            })
+            ->collapse();
     }
 
     public function loadAgents()
     {
         $this->agents = Agent::get([
-            'id',
-            'name',
-        ]);
+                                       'id',
+                                       'name',
+                                   ]);
     }
 
     public function mount($project)
     {
         $this->feedInput();
-        $this->project     = $project;
-        $this->source      = $project->source->name;
-        $this->consignee   = $project->consignee->name;
-        $this->destination = $project->destination->name;
-        $this->input["date"] = Carbon::today()->format('d-m-Y');
+        $this->project       = $project;
+        $this->source        = $project->source->name;
+        $this->consignee     = $project->consignee->name;
+        $this->destination   = $project->destination->name;
+        $this->input["date"] = Carbon::today()
+            ->format('d-m-Y');
 
-        if (Auth::user()->company->fleets->count() <= 0)
+        if (Auth::user()->company->fleets->count() <= 0) {
             $this->hasOwnedVehicle = false;
+        }
 
     }
 
@@ -119,16 +146,19 @@ class Create extends Component
     public function feedInput() : array
     {
         return $this->input = CreateMarketVehicleTrip::input(collect([
-            CreateMarketVehicleTrip::rules('input.'),
-            CreateFleetTrip::rules('input.'),
-        ])->collapse()->toArray());
+                                                                         CreateMarketVehicleTrip::rules('input.'),
+                                                                         CreateFleetTrip::rules('input.'),
+                                                                     ])
+                                                                 ->collapse()
+                                                                 ->toArray());
     }
 
     public function rules() : array
     {
         if ($this->mActive == true) {
             return CreateMarketVehicleTrip::rules('input.');
-        } else {
+        }
+        else {
             return CreateFleetTrip::rules('input.');
         }
     }
@@ -137,7 +167,8 @@ class Create extends Component
     {
         if ($this->mActive == true) {
             return CreateMarketVehicleTrip::messages('input.');
-        } else {
+        }
+        else {
             return CreateFleetTrip::messages('input.');
         }
     }

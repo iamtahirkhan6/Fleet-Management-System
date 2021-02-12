@@ -2,7 +2,9 @@
 
 namespace PhpParser;
 
-class Error extends \RuntimeException
+use RuntimeException;
+
+class Error extends RuntimeException
 {
     protected $rawMessage;
     protected $attributes;
@@ -104,12 +106,12 @@ class Error extends \RuntimeException
     /**
      * Gets the start column (1-based) into the line where the error started.
      *
-     * @param string $code Source code of the file
+     * @param string $code LoadingPoints code of the file
      * @return int
      */
     public function getStartColumn(string $code) : int {
         if (!$this->hasColumnInfo()) {
-            throw new \RuntimeException('Error does not have column information');
+            throw new RuntimeException('Error does not have column information');
         }
 
         return $this->toColumn($code, $this->attributes['startFilePos']);
@@ -118,12 +120,12 @@ class Error extends \RuntimeException
     /**
      * Gets the end column (1-based) into the line where the error ended.
      *
-     * @param string $code Source code of the file
+     * @param string $code LoadingPoints code of the file
      * @return int
      */
     public function getEndColumn(string $code) : int {
         if (!$this->hasColumnInfo()) {
-            throw new \RuntimeException('Error does not have column information');
+            throw new RuntimeException('Error does not have column information');
         }
 
         return $this->toColumn($code, $this->attributes['endFilePos']);
@@ -132,7 +134,7 @@ class Error extends \RuntimeException
     /**
      * Formats message including line and column information.
      *
-     * @param string $code Source code associated with the error, for calculation of the columns
+     * @param string $code LoadingPoints code associated with the error, for calculation of the columns
      *
      * @return string Formatted message
      */
@@ -147,14 +149,14 @@ class Error extends \RuntimeException
     /**
      * Converts a file offset into a column.
      *
-     * @param string $code Source code that $pos indexes into
+     * @param string $code LoadingPoints code that $pos indexes into
      * @param int    $pos  0-based position in $code
      *
      * @return int 1-based column (relative to start of line)
      */
     private function toColumn(string $code, int $pos) : int {
         if ($pos > strlen($code)) {
-            throw new \RuntimeException('Invalid position information');
+            throw new RuntimeException('Invalid position information');
         }
 
         $lineStartPos = strrpos($code, "\n", $pos - strlen($code));

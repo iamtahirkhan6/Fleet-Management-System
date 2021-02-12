@@ -3,6 +3,8 @@
 namespace Illuminate\Http\Client;
 
 use Closure;
+use Illuminate\Support\Collection;
+use GuzzleHttp\Promise\PromiseInterface;
 use function GuzzleHttp\Promise\promise_for;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use Illuminate\Support\Str;
@@ -10,35 +12,35 @@ use Illuminate\Support\Traits\Macroable;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 /**
- * @method \Illuminate\Http\Client\PendingRequest accept(string $contentType)
- * @method \Illuminate\Http\Client\PendingRequest acceptJson()
- * @method \Illuminate\Http\Client\PendingRequest asForm()
- * @method \Illuminate\Http\Client\PendingRequest asJson()
- * @method \Illuminate\Http\Client\PendingRequest asMultipart()
- * @method \Illuminate\Http\Client\PendingRequest attach(string $name, string $contents, string|null $filename = null, array $headers = [])
- * @method \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
- * @method \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
- * @method \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
- * @method \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
- * @method \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleep = 0)
- * @method \Illuminate\Http\Client\PendingRequest stub(callable $callback)
- * @method \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
- * @method \Illuminate\Http\Client\PendingRequest withBasicAuth(string $username, string $password)
- * @method \Illuminate\Http\Client\PendingRequest withBody(resource|string $content, string $contentType)
- * @method \Illuminate\Http\Client\PendingRequest withCookies(array $cookies, string $domain)
- * @method \Illuminate\Http\Client\PendingRequest withDigestAuth(string $username, string $password)
- * @method \Illuminate\Http\Client\PendingRequest withHeaders(array $headers)
- * @method \Illuminate\Http\Client\PendingRequest withOptions(array $options)
- * @method \Illuminate\Http\Client\PendingRequest withToken(string $token, string $type = 'Bearer')
- * @method \Illuminate\Http\Client\PendingRequest withoutRedirecting()
- * @method \Illuminate\Http\Client\PendingRequest withoutVerifying()
- * @method \Illuminate\Http\Client\Response delete(string $url, array $data = [])
- * @method \Illuminate\Http\Client\Response get(string $url, array $query = [])
- * @method \Illuminate\Http\Client\Response head(string $url, array $query = [])
- * @method \Illuminate\Http\Client\Response patch(string $url, array $data = [])
- * @method \Illuminate\Http\Client\Response post(string $url, array $data = [])
- * @method \Illuminate\Http\Client\Response put(string $url, array $data = [])
- * @method \Illuminate\Http\Client\Response send(string $method, string $url, array $options = [])
+ * @method PendingRequest accept(string $contentType)
+ * @method PendingRequest acceptJson()
+ * @method PendingRequest asForm()
+ * @method PendingRequest asJson()
+ * @method PendingRequest asMultipart()
+ * @method PendingRequest attach(string $name, string $contents, string|null $filename = null, array $headers = [])
+ * @method PendingRequest baseUrl(string $url)
+ * @method PendingRequest beforeSending(callable $callback)
+ * @method PendingRequest bodyFormat(string $format)
+ * @method PendingRequest contentType(string $contentType)
+ * @method PendingRequest retry(int $times, int $sleep = 0)
+ * @method PendingRequest stub(callable $callback)
+ * @method PendingRequest timeout(int $seconds)
+ * @method PendingRequest withBasicAuth(string $username, string $password)
+ * @method PendingRequest withBody(resource|string $content, string $contentType)
+ * @method PendingRequest withCookies(array $cookies, string $domain)
+ * @method PendingRequest withDigestAuth(string $username, string $password)
+ * @method PendingRequest withHeaders(array $headers)
+ * @method PendingRequest withOptions(array $options)
+ * @method PendingRequest withToken(string $token, string $type = 'Bearer')
+ * @method PendingRequest withoutRedirecting()
+ * @method PendingRequest withoutVerifying()
+ * @method Response delete(string $url, array $data = [])
+ * @method Response get(string $url, array $query = [])
+ * @method Response head(string $url, array $query = [])
+ * @method Response patch(string $url, array $data = [])
+ * @method Response post(string $url, array $data = [])
+ * @method Response put(string $url, array $data = [])
+ * @method Response send(string $method, string $url, array $options = [])
  *
  * @see \Illuminate\Http\Client\PendingRequest
  */
@@ -51,7 +53,7 @@ class Factory
     /**
      * The stub callables that will handle requests.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $stubCallbacks;
 
@@ -92,7 +94,7 @@ class Factory
      * @param  array|string  $body
      * @param  int  $status
      * @param  array  $headers
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return PromiseInterface
      */
     public static function response($body = null, $status = 200, $headers = [])
     {
@@ -109,7 +111,8 @@ class Factory
      * Get an invokable object that returns a sequence of responses in order for use during stubbing.
      *
      * @param  array  $responses
-     * @return \Illuminate\Http\Client\ResponseSequence
+     *
+     * @return ResponseSequence
      */
     public function sequence(array $responses = [])
     {
@@ -155,7 +158,8 @@ class Factory
      * Register a response sequence for the given URL pattern.
      *
      * @param  string  $url
-     * @return \Illuminate\Http\Client\ResponseSequence
+     *
+     * @return ResponseSequence
      */
     public function fakeSequence($url = '*')
     {
@@ -167,8 +171,9 @@ class Factory
     /**
      * Stub the given URL using the given callback.
      *
-     * @param  string  $url
-     * @param  \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface|callable  $callback
+     * @param  string                              $url
+     * @param  Response|PromiseInterface|callable  $callback
+     *
      * @return $this
      */
     public function stubUrl($url, $callback)
@@ -199,8 +204,9 @@ class Factory
     /**
      * Record a request response pair.
      *
-     * @param  \Illuminate\Http\Client\Request  $request
-     * @param  \Illuminate\Http\Client\Response  $response
+     * @param  Request   $request
+     * @param  Response  $response
+     *
      * @return void
      */
     public function recordRequestResponsePair($request, $response)
@@ -225,7 +231,7 @@ class Factory
     }
 
     /**
-     * Assert that the given request were sent in the given order.
+     * Assert that the given request was sent in the given order.
      *
      * @param  array  $callbacks
      * @return void
@@ -303,7 +309,7 @@ class Factory
      * Get a collection of the request / response pairs matching the given truth test.
      *
      * @param  callable  $callback
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function recorded($callback = null)
     {
@@ -323,7 +329,7 @@ class Factory
     /**
      * Create a new pending request instance for this factory.
      *
-     * @return \Illuminate\Http\Client\PendingRequest
+     * @return PendingRequest
      */
     protected function newPendingRequest()
     {

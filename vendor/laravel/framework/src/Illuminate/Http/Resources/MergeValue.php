@@ -15,9 +15,9 @@ class MergeValue
     public $data;
 
     /**
-     * Create new merge value instance.
+     * Create a new merge value instance.
      *
-     * @param  \Illuminate\Support\Collection|\JsonSerializable|array  $data
+     * @param  Collection|JsonSerializable|array  $data
      * @return void
      */
     public function __construct($data)

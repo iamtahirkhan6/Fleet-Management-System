@@ -29,7 +29,6 @@ class ViewMediaItem
         return "{$this->formFieldName}[{$this->uuid}][$name]";
     }
 
-
     public function customPropertyAttributes(string $name): HtmlString
     {
         return new HtmlString(implode(PHP_EOL, [
@@ -74,8 +73,6 @@ class ViewMediaItem
     {
         return "{$this->formFieldName}.{$this->uuid}.custom_properties.$name";
     }
-
-
 
     public function downloadUrl(): string
     {

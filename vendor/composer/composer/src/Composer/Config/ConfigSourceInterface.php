@@ -13,7 +13,7 @@
 namespace Composer\Config;
 
 /**
- * Configuration Source Interface
+ * Configuration LoadingPoints Interface
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Beau Simensen <beau@dflydev.com>

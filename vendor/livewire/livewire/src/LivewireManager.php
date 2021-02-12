@@ -2,7 +2,10 @@
 
 namespace Livewire;
 
+use Exception;
+use App\Http\Middleware\Authenticate;
 use Livewire\Testing\TestableLivewire;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Livewire\Exceptions\ComponentNotFoundException;
 
@@ -12,7 +15,18 @@ class LivewireManager
     protected $componentAliases = [];
     protected $queryParamsForTesting = [];
 
-    public static $isLivewireRequestTestingOverride;
+    protected $persistentMiddleware = [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Laravel\Jetstream\Http\Middleware\AuthenticateSession::class,
+        \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \App\Http\Middleware\RedirectIfAuthenticated::class,
+        \Illuminate\Auth\Middleware\Authenticate::class,
+        Authorize::class,
+        Authenticate::class,
+    ];
+
+    public static $isLivewireRequestTestingOverride = false;
 
     public function component($alias, $viewClass = null)
     {
@@ -119,6 +133,21 @@ class LivewireManager
         return $this;
     }
 
+    public function addPersistentMiddleware($middleware)
+    {
+        $this->persistentMiddleware = array_merge($this->persistentMiddleware, (array) $middleware);
+    }
+
+    public function setPersistentMiddleware($middleware)
+    {
+        $this->persistentMiddleware = (array) $middleware;
+    }
+
+    public function getPersistentMiddleware()
+    {
+        return $this->persistentMiddleware;
+    }
+
     public function styles($options = [])
     {
         $debug = config('app.debug');
@@ -185,7 +214,7 @@ HTML;
             $devTools = 'window.livewire.devTools(true);';
         }
 
-        $appUrl = config('livewire.asset_url', rtrim($options['asset_url'] ?? '', '/'));
+        $appUrl = config('livewire.asset_url') ?: rtrim($options['asset_url'] ?? '', '/');
 
         $csrf = csrf_token();
 
@@ -208,7 +237,7 @@ HTML;
             if ($manifest !== $publishedManifest) {
                 $assetWarning = <<<'HTML'
 <script {$nonce}>
-    console.warn("Livewire: The published Livewire assets are out of date\n See: https://laravel-livewire.com/docs/installation/")
+    console.warn("Livewire: The published Livewire assets are out of date\n https://laravel-livewire.com/docs/installation/")
 </script>
 HTML;
             }
@@ -224,7 +253,7 @@ HTML;
         console.warn('Livewire: It looks like Livewire\'s @livewireScripts JavaScript assets have already been loaded. Make sure you aren\'t loading them twice.')
     }
 
-    window.livewire = new Livewire({$jsonEncodedOptions});
+    window.livewire = new Livewire({$jsonEncodedOptions})
     {$devTools}
     window.Livewire = window.livewire;
     window.livewire_app_url = '{$appUrl}';
@@ -261,11 +290,66 @@ HTML;
 
     public function isLivewireRequest()
     {
-        if (static::$isLivewireRequestTestingOverride) {
-            return true;
-        }
+        return $this->isProbablyLivewireRequest();
+    }
+
+    public function isDefinitelyLivewireRequest()
+    {
+        $route = request()->route();
+
+        if (! $route) return false;
+
+        return $route->named('livewire.message');
+    }
+
+    public function isProbablyLivewireRequest()
+    {
+        if (static::$isLivewireRequestTestingOverride) return true;
 
         return request()->hasHeader('X-Livewire');
+    }
+
+    public function originalUrl()
+    {
+        if ($this->isDefinitelyLivewireRequest()) {
+            return url()->to($this->originalPath());
+        }
+
+        return url()->current();
+    }
+
+    public function originalPath()
+    {
+        if ($this->isDefinitelyLivewireRequest()) {
+            // @depricted: "url" usage was removed in v2.3.17
+            // This can be removed after a period of time
+            // as users will have refreshed all pages
+            // that still used "url".
+            if (isset(request('fingerprint')['url'])) {
+                return str(request('fingerprint')['url'])->after(request()->root());
+            }
+
+            return request('fingerprint')['path'];
+        }
+
+        return request()->path();
+    }
+
+    public function originalMethod()
+    {
+        if ($this->isDefinitelyLivewireRequest()) {
+            // @depricted: "url" usage was removed in v2.3.17
+            // This can be removed after a period of time
+            // as users will have refreshed all pages
+            // that still used "url".
+            if (isset(request('fingerprint')['url'])) {
+                return 'GET';
+            }
+
+            return request('fingerprint')['method'];
+        }
+
+        return request()->method();
     }
 
     public function getRootElementTagName($dom)

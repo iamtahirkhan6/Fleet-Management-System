@@ -49,6 +49,7 @@ use Illuminate\Routing\PendingResourceRegistration;
  * @method static boolean is(...$patterns)
  * @method static boolean has(string $name)
  * @method static mixed input(string $key, string|null $default = null)
+ *
  * @see \Illuminate\Routing\Router
  */
 class Route extends Facade

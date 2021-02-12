@@ -9,7 +9,7 @@ class FleetLive extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected array $fillable = [
         'outtype',
         'ttime',
         'rectime',

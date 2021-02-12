@@ -12,7 +12,7 @@
 
         <x-slot name="rows">
             @forelse ($companies as $company)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $company->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $company->projects()->count() }}</x-tables.basic.row>
@@ -22,7 +22,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

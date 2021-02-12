@@ -11,7 +11,7 @@ class BankAccount extends Model
     use HasFactory;
     use MultiTenable;
 
-    protected $fillable = [
+    protected array $fillable = [
         'account_name',
         'account_number',
         'ifsc_code',

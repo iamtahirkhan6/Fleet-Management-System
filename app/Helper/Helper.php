@@ -8,12 +8,7 @@ class Helper
 {
     public static function rupee_format($amount)
     {
-        if (is_numeric($amount))
-        {
-            return '₹' . number_format($amount, 2);
-        } else {
-        return $amount;
-    }
+        return (is_numeric($amount)) ? '₹' . number_format($amount, 2) : $amount;
     }
 
     public static function human_date($date)
@@ -39,5 +34,12 @@ class Helper
             $last_4,
         ];
         return join("-", $arr);
+    }
+
+    public static function setInput(array $array, $prefix = null) : array
+    {
+        $new_array = [];
+        foreach (array_keys($array) as $value) $new_array[(!isset($prefix)) ? $value : str_replace($prefix, '', $value)] = null;
+        return $new_array;
     }
 }

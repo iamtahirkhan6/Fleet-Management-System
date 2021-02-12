@@ -5,15 +5,15 @@
 
 namespace App\Domain\Agent\Models {
 
-	use App\Domain\General\Models\PhoneNumber;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentCollection;
-	use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\General\Models\PhoneNumber;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentCollection;
+    use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
 	 * @property string      $name
 	 * @property int         $company_id
@@ -32,37 +32,36 @@ namespace App\Domain\Agent\Models {
 
 namespace App\Domain\Company\Models {
 
-	use App\Domain\Agent\Models\Agent;
-	use App\Domain\Employee\Models\Employee;
-	use App\Domain\Fleet\Models\Fleet;
-	use App\Domain\Office\Models\Office;
-	use App\Domain\Project\Models\Project;
-	use App\Models\User;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentCollection;
-	use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyCollection;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeCollection;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectCollection;
-	use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_UserQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Agent\Models\Agent;
+    use App\Domain\Fleet\Models\Fleet;
+    use App\Domain\Office\Models\Office;
+    use App\Domain\General\Models\Address;
+    use App\Domain\Project\Models\Project;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\Employee\Models\Employee;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use LaravelIdea\Helper\App\Models\_UserQueryBuilder;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetCollection;
+    use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeCollection;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyCollection;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectCollection;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_AddressQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
 
-	/**
+    /**
 	 * @property int                            $id
 	 * @property string                         $name
 	 * @property string                         $short_name
-	 * @property string|null                    $address
-	 * @property string|null                    $city
-	 * @property string|null                    $state
 	 * @property string|null                    $gstin
 	 * @property string|null                    $pan
 	 * @property bool                           $use_razorpay
@@ -72,6 +71,8 @@ namespace App\Domain\Company\Models {
 	 * @property int                            $user_id
 	 * @property Carbon|null                    $created_at
 	 * @property Carbon|null                    $updated_at
+	 * @property Address                        $address
+	 * @method MorphToMany|_AddressQueryBuilder address()
 	 * @property _AgentCollection|Agent[]       $agents
 	 * @method HasMany|_AgentQueryBuilder agents()
 	 * @property _EmployeeCollection|Employee[] $employees
@@ -95,21 +96,24 @@ namespace App\Domain\Company\Models {
 
 namespace App\Domain\Consignee\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeCollection;
-	use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\General\Models\Address;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\General\Models\_AddressQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeCollection;
+    use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
 	 * @property string      $name
-	 * @property string      $address
-	 * @property string      $gstin_uin
-	 * @property string      $pan
-	 * @property string      $state_name
+	 * @property string|null $gstin
+	 * @property string|null $pan
 	 * @property int         $company_id
 	 * @property Carbon|null $created_at
 	 * @property Carbon|null $updated_at
+	 * @property Address     $address
+	 * @method MorphToMany|_AddressQueryBuilder address()
 	 * @method _ConsigneeQueryBuilder newModelQuery()
 	 * @method _ConsigneeQueryBuilder newQuery()
 	 * @method static _ConsigneeQueryBuilder query()
@@ -121,16 +125,16 @@ namespace App\Domain\Consignee\Models {
 
 namespace App\Domain\Document\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCategoryCollection;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCategoryQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCollection;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentQueryBuilder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCollection;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCategoryCollection;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCategoryQueryBuilder;
 
-	/**
+    /**
 	 * @property _DocumentCategoryCollection|DocumentCategory[] $categories
 	 * @method HasMany|_DocumentCategoryQueryBuilder categories()
 	 * @property Model                                          $documentable
@@ -157,33 +161,33 @@ namespace App\Domain\Document\Models {
 
 namespace App\Domain\Employee\Models {
 
-	use App\Domain\General\Models\PhoneNumber;
-	use App\Domain\Office\Models\Office;
-	use App\Domain\Payment\Models\BankAccount;
-	use App\Domain\Trip\Models\Trip;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeDesignationClassificationCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeDesignationClassificationQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeePaymentDetailsCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeePaymentDetailsQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesAttendanceCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesAttendanceQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesDesignationCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesDesignationQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Trip\Models\Trip;
+    use App\Domain\Office\Models\Office;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\General\Models\PhoneNumber;
+    use App\Domain\Payment\Models\BankAccount;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesAttendanceCollection;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesDesignationCollection;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesAttendanceQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeePaymentDetailsCollection;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeesDesignationQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeePaymentDetailsQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeDesignationClassificationCollection;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeDesignationClassificationQueryBuilder;
 
-	/**
+    /**
 	 * @property int                    $id
 	 * @property string|null            $name
 	 * @property float|null             $salary
@@ -272,25 +276,25 @@ namespace App\Domain\Employee\Models {
 
 namespace App\Domain\Expense\Models {
 
-	use App\Domain\Company\Models\Company;
-	use App\Domain\Office\Models\Office;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryCollection;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryTypeCollection;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryTypeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCollection;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseIndividualCollection;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseIndividualQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Office\Models\Office;
+    use App\Domain\Company\Models\Company;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCollection;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryCollection;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseIndividualCollection;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryTypeCollection;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseIndividualQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCategoryTypeQueryBuilder;
 
-	/**
+    /**
 	 * @property int                                              $id
 	 * @property Carbon                                           $date
 	 * @property int                                              $amount
@@ -364,23 +368,23 @@ namespace App\Domain\Expense\Models {
 
 namespace App\Domain\Fleet\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetDailyInspectionCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetDailyInspectionQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetLiveCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetLiveQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetMaintenanceCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetMaintenanceQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetTripCatcherCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetTripCatcherQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleCollection;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetLiveCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetLiveQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetMaintenanceCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetTripCatcherCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetMaintenanceQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetTripCatcherQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetDailyInspectionCollection;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetDailyInspectionQueryBuilder;
 
-	/**
+    /**
 	 * @property int                                    $id
 	 * @property string                                 $name
 	 * @property int                                    $company_id
@@ -523,34 +527,38 @@ namespace App\Domain\Fleet\Models {
 
 namespace App\Domain\General\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\General\Models\_AddressCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_AddressQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MaterialCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MaterialQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MineCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MineQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_SectorCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_SectorQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointCollection;
-	use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MineCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MineQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_SectorCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_AddressCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MaterialCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_SectorQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_AddressQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MaterialQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
-	 * @property string|null $street_address
-	 * @property string|null $street_address_two
+	 * @property string|null $line_1
+	 * @property string|null $line_2
 	 * @property string|null $city
-	 * @property string|null $state
 	 * @property string|null $zip
+	 * @property string|null $state
+	 * @property int         $addressable_id
+	 * @property string      $addressable_type
 	 * @property int         $company_id
 	 * @property Carbon|null $created_at
 	 * @property Carbon|null $updated_at
+	 * @property Model       $addressable
+	 * @method MorphTo addressable()
 	 * @method _AddressQueryBuilder newModelQuery()
 	 * @method _AddressQueryBuilder newQuery()
 	 * @method static _AddressQueryBuilder query()
@@ -584,7 +592,7 @@ namespace App\Domain\General\Models {
 	 * @method _MineQueryBuilder newModelQuery()
 	 * @method _MineQueryBuilder newQuery()
 	 * @method static _MineQueryBuilder query()
-	 * @method static _MineCollection|Mine[] all()
+	 * @method static _MineCollection|LoadingPoint[] all()
 	 * @mixin _MineQueryBuilder
 	 */
 	class Mine extends Model { }
@@ -608,14 +616,14 @@ namespace App\Domain\General\Models {
 	class PhoneNumber extends Model { }
 
 	/**
-	 * @property int                    $id
-	 * @property string                 $name
-	 * @property bool                   $visible
-	 * @property Carbon|null            $created_at
-	 * @property Carbon|null            $updated_at
-	 * @property _MineCollection|Mine[] $mines
-	 * @method HasMany|_MineQueryBuilder mines()
-	 * @property Sector                 $sector
+	 * @property int                            $id
+	 * @property string                         $name
+	 * @property bool                           $visible
+	 * @property Carbon|null                    $created_at
+	 * @property Carbon|null                    $updated_at
+	 * @property _MineCollection|LoadingPoint[] $loading-points
+	 * @method HasMany|_MineQueryBuilder loading-points()
+	 * @property Sector                         $sector
 	 * @method BelongsTo|_SectorQueryBuilder sector()
 	 * @method _SectorQueryBuilder newModelQuery()
 	 * @method _SectorQueryBuilder newQuery()
@@ -634,7 +642,7 @@ namespace App\Domain\General\Models {
 	 * @method _UnloadingPointQueryBuilder newModelQuery()
 	 * @method _UnloadingPointQueryBuilder newQuery()
 	 * @method static _UnloadingPointQueryBuilder query()
-	 * @method static _UnloadingPointCollection|UnloadingPoint[] all()
+	 * @method static _UnloadingPointCollection|Destination[] all()
 	 * @mixin _UnloadingPointQueryBuilder
 	 */
 	class UnloadingPoint extends Model { }
@@ -642,16 +650,16 @@ namespace App\Domain\General\Models {
 
 namespace App\Domain\Invoice\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceCollection;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceItemCollection;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceItemQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceStatusCollection;
-	use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceStatusQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceCollection;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceItemCollection;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceItemQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceStatusCollection;
+    use LaravelIdea\Helper\App\Domain\Invoice\Models\_InvoiceStatusQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
 	 * @property Carbon      $invoice_date
 	 * @property Carbon      $due_date
@@ -707,16 +715,16 @@ namespace App\Domain\Invoice\Models {
 
 namespace App\Domain\MarketVehicle\Models {
 
-	use App\Domain\Party\Models\Party;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleCollection;
-	use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Party\Models\_PartyCollection;
-	use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Party\Models\Party;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use LaravelIdea\Helper\App\Domain\Party\Models\_PartyCollection;
+    use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleCollection;
+    use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
 
-	/**
+    /**
 	 * @property int                      $id
 	 * @property string                   $number
 	 * @property int                      $party_id
@@ -736,22 +744,22 @@ namespace App\Domain\MarketVehicle\Models {
 
 namespace App\Domain\Office\Models {
 
-	use App\Domain\Company\Models\Company;
-	use App\Domain\Employee\Models\Employee;
-	use App\Domain\Expense\Models\Expense;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
-	use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCollection;
-	use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeCollection;
-	use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Company\Models\Company;
+    use App\Domain\Expense\Models\Expense;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\Employee\Models\Employee;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeCollection;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseCollection;
+    use LaravelIdea\Helper\App\Domain\Office\Models\_OfficeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeCollection;
+    use LaravelIdea\Helper\App\Domain\Expense\Models\_ExpenseQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Employee\Models\_EmployeeQueryBuilder;
 
-	/**
+    /**
 	 * @property int                            $id
 	 * @property string                         $name
 	 * @property string|null                    $street_address
@@ -778,26 +786,27 @@ namespace App\Domain\Office\Models {
 
 namespace App\Domain\Party\Models {
 
-	use App\Domain\MarketVehicle\Models\MarketVehicle;
-	use App\Domain\Payment\Models\BankAccount;
-	use App\Domain\Trip\Models\Trip;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleCollection;
-	use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Party\Models\_PartyCollection;
-	use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
-	use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Trip\Models\Trip;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\General\Models\PhoneNumber;
+    use App\Domain\Payment\Models\BankAccount;
+    use App\Domain\MarketVehicle\Models\MarketVehicle;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
+    use LaravelIdea\Helper\App\Domain\Party\Models\_PartyCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountCollection;
+    use LaravelIdea\Helper\App\Domain\General\Models\_PhoneNumberQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleCollection;
+    use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
 
-	/**
+    /**
 	 * @property int                                      $id
 	 * @property string                                   $name
 	 * @property string|null                              $pan
@@ -809,6 +818,8 @@ namespace App\Domain\Party\Models {
 	 * @method MorphToMany|_BankAccountQueryBuilder bankAccounts()
 	 * @property _MediaCollection|Media[]                 $media
 	 * @method MorphToMany|_MediaQueryBuilder media()
+	 * @property PhoneNumber                              $phoneNumber
+	 * @method MorphToMany|_PhoneNumberQueryBuilder phoneNumber()
 	 * @property _TripCollection|Trip[]                   $trips
 	 * @method HasMany|_TripQueryBuilder trips()
 	 * @property _MarketVehicleCollection|MarketVehicle[] $vehicles
@@ -824,29 +835,28 @@ namespace App\Domain\Party\Models {
 
 namespace App\Domain\Payment\Models {
 
-	use App\Domain\Trip\Models\Trip;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentMethodCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentMethodQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentStatusCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentStatusQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_TaxCategoryCollection;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_TaxCategoryQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
-	use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Trip\Models\Trip;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_TaxCategoryCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_BankAccountQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentMethodCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentStatusCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_TaxCategoryQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentMethodQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentStatusQueryBuilder;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
 	 * @property string|null $account_name
 	 * @property string      $account_number
@@ -875,6 +885,7 @@ namespace App\Domain\Payment\Models {
 	 * @property int                      $payment_status_id
 	 * @property float|null               $fees
 	 * @property object|null              $remarks
+	 * @property string|null              $utr_number
 	 * @property string|null              $razorpay_payout_id
 	 * @property int                      $company_id
 	 * @property int|null                 $created_by
@@ -946,33 +957,32 @@ namespace App\Domain\Payment\Models {
 
 namespace App\Domain\Project\Models {
 
-	use App\Domain\Company\Models\Company;
-	use App\Domain\Consignee\Models\Consignee;
-	use App\Domain\General\Models\Material;
-	use App\Domain\General\Models\Mine;
-	use App\Domain\General\Models\UnloadingPoint;
-	use App\Domain\Trip\Models\Trip;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasMany;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MaterialQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_MineQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectCollection;
-	use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Trip\Models\Trip;
+    use App\Domain\Company\Models\Company;
+    use App\Domain\General\Models\Material;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\Consignee\Models\Consignee;
+    use App\Domain\LoadingPoint\Models\LoadingPoint;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MineQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectCollection;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_MaterialQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\General\Models\_UnloadingPointQueryBuilder;
 
-	/**
+    /**
 	 * @property int                    $id
 	 * @property string|null            $name
 	 * @property int                    $material_id
-	 * @property int                    $mine_id
-	 * @property int                    $unloading_point_id
+	 * @property int                    $source_id
+	 * @property int                    $destination_id
 	 * @property int                    $consignee_id
 	 * @property int                    $company_id
 	 * @property bool                   $status
@@ -1001,38 +1011,37 @@ namespace App\Domain\Project\Models {
 
 namespace App\Domain\Trip\Models {
 
-	use App\Domain\Agent\Models\Agent;
-	use App\Domain\Consignee\Models\Consignee;
-	use App\Domain\Document\Models\Document;
-	use App\Domain\Fleet\Models\FleetVehicle;
-	use App\Domain\MarketVehicle\Models\MarketVehicle;
-	use App\Domain\Party\Models\Party;
-	use App\Domain\Payment\Models\Payment;
-	use App\Domain\Project\Models\Project;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCollection;
-	use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripTypeCollection;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripTypeQueryBuilder;
-	use LaravelIdea\Helper\Database\Factories\_TripFactory;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
-	use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Agent\Models\Agent;
+    use App\Domain\Party\Models\Party;
+    use App\Domain\Payment\Models\Payment;
+    use App\Domain\Project\Models\Project;
+    use Illuminate\Database\Eloquent\Model;
+    use App\Domain\Document\Models\Document;
+    use App\Domain\Fleet\Models\FleetVehicle;
+    use App\Domain\Consignee\Models\Consignee;
+    use App\Domain\MarketVehicle\Models\MarketVehicle;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\Database\Factories\_TripFactory;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Agent\Models\_AgentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Party\Models\_PartyQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripTypeCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripTypeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentCollection;
+    use LaravelIdea\Helper\App\Domain\Payment\Models\_PaymentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Project\Models\_ProjectQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Document\Models\_DocumentQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Fleet\Models\_FleetVehicleQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Consignee\Models\_ConsigneeQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\MarketVehicle\Models\_MarketVehicleQueryBuilder;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
 
-	/**
+    /**
 	 * @property int                            $id
 	 * @property Carbon                         $date
 	 * @property int                            $trip_type
@@ -1121,12 +1130,12 @@ namespace App\Domain\Trip\Models {
 
 namespace App\Domain\VehicleRC\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\VehicleRC\Models\_VehicleRCCollection;
-	use LaravelIdea\Helper\App\Domain\VehicleRC\Models\_VehicleRCQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use LaravelIdea\Helper\App\Domain\VehicleRC\Models\_VehicleRCCollection;
+    use LaravelIdea\Helper\App\Domain\VehicleRC\Models\_VehicleRCQueryBuilder;
 
-	/**
+    /**
 	 * @property int         $id
 	 * @property string      $number
 	 * @property string|null $model
@@ -1159,29 +1168,27 @@ namespace App\Domain\VehicleRC\Models {
 
 namespace App\Models {
 
-	use App\Domain\Company\Models\Company;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-	use Illuminate\Database\Eloquent\Relations\HasOne;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Notifications\DatabaseNotification;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_MembershipCollection;
-	use LaravelIdea\Helper\App\Models\_MembershipQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_PermissionCollection;
-	use LaravelIdea\Helper\App\Models\_PermissionQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_RoleCollection;
-	use LaravelIdea\Helper\App\Models\_RoleQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_TeamCollection;
-	use LaravelIdea\Helper\App\Models\_TeamQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_UserCollection;
-	use LaravelIdea\Helper\App\Models\_UserQueryBuilder;
-	use LaravelIdea\Helper\Database\Factories\_UserFactory;
-	use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationCollection;
-	use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationQueryBuilder;
+    use Illuminate\Support\Carbon;
+    use App\Domain\Company\Models\Company;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
+    use LaravelIdea\Helper\App\Models\_RoleCollection;
+    use LaravelIdea\Helper\App\Models\_TeamCollection;
+    use LaravelIdea\Helper\App\Models\_UserCollection;
+    use LaravelIdea\Helper\App\Models\_RoleQueryBuilder;
+    use LaravelIdea\Helper\App\Models\_TeamQueryBuilder;
+    use LaravelIdea\Helper\App\Models\_UserQueryBuilder;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\Database\Factories\_UserFactory;
+    use LaravelIdea\Helper\App\Models\_MembershipCollection;
+    use LaravelIdea\Helper\App\Models\_PermissionCollection;
+    use LaravelIdea\Helper\App\Models\_MembershipQueryBuilder;
+    use LaravelIdea\Helper\App\Models\_PermissionQueryBuilder;
+    use LaravelIdea\Helper\App\Domain\Company\Models\_CompanyQueryBuilder;
+    use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationCollection;
+    use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationQueryBuilder;
 
-	/**
+    /**
 	 * @method _MembershipQueryBuilder newModelQuery()
 	 * @method _MembershipQueryBuilder newQuery()
 	 * @method static _MembershipQueryBuilder query()
@@ -1206,14 +1213,12 @@ namespace App\Models {
 	class Permission extends Model { }
 
 	/**
-	 * @property int                                $id
-	 * @property string                             $name
-	 * @property string|null                        $display_name
-	 * @property string|null                        $description
-	 * @property Carbon|null                        $created_at
-	 * @property Carbon|null                        $updated_at
-	 * @property _PermissionCollection|Permission[] $permissions
-	 * @method BelongsToMany|_PermissionQueryBuilder permissions()
+	 * @property int         $id
+	 * @property string      $name
+	 * @property string|null $display_name
+	 * @property string|null $description
+	 * @property Carbon|null $created_at
+	 * @property Carbon|null $updated_at
 	 * @method _RoleQueryBuilder newModelQuery()
 	 * @method _RoleQueryBuilder newQuery()
 	 * @method static _RoleQueryBuilder query()
@@ -1278,12 +1283,12 @@ namespace App\Models {
 
 namespace Illuminate\Notifications {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationCollection;
-	use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationQueryBuilder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationCollection;
+    use LaravelIdea\Helper\Illuminate\Notifications\_DatabaseNotificationQueryBuilder;
 
-	/**
+    /**
 	 * @property Model $notifiable
 	 * @method MorphTo notifiable()
 	 * @method _DatabaseNotificationQueryBuilder newModelQuery()
@@ -1299,22 +1304,22 @@ namespace Illuminate\Notifications {
 
 namespace Laratrust\Models {
 
-	use App\Models\Permission;
-	use App\Models\Role;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-	use LaravelIdea\Helper\App\Models\_PermissionCollection;
-	use LaravelIdea\Helper\App\Models\_PermissionQueryBuilder;
-	use LaravelIdea\Helper\App\Models\_RoleCollection;
-	use LaravelIdea\Helper\App\Models\_RoleQueryBuilder;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustPermissionCollection;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustPermissionQueryBuilder;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustRoleCollection;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustRoleQueryBuilder;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustTeamCollection;
-	use LaravelIdea\Helper\Laratrust\Models\_LaratrustTeamQueryBuilder;
+    use App\Models\Role;
+    use App\Models\Permission;
+    use Illuminate\Database\Eloquent\Model;
+    use LaravelIdea\Helper\App\Models\_RoleCollection;
+    use LaravelIdea\Helper\App\Models\_RoleQueryBuilder;
+    use LaravelIdea\Helper\App\Models\_PermissionCollection;
+    use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+    use LaravelIdea\Helper\App\Models\_PermissionQueryBuilder;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustRoleCollection;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustTeamCollection;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustRoleQueryBuilder;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustTeamQueryBuilder;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustPermissionCollection;
+    use LaravelIdea\Helper\Laratrust\Models\_LaratrustPermissionQueryBuilder;
 
-	/**
+    /**
 	 * @property _RoleCollection|Role[] $roles
 	 * @method BelongsToMany|_RoleQueryBuilder roles()
 	 * @method _LaratrustPermissionQueryBuilder newModelQuery()
@@ -1348,13 +1353,13 @@ namespace Laratrust\Models {
 
 namespace LaravelIdea\Helper {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\ConnectionInterface;
-	use Illuminate\Database\Eloquent\Builder;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Support\Collection;
+    use Illuminate\Support\Collection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Database\ConnectionInterface;
 
-	/**
+    /**
 	 * @see \Illuminate\Database\Query\Builder::whereIn
 	 * @method $this whereIn(string $column, $values, string $boolean = 'and', bool $not = false)
 	 * @see \Illuminate\Database\Query\Builder::orWhereNotIn
@@ -1711,15 +1716,15 @@ namespace LaravelIdea\Helper {
 
 namespace LaravelIdea\Helper\App\Domain\Agent\Models {
 
-	use App\Domain\Agent\Models\Agent;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Agent\Models\Agent;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Agent shift()
 	 * @method Agent pop()
 	 * @method Agent get($key, $default = null)
@@ -1779,15 +1784,15 @@ namespace LaravelIdea\Helper\App\Domain\Agent\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Company\Models {
 
-	use App\Domain\Company\Models\Company;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Company\Models\Company;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Company shift()
 	 * @method Company pop()
 	 * @method Company get($key, $default = null)
@@ -1814,9 +1819,6 @@ namespace LaravelIdea\Helper\App\Domain\Company\Models {
 	 * @method _CompanyQueryBuilder whereId($value)
 	 * @method _CompanyQueryBuilder whereName($value)
 	 * @method _CompanyQueryBuilder whereShortName($value)
-	 * @method _CompanyQueryBuilder whereAddress($value)
-	 * @method _CompanyQueryBuilder whereCity($value)
-	 * @method _CompanyQueryBuilder whereState($value)
 	 * @method _CompanyQueryBuilder whereGstin($value)
 	 * @method _CompanyQueryBuilder wherePan($value)
 	 * @method _CompanyQueryBuilder whereUseRazorpay($value)
@@ -1857,15 +1859,15 @@ namespace LaravelIdea\Helper\App\Domain\Company\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Consignee\Models {
 
-	use App\Domain\Consignee\Models\Consignee;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use App\Domain\Consignee\Models\Consignee;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Consignee shift()
 	 * @method Consignee pop()
 	 * @method Consignee get($key, $default = null)
@@ -1891,10 +1893,8 @@ namespace LaravelIdea\Helper\App\Domain\Consignee\Models {
 	/**
 	 * @method _ConsigneeQueryBuilder whereId($value)
 	 * @method _ConsigneeQueryBuilder whereName($value)
-	 * @method _ConsigneeQueryBuilder whereAddress($value)
-	 * @method _ConsigneeQueryBuilder whereGstinUin($value)
+	 * @method _ConsigneeQueryBuilder whereGstin($value)
 	 * @method _ConsigneeQueryBuilder wherePan($value)
-	 * @method _ConsigneeQueryBuilder whereStateName($value)
 	 * @method _ConsigneeQueryBuilder whereCompanyId($value)
 	 * @method _ConsigneeQueryBuilder whereCreatedAt($value)
 	 * @method _ConsigneeQueryBuilder whereUpdatedAt($value)
@@ -1929,16 +1929,16 @@ namespace LaravelIdea\Helper\App\Domain\Consignee\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Document\Models {
 
-	use App\Domain\Document\Models\Document;
-	use App\Domain\Document\Models\DocumentCategory;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Document\Models\Document;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\Document\Models\DocumentCategory;
 
-	/**
+    /**
 	 * @method DocumentCategory shift()
 	 * @method DocumentCategory pop()
 	 * @method DocumentCategory get($key, $default = null)
@@ -2045,19 +2045,19 @@ namespace LaravelIdea\Helper\App\Domain\Document\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Employee\Models {
 
-	use App\Domain\Employee\Models\Employee;
-	use App\Domain\Employee\Models\EmployeeDesignationClassification;
-	use App\Domain\Employee\Models\EmployeePaymentDetails;
-	use App\Domain\Employee\Models\EmployeesAttendance;
-	use App\Domain\Employee\Models\EmployeesDesignation;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Employee\Models\Employee;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\Employee\Models\EmployeesAttendance;
+    use App\Domain\Employee\Models\EmployeesDesignation;
+    use App\Domain\Employee\Models\EmployeePaymentDetails;
+    use App\Domain\Employee\Models\EmployeeDesignationClassification;
 
-	/**
+    /**
 	 * @method Employee shift()
 	 * @method Employee pop()
 	 * @method Employee get($key, $default = null)
@@ -2345,18 +2345,18 @@ namespace LaravelIdea\Helper\App\Domain\Employee\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Expense\Models {
 
-	use App\Domain\Expense\Models\Expense;
-	use App\Domain\Expense\Models\ExpenseCategory;
-	use App\Domain\Expense\Models\ExpenseCategoryType;
-	use App\Domain\Expense\Models\ExpenseIndividual;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Expense\Models\Expense;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use App\Domain\Expense\Models\ExpenseCategory;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\Expense\Models\ExpenseIndividual;
+    use App\Domain\Expense\Models\ExpenseCategoryType;
 
-	/**
+    /**
 	 * @method ExpenseCategory shift()
 	 * @method ExpenseCategory pop()
 	 * @method ExpenseCategory get($key, $default = null)
@@ -2592,20 +2592,20 @@ namespace LaravelIdea\Helper\App\Domain\Expense\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Fleet\Models {
 
-	use App\Domain\Fleet\Models\Fleet;
-	use App\Domain\Fleet\Models\FleetDailyInspection;
-	use App\Domain\Fleet\Models\FleetLive;
-	use App\Domain\Fleet\Models\FleetMaintenance;
-	use App\Domain\Fleet\Models\FleetTripCatcher;
-	use App\Domain\Fleet\Models\FleetVehicle;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Fleet\Models\Fleet;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Fleet\Models\FleetLive;
+    use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Fleet\Models\FleetVehicle;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use App\Domain\Fleet\Models\FleetMaintenance;
+    use App\Domain\Fleet\Models\FleetTripCatcher;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\Fleet\Models\FleetDailyInspection;
 
-	/**
+    /**
 	 * @method Fleet shift()
 	 * @method Fleet pop()
 	 * @method Fleet get($key, $default = null)
@@ -3004,20 +3004,20 @@ namespace LaravelIdea\Helper\App\Domain\Fleet\Models {
 
 namespace LaravelIdea\Helper\App\Domain\General\Models {
 
-	use App\Domain\General\Models\Address;
-	use App\Domain\General\Models\Material;
-	use App\Domain\General\Models\Mine;
-	use App\Domain\General\Models\PhoneNumber;
-	use App\Domain\General\Models\Sector;
-	use App\Domain\General\Models\UnloadingPoint;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\General\Models\Sector;
+    use App\Domain\General\Models\Address;
+    use App\Domain\General\Models\Material;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use App\Domain\General\Models\PhoneNumber;
+    use App\Domain\UnloadingPoint\Models\UnloadingPoint;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\LoadingPoint\Models\LoadingPoint;
 
-	/**
+    /**
 	 * @method Address shift()
 	 * @method Address pop()
 	 * @method Address get($key, $default = null)
@@ -3042,11 +3042,13 @@ namespace LaravelIdea\Helper\App\Domain\General\Models {
 
 	/**
 	 * @method _AddressQueryBuilder whereId($value)
-	 * @method _AddressQueryBuilder whereStreetAddress($value)
-	 * @method _AddressQueryBuilder whereStreetAddressTwo($value)
+	 * @method _AddressQueryBuilder whereLine1($value)
+	 * @method _AddressQueryBuilder whereLine2($value)
 	 * @method _AddressQueryBuilder whereCity($value)
-	 * @method _AddressQueryBuilder whereState($value)
 	 * @method _AddressQueryBuilder whereZip($value)
+	 * @method _AddressQueryBuilder whereState($value)
+	 * @method _AddressQueryBuilder whereAddressableId($value)
+	 * @method _AddressQueryBuilder whereAddressableType($value)
 	 * @method _AddressQueryBuilder whereCompanyId($value)
 	 * @method _AddressQueryBuilder whereCreatedAt($value)
 	 * @method _AddressQueryBuilder whereUpdatedAt($value)
@@ -3135,14 +3137,14 @@ namespace LaravelIdea\Helper\App\Domain\General\Models {
 	class _MaterialQueryBuilder extends _BaseBuilder { }
 
 	/**
-	 * @method Mine shift()
-	 * @method Mine pop()
-	 * @method Mine get($key, $default = null)
-	 * @method Mine pull($key, $default = null)
-	 * @method Mine first(callable $callback = null, $default = null)
-	 * @method Mine firstWhere(string $key, $operator = null, $value = null)
-	 * @method Mine[] all()
-	 * @method Mine last(callable $callback = null, $default = null)
+	 * @method LoadingPoint shift()
+	 * @method LoadingPoint pop()
+	 * @method LoadingPoint get($key, $default = null)
+	 * @method LoadingPoint pull($key, $default = null)
+	 * @method LoadingPoint first(callable $callback = null, $default = null)
+	 * @method LoadingPoint firstWhere(string $key, $operator = null, $value = null)
+	 * @method LoadingPoint[] all()
+	 * @method LoadingPoint last(callable $callback = null, $default = null)
 	 */
 	class _MineCollection extends _BaseCollection
 	{
@@ -3164,31 +3166,31 @@ namespace LaravelIdea\Helper\App\Domain\General\Models {
 	 * @method _MineQueryBuilder whereVisible($value)
 	 * @method _MineQueryBuilder whereCreatedAt($value)
 	 * @method _MineQueryBuilder whereUpdatedAt($value)
-	 * @method Mine baseSole(array|string $columns = [ '*' ])
-	 * @method Mine create(array $attributes = [])
-	 * @method _MineCollection|Mine[] cursor()
-	 * @method Mine|null find($id, array $columns = [ '*' ])
-	 * @method _MineCollection|Mine[] findMany(array|Arrayable $ids, array $columns = [ '*' ])
-	 * @method Mine findOrFail($id, array $columns = [ '*' ])
-	 * @method _MineCollection|Mine[] findOrNew($id, array $columns = [ '*' ])
-	 * @method Mine first(array|string $columns = [ '*' ])
-	 * @method Mine firstOr(array $columns = [ '*' ], \Closure $callback = null)
-	 * @method Mine firstOrCreate(array $attributes = [], array $values = [])
-	 * @method Mine firstOrFail(array $columns = [ '*' ])
-	 * @method Mine firstOrNew(array $attributes = [], array $values = [])
-	 * @method Mine firstWhere(array|Expression|string $column, $operator = null, $value = null, string $boolean = 'and')
-	 * @method Mine forceCreate(array $attributes)
-	 * @method _MineCollection|Mine[] fromQuery(string $query, array $bindings = [])
-	 * @method _MineCollection|Mine[] get(array|string $columns = [ '*' ])
-	 * @method Mine getModel()
-	 * @method Mine[] getModels(array|string $columns = [ '*' ])
-	 * @method _MineCollection|Mine[] hydrate(array $items)
-	 * @method Mine make(array $attributes = [])
-	 * @method Mine newModelInstance(array $attributes = [])
-	 * @method LengthAwarePaginator|Mine[]|_MineCollection paginate(int|null $perPage = null, array $columns = [ '*' ], string $pageName = 'page', int|null $page = null)
-	 * @method Paginator|Mine[]|_MineCollection simplePaginate(int|null $perPage = null, array $columns = [ '*' ], string $pageName = 'page', int|null $page = null)
-	 * @method Mine sole(array|string $columns = [ '*' ])
-	 * @method Mine updateOrCreate(array $attributes, array $values = [])
+	 * @method LoadingPoint baseSole(array|string $columns = ['*' ])
+	 * @method LoadingPoint create(array $attributes = [])
+	 * @method _MineCollection|LoadingPoint[] cursor()
+	 * @method LoadingPoint|null find($id, array $columns = ['*' ])
+	 * @method _MineCollection|LoadingPoint[] findMany(array|Arrayable $ids, array $columns = ['*' ])
+	 * @method LoadingPoint findOrFail($id, array $columns = ['*' ])
+	 * @method _MineCollection|LoadingPoint[] findOrNew($id, array $columns = ['*' ])
+	 * @method LoadingPoint first(array|string $columns = ['*' ])
+	 * @method LoadingPoint firstOr(array $columns = ['*' ], \Closure $callback = null)
+	 * @method LoadingPoint firstOrCreate(array $attributes = [], array $values = [])
+	 * @method LoadingPoint firstOrFail(array $columns = ['*' ])
+	 * @method LoadingPoint firstOrNew(array $attributes = [], array $values = [])
+	 * @method LoadingPoint firstWhere(array|Expression|string $column, $operator = null, $value = null, string $boolean = 'and')
+	 * @method LoadingPoint forceCreate(array $attributes)
+	 * @method _MineCollection|LoadingPoint[] fromQuery(string $query, array $bindings = [])
+	 * @method _MineCollection|LoadingPoint[] get(array|string $columns = ['*' ])
+	 * @method LoadingPoint getModel()
+	 * @method LoadingPoint[] getModels(array|string $columns = ['*' ])
+	 * @method _MineCollection|LoadingPoint[] hydrate(array $items)
+	 * @method LoadingPoint make(array $attributes = [])
+	 * @method LoadingPoint newModelInstance(array $attributes = [])
+	 * @method LengthAwarePaginator|LoadingPoint[]|_MineCollection paginate(int|null $perPage = null, array $columns = ['*' ], string $pageName = 'page', int|null $page = null)
+	 * @method Paginator|LoadingPoint[]|_MineCollection simplePaginate(int|null $perPage = null, array $columns = ['*' ], string $pageName = 'page', int|null $page = null)
+	 * @method LoadingPoint sole(array|string $columns = ['*' ])
+	 * @method LoadingPoint updateOrCreate(array $attributes, array $values = [])
 	 */
 	class _MineQueryBuilder extends _BaseBuilder { }
 
@@ -3309,14 +3311,14 @@ namespace LaravelIdea\Helper\App\Domain\General\Models {
 	class _SectorQueryBuilder extends _BaseBuilder { }
 
 	/**
-	 * @method UnloadingPoint shift()
-	 * @method UnloadingPoint pop()
-	 * @method UnloadingPoint get($key, $default = null)
-	 * @method UnloadingPoint pull($key, $default = null)
-	 * @method UnloadingPoint first(callable $callback = null, $default = null)
-	 * @method UnloadingPoint firstWhere(string $key, $operator = null, $value = null)
-	 * @method UnloadingPoint[] all()
-	 * @method UnloadingPoint last(callable $callback = null, $default = null)
+	 * @method Destination shift()
+	 * @method Destination pop()
+	 * @method Destination get($key, $default = null)
+	 * @method Destination pull($key, $default = null)
+	 * @method Destination first(callable $callback = null, $default = null)
+	 * @method Destination firstWhere(string $key, $operator = null, $value = null)
+	 * @method Destination[] all()
+	 * @method Destination last(callable $callback = null, $default = null)
 	 */
 	class _UnloadingPointCollection extends _BaseCollection
 	{
@@ -3337,48 +3339,48 @@ namespace LaravelIdea\Helper\App\Domain\General\Models {
 	 * @method _UnloadingPointQueryBuilder whereName($value)
 	 * @method _UnloadingPointQueryBuilder whereCreatedAt($value)
 	 * @method _UnloadingPointQueryBuilder whereUpdatedAt($value)
-	 * @method UnloadingPoint baseSole(array|string $columns = [ '*' ])
-	 * @method UnloadingPoint create(array $attributes = [])
-	 * @method _UnloadingPointCollection|UnloadingPoint[] cursor()
-	 * @method UnloadingPoint|null find($id, array $columns = [ '*' ])
-	 * @method _UnloadingPointCollection|UnloadingPoint[] findMany(array|Arrayable $ids, array $columns = [ '*' ])
-	 * @method UnloadingPoint findOrFail($id, array $columns = [ '*' ])
-	 * @method _UnloadingPointCollection|UnloadingPoint[] findOrNew($id, array $columns = [ '*' ])
-	 * @method UnloadingPoint first(array|string $columns = [ '*' ])
-	 * @method UnloadingPoint firstOr(array $columns = [ '*' ], \Closure $callback = null)
-	 * @method UnloadingPoint firstOrCreate(array $attributes = [], array $values = [])
-	 * @method UnloadingPoint firstOrFail(array $columns = [ '*' ])
-	 * @method UnloadingPoint firstOrNew(array $attributes = [], array $values = [])
-	 * @method UnloadingPoint firstWhere(array|Expression|string $column, $operator = null, $value = null, string $boolean = 'and')
-	 * @method UnloadingPoint forceCreate(array $attributes)
-	 * @method _UnloadingPointCollection|UnloadingPoint[] fromQuery(string $query, array $bindings = [])
-	 * @method _UnloadingPointCollection|UnloadingPoint[] get(array|string $columns = [ '*' ])
-	 * @method UnloadingPoint getModel()
-	 * @method UnloadingPoint[] getModels(array|string $columns = [ '*' ])
-	 * @method _UnloadingPointCollection|UnloadingPoint[] hydrate(array $items)
-	 * @method UnloadingPoint make(array $attributes = [])
-	 * @method UnloadingPoint newModelInstance(array $attributes = [])
-	 * @method LengthAwarePaginator|UnloadingPoint[]|_UnloadingPointCollection paginate(int|null $perPage = null, array $columns = [ '*' ], string $pageName = 'page', int|null $page = null)
-	 * @method Paginator|UnloadingPoint[]|_UnloadingPointCollection simplePaginate(int|null $perPage = null, array $columns = [ '*' ], string $pageName = 'page', int|null $page = null)
-	 * @method UnloadingPoint sole(array|string $columns = [ '*' ])
-	 * @method UnloadingPoint updateOrCreate(array $attributes, array $values = [])
+	 * @method Destination baseSole(array|string $columns = ['*' ])
+	 * @method Destination create(array $attributes = [])
+	 * @method _UnloadingPointCollection|Destination[] cursor()
+	 * @method Destination|null find($id, array $columns = ['*' ])
+	 * @method _UnloadingPointCollection|Destination[] findMany(array|Arrayable $ids, array $columns = ['*' ])
+	 * @method Destination findOrFail($id, array $columns = ['*' ])
+	 * @method _UnloadingPointCollection|Destination[] findOrNew($id, array $columns = ['*' ])
+	 * @method Destination first(array|string $columns = ['*' ])
+	 * @method Destination firstOr(array $columns = ['*' ], \Closure $callback = null)
+	 * @method Destination firstOrCreate(array $attributes = [], array $values = [])
+	 * @method Destination firstOrFail(array $columns = ['*' ])
+	 * @method Destination firstOrNew(array $attributes = [], array $values = [])
+	 * @method Destination firstWhere(array|Expression|string $column, $operator = null, $value = null, string $boolean = 'and')
+	 * @method Destination forceCreate(array $attributes)
+	 * @method _UnloadingPointCollection|Destination[] fromQuery(string $query, array $bindings = [])
+	 * @method _UnloadingPointCollection|Destination[] get(array|string $columns = ['*' ])
+	 * @method Destination getModel()
+	 * @method Destination[] getModels(array|string $columns = ['*' ])
+	 * @method _UnloadingPointCollection|Destination[] hydrate(array $items)
+	 * @method Destination make(array $attributes = [])
+	 * @method Destination newModelInstance(array $attributes = [])
+	 * @method LengthAwarePaginator|Destination[]|_UnloadingPointCollection paginate(int|null $perPage = null, array $columns = ['*' ], string $pageName = 'page', int|null $page = null)
+	 * @method Paginator|Destination[]|_UnloadingPointCollection simplePaginate(int|null $perPage = null, array $columns = ['*' ], string $pageName = 'page', int|null $page = null)
+	 * @method Destination sole(array|string $columns = ['*' ])
+	 * @method Destination updateOrCreate(array $attributes, array $values = [])
 	 */
 	class _UnloadingPointQueryBuilder extends _BaseBuilder { }
 }
 
 namespace LaravelIdea\Helper\App\Domain\Invoice\Models {
 
-	use App\Domain\Invoice\Models\Invoice;
-	use App\Domain\Invoice\Models\InvoiceItem;
-	use App\Domain\Invoice\Models\InvoiceStatus;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Invoice\Models\Invoice;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use App\Domain\Invoice\Models\InvoiceItem;
+    use Illuminate\Contracts\Support\Arrayable;
+    use App\Domain\Invoice\Models\InvoiceStatus;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Invoice shift()
 	 * @method Invoice pop()
 	 * @method Invoice get($key, $default = null)
@@ -3563,15 +3565,15 @@ namespace LaravelIdea\Helper\App\Domain\Invoice\Models {
 
 namespace LaravelIdea\Helper\App\Domain\MarketVehicle\Models {
 
-	use App\Domain\MarketVehicle\Models\MarketVehicle;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use App\Domain\MarketVehicle\Models\MarketVehicle;
 
-	/**
+    /**
 	 * @method MarketVehicle shift()
 	 * @method MarketVehicle pop()
 	 * @method MarketVehicle get($key, $default = null)
@@ -3632,15 +3634,15 @@ namespace LaravelIdea\Helper\App\Domain\MarketVehicle\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Office\Models {
 
-	use App\Domain\Office\Models\Office;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Office\Models\Office;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Office shift()
 	 * @method Office pop()
 	 * @method Office get($key, $default = null)
@@ -3704,15 +3706,15 @@ namespace LaravelIdea\Helper\App\Domain\Office\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Party\Models {
 
-	use App\Domain\Party\Models\Party;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Party\Models\Party;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Party shift()
 	 * @method Party pop()
 	 * @method Party get($key, $default = null)
@@ -3774,19 +3776,19 @@ namespace LaravelIdea\Helper\App\Domain\Party\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Payment\Models {
 
-	use App\Domain\Payment\Models\BankAccount;
-	use App\Domain\Payment\Models\Payment;
-	use App\Domain\Payment\Models\PaymentMethod;
-	use App\Domain\Payment\Models\PaymentStatus;
-	use App\Domain\Payment\Models\TaxCategory;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Payment\Models\Payment;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use App\Domain\Payment\Models\BankAccount;
+    use App\Domain\Payment\Models\TaxCategory;
+    use Illuminate\Contracts\Support\Arrayable;
+    use App\Domain\Payment\Models\PaymentMethod;
+    use App\Domain\Payment\Models\PaymentStatus;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method BankAccount shift()
 	 * @method BankAccount pop()
 	 * @method BankAccount get($key, $default = null)
@@ -3935,6 +3937,7 @@ namespace LaravelIdea\Helper\App\Domain\Payment\Models {
 	 * @method _PaymentQueryBuilder wherePaymentStatusId($value)
 	 * @method _PaymentQueryBuilder whereFees($value)
 	 * @method _PaymentQueryBuilder whereRemarks($value)
+	 * @method _PaymentQueryBuilder whereUtrNumber($value)
 	 * @method _PaymentQueryBuilder whereRazorpayPayoutId($value)
 	 * @method _PaymentQueryBuilder whereCompanyId($value)
 	 * @method _PaymentQueryBuilder whereCreatedBy($value)
@@ -4087,15 +4090,15 @@ namespace LaravelIdea\Helper\App\Domain\Payment\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Project\Models {
 
-	use App\Domain\Project\Models\Project;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use App\Domain\Project\Models\Project;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Project shift()
 	 * @method Project pop()
 	 * @method Project get($key, $default = null)
@@ -4160,16 +4163,16 @@ namespace LaravelIdea\Helper\App\Domain\Project\Models {
 
 namespace LaravelIdea\Helper\App\Domain\Trip\Models {
 
-	use App\Domain\Trip\Models\Trip;
-	use App\Domain\Trip\Models\TripType;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Domain\Trip\Models\Trip;
+    use App\Domain\Trip\Models\TripType;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Trip shift()
 	 * @method Trip pop()
 	 * @method Trip get($key, $default = null)
@@ -4323,15 +4326,15 @@ namespace LaravelIdea\Helper\App\Domain\Trip\Models {
 
 namespace LaravelIdea\Helper\App\Domain\VehicleRC\Models {
 
-	use App\Domain\VehicleRC\Models\VehicleRC;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use App\Domain\VehicleRC\Models\VehicleRC;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method VehicleRC shift()
 	 * @method VehicleRC pop()
 	 * @method VehicleRC get($key, $default = null)
@@ -4407,19 +4410,19 @@ namespace LaravelIdea\Helper\App\Domain\VehicleRC\Models {
 
 namespace LaravelIdea\Helper\App\Models {
 
-	use App\Models\Membership;
-	use App\Models\Permission;
-	use App\Models\Role;
-	use App\Models\Team;
-	use App\Models\User;
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use App\Models\Role;
+    use App\Models\Team;
+    use App\Models\User;
+    use App\Models\Membership;
+    use App\Models\Permission;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method Membership shift()
 	 * @method Membership pop()
 	 * @method Membership get($key, $default = null)
@@ -4719,15 +4722,15 @@ namespace LaravelIdea\Helper\App\Models {
 
 namespace LaravelIdea\Helper\Database\Factories {
 
-	use App\Domain\Trip\Models\Trip;
-	use App\Models\User;
-	use Database\Factories\TripFactory;
-	use Database\Factories\UserFactory;
-	use Illuminate\Database\Eloquent\Model;
-	use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
-	use LaravelIdea\Helper\App\Models\_UserCollection;
+    use App\Models\User;
+    use App\Domain\Trip\Models\Trip;
+    use Database\Factories\TripFactory;
+    use Database\Factories\UserFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use LaravelIdea\Helper\App\Models\_UserCollection;
+    use LaravelIdea\Helper\App\Domain\Trip\Models\_TripCollection;
 
-	/**
+    /**
 	 * @method Trip createOne(array $attributes = [])
 	 * @method Trip makeOne(array|callable $attributes = [])
 	 * @method _TripCollection|Trip[]|Trip create(array $attributes = [], Model|null $parent = null)
@@ -4748,16 +4751,16 @@ namespace LaravelIdea\Helper\Database\Factories {
 
 namespace LaravelIdea\Helper\Illuminate\Notifications {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Notifications\DatabaseNotification;
-	use Illuminate\Notifications\DatabaseNotificationCollection;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Illuminate\Notifications\DatabaseNotification;
+    use Illuminate\Notifications\DatabaseNotificationCollection;
 
-	/**
+    /**
 	 * @method DatabaseNotification shift()
 	 * @method DatabaseNotification pop()
 	 * @method DatabaseNotification get($key, $default = null)
@@ -4844,17 +4847,17 @@ namespace LaravelIdea\Helper\Illuminate\Notifications {
 
 namespace LaravelIdea\Helper\Laratrust\Models {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use Laratrust\Models\LaratrustPermission;
-	use Laratrust\Models\LaratrustRole;
-	use Laratrust\Models\LaratrustTeam;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Laratrust\Models\LaratrustRole;
+    use Laratrust\Models\LaratrustTeam;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Laratrust\Models\LaratrustPermission;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method LaratrustPermission shift()
 	 * @method LaratrustPermission pop()
 	 * @method LaratrustPermission get($key, $default = null)
@@ -5013,15 +5016,15 @@ namespace LaravelIdea\Helper\Laratrust\Models {
 
 namespace LaravelIdea\Helper\Laravel\Sanctum {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use Laravel\Sanctum\PersonalAccessToken;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Laravel\Sanctum\PersonalAccessToken;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-	/**
+    /**
 	 * @method PersonalAccessToken shift()
 	 * @method PersonalAccessToken pop()
 	 * @method PersonalAccessToken get($key, $default = null)
@@ -5076,15 +5079,15 @@ namespace LaravelIdea\Helper\Laravel\Sanctum {
 
 namespace LaravelIdea\Helper\Spatie\MediaLibraryPro\Models {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
-	use Spatie\MediaLibraryPro\Models\TemporaryUpload;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Spatie\MediaLibraryPro\Models\TemporaryUpload;
 
-	/**
+    /**
 	 * @method TemporaryUpload shift()
 	 * @method TemporaryUpload pop()
 	 * @method TemporaryUpload get($key, $default = null)
@@ -5144,16 +5147,16 @@ namespace LaravelIdea\Helper\Spatie\MediaLibraryPro\Models {
 
 namespace LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models {
 
-	use Illuminate\Contracts\Support\Arrayable;
-	use Illuminate\Database\Query\Expression;
-	use Illuminate\Pagination\LengthAwarePaginator;
-	use Illuminate\Pagination\Paginator;
-	use LaravelIdea\Helper\_BaseBuilder;
-	use LaravelIdea\Helper\_BaseCollection;
-	use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-	use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Illuminate\Pagination\Paginator;
+    use LaravelIdea\Helper\_BaseBuilder;
+    use LaravelIdea\Helper\_BaseCollection;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
-	/**
+    /**
 	 * @method Media shift()
 	 * @method Media pop()
 	 * @method Media get($key, $default = null)
@@ -5260,12 +5263,12 @@ namespace LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models {
 
 namespace Laravel\Sanctum {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use LaravelIdea\Helper\Laravel\Sanctum\_PersonalAccessTokenCollection;
-	use LaravelIdea\Helper\Laravel\Sanctum\_PersonalAccessTokenQueryBuilder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use LaravelIdea\Helper\Laravel\Sanctum\_PersonalAccessTokenCollection;
+    use LaravelIdea\Helper\Laravel\Sanctum\_PersonalAccessTokenQueryBuilder;
 
-	/**
+    /**
 	 * @property Model $tokenable
 	 * @method MorphTo tokenable()
 	 * @method _PersonalAccessTokenQueryBuilder newModelQuery()
@@ -5279,16 +5282,15 @@ namespace Laravel\Sanctum {
 
 namespace Spatie\MediaLibraryPro\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\MorphToMany;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
-	use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadQueryBuilder;
-	use Spatie\MediaLibrary\MediaCollections\Models\Media;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
+    use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadQueryBuilder;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
 
-	/**
+    /**
 	 * @property int                      $id
 	 * @property string                   $session_id
 	 * @property Carbon|null              $created_at
@@ -5307,16 +5309,15 @@ namespace Spatie\MediaLibraryPro\Models {
 
 namespace Spatie\MediaLibrary\MediaCollections\Models {
 
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsTo;
-	use Illuminate\Database\Eloquent\Relations\MorphTo;
-	use Illuminate\Support\Carbon;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
-	use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
-	use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadQueryBuilder;
-	use Spatie\MediaLibraryPro\Models\TemporaryUpload;
+    use Illuminate\Support\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+    use LaravelIdea\Helper\Spatie\MediaLibraryPro\Models\_TemporaryUploadQueryBuilder;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaCollection;
+    use LaravelIdea\Helper\Spatie\MediaLibrary\MediaCollections\Models\_MediaQueryBuilder;
 
-	/**
+    /**
 	 * @property int             $id
 	 * @property int             $model_id
 	 * @property string          $model_type

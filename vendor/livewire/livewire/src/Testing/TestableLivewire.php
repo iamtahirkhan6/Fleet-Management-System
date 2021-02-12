@@ -3,6 +3,7 @@
 namespace Livewire\Testing;
 
 use Mockery;
+use Throwable;
 use Livewire\Livewire;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\View;
@@ -11,6 +12,8 @@ use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Traits\Macroable;
 use Facades\Livewire\GenerateSignedUploadUrl as GenerateSignedUploadUrlFacade;
 use Livewire\Exceptions\PropertyNotFoundException;
+use Livewire\LivewireManager;
+
 use function Livewire\str;
 
 class TestableLivewire
@@ -167,11 +170,15 @@ class TestableLivewire
 
     public function pretendWereSendingAComponentUpdateRequest($message, $payload)
     {
-        return $this->callEndpoint('POST', '/livewire/message/'.$this->componentName, [
+        $result = $this->callEndpoint('POST', '/livewire/message/'.$this->componentName, [
             'fingerprint' => $this->payload['fingerprint'],
             'serverMemo' => $this->payload['serverMemo'],
             'updates' => [['type' => $message, 'payload' => $payload]],
         ]);
+
+        LivewireManager::$isLivewireRequestTestingOverride = true;
+
+        return $result;
     }
 
     public function callEndpoint($method, $url, $payload)
@@ -213,7 +220,7 @@ class TestableLivewire
 
                 try {
                     $value = $this->instance()->{$root};
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     if ($e instanceof PropertyNotFoundException) {
                         $value = null;
                     } else if (str($e->getMessage())->contains('must not be accessed before initialization')) {

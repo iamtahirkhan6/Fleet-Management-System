@@ -4,9 +4,13 @@ namespace App\Domain\Payment\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Domain\Trip\Models\Trip;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Domain\Payment\Models\Payment;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class PaymentsTripController extends Controller
 {
@@ -14,7 +18,7 @@ class PaymentsTripController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Payment $payment)
     {
@@ -22,11 +26,11 @@ class PaymentsTripController extends Controller
     }
 
     /**
-     * Display Pending Payments.
+     * Display Pending Trip Payments.
      *
      * @param  \App\Models\Payment  $payment
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response|void
      */
     public function pending()
     {
@@ -34,11 +38,23 @@ class PaymentsTripController extends Controller
     }
 
     /**
+     * Display Razorpay Pending Payments.
+     *
+     * @param  \App\Models\Payment  $payment
+     *
+     * @return Application|Factory|View|Response|void
+     */
+    public function razorpay_pending()
+    {
+        return (Auth::user()->isAbleTo('razorpay-complete')) ? view('page')->with('livewire', 'models.payments.trips.pending-razorpay')->with('title', 'Razorpay Pending Payments') : abort(403);
+    }
+
+    /**
      * Complete a single Pending Payment.
      *
      * @param  \App\Models\Payment  $payment
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function pending_complete(Trip $trip)
     {
@@ -49,7 +65,7 @@ class PaymentsTripController extends Controller
      * Show the form for creating a new resource.
      *
      * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create(Payment $payment)
     {
@@ -59,9 +75,10 @@ class PaymentsTripController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request              $request
      * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
+     *
+     * @return Response
      */
     public function store(Request $request, Payment $payment)
     {
@@ -73,7 +90,7 @@ class PaymentsTripController extends Controller
      *
      * @param  \App\Models\Payment  $payment
      * @param  \App\Models\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Payment $payment, Trip $trip)
     {
@@ -85,7 +102,7 @@ class PaymentsTripController extends Controller
      *
      * @param  \App\Models\Payment  $payment
      * @param  \App\Models\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Payment $payment, Trip $trip)
     {
@@ -95,10 +112,11 @@ class PaymentsTripController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request              $request
      * @param  \App\Models\Payment  $payment
-     * @param  \App\Models\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Trip     $trip
+     *
+     * @return Response
      */
     public function update(Request $request, Payment $payment, Trip $trip)
     {
@@ -110,7 +128,7 @@ class PaymentsTripController extends Controller
      *
      * @param  \App\Models\Payment  $payment
      * @param  \App\Models\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Payment $payment, Trip $trip)
     {

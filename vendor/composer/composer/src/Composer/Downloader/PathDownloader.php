@@ -12,6 +12,7 @@
 
 namespace Composer\Downloader;
 
+use RuntimeException;
 use Composer\Package\Archiver\ArchivableFilesFinder;
 use Composer\Package\Dumper\ArrayDumper;
 use Composer\Package\PackageInterface;
@@ -44,8 +45,8 @@ class PathDownloader extends FileDownloader implements VcsCapableDownloaderInter
         $url = $package->getDistUrl();
         $realUrl = realpath($url);
         if (false === $realUrl || !file_exists($realUrl) || !is_dir($realUrl)) {
-            throw new \RuntimeException(sprintf(
-                'Source path "%s" is not found for package %s',
+            throw new RuntimeException(sprintf(
+                'LoadingPoints path "%s" is not found for package %s',
                 $url,
                 $package->getName()
             ));
@@ -60,7 +61,7 @@ class PathDownloader extends FileDownloader implements VcsCapableDownloaderInter
             //
             // Please see https://github.com/composer/composer/pull/5974 and https://github.com/composer/composer/pull/6174
             // for previous attempts that were shut down because they did not work well enough or introduced too many risks.
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Package %s cannot install to "%s" inside its source at "%s"',
                 $package->getName(),
                 realpath($path),
@@ -80,9 +81,9 @@ class PathDownloader extends FileDownloader implements VcsCapableDownloaderInter
 
         if (realpath($path) === $realUrl) {
             if ($output) {
-                $this->io->writeError("  - " . InstallOperation::format($package).': Source already present');
+                $this->io->writeError("  - " . InstallOperation::format($package).': LoadingPoints already present');
             } else {
-                $this->io->writeError('Source already present', false);
+                $this->io->writeError('LoadingPoints already present', false);
             }
 
             return;
@@ -149,7 +150,7 @@ class PathDownloader extends FileDownloader implements VcsCapableDownloaderInter
                     $currentStrategy = self::STRATEGY_MIRROR;
                     $isFallback = true;
                 } else {
-                    throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $realUrl, $path));
+                    throw new RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $realUrl, $path));
                 }
             }
         }
@@ -189,7 +190,7 @@ class PathDownloader extends FileDownloader implements VcsCapableDownloaderInter
             }
             if (!$this->filesystem->removeJunction($path)) {
                 $this->io->writeError("    <warning>Could not remove junction at " . $path . " - is another process locking it?</warning>");
-                throw new \RuntimeException('Could not reliably remove junction for package ' . $package->getName());
+                throw new RuntimeException('Could not reliably remove junction for package ' . $package->getName());
             }
         } elseif (realpath($path) === realpath($package->getDistUrl())) {
             if ($output) {

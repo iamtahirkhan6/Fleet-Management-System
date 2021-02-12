@@ -25,9 +25,9 @@
 
         <x-slot name="rows">
             @forelse ($trips as $trip)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $trip->date->format('d-M-Y') }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->market_vehicle_number ?? $trip->fleetVehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->tp_number }}/{{ $trip->tp_serial }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->net_weight }}</x-tables.basic.row>
@@ -41,7 +41,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

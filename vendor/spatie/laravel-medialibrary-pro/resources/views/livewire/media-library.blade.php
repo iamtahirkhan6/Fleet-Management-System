@@ -9,6 +9,7 @@
 
     <div class="{{ !$this->allowsUploads() ? 'media-library-hidden' : 'media-library-uploader' }}">
         <livewire:media-library-uploader
+            :key="'' . \Illuminate\Support\Str::uuid()"
             :rules="$rules"
             :multiple="$multiple"
             :add="true"

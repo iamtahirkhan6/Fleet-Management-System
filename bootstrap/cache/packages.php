@@ -78,6 +78,17 @@
       'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
     ),
   ),
+  'kbs1/laravel-abbreviations' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Kbs1\\Abbreviations\\AbbreviationsServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Abbreviation' => 'Kbs1\\Abbreviations\\Abbreviation',
+    ),
+  ),
   'laravel/fortify' => 
   array (
     'providers' => 
@@ -147,6 +158,13 @@
     'providers' => 
     array (
       0 => 'OwenVoke\\BladeFontAwesome\\BladeFontAwesomeServiceProvider',
+    ),
+  ),
+  'ryangjchandler/blade-tabler-icons' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'RyanChandler\\TablerIcons\\BladeTablerIconsServiceProvider',
     ),
   ),
   'santigarcor/laratrust' => 

@@ -2,6 +2,8 @@
 
 namespace GuzzleHttp\Psr7;
 
+use Exception;
+use RuntimeException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -32,7 +34,7 @@ class PumpStream implements StreamInterface
     private $buffer;
 
     /**
-     * @param callable $source Source of the stream data. The callable MAY
+     * @param callable $source LoadingPoints of the stream data. The callable MAY
      *                         accept an integer argument used to control the
      *                         amount of data to return. The callable MUST
      *                         return a string when called, or false on error
@@ -53,7 +55,7 @@ class PumpStream implements StreamInterface
     {
         try {
             return Utils::copyToString($this);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return '';
         }
     }
@@ -98,7 +100,7 @@ class PumpStream implements StreamInterface
 
     public function seek($offset, $whence = SEEK_SET)
     {
-        throw new \RuntimeException('Cannot seek a PumpStream');
+        throw new RuntimeException('Cannot seek a PumpStream');
     }
 
     public function isWritable()
@@ -108,7 +110,7 @@ class PumpStream implements StreamInterface
 
     public function write($string)
     {
-        throw new \RuntimeException('Cannot write to a PumpStream');
+        throw new RuntimeException('Cannot write to a PumpStream');
     }
 
     public function isReadable()

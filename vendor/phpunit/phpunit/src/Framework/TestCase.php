@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
+use Prophecy\Exception\Doubler\DoubleException;
+use Prophecy\Exception\Doubler\ClassNotFoundException;
+use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use const LC_ALL;
 use const LC_COLLATE;
 use const LC_CTYPE;
@@ -310,7 +314,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $snapshot;
 
     /**
-     * @var \Prophecy\Prophet
+     * @var Prophet
      */
     private $prophet;
 
@@ -572,7 +576,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @psalm-param class-string<\Throwable> $exception
+     * @psalm-param class-string<Throwable> $exception
      */
     public function expectException(string $exception): void
     {
@@ -725,7 +729,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * If no TestResult object is passed a new one will be created.
      *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CodeCoverageException
      * @throws UtilException
@@ -1434,9 +1438,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
             }
 
-            $exporter = new Exporter;
-
             if ($includeData) {
+                $exporter = new Exporter;
+
                 $buffer .= sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
             }
         }
@@ -1916,9 +1920,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
-     * @throws \Prophecy\Exception\Doubler\DoubleException
-     * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
+     * @throws ClassNotFoundException
+     * @throws DoubleException
+     * @throws InterfaceNotFoundException
      *
      * @psalm-param class-string|null $classOrInterface
      */
@@ -2080,8 +2084,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if (isset($passed[$dependencyTarget])) {
-                if ($passed[$dependencyTarget]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
-                    $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
+                if ($passed[$dependencyTarget]['size'] != TestUtil::UNKNOWN &&
+                    $this->getSize() != TestUtil::UNKNOWN &&
                     $passed[$dependencyTarget]['size'] > $this->getSize()) {
                     $this->result->addError(
                         $this,

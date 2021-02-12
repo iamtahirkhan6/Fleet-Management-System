@@ -44,21 +44,21 @@ abstract class Component
     /**
      * The component attributes.
      *
-     * @var \Illuminate\View\ComponentAttributeBag
+     * @var ComponentAttributeBag
      */
     public $attributes;
 
     /**
      * Get the view / view contents that represent the component.
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
+     * @return ViewContract|Htmlable|Closure|string
      */
     abstract public function render();
 
     /**
      * Resolve the Blade view or view file that should be used when rendering the component.
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
+     * @return ViewContract|Htmlable|Closure|string
      */
     public function resolveView()
     {
@@ -121,7 +121,7 @@ abstract class Component
      */
     public function data()
     {
-        $this->attributes = $this->attributes ?: new ComponentAttributeBag;
+        $this->attributes = $this->attributes ?: $this->newAttributeBag();
 
         return array_merge($this->extractPublicProperties(), $this->extractPublicMethods());
     }
@@ -192,7 +192,7 @@ abstract class Component
     /**
      * Create a callable variable from the given method.
      *
-     * @param  \ReflectionMethod  $method
+     * @param  ReflectionMethod  $method
      * @return mixed
      */
     protected function createVariableFromMethod(ReflectionMethod $method)
@@ -206,7 +206,7 @@ abstract class Component
      * Create an invokable, toStringable variable for the given component method.
      *
      * @param  string  $method
-     * @return \Illuminate\View\InvokableComponentVariable
+     * @return InvokableComponentVariable
      */
     protected function createInvokableVariable(string $method)
     {
@@ -266,11 +266,23 @@ abstract class Component
      */
     public function withAttributes(array $attributes)
     {
-        $this->attributes = $this->attributes ?: new ComponentAttributeBag;
+        $this->attributes = $this->attributes ?: $this->newAttributeBag();
 
         $this->attributes->setAttributes($attributes);
 
         return $this;
+    }
+
+    /**
+     * Get a new attribute bag instance.
+     *
+     * @param  array  $attributes
+     *
+     * @return ComponentAttributeBag
+     */
+    protected function newAttributeBag(array $attributes = [])
+    {
+        return new ComponentAttributeBag($attributes);
     }
 
     /**

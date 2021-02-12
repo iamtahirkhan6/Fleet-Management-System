@@ -1,16 +1,16 @@
 <?php
 
-namespace app\Domain\Payment\Actions\Trip;
+namespace App\Domain\Payment\Actions\Trip;
 
-use Auth;
-use App\Domain\Trip\Models\Trip;
-use App\Domain\Party\Models\Party;
-use App\Domain\Payment\Models\Payment;
-use Lorisleiva\Actions\Concerns\AsAction;
-use App\Domain\Payment\Models\PaymentMethod;
 use App\Domain\MarketVehicle\Models\MarketVehicle;
+use App\Domain\Party\Models\Party;
 use App\Domain\Payment\Actions\Razorpay\CreateContact;
 use App\Domain\Payment\Actions\Razorpay\CreateFundAccount;
+use App\Domain\Payment\Models\Payment;
+use App\Domain\Payment\Models\PaymentMethod;
+use App\Domain\Trip\Models\Trip;
+use Auth;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CompleteTripPayment
 {
@@ -21,24 +21,32 @@ class CompleteTripPayment
         try {
             // Check if Party Exists or Create One
             $party = isset($input['party_id']) ? Party::find($input['party_id']) : Party::updateOrCreate([
-                'pan'        => $input['pan'],
-                'company_id' => $company_id,
-            ], [ 'name' => $input['name'] ]);
+                                                                                                             'pan'        => $input['pan'],
+                                                                                                             'company_id' => $company_id,
+                                                                                                         ],
+                                                                                                         ['name' => $input['name']]);
 
-            $is_razorpay_bool = ($input['payment_method_id'] == PaymentMethod::whereName('Razorpay')->first()->id);
-            if ($is_razorpay_bool) {
-                $party->razorpay_contact_id = CreateContact::run($party->id, $party, false);
-                $party->save();
+            $is_razorpay_bool = ($input['payment_method_id'] == PaymentMethod::whereName('Razorpay')
+                    ->first()->id);
+            if ($is_razorpay_bool && is_null($party->razorpay_contact_id)) {
+                $party->razorpay_contact_id = CreateContact::run($party->id, true);
+                $party->refresh();
             }
 
             // If Bank Selected
-            $bank_account_id = (isset($input['bank_account_id'])) ? $input['bank_account_id'] : $party->bankAccounts()->create([
-                'account_name'    => $input['account_name'],
-                'account_number'  => $input['account_number'],
-                'ifsc_code'       => $input['ifsc_code'],
-                'company_id'      => $company_id,
-                'fund_account_id' => (($is_razorpay_bool == true) ? CreateFundAccount::run($input['account_name'], $input['account_number'], $input['ifsc_code'], $party->id, $party->razorpay_contact_id) : null),
-            ])->id;
+            $bank_account_id = (isset($input['bank_account_id'])) ? $input['bank_account_id'] : $party->bankAccounts()
+                ->create([
+                             'account_name'    => $input['account_name'],
+                             'account_number'  => $input['account_number'],
+                             'ifsc_code'       => $input['ifsc_code'],
+                             'company_id'      => $company_id,
+                             'fund_account_id' => (($is_razorpay_bool == true) ? CreateFundAccount::run($input['account_name'],
+                                                                                                        $input['account_number'],
+                                                                                                        $input['ifsc_code'],
+                                                                                                        $party->id,
+                                                                                                        $party->razorpay_contact_id,
+                                                                                                        false) : null),
+                         ])->id;
 
             // Form Party if not exists
             $trip->cash_adv_pct    = (isset($input['cash_adv_pct'])) ? $input['cash_adv_pct'] : null;
@@ -52,7 +60,7 @@ class CompleteTripPayment
 
             // Make a Payment
             $payment                    = new Payment();
-            $payment->amount            = (isset($input['final_payable'])) ? $input['final_payable'] : 0;
+            $payment->amount            = (isset($input['final_payable'])) ? (float)round($input['final_payable'],2) : 0;
             $payment->bank_account_id   = $bank_account_id;
             $payment->payment_method_id = (isset($input['payment_method_id'])) ? $input['payment_method_id'] : null;
             $payment->payment_status_id = (isset($input['payment_status_id'])) ? $input['payment_status_id'] : null;
@@ -60,12 +68,13 @@ class CompleteTripPayment
             $payment->trip_id           = $trip->id;
             $payment->created_by        = Auth::id();
             $payment->save();
+            $payment->refresh();
 
             $market_vehicle = MarketVehicle::create([
-                'number'     => $trip->market_vehicle_number,
-                'party_id'   => $party->id,
-                'company_id' => $company_id,
-            ]);
+                                                        'number'     => $trip->market_vehicle_number,
+                                                        'party_id'   => $party->id,
+                                                        'company_id' => $company_id,
+                                                    ]);
 
             $trip->market_vehicle_id = $market_vehicle->id;
             $trip->payment_id        = $payment->id;
@@ -76,16 +85,11 @@ class CompleteTripPayment
                 $party,
                 $trip,
                 $payment,
+                $market_vehicle
             ];
         } catch (exception $e) {
             return false;
         }
-    }
-
-    public static function input(array $array) : array
-    {
-        foreach ($array as $key => $value) $array[$key] = null;
-        return $array;
     }
 
     public static function rules($prefix = null) : array
@@ -96,7 +100,7 @@ class CompleteTripPayment
             $prefix . 'name'              => 'required_if:' . $prefix . 'party_id,',
             $prefix . 'pan'               => 'required_if:' . $prefix . 'party_id,',
             $prefix . 'account_name'      => 'required_if:' . $prefix . 'bank_account_id,',
-            $prefix . 'account_number'    => 'required_if:' . $prefix . 'bank_account_id,|numeric',
+            $prefix . 'account_number'    => 'required_if:' . $prefix . 'bank_account_id,',
             $prefix . 'ifsc_code'         => 'required_if:' . $prefix . 'bank_account_id,',
             $prefix . 'cash_adv_pct'      => 'exclude_if:' . $prefix . 'cash,',
             $prefix . 'cash_adv_fees'     => 'exclude_if:' . $prefix . 'cash,',
@@ -108,31 +112,24 @@ class CompleteTripPayment
             $prefix . 'payment_method_id' => 'required|exists:payment_methods,id',
             $prefix . 'payment_status_id' => 'required|exists:payment_statuses,id',
             $prefix . 'premium_rate'      => 'nullable|numeric',
-            $prefix . 'phone_number'      => 'required|numeric|digits:10',
+            $prefix . 'phone_number'      => 'required_if:' . $prefix . 'bank_account_id,',
         ];
     }
 
-    public static function messages($prefix = null) : array
+    public static function validationAttributes($prefix = null) : array
     {
         return [
-            $prefix . 'account_name.required_if'    => 'Name on passbook is required',
-            $prefix . 'account_number.required_if'  => 'Account number cannot be empty',
-            $prefix . 'account_number.numeric'      => 'Account number should only have numbers',
-            $prefix . 'ifsc_code.required_if'       => 'IFSC code cannot be empty',
-            $prefix . 'tax_category_id.required_if' => 'Please select a TDS Category',
-            $prefix . 'bank_account_id.required_if' => 'Select one of the Bank Accounts',
-            $prefix . 'name.required_if'            => 'Party name cannot be empty',
-            $prefix . 'pan.required_if'             => 'Pan card cannot be empty',
-            $prefix . 'pan.required'                => 'Pan card cannot be empty',
-            $prefix . 'pan.size'                    => 'Pan card should be 10 characters long',
-            $prefix . 'pan.alpha_num'               => 'Pan card can only be Alpha Numeric',
-            $prefix . 'payment_method_id.required'  => 'Payment method Cannot be empty',
-            $prefix . 'payment_method_id.exists'    => 'Payment method is not valid',
-            $prefix . 'payment_status_id.required'  => 'Payment status Cannot be empty',
-            $prefix . 'payment_status_id.exists'    => 'Payment status is not valid',
-            $prefix . 'premium_rate.numeric'        => 'Rate must be an integer',
-            $prefix . 'phone_number.required'       => 'Phone number of the party cannot be empty',
-            $prefix . 'phone_number.digits'         => 'Phone number can be 10 digits only',
+            $prefix . 'account_name'               => 'account name',
+            $prefix . 'account_number'             => 'account number',
+            $prefix . 'ifsc_code'                  => 'IFSC code',
+            $prefix . 'tax_category_id'            => 'TDS Category',
+            $prefix . 'bank_account_id'            => 'bank accounts',
+            $prefix . 'name'                       => 'party name',
+            $prefix . 'pan.required_if'            => 'pan number',
+            $prefix . 'payment_method_id.required' => 'payment method',
+            $prefix . 'payment_status_id.required' => 'payment status',
+            $prefix . 'premium_rate.numeric'       => 'rate',
+            $prefix . 'phone_number.required'      => 'phone number',
         ];
     }
 }

@@ -2,39 +2,41 @@
 
 namespace App\Domain\Payment\Actions\Razorpay;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Lorisleiva\Actions\Concerns\AsAction;
 use App\Domain\Party\Models\Party;
-use App\Domain\Company\Models\Company;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateContact
 {
     use AsAction;
 
-    public function handle($party_id, $party = null, $update_model = null) : int|bool
+    public function handle($party_id, $update_model = null)
     {
-        if(!$party) $party   = Party::find($party_id);
+        if (!isset($party)) $party = Party::find($party_id);
         $company = Auth::user()->company;
 
-        if (isset($company->razorpay_key_id) && isset($company->razorpay_key_secret)) {
+        if (is_null($party->razorpay_contact_id)) {
+            if (isset($company->razorpay_key_id) && isset($company->razorpay_key_secret)) {
+                $response = Http::withBasicAuth($company->razorpay_key_id, $company->razorpay_key_secret)->post('https://api.razorpay.com/v1/contacts', [
+                    'name'         => $party->name,
+                    'contact'      => (isset($party->phoneNumber)) ? $party->phoneNumber : null,
+                    'type'         => 'customer',
+                    'reference_id' => 'Party ' . $party->id,
+                ]);
 
-            $response = Http::withBasicAuth($company->razorpay_key_id, $company->razorpay_key_secret)->post('https://api.razorpay.com/v1/contacts', [
-                'name'         => $party->name,
-                'contact'      => (isset($party->phoneNumber)) ? $party->phoneNumber : '',
-                'type'         => 'customer',
-                'reference_id' => $party->id,
-            ]);
+                $response = $response->json();
 
-            if ($update_model) {
-                $party->razorpay_contact_id = (isset($response->id)) ? $response->id : null;
-                $party->save();
+                if ($update_model) {
+                    $party = Party::updateOrCreate([ 'id' => $party_id ], [ 'razorpay_contact_id' => (string) $response['id'] ]);
+                }
+
+                return (str_contains($response['id'], 'cont_')) ? $response['id'] : false;
+            } else {
+                return false;
             }
-
-            return $response->id;
         } else {
-            return false;
+            return $party->razorpay_contact_id;
         }
 
     }

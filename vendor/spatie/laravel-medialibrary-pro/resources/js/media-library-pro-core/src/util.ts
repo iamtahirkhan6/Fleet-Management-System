@@ -58,7 +58,7 @@ export function isObject(item: any) {
 /**
  * Deep merge two objects.
  * @param target
- * @param ...sources
+ * @param ...loading-points
  */
 export function mergeDeep<TObject extends { [key: string]: any }, TSource extends { [key: string]: any }>(
     target: TObject,

@@ -30,7 +30,7 @@ abstract class BaseExcludeFilter
     protected $excludePatterns;
 
     /**
-     * @param string $sourcePath Directory containing sources to be filtered
+     * @param string $sourcePath Directory containing loading-points to be filtered
      */
     public function __construct($sourcePath)
     {

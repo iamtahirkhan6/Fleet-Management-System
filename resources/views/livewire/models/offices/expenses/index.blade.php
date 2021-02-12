@@ -16,7 +16,7 @@
 
         <x-slot name="rows">
             @foreach ($expenses as $expense)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $expense->id }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $expense->date }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $expense->category->name }}</x-tables.basic.row>

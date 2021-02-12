@@ -2,6 +2,7 @@
 
 namespace Illuminate\Notifications;
 
+use Throwable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,14 +19,14 @@ class SendQueuedNotifications implements ShouldQueue
     /**
      * The notifiable entities that should receive the notification.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     public $notifiables;
 
     /**
      * The notification to be sent.
      *
-     * @var \Illuminate\Notifications\Notification
+     * @var Notification
      */
     public $notification;
 
@@ -60,9 +61,10 @@ class SendQueuedNotifications implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \Illuminate\Notifications\Notifiable|\Illuminate\Support\Collection  $notifiables
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @param  array|null  $channels
+     * @param  Notifiable|Collection  $notifiables
+     * @param  Notification           $notification
+     * @param  array|null             $channels
+     *
      * @return void
      */
     public function __construct($notifiables, $notification, array $channels = null)
@@ -79,8 +81,9 @@ class SendQueuedNotifications implements ShouldQueue
     /**
      * Wrap the notifiable(s) in a collection.
      *
-     * @param  \Illuminate\Notifications\Notifiable|\Illuminate\Support\Collection  $notifiables
-     * @return \Illuminate\Support\Collection
+     * @param  Notifiable|Collection  $notifiables
+     *
+     * @return Collection
      */
     protected function wrapNotifiables($notifiables)
     {
@@ -96,7 +99,7 @@ class SendQueuedNotifications implements ShouldQueue
     /**
      * Send the notifications.
      *
-     * @param  \Illuminate\Notifications\ChannelManager  $manager
+     * @param  ChannelManager  $manager
      * @return void
      */
     public function handle(ChannelManager $manager)
@@ -117,7 +120,7 @@ class SendQueuedNotifications implements ShouldQueue
     /**
      * Call the failed method on the notification instance.
      *
-     * @param  \Throwable  $e
+     * @param  Throwable  $e
      * @return void
      */
     public function failed($e)
@@ -128,7 +131,7 @@ class SendQueuedNotifications implements ShouldQueue
     }
 
     /**
-     * Get number of seconds before a released notification will be available.
+     * Get the number of seconds before a released notification will be available.
      *
      * @return mixed
      */

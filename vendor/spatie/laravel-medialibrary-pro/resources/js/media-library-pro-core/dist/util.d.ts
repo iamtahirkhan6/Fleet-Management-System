@@ -11,7 +11,7 @@ export declare function isObject(item: any): boolean;
 /**
  * Deep merge two objects.
  * @param target
- * @param ...sources
+ * @param ...loading-points
  */
 export declare function mergeDeep<TObject extends {
     [key: string]: any;

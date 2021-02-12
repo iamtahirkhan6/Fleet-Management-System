@@ -11,6 +11,8 @@
 
 namespace Monolog\Handler;
 
+use Throwable;
+use RuntimeException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Logger;
@@ -46,7 +48,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
         'debugTagsKeysInContext' => [0, 'tag'], // bool Is PHP Console server enabled
         'useOwnErrorsHandler' => false, // bool Enable errors handling
         'useOwnExceptionsHandler' => false, // bool Enable exceptions handling
-        'sourcesBasePath' => null, // string Base path of all project sources to strip in errors source paths
+        'sourcesBasePath' => null, // string Base path of all project loading-points to strip in errors source paths
         'registerHelper' => true, // bool Register PhpConsole\Helper that allows short debug calls like PC::debug($var, 'ta.g.s')
         'serverEncoding' => null, // string|null Server internal encoding
         'headersLimit' => null, // int|null Set headers size limit for your web-server
@@ -71,12 +73,12 @@ class PHPConsoleHandler extends AbstractProcessingHandler
      * @param  Connector|null    $connector Instance of \PhpConsole\Connector class (optional)
      * @param  string|int        $level     The minimum logging level at which this handler will be triggered.
      * @param  bool              $bubble    Whether the messages that are handled can bubble up the stack or not.
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function __construct(array $options = [], ?Connector $connector = null, $level = Logger::DEBUG, bool $bubble = true)
     {
         if (!class_exists('PhpConsole\Connector')) {
-            throw new \RuntimeException('PHP Console library not found. See https://github.com/barbushin/php-console#installation');
+            throw new RuntimeException('PHP Console library not found. See https://github.com/barbushin/php-console#installation');
         }
         parent::__construct($level, $bubble);
         $this->options = $this->initOptions($options);
@@ -87,7 +89,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
     {
         $wrongOptions = array_diff(array_keys($options), array_keys($this->options));
         if ($wrongOptions) {
-            throw new \RuntimeException('Unknown options: ' . implode(', ', $wrongOptions));
+            throw new RuntimeException('Unknown options: ' . implode(', ', $wrongOptions));
         }
 
         return array_replace($this->options, $options);
@@ -174,7 +176,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
     {
         if ($record['level'] < Logger::NOTICE) {
             $this->handleDebugRecord($record);
-        } elseif (isset($record['context']['exception']) && $record['context']['exception'] instanceof \Throwable) {
+        } elseif (isset($record['context']['exception']) && $record['context']['exception'] instanceof Throwable) {
             $this->handleExceptionRecord($record);
         } else {
             $this->handleErrorRecord($record);

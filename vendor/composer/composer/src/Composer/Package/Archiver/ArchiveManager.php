@@ -12,6 +12,9 @@
 
 namespace Composer\Package\Archiver;
 
+use Exception;
+use RuntimeException;
+use InvalidArgumentException;
 use Composer\Downloader\DownloadManager;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
@@ -41,7 +44,7 @@ class ArchiveManager
     protected $overwriteFiles = true;
 
     /**
-     * @param DownloadManager $downloadManager A manager used to download package sources
+     * @param DownloadManager $downloadManager A manager used to download package loading-points
      */
     public function __construct(DownloadManager $downloadManager, Loop $loop)
     {
@@ -113,14 +116,14 @@ class ArchiveManager
      * @param  string|null               $fileName      The relative file name to use for the archive, or null to generate
      *                                                  the package name. Note that the format will be appended to this name
      * @param  bool                      $ignoreFilters Ignore filters when looking for files in the package
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      * @return string                    The path of the created archive
      */
     public function archive(PackageInterface $package, $format, $targetDir, $fileName = null, $ignoreFilters = false)
     {
         if (empty($format)) {
-            throw new \InvalidArgumentException('Format must be specified');
+            throw new InvalidArgumentException('Format must be specified');
         }
 
         // Search for the most appropriate archiver
@@ -134,7 +137,7 @@ class ArchiveManager
 
         // Checks the format/source type are supported before downloading the package
         if (null === $usableArchiver) {
-            throw new \RuntimeException(sprintf('No archiver found to support %s format', $format));
+            throw new RuntimeException(sprintf('No archiver found to support %s format', $format));
         }
 
         $filesystem = new Filesystem();
@@ -142,16 +145,16 @@ class ArchiveManager
         if ($package instanceof RootPackageInterface) {
             $sourcePath = realpath('.');
         } else {
-            // Directory used to download the sources
+            // Directory used to download the loading-points
             $sourcePath = sys_get_temp_dir().'/composer_archive'.uniqid();
             $filesystem->ensureDirectoryExists($sourcePath);
 
             try {
-                // Download sources
+                // Download loading-points
                 $promise = $this->downloadManager->download($package, $sourcePath);
                 $this->loop->wait(array($promise));
                 $this->downloadManager->install($package, $sourcePath);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $filesystem->removeDirectory($sourcePath);
                 throw  $e;
             }

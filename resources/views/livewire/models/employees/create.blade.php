@@ -5,18 +5,18 @@
         backLinkTitle="Go Back">
 
         <!-- Name -->
-        <x-forms.basic-stacked.column title="Employee Name" error="input.name">
+        <x-forms.basic-stacked.column title="Employee Name" error="input.name" required="true">
             <x-forms.basic-stacked.input-basic wire:model.lazy="input.name" type="text" placeholder="Enter the employee name"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Salary -->
-        <x-forms.basic-stacked.column title="Salary" error="input.salary">
+        <x-forms.basic-stacked.column title="Salary" error="input.salary" required="true">
             <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="input.salary" placeholder="Enter the salary"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Phone Number -->
-        <x-forms.basic-stacked.column title="Phone Number" error="input.phone_number">
-            <x-forms.basic-stacked.input-basic type="number" wire:model.lazy="input.phone_number" placeholder="Enter the phone number"></x-forms.basic-stacked.input-basic>
+        <x-forms.basic-stacked.column title="Phone Number" error="input.phone_number" required="true">
+            <x-forms.basic-stacked.input-basic type="tel" maxlength="10" wire:model.lazy="input.phone_number" placeholder="Enter the phone number"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Phone Number -->
@@ -25,7 +25,7 @@
         </x-forms.basic-stacked.column>
 
         <!-- Office -->
-        <x-forms.basic-stacked.column title="Office" error="input.office_id">
+        <x-forms.basic-stacked.column title="Office" error="input.office_id" required="true">
             <x-forms.basic-stacked.dropdown
                 wire:model="input.office_id"
                 :array="$offices"
@@ -39,7 +39,7 @@
         <input type="hidden" wire:model="input.company_id">
 
         <!-- Designation -->
-        <x-forms.basic-stacked.column title="Designation" error="input.employee_designation_id">
+        <x-forms.basic-stacked.column title="Designation" error="input.employee_designation_id" required="true">
             <x-forms.basic-stacked.dropdown
                 wire:model="input.employee_designation_id"
                 :array="$designations"
@@ -55,21 +55,20 @@
 
         <div x-show="bankBool" x-cloak>
             <!-- Bank Account Name -->
-            <x-forms.basic-stacked.column title="Bank Account Name" error="input.account_name">
-                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_name" type="text" placeholder="Enter the name on bank account"></x-forms.basic-stacked.input-basic>
+            <x-forms.basic-stacked.column title="Bank Account Name" error="input.account_name" required="true">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.account_name" type="text" placeholder="Enter the name on bank account"></x-forms.basic-stacked.input-basic>
             </x-forms.basic-stacked.column>
 
             <!-- Bank Account Number -->
-            <x-forms.basic-stacked.column title="Bank Account Number" error="input.account_number">
-                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_number" type="number" placeholder="Enter the bank account number"></x-forms.basic-stacked.input-basic>
+            <x-forms.basic-stacked.column title="Bank Account Number" error="input.account_number" required="true">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.account_number" type="number" placeholder="Enter the bank account number"></x-forms.basic-stacked.input-basic>
             </x-forms.basic-stacked.column>
 
             <!-- Bank IFSC Code -->
-            <x-forms.basic-stacked.column title="Bank IFSC Code" error="input.ifsc_code">
-                <x-forms.basic-stacked.input-basic wire:model.lazy="input.bank_account_number" type="text" placeholder="Enter the IFSC Code"></x-forms.basic-stacked.input-basic>
+            <x-forms.basic-stacked.column title="Bank IFSC Code" error="input.ifsc_code" required="true">
+                <x-forms.basic-stacked.input-basic wire:model.lazy="input.ifsc_code" type="text" placeholder="Enter the IFSC Code"></x-forms.basic-stacked.input-basic>
             </x-forms.basic-stacked.column>
         </div>
-        {{ $bankBool }}
     </x-forms.basic-stacked.form>
 
     <!-- Success Modal -->

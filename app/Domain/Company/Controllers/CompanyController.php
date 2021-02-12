@@ -19,7 +19,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('page')->with('livewire', 'models.company.index')->with('title', 'Your Company');
+        return view('page')
+            ->with('livewire', 'models.company.index')
+            ->with('title', 'Your Company');
     }
 
     /**
@@ -53,7 +55,11 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         if (Auth::user()->company_id == $company->id) {
-            return view('page')->with('livewire', 'models.company.show')->with('title', $company->name)->with('key', 'company')->with('val', $company);
+            return view('page')
+                ->with('livewire', 'models.company.show')
+                ->with('title', $company->name)
+                ->with('key', 'company')
+                ->with('val', $company);
         } else {
             abort(403);
         }

@@ -13,13 +13,13 @@ use League\Glide\Responses\ResponseFactoryInterface;
 class Server
 {
     /**
-     * Source file system.
+     * LoadingPoints file system.
      * @var FilesystemInterface
      */
     protected $source;
 
     /**
-     * Source path prefix.
+     * LoadingPoints path prefix.
      * @var string
      */
     protected $sourcePathPrefix;
@@ -80,7 +80,7 @@ class Server
 
     /**
      * Create Server instance.
-     * @param FilesystemInterface $source Source file system.
+     * @param FilesystemInterface $source LoadingPoints file system.
      * @param FilesystemInterface $cache  Cache file system.
      * @param ApiInterface        $api    Image manipulation API.
      */
@@ -93,7 +93,7 @@ class Server
 
     /**
      * Set source file system.
-     * @param FilesystemInterface $source Source file system.
+     * @param FilesystemInterface $source LoadingPoints file system.
      */
     public function setSource(FilesystemInterface $source)
     {
@@ -102,7 +102,7 @@ class Server
 
     /**
      * Get source file system.
-     * @return FilesystemInterface Source file system.
+     * @return FilesystemInterface LoadingPoints file system.
      */
     public function getSource()
     {
@@ -111,7 +111,7 @@ class Server
 
     /**
      * Set source path prefix.
-     * @param string $sourcePathPrefix Source path prefix.
+     * @param string $sourcePathPrefix LoadingPoints path prefix.
      */
     public function setSourcePathPrefix($sourcePathPrefix)
     {
@@ -120,7 +120,7 @@ class Server
 
     /**
      * Get source path prefix.
-     * @return string Source path prefix.
+     * @return string LoadingPoints path prefix.
      */
     public function getSourcePathPrefix()
     {
@@ -136,7 +136,7 @@ class Server
     public function getSourcePath($path)
     {
         $path = trim($path, '/');
-        
+
         $baseUrl = $this->baseUrl.'/';
 
         if (substr($path, 0, strlen($baseUrl)) === $baseUrl) {
@@ -279,7 +279,7 @@ class Server
         if ($this->cachePathPrefix) {
             $cachedPath = $this->cachePathPrefix.'/'.$cachedPath;
         }
-        
+
         if ($this->cacheWithFileExtensions) {
             $ext = (isset($params['fm']) ? $params['fm'] : pathinfo($path)['extension']);
             $ext = ($ext === 'pjpg') ? 'jpg' : $ext;

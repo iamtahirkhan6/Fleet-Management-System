@@ -3,9 +3,9 @@
 namespace Illuminate\Support\Facades;
 
 use Closure;
-use RuntimeException;
 use Illuminate\Auth\AuthManager;
 use Laravel\Ui\UiServiceProvider;
+use RuntimeException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -33,6 +33,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @method static void logoutCurrentDevice()
  * @method static void setUser(Authenticatable $user)
  * @method static void shouldUse(string $name);
+ *
  * @see \Illuminate\Auth\AuthManager
  * @see \Illuminate\Contracts\Auth\Factory
  * @see \Illuminate\Contracts\Auth\Guard

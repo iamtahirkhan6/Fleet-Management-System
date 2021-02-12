@@ -15,7 +15,7 @@ class Index extends Component
     {
         return view('livewire.models.projects.index',[
                 'projects' => Project::orderByDesc('id')
-                    ->with(['Source', 'Destination', 'Consignee', 'Material', 'Company']
+                    ->with(['LoadingPoints', 'UnloadingPoint', 'Consignee', 'Material', 'Company']
                     )->paginate(15)
                 ]);
     }

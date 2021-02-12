@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Domain\Expense\Models\Expense;
-use app\Domain\Payment\Models\PaymentMethod;
+use App\Domain\Payment\Models\PaymentMethod;
 use App\Domain\Expense\Models\ExpenseCategory;
 use App\Domain\Expense\Models\ExpenseIndividual;
 

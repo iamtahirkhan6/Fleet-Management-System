@@ -2,35 +2,40 @@
 
 namespace App\Domain\Project\Controllers;
 
+use App\Domain\Project\Models\Project;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Contracts\View\View;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Domain\Project\Models\Project;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\Foundation\Application;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return void
+     * @return Application|Factory|View|void
      */
-    public function index()
+    public function index(): Factory|View|Application
     {
-       if (!Auth::user()->isAbleTo("projects-read")) return abort(403);
-        return view('page')->with('livewire', 'models.projects.index')->with('title', 'Projects')->with('description', 'View all the projects of your company');
+        if (!Auth::user()->isAbleTo("projects-read")) return abort(403);
+        return view('page')
+            ->with('livewire', 'models.projects.index')
+            ->with('title', 'Projects')
+            ->with('description', 'View all the projects of your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Application|Factory|View
+     * @return Application|Factory|View|void
      */
-    public function create()
+    public function create(): Factory|View|Application
     {
         if (!Auth::user()->isAbleTo("projects-create")) return abort(403);
-        return view('page')->with('livewire', 'models.projects.create')->with('title', 'Create Project')->with('description', 'Create a new project for your company');
+        return view('page')->with('livewire', 'models.projects.create')
+            ->with('title', 'Create Project')
+            ->with('description', 'Create a new project for your company');
     }
 
     /**
@@ -40,7 +45,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         abort(404);
     }
@@ -52,10 +57,14 @@ class ProjectController extends Controller
      *
      * @return Application|Factory|View|void
      */
-    public function show(Project $project)
+    public function show(Project $project): Factory|View|Application
     {
         if (!Auth::user()->isAbleTo("projects-read")) return abort(403);
-        return view('page')->with('livewire', 'models.projects.show')->with('title', 'View Project')->with('description', 'View all the details regarding the project')->with('key', 'project')->with('val', $project);
+        return view('page')->with('livewire', 'models.projects.show')
+            ->with('title', 'View Project')
+            ->with('description', 'View all the details regarding the project')
+            ->with('key', 'project')
+            ->with('val', $project);
     }
 
     /**
@@ -65,7 +74,7 @@ class ProjectController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function edit(Project $project)
+    public function edit(Project $project): Factory|View|Application
     {
         abort(404);
     }
@@ -78,7 +87,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project): Response
     {
         abort(404);
     }
@@ -90,7 +99,7 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): Response
     {
         abort(404);
     }

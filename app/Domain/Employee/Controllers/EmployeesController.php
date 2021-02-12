@@ -47,11 +47,16 @@ class EmployeesController extends Controller
      *
      * @param Employee $employee
      *
-     * @return Response
+     * @return Application|Factory|View|Response
      */
     public function show(Employee $employee)
     {
-        abort(404);
+        return view('page')
+            ->with('livewire', 'models.employees.show')
+            ->with('title', $employee->name)
+            ->with('description', 'View the details of your employee')
+            ->with('key', 'employee')
+            ->with('val', $employee);
     }
 
     /**

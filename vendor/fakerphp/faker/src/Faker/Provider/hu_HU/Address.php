@@ -117,7 +117,7 @@ class Address extends \Faker\Provider\Address
     ];
 
     /**
-     * Source: https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1g_v%C3%A1rosainak_list%C3%A1ja
+     * LoadingPoints: https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1g_v%C3%A1rosainak_list%C3%A1ja
      */
     protected static $capitals = ['Budapest'];
     protected static $bigCities = [

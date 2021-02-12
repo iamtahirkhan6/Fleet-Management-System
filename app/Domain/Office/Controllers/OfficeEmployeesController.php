@@ -22,7 +22,7 @@ class OfficeEmployeesController extends Controller
      */
     public function index(Office $office)
     {
-        return view('page')->with('livewire', 'models.offices.employees.index')->with('title', 'Employees')->with('description', 'View all the employees in this office')->with('key', 'office')->with('val', $office);
+        return view('page')->with('livewire', 'models.employees.index')->with('title', $office->name.' Employees')->with('description', 'View all the employees in this office')->with('key', 'office')->with('val', $office);
     }
 
     /**

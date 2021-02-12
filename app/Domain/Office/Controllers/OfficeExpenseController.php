@@ -22,7 +22,7 @@ class OfficeExpenseController extends Controller
      */
     public function index(Office $office)
     {
-        return view('page')->with('livewire', 'models.offices.expenses.index')->with('title', $office->name . ' Office')->with('description', 'View all the offices in your company')->with('key', 'office')->with('val', $office);
+        return view('page')->with('livewire', 'models.offices.expenses.index')->with('title', $office->name . ' Office')->with('description', 'View all the expenses in your office')->with('key', 'office')->with('val', $office);
     }
 
     /**

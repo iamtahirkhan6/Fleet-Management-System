@@ -11,7 +11,7 @@
 
         <x-slot name="rows">
             @foreach ($offices as $office)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $office->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $office->company->name }}</x-tables.basic.row>

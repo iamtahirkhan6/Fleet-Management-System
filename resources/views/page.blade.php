@@ -9,7 +9,7 @@
 
     @if (isset($key) && isset($val))
         @livewire($livewire, [$key => $val])
-    @else
+    @elseif(isset($livewire))
         @livewire($livewire)
     @endif
 </x-app-layout>

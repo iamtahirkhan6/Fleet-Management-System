@@ -5,6 +5,7 @@ namespace Illuminate\View\Compilers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Support\Collection;
 
 class BladeCompiler extends Compiler implements CompilerInterface
 {
@@ -100,7 +101,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
     protected $echoFormat = 'e(%s)';
 
     /**
-     * Array of footer lines to be added to template.
+     * Array of footer lines to be added to the template.
      *
      * @var array
      */
@@ -180,7 +181,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Get the open and closing PHP tag tokens from the given string.
      *
      * @param  string  $contents
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     protected function getOpenAndClosingPhpTokens($contents)
     {
@@ -676,7 +677,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  callable  $handler
      * @return void
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function directive($name, callable $handler)
     {

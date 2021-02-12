@@ -11,7 +11,7 @@ use RedisCluster;
 use RedisException;
 
 /**
- * @mixin \Redis
+ * @mixin Redis
  */
 class PhpRedisConnection extends Connection implements ConnectionContract
 {
@@ -32,9 +32,10 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     /**
      * Create a new PhpRedis connection.
      *
-     * @param  \Redis  $client
+     * @param  Redis          $client
      * @param  callable|null  $connector
-     * @param  array  $config
+     * @param  array          $config
+     *
      * @return void
      */
     public function __construct($client, callable $connector = null, array $config = [])
@@ -71,7 +72,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Set the string value in argument as value of the key.
+     * Set the string value in the argument as the value of the key.
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -198,7 +199,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      */
     public function spop($key, $count = 1)
     {
-        return $this->command('spop', [$key, $count]);
+        return $this->command('spop', func_get_args());
     }
 
     /**
@@ -395,7 +396,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Execute commands in a pipeline.
      *
      * @param  callable|null  $callback
-     * @return \Redis|array
+     *
+     * @return Redis|array
      */
     public function pipeline(callable $callback = null)
     {
@@ -410,7 +412,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Execute commands in a transaction.
      *
      * @param  callable|null  $callback
-     * @return \Redis|array
+     *
+     * @return Redis|array
      */
     public function transaction(callable $callback = null)
     {
@@ -453,7 +456,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Subscribe to a set of given channels for messages.
      *
      * @param  array|string  $channels
-     * @param  \Closure  $callback
+     * @param  Closure       $callback
+     *
      * @return void
      */
     public function subscribe($channels, Closure $callback)
@@ -467,7 +471,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Subscribe to a set of given channels with wildcards.
      *
      * @param  array|string  $channels
-     * @param  \Closure  $callback
+     * @param  Closure       $callback
+     *
      * @return void
      */
     public function psubscribe($channels, Closure $callback)
@@ -481,8 +486,9 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Subscribe to a set of given channels for messages.
      *
      * @param  array|string  $channels
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @param  string  $method
+     *
      * @return void
      */
     public function createSubscription($channels, Closure $callback, $method = 'subscribe')
@@ -530,7 +536,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * @param  array  $parameters
      * @return mixed
      *
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function command($method, array $parameters = [])
     {
@@ -556,7 +562,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Apply prefix to the given key if necessary.
+     * Apply a prefix to the given key if necessary.
      *
      * @param  string  $key
      * @return string

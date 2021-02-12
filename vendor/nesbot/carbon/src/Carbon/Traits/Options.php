@@ -14,13 +14,18 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Throwable;
+
 use Carbon\CarbonImmutable;
+
 use function is_array;
 
 /**
  * Trait Options.
+ *
  * Embed base methods to change settings of Carbon classes.
+ *
  * Depends on the following methods:
+ *
  * @method Carbon|CarbonImmutable shiftTimezone($timezone) Set the timezone
  */
 trait Options
@@ -412,8 +417,10 @@ trait Options
             'tzName' => 'timezone',
             'localFormatFunction' => 'formatFunction',
         ];
+
         foreach ($map as $property => $key) {
             $value = $this->$property ?? null;
+
             if ($value !== null) {
                 $settings[$key] = $value;
             }

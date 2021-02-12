@@ -3,7 +3,6 @@
 namespace Facade\Ignition\Logger;
 
 use Facade\FlareClient\Flare;
-use InvalidArgumentException;
 use Facade\FlareClient\Report;
 use Facade\Ignition\Ignition;
 use Facade\Ignition\Tabs\Tab;
@@ -13,7 +12,7 @@ use Throwable;
 
 class FlareHandler extends AbstractProcessingHandler
 {
-    /** @var Flare */
+    /** @var \Facade\FlareClient\Flare */
     protected $flare;
 
     protected $minimumReportLogLevel = Logger::ERROR;
@@ -28,7 +27,7 @@ class FlareHandler extends AbstractProcessingHandler
     public function setMinimumReportLogLevel(int $level)
     {
         if (! in_array($level, Logger::getLevels())) {
-            throw new InvalidArgumentException('The given minimum log level is not supported.');
+            throw new \InvalidArgumentException('The given minimum log level is not supported.');
         }
 
         $this->minimumReportLogLevel = $level;

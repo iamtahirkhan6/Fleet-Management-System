@@ -3,6 +3,9 @@
 namespace Illuminate\Console\Scheduling;
 
 use Closure;
+use DateTimeZone;
+use LogicException;
+use DateTimeInterface;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\TransferException;
@@ -18,6 +21,7 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\ReflectsClosures;
 use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\Process\Process;
+use Illuminate\Contracts\Foundation\Application;
 
 class Event
 {
@@ -40,7 +44,7 @@ class Event
     /**
      * The timezone the date should be evaluated on.
      *
-     * @var \DateTimeZone|string
+     * @var DateTimeZone|string
      */
     public $timezone;
 
@@ -87,7 +91,7 @@ class Event
     public $expiresAt = 1440;
 
     /**
-     * Indicates if the command should run in background.
+     * Indicates if the command should run in the background.
      *
      * @var bool
      */
@@ -145,7 +149,7 @@ class Event
     /**
      * The event mutex implementation.
      *
-     * @var \Illuminate\Console\Scheduling\EventMutex
+     * @var EventMutex
      */
     public $mutex;
 
@@ -159,9 +163,10 @@ class Event
     /**
      * Create a new event instance.
      *
-     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
-     * @param  string  $command
-     * @param  \DateTimeZone|string|null  $timezone
+     * @param  EventMutex                 $mutex
+     * @param  string                     $command
+     * @param  DateTimeZone|string|null  $timezone
+     *
      * @return void
      */
     public function __construct(EventMutex $mutex, $command, $timezone = null)
@@ -186,7 +191,8 @@ class Event
     /**
      * Run the given event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
+     *
      * @return void
      */
     public function run(Container $container)
@@ -214,7 +220,8 @@ class Event
     /**
      * Run the command in the foreground.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
+     *
      * @return void
      */
     protected function runCommandInForeground(Container $container)
@@ -229,7 +236,8 @@ class Event
     /**
      * Run the command in the background.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
+     *
      * @return void
      */
     protected function runCommandInBackground(Container $container)
@@ -242,7 +250,8 @@ class Event
     /**
      * Call all of the "before" callbacks for the event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
+     *
      * @return void
      */
     public function callBeforeCallbacks(Container $container)
@@ -255,7 +264,8 @@ class Event
     /**
      * Call all of the "after" callbacks for the event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
+     *
      * @return void
      */
     public function callAfterCallbacks(Container $container)
@@ -268,8 +278,9 @@ class Event
     /**
      * Call all of the "after" callbacks for the event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  Container  $container
      * @param  int  $exitCode
+     *
      * @return void
      */
     public function callAfterCallbacksWithExitCode(Container $container, $exitCode)
@@ -292,7 +303,7 @@ class Event
     /**
      * Determine if the given event should run based on the Cron expression.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  Application  $app
      * @return bool
      */
     public function isDue($app)
@@ -345,7 +356,7 @@ class Event
     /**
      * Determine if the filters pass for the event.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  Application  $app
      * @return bool
      */
     public function filtersPass($app)
@@ -411,7 +422,7 @@ class Event
      * @param  bool  $onlyIfOutputExists
      * @return $this
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function emailOutputTo($addresses, $onlyIfOutputExists = false)
     {
@@ -430,7 +441,7 @@ class Event
      * @param  array|mixed  $addresses
      * @return $this
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function emailWrittenOutputTo($addresses)
     {
@@ -469,9 +480,9 @@ class Event
     /**
      * E-mail the output of the event to the recipients.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
-     * @param  array  $addresses
-     * @param  bool  $onlyIfOutputExists
+     * @param  Mailer  $mailer
+     * @param  array   $addresses
+     * @param  bool    $onlyIfOutputExists
      * @return void
      */
     protected function emailOutput(Mailer $mailer, $addresses, $onlyIfOutputExists = false)
@@ -573,7 +584,8 @@ class Event
      * Get the callback that pings the given URL.
      *
      * @param  string  $url
-     * @return \Closure
+     *
+     * @return Closure
      */
     protected function pingCallback($url)
     {
@@ -587,7 +599,7 @@ class Event
     }
 
     /**
-     * State that the command should run in background.
+     * State that the command should run in the background.
      *
      * @return $this
      */
@@ -670,7 +682,8 @@ class Event
     /**
      * Register a callback to further filter the schedule.
      *
-     * @param  \Closure|bool  $callback
+     * @param  Closure|bool  $callback
+     *
      * @return $this
      */
     public function when($callback)
@@ -685,7 +698,8 @@ class Event
     /**
      * Register a callback to further filter the schedule.
      *
-     * @param  \Closure|bool  $callback
+     * @param  Closure|bool  $callback
+     *
      * @return $this
      */
     public function skip($callback)
@@ -700,7 +714,8 @@ class Event
     /**
      * Register a callback to be called before the operation.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
+     *
      * @return $this
      */
     public function before(Closure $callback)
@@ -713,7 +728,8 @@ class Event
     /**
      * Register a callback to be called after the operation.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
+     *
      * @return $this
      */
     public function after(Closure $callback)
@@ -724,7 +740,8 @@ class Event
     /**
      * Register a callback to be called after the operation.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
+     *
      * @return $this
      */
     public function then(Closure $callback)
@@ -743,8 +760,9 @@ class Event
     /**
      * Register a callback that uses the output after the job runs.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @param  bool  $onlyIfOutputExists
+     *
      * @return $this
      */
     public function thenWithOutput(Closure $callback, $onlyIfOutputExists = false)
@@ -757,7 +775,8 @@ class Event
     /**
      * Register a callback to be called if the operation succeeds.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
+     *
      * @return $this
      */
     public function onSuccess(Closure $callback)
@@ -778,8 +797,9 @@ class Event
     /**
      * Register a callback that uses the output if the operation succeeds.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @param  bool  $onlyIfOutputExists
+     *
      * @return $this
      */
     public function onSuccessWithOutput(Closure $callback, $onlyIfOutputExists = false)
@@ -792,7 +812,8 @@ class Event
     /**
      * Register a callback to be called if the operation fails.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
+     *
      * @return $this
      */
     public function onFailure(Closure $callback)
@@ -813,8 +834,9 @@ class Event
     /**
      * Register a callback that uses the output if the operation fails.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @param  bool  $onlyIfOutputExists
+     *
      * @return $this
      */
     public function onFailureWithOutput(Closure $callback, $onlyIfOutputExists = false)
@@ -827,9 +849,10 @@ class Event
     /**
      * Get a callback that provides output.
      *
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @param  bool  $onlyIfOutputExists
-     * @return \Closure
+     *
+     * @return Closure
      */
     protected function withOutputCallback(Closure $callback, $onlyIfOutputExists = false)
     {
@@ -883,10 +906,10 @@ class Event
     /**
      * Determine the next due date for an event.
      *
-     * @param  \DateTimeInterface|string  $currentTime
+     * @param  DateTimeInterface|string  $currentTime
      * @param  int  $nth
      * @param  bool  $allowCurrentDate
-     * @return \Illuminate\Support\Carbon
+     * @return Carbon
      */
     public function nextRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
     {
@@ -908,7 +931,8 @@ class Event
     /**
      * Set the event mutex implementation to be used.
      *
-     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
+     * @param  EventMutex  $mutex
+     *
      * @return $this
      */
     public function preventOverlapsUsing(EventMutex $mutex)

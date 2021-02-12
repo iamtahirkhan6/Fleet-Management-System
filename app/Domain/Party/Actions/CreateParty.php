@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\Domain\Party\Actions;
+namespace App\Domain\Party\Actions;
 
 use App\Domain\Party\Models\Party;
 use Illuminate\Support\Facades\Auth;

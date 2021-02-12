@@ -8,51 +8,56 @@
         <!-- Material -->
         <x-forms.basic-stacked.column title="Material">
             <x-forms.basic-stacked.dropdown
-                wire:model="project.material"
+                wire:model="project.material_id"
                 title="Select the material"
                 :array="$materials">
             </x-forms.basic-stacked.dropdown>
-            @error('project.material') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('project.material_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
         <!-- Consignee -->
         <x-forms.basic-stacked.column title="Consignee">
             <x-forms.basic-stacked.dropdown
-                wire:model="project.consignee"
+                wire:model="project.consignee_id"
                 title="Select the consignee"
                 :array="$consignees">
             </x-forms.basic-stacked.dropdown>
-            @error('project.consignee') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('project.consignee_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            <x-slot name="lastColumn">
+                <div class="my-auto">
+                    <a class="text-sm text-indigo-600" href="{{ route('consignees.create') }}">Add a new Consignee</a>
+                </div>
+            </x-slot>
         </x-forms.basic-stacked.column>
 
-        <!-- Source -->
+        <!-- Loading Points -->
         <x-forms.basic-stacked.column title="Source">
             <x-forms.basic-stacked.dropdown
-                wire:model="project.source"
-                title="Select the source"
-                :array="$sources">
+                wire:model="project.loading_point_id"
+                title="Select the loading point"
+                :array="$loading_points">
             </x-forms.basic-stacked.dropdown>
-            @error('project.source') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('project.loading_point_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            <x-slot name="lastColumn">
+                <div class="my-auto">
+                    <a class="text-sm text-indigo-600" href="{{ route('loading-points.create') }}">Create a new Loading Point</a>
+                </div>
+            </x-slot>
         </x-forms.basic-stacked.column>
 
-        <!-- Destination -->
+        <!-- Unloading Points -->
         <x-forms.basic-stacked.column title="Destination">
             <x-forms.basic-stacked.dropdown
-                wire:model="project.destination"
+                wire:model="project.unloading_point_id"
                 title="Select the destination"
-                :array="$destinations">
+                :array="$unloading_points">
             </x-forms.basic-stacked.dropdown>
-            @error('project.destination') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-        </x-forms.basic-stacked.column>
-
-        <!-- Destination -->
-        <x-forms.basic-stacked.column title="Company">
-            <x-forms.basic-stacked.dropdown
-                wire:model="project.company_id"
-                title="Select the company"
-                :array="$companies">
-            </x-forms.basic-stacked.dropdown>
-            @error('project.company_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('project.unloading_point_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            <x-slot name="lastColumn">
+                <div class="my-auto">
+                    <a class="text-sm text-indigo-600" href="{{ route('unloading-points.create') }}">Create a new Unloading Point</a>
+                </div>
+            </x-slot>
         </x-forms.basic-stacked.column>
     </x-forms.basic-stacked.form>
 

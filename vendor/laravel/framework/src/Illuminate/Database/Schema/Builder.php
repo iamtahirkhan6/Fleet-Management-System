@@ -3,18 +3,19 @@
 namespace Illuminate\Database\Schema;
 
 use Closure;
-use LogicException;
-use RuntimeException;
 use Doctrine\DBAL\Types\Type;
-use InvalidArgumentException;
 use Doctrine\DBAL\DBALException;
 use Illuminate\Database\Connection;
+use InvalidArgumentException;
+use LogicException;
+use RuntimeException;
 use Illuminate\Database\Schema\Grammars\Grammar;
 
 class Builder
 {
     /**
      * The database connection instance.
+     *
      * @var Connection
      */
     protected $connection;
@@ -28,6 +29,7 @@ class Builder
 
     /**
      * The Blueprint resolver callback.
+     *
      * @var Closure
      */
     protected $resolver;
@@ -49,7 +51,7 @@ class Builder
     /**
      * Create a new database Schema manager.
      *
-     * @param  Connection $connection
+     * @param  Connection  $connection
      *
      * @return void
      */
@@ -198,8 +200,8 @@ class Builder
     /**
      * Modify a table on the schema.
      *
-     * @param  string  $table
-     * @param  Closure $callback
+     * @param  string   $table
+     * @param  Closure  $callback
      *
      * @return void
      */
@@ -211,8 +213,8 @@ class Builder
     /**
      * Create a new table on the schema.
      *
-     * @param  string $table
-     * @param Closure $callback
+     * @param  string   $table
+     * @param  Closure  $callback
      *
      * @return void
      */
@@ -267,7 +269,9 @@ class Builder
 
     /**
      * Drop all tables from the database.
+     *
      * @return void
+     *
      * @throws LogicException
      */
     public function dropAllTables()
@@ -352,7 +356,7 @@ class Builder
     /**
      * Execute the blueprint to build / modify the table.
      *
-     * @param Blueprint $blueprint
+     * @param  Blueprint  $blueprint
      *
      * @return void
      */
@@ -364,8 +368,8 @@ class Builder
     /**
      * Create a new command set with a Closure.
      *
-     * @param  string      $table
-     * @param Closure|null $callback
+     * @param  string        $table
+     * @param  Closure|null  $callback
      *
      * @return Blueprint
      */
@@ -413,6 +417,7 @@ class Builder
 
     /**
      * Get the database connection instance.
+     *
      * @return Connection
      */
     public function getConnection()
@@ -423,7 +428,7 @@ class Builder
     /**
      * Set the database connection instance.
      *
-     * @param  Connection $connection
+     * @param  Connection  $connection
      *
      * @return $this
      */
@@ -437,7 +442,7 @@ class Builder
     /**
      * Set the Schema Blueprint resolver callback.
      *
-     * @param Closure  $resolver
+     * @param  Closure  $resolver
      *
      * @return void
      */

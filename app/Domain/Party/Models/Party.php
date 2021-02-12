@@ -17,7 +17,7 @@ class Party extends Model implements HasMedia
     use InteractsWithMedia;
     use MultiTenable;
 
-    protected $fillable = [
+    protected array $fillable = [
         'name',
         'pan',
         'company_id',
@@ -25,22 +25,22 @@ class Party extends Model implements HasMedia
 
     public function phoneNumber()
     {
-        return $this->morphOne(PhoneNumber::class, 'phoneable');
+        return $this->morphOne(\App\Domain\General\Models\PhoneNumber::class, 'phoneable');
     }
 
     public function vehicles()
     {
-        return $this->hasMany(MarketVehicle::class);
+        return $this->hasMany(\App\Domain\MarketVehicle\Models\MarketVehicle::class);
     }
 
     public function bankAccounts()
     {
-        return $this->morphMany(BankAccount::class, "bankable");
+        return $this->morphMany(\App\Domain\Payment\Models\BankAccount::class, "bankable");
     }
 
     public function trips()
     {
-        return $this->hasMany(Trip::class);
+        return $this->hasMany(\App\Domain\Trip\Models\Trip::class);
     }
 
     public function totalBusiness()

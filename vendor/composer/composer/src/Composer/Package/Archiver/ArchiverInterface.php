@@ -20,9 +20,9 @@ namespace Composer\Package\Archiver;
 interface ArchiverInterface
 {
     /**
-     * Create an archive from the sources.
+     * Create an archive from the loading-points.
      *
-     * @param string $sources  The sources directory
+     * @param string $sources  The loading-points directory
      * @param string $target   The target file
      * @param string $format   The format used for archive
      * @param array  $excludes A list of patterns for files to exclude

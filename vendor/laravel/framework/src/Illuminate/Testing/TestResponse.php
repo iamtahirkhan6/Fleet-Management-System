@@ -2,8 +2,11 @@
 
 namespace Illuminate\Testing;
 
+use Throwable;
 use ArrayAccess;
 use Closure;
+use Illuminate\Session\Store;
+use Illuminate\Http\Response;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Database\Eloquent\Model;
@@ -13,12 +16,13 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\Tappable;
 use Illuminate\Testing\Assert as PHPUnit;
+use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Testing\Constraints\SeeInOrder;
 use LogicException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * @mixin \Illuminate\Http\Response
+ * @mixin Response
  */
 class TestResponse implements ArrayAccess
 {
@@ -29,7 +33,7 @@ class TestResponse implements ArrayAccess
     /**
      * The response to delegate to.
      *
-     * @var \Illuminate\Http\Response
+     * @var Response
      */
     public $baseResponse;
 
@@ -43,7 +47,7 @@ class TestResponse implements ArrayAccess
     /**
      * Create a new test response instance.
      *
-     * @param  \Illuminate\Http\Response  $response
+     * @param  Response  $response
      * @return void
      */
     public function __construct($response)
@@ -54,7 +58,7 @@ class TestResponse implements ArrayAccess
     /**
      * Create a new TestResponse from another response.
      *
-     * @param  \Illuminate\Http\Response  $response
+     * @param  Response  $response
      * @return static
      */
     public static function fromBaseResponse($response)
@@ -234,7 +238,7 @@ class TestResponse implements ArrayAccess
     }
 
     /**
-     * Asserts that the response does not contains the given header.
+     * Asserts that the response does not contain the given header.
      *
      * @param  string  $headerName
      * @return $this
@@ -358,7 +362,7 @@ class TestResponse implements ArrayAccess
     }
 
     /**
-     * Asserts that the response does not contains the given cookie.
+     * Asserts that the response does not contain the given cookie.
      *
      * @param  string  $cookieName
      * @return $this
@@ -377,7 +381,7 @@ class TestResponse implements ArrayAccess
      * Get the given cookie from the response.
      *
      * @param  string  $cookieName
-     * @return \Symfony\Component\HttpFoundation\Cookie|null
+     * @return Cookie|null
      */
     protected function getCookie($cookieName)
     {
@@ -720,9 +724,9 @@ class TestResponse implements ArrayAccess
     /**
      * Validate and return the decoded response JSON.
      *
-     * @return \Illuminate\Testing\AssertableJsonString
+     * @return AssertableJsonString
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function decodeResponseJson()
     {
@@ -1067,7 +1071,7 @@ class TestResponse implements ArrayAccess
     /**
      * Get the current session store.
      *
-     * @return \Illuminate\Session\Store
+     * @return Store
      */
     protected function session()
     {
@@ -1200,9 +1204,10 @@ class TestResponse implements ArrayAccess
      *
      * @param  string  $offset
      * @param  mixed  $value
+     *
      * @return void
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function offsetSet($offset, $value)
     {
@@ -1213,9 +1218,10 @@ class TestResponse implements ArrayAccess
      * Unset the value at the given offset.
      *
      * @param  string  $offset
+     *
      * @return void
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function offsetUnset($offset)
     {

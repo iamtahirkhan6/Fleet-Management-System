@@ -11,7 +11,7 @@ class PhoneNumber extends Model
     use HasFactory;
     use MultiTenable;
 
-    protected $fillable = [ 'phone_number' ];
+    protected array $fillable = [ 'phone_number' ];
 
     public function phoneable()
     {

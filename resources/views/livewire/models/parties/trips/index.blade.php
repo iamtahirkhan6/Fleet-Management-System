@@ -17,7 +17,7 @@
 
         <x-slot name="rows">
             @foreach ($trips as $trip)
-                <tr>
+                <tr  class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->vehicle->number }}</x-tables.basic.row>

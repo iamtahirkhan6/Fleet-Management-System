@@ -29,7 +29,7 @@
                 </select>
             </div>
 
-            @role('admin|manager')
+            @role('manager')
             <div class="flex-1 mt-1">
                 <span class="inline-flex float-right mb-4 rounded-md shadow-sm">
                     <a href="/employees/create"
@@ -70,7 +70,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

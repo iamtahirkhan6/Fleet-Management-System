@@ -2,8 +2,12 @@
 
 namespace Illuminate\Database\Eloquent;
 
+use Eloquent;
+use Throwable;
 use ArrayAccess;
 use Exception;
+use Illuminate\Database\Connection;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -21,10 +25,10 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use JsonSerializable;
 
 /**
- * 
  *
- * @mixin \Eloquent
- * @mixin \Illuminate\Database\Eloquent\Builder
+ *
+ * @mixin Eloquent
+ * @mixin Builder
  * @mixin \Illuminate\Database\Query\Builder
  */
 abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
@@ -111,14 +115,14 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * The connection resolver instance.
      *
-     * @var \Illuminate\Database\ConnectionResolverInterface
+     * @var Resolver
      */
     protected static $resolver;
 
     /**
      * The event dispatcher instance.
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher
+     * @var Dispatcher
      */
     protected static $dispatcher;
 
@@ -345,7 +349,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * @param  array  $attributes
      * @return $this
      *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws MassAssignmentException
      */
     public function fill(array $attributes)
     {
@@ -447,7 +451,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Begin querying the model on a given connection.
      *
      * @param  string|null  $connection
-     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @return Builder
      */
     public static function on($connection = null)
     {
@@ -475,7 +480,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Get all of the models from the database.
      *
      * @param  array|mixed  $columns
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     * @return Collection|static[]
      */
     public static function all($columns = ['*'])
     {
@@ -488,7 +494,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Begin querying a model with eager loading.
      *
      * @param  array|string  $relations
-     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @return Builder
      */
     public static function with($relations)
     {
@@ -885,7 +892,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * @param  array  $options
      * @return bool
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function saveOrFail(array $options = [])
     {
@@ -914,7 +921,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Perform a model update operation.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
+     *
      * @return bool
      */
     protected function performUpdate(Builder $query)
@@ -952,8 +960,9 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Set the keys for a select query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder  $query
+     *
+     * @return Builder
      */
     protected function setKeysForSelectQuery($query)
     {
@@ -975,8 +984,9 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Set the keys for a save update query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder  $query
+     *
+     * @return Builder
      */
     protected function setKeysForSaveQuery($query)
     {
@@ -998,7 +1008,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Perform a model insert operation.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
+     *
      * @return bool
      */
     protected function performInsert(Builder $query)
@@ -1049,8 +1060,9 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Insert the given attributes and set the ID on the model.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  array  $attributes
+     *
      * @return void
      */
     protected function insertAndSetId(Builder $query, $attributes)
@@ -1063,7 +1075,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Destroy the models for the given IDs.
      *
-     * @param  \Illuminate\Support\Collection|array|int|string  $ids
+     * @param  BaseCollection|array|int|string  $ids
      * @return int
      */
     public static function destroy($ids)
@@ -1099,7 +1111,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      *
      * @return bool|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function delete()
     {
@@ -1138,7 +1150,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Force a hard delete on a soft deleted model.
      *
-     * This method protects developers from running forceDelete when trait is missing.
+     * This method protects developers from running forceDelete when the trait is missing.
      *
      * @return bool|null
      */
@@ -1162,7 +1174,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Begin querying the model.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public static function query()
     {
@@ -1172,7 +1184,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get a new query builder for the model's table.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function newQuery()
     {
@@ -1182,7 +1194,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get a new query builder that doesn't have any global scopes or eager loading.
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return Builder|static
      */
     public function newModelQuery()
     {
@@ -1194,7 +1206,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get a new query builder with no relationships loaded.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function newQueryWithoutRelationships()
     {
@@ -1204,8 +1216,9 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Register the global scopes for this builder instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder  $builder
+     *
+     * @return Builder
      */
     public function registerGlobalScopes($builder)
     {
@@ -1219,7 +1232,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get a new query builder that doesn't have any global scopes.
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return Builder|static
      */
     public function newQueryWithoutScopes()
     {
@@ -1231,8 +1244,9 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get a new query instance without a given scope.
      *
-     * @param  \Illuminate\Database\Eloquent\Scope|string  $scope
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Scope|string  $scope
+     *
+     * @return Builder
      */
     public function newQueryWithoutScope($scope)
     {
@@ -1243,7 +1257,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Get a new query to restore one or more models by their queueable IDs.
      *
      * @param  array|int  $ids
-     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @return Builder
      */
     public function newQueryForRestoration($ids)
     {
@@ -1256,7 +1271,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     *
+     * @return Builder|static
      */
     public function newEloquentBuilder($query)
     {
@@ -1277,7 +1293,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Create a new Eloquent Collection instance.
      *
      * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
+     *
+     * @return Collection
      */
     public function newCollection(array $models = [])
     {
@@ -1287,12 +1304,13 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Create a new pivot model instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $parent
-     * @param  array  $attributes
-     * @param  string  $table
-     * @param  bool  $exists
+     * @param  Model        $parent
+     * @param  array        $attributes
+     * @param  string       $table
+     * @param  bool         $exists
      * @param  string|null  $using
-     * @return \Illuminate\Database\Eloquent\Relations\Pivot
+     *
+     * @return Pivot
      */
     public function newPivot(self $parent, array $attributes, $table, $exists, $using = null)
     {
@@ -1339,7 +1357,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * @param  int  $options
      * @return string
      *
-     * @throws \Illuminate\Database\Eloquent\JsonEncodingException
+     * @throws JsonEncodingException
      */
     public function toJson($options = 0)
     {
@@ -1434,7 +1452,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Determine if two models have the same ID and belong to the same table.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @param  Model|null  $model
+     *
      * @return bool
      */
     public function is($model)
@@ -1448,7 +1467,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Determine if two models are not the same.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @param  Model|null  $model
+     *
      * @return bool
      */
     public function isNot($model)
@@ -1459,7 +1479,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get the database connection for the model.
      *
-     * @return \Illuminate\Database\Connection
+     * @return Connection
      */
     public function getConnection()
     {
@@ -1493,7 +1513,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * Resolve a connection instance.
      *
      * @param  string|null  $connection
-     * @return \Illuminate\Database\Connection
+     * @return Connection
      */
     public static function resolveConnection($connection = null)
     {
@@ -1503,7 +1523,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Get the connection resolver instance.
      *
-     * @return \Illuminate\Database\ConnectionResolverInterface
+     * @return Resolver
      */
     public static function getConnectionResolver()
     {
@@ -1513,7 +1533,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Set the connection resolver instance.
      *
-     * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
+     * @param  Resolver  $resolver
+     *
      * @return void
      */
     public static function setConnectionResolver(Resolver $resolver)
@@ -1718,9 +1739,10 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  mixed  $value
+     * @param  mixed        $value
      * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     *
+     * @return Model|null
      */
     public function resolveRouteBinding($value, $field = null)
     {
@@ -1730,10 +1752,11 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     /**
      * Retrieve the child model for a bound value.
      *
-     * @param  string  $childType
-     * @param  mixed  $value
+     * @param  string       $childType
+     * @param  mixed        $value
      * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     *
+     * @return Model|null
      */
     public function resolveChildRouteBinding($childType, $value, $field)
     {

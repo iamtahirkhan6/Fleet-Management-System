@@ -68,7 +68,7 @@ class ServerFactory
 
     /**
      * Get source file system.
-     * @return FilesystemInterface Source file system.
+     * @return FilesystemInterface LoadingPoints file system.
      */
     public function getSource()
     {
@@ -87,7 +87,7 @@ class ServerFactory
 
     /**
      * Get source path prefix.
-     * @return string|null Source path prefix.
+     * @return string|null LoadingPoints path prefix.
      */
     public function getSourcePathPrefix()
     {

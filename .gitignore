@@ -14,10 +14,9 @@ public/storage
 storage/*.key
 .env
 .env.backup
-.idea
 npm-debug.log
 yarn-error.log
 .phpstorm.meta.php
 _ide_helper.php
 !resources/views/vendor
-public/mix-manifest.json
+/public/mix-manifest.json

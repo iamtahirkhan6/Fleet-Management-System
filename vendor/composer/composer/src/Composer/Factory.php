@@ -520,7 +520,7 @@ class Factory
 
     /**
      * @param  Config                     $config The configuration
-     * @param  Downloader\DownloadManager $dm     Manager use to download sources
+     * @param  Downloader\DownloadManager $dm     Manager use to download loading-points
      * @return Archiver\ArchiveManager
      */
     public function createArchiveManager(Config $config, Downloader\DownloadManager $dm, Loop $loop)

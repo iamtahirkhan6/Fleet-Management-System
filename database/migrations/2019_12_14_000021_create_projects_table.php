@@ -16,16 +16,14 @@ class CreateProjectsTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-
+            $table->string('name');
             $table->foreignId('material_id')->references('id')->on('materials');
-            $table->foreignId('mine_id')->references('id')->on('mines');
+            $table->foreignId('loading_point_id')->references('id')->on('loading_points');
             $table->foreignId('unloading_point_id')->references('id')->on('unloading_points');
             $table->foreignId('consignee_id')->references('id')->on('consignees');
             $table->foreignId('company_id')->constrained('companies');
             $table->boolean('status');
-
-            $table->unique(['material_id', 'mine_id', 'unloading_point_id', 'consignee_id', 'company_id', 'status'], 'unique_project');
+            $table->unique(['material_id', 'loading_point_id', 'unloading_point_id', 'consignee_id', 'company_id'], 'unique_project');
             $table->timestamps();
         });
     }

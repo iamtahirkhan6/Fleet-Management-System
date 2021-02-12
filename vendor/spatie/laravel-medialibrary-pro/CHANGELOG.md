@@ -4,6 +4,18 @@ This file tracks versions in the [Composer releases](https://github.com/spatie/l
 
 For the changelog for releases on the GitHub Package Registry, look in [CHANGELOG-JS.md](https://github.com/spatie/laravel-medialibrary-pro/blob/master/CHANGELOG-JS.md)
 
+## 1.12.16 - 2021-02-07
+
+- add key tracking to uploader component (#172)
+
+## 1.12.15 - 2021-02-03
+
+- fix translation warnings in vue collection component
+
+## 1.12.14 - 2020-01-31
+
+- revert changes in 1.12.13
+
 ## 1.12.13 - 2020-01-26
 
 - handle edge-case when uuid not set (#165)

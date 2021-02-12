@@ -2,7 +2,9 @@
 
 namespace Illuminate\Support;
 
+use Ramsey\Uuid\UuidInterface;
 use Illuminate\Support\Traits\Macroable;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
@@ -45,7 +47,7 @@ class Str
      * Get a new stringable object from the given string.
      *
      * @param  string  $string
-     * @return \Illuminate\Support\Stringable
+     * @return Stringable
      */
     public static function of($string)
     {
@@ -377,6 +379,20 @@ class Str
     }
 
     /**
+     * Converts GitHub flavored Markdown into HTML.
+     *
+     * @param  string  $string
+     * @param  array  $options
+     * @return string
+     */
+    public static function markdown($string, array $options = [])
+    {
+        $converter = new GithubFlavoredMarkdownConverter($options);
+
+        return $converter->convertToHtml($string);
+    }
+
+    /**
      * Pad both sides of a string with another.
      *
      * @param  string  $value
@@ -681,7 +697,7 @@ class Str
     }
 
     /**
-     * Returns the portion of string specified by the start and length parameters.
+     * Returns the portion of the string specified by the start and length parameters.
      *
      * @param  string  $string
      * @param  int  $start
@@ -725,7 +741,7 @@ class Str
     /**
      * Generate a UUID (version 4).
      *
-     * @return \Ramsey\Uuid\UuidInterface
+     * @return UuidInterface
      */
     public static function uuid()
     {
@@ -737,7 +753,7 @@ class Str
     /**
      * Generate a time-ordered UUID (version 4).
      *
-     * @return \Ramsey\Uuid\UuidInterface
+     * @return UuidInterface
      */
     public static function orderedUuid()
     {

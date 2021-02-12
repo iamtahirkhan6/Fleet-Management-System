@@ -45,15 +45,20 @@ class CreateMarketVehicleTrip
             $trip->loading_done = 1;
             $trip->created_by   = Auth::id();
             $trip->save();
+
             return $trip;
-        } else {
+        }
+        else {
             return false;
         }
     }
 
     public static function input(array $array) : array
     {
-        foreach ($array as $key => $value) $array[$key] = null;
+        foreach ($array as $key => $value) {
+            $array[$key] = null;
+        }
+
         return $array;
     }
 

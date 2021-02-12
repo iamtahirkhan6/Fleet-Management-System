@@ -9,19 +9,24 @@ use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
 use PDO;
 
+use function substr;
+use function strpos;
+use function is_string;
+
 class SqlServerConnection implements ServerInfoAwareConnection
 {
     /**
      * The underlying connection instance.
      *
-     * @var \Illuminate\Database\PDO\Connection
+     * @var Connection
      */
     protected $connection;
 
     /**
      * Create a new SQL Server connection instance.
      *
-     * @param  \Illuminate\Database\PDO\Connection  $connection
+     * @param  Connection  $connection
+     *
      * @return void
      */
     public function __construct(Connection $connection)
@@ -33,7 +38,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
      * Prepare a new SQL statement.
      *
      * @param  string  $sql
-     * @return \Doctrine\DBAL\Driver\Statement
+     * @return StatementInterface
      */
     public function prepare(string $sql): StatementInterface
     {
@@ -46,7 +51,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
      * Execute a new query against the connection.
      *
      * @param  string  $sql
-     * @return \Doctrine\DBAL\Driver\Result
+     * @return Result
      */
     public function query(string $sql): Result
     {
@@ -102,7 +107,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
     }
 
     /**
-     * Roll back a database transaction.
+     * Rollback a database transaction.
      *
      * @return void
      */
@@ -123,8 +128,8 @@ class SqlServerConnection implements ServerInfoAwareConnection
         $val = $this->connection->quote($value, $type);
 
         // Fix for a driver version terminating all values with null byte...
-        if (\is_string($val) && \strpos($val, "\0") !== false) {
-            $val = \substr($val, 0, -1);
+        if (is_string($val) && strpos($val, "\0") !== false) {
+            $val = substr($val, 0, -1);
         }
 
         return $val;
@@ -143,7 +148,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
     /**
      * Get the wrapped PDO connection.
      *
-     * @return \PDO
+     * @return PDO
      */
     public function getWrappedConnection(): PDO
     {

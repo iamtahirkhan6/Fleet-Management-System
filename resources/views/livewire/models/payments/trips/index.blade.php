@@ -13,7 +13,7 @@
 
         <x-slot name="rows">
             @forelse ($payments as $payment)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>
                         <a href="/payments/{{ $payment->trip_id }}" class="inline-flex space-x-2 text-sm truncate group">
                             <x-svg.grey-cash />
@@ -32,7 +32,7 @@
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

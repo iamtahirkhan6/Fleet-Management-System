@@ -4,6 +4,10 @@ This file tracks releases in the [GitHub Package Registry](https://github.com/or
 
 For the changelog for Composer versions, look in [CHANGELOG.md](./CHANGELOG.md).
 
+## 1.1.9 - 2020-02-03
+
+- fix translation warnings in vue collection component
+
 ## 1.1.8 - 2020-01-25
 
 - properly add `withCredentials` prop

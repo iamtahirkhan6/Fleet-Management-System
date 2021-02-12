@@ -13,7 +13,7 @@
 
         <x-slot name="rows">
             @foreach ($vehicles as $vehicle)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $vehicle->number }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $vehicle->trips($party->id) }}</x-tables.basic.row>

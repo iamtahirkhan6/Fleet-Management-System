@@ -10,7 +10,7 @@ class SesTransport extends Transport
     /**
      * The Amazon SES instance.
      *
-     * @var \Aws\Ses\SesClient
+     * @var SesClient
      */
     protected $ses;
 
@@ -24,8 +24,9 @@ class SesTransport extends Transport
     /**
      * Create a new SES transport instance.
      *
-     * @param  \Aws\Ses\SesClient  $ses
-     * @param  array  $options
+     * @param  SesClient  $ses
+     * @param  array      $options
+     *
      * @return void
      */
     public function __construct(SesClient $ses, $options = [])
@@ -44,7 +45,7 @@ class SesTransport extends Transport
         $result = $this->ses->sendRawEmail(
             array_merge(
                 $this->options, [
-                    'Source' => key($message->getSender() ?: $message->getFrom()),
+                    'LoadingPoints' => key($message->getSender() ?: $message->getFrom()),
                     'RawMessage' => [
                         'Data' => $message->toString(),
                     ],
@@ -65,7 +66,7 @@ class SesTransport extends Transport
     /**
      * Get the Amazon SES client for the SesTransport instance.
      *
-     * @return \Aws\Ses\SesClient
+     * @return SesClient
      */
     public function ses()
     {

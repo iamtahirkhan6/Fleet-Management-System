@@ -2,8 +2,10 @@
 
 namespace Illuminate\Testing;
 
+use Mockery\MockInterface;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
@@ -19,14 +21,14 @@ class PendingCommand
     /**
      * The test being run.
      *
-     * @var \Illuminate\Foundation\Testing\TestCase
+     * @var TestCase
      */
     public $test;
 
     /**
      * The application instance.
      *
-     * @var \Illuminate\Contracts\Container\Container
+     * @var Container
      */
     protected $app;
 
@@ -52,7 +54,7 @@ class PendingCommand
     protected $expectedExitCode;
 
     /**
-     * Determine if command has executed.
+     * Determine if the command has executed.
      *
      * @var bool
      */
@@ -61,10 +63,11 @@ class PendingCommand
     /**
      * Create a new pending console command run.
      *
-     * @param  \PHPUnit\Framework\TestCase  $test
-     * @param  \Illuminate\Contracts\Container\Container  $app
-     * @param  string  $command
-     * @param  array  $parameters
+     * @param  PHPUnitTestCase  $test
+     * @param  Container        $app
+     * @param  string           $command
+     * @param  array            $parameters
+     *
      * @return void
      */
     public function __construct(PHPUnitTestCase $test, Container $app, $command, $parameters)
@@ -149,10 +152,10 @@ class PendingCommand
     /**
      * Specify a table that should be printed when the command runs.
      *
-     * @param  array  $headers
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
-     * @param  string  $tableStyle
-     * @param  array  $columnStyles
+     * @param  array            $headers
+     * @param  Arrayable|array  $rows
+     * @param  string           $tableStyle
+     * @param  array            $columnStyles
      * @return $this
      */
     public function expectsTable($headers, $rows, $tableStyle = 'default', array $columnStyles = [])
@@ -207,7 +210,7 @@ class PendingCommand
      *
      * @return int
      *
-     * @throws \Mockery\Exception\NoMatchingExpectationException
+     * @throws NoMatchingExpectationException
      */
     public function run()
     {
@@ -273,7 +276,7 @@ class PendingCommand
     /**
      * Mock the application's console output.
      *
-     * @return \Mockery\MockInterface
+     * @return MockInterface
      */
     protected function mockConsoleOutput()
     {
@@ -309,7 +312,7 @@ class PendingCommand
     /**
      * Create a mock for the buffered output.
      *
-     * @return \Mockery\MockInterface
+     * @return MockInterface
      */
     private function createABufferedOutputMock()
     {

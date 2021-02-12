@@ -1,11 +1,13 @@
 <div>
     <!-- Actions -->
     <div class="flex flex-row-reverse">
+        @role('manager')
         <a href="{{ route('projects.create') }}"
             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <x-svg.plus-circle />
             Add Project
         </a>
+        @endrole
     </div>
     <!-- List all projects -->
     <x-tables.basic.main class="mt-5">
@@ -22,20 +24,19 @@
 
         <x-slot name="rows">
             @forelse($projects as $project)
-                <tr>
+                <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Source->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Destination->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Consignee->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Material->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $project->Company->short_name }}</x-tables.basic.row>
-                    <x-tables.basic.row :colorToggle="$project->status" trueVal="Active" falseVal="Inactive">
-                    </x-tables.basic.row>
-                    <x-tables.basic.row link="/projects/{{ $project->id }}"><x-svg.view-list/></x-tables.basic.row>
+                    <x-tables.basic.row :colorToggle="$project->status" trueVal="Active" falseVal="Inactive"></x-tables.basic.row>
+                    <x-tables.basic.row><x-buttons.icons.small href="/projects/{{ $project->id }}"></x-buttons.icons.small></x-tables.basic.row>
                 </tr>
             @empty
                 <tr class="">
-                    <td class="px-6 py-4 whitespace-nowrap text-red-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
                         No Results Found
                     </td>
                 </tr>

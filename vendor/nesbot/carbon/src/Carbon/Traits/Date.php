@@ -10,29 +10,30 @@
  */
 namespace Carbon\Traits;
 
-use Closure;
-use DateTime;
-use Throwable;
-use DatePeriod;
-use DateInterval;
-use DateTimeZone;
-use Carbon\Carbon;
-use DateTimeInterface;
-use Carbon\CarbonPeriod;
-use ReflectionException;
 use Carbon\CarbonInterval;
-use Carbon\CarbonTimeZone;
 use BadMethodCallException;
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
-use InvalidArgumentException;
+use Carbon\CarbonPeriod;
+use Carbon\CarbonTimeZone;
+use Carbon\Exceptions\BadComparisonUnitException;
 use Carbon\Exceptions\ImmutableException;
+use Carbon\Exceptions\InvalidTimeZoneException;
 use Carbon\Exceptions\InvalidTypeException;
-use Carbon\Exceptions\UnknownUnitException;
 use Carbon\Exceptions\UnknownGetterException;
 use Carbon\Exceptions\UnknownMethodException;
 use Carbon\Exceptions\UnknownSetterException;
-use Carbon\Exceptions\InvalidTimeZoneException;
-use Carbon\Exceptions\BadComparisonUnitException;
+use Carbon\Exceptions\UnknownUnitException;
+use Closure;
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
+use InvalidArgumentException;
+use ReflectionException;
+use Throwable;
+
 use function count;
 use function strlen;
 use function strval;
@@ -754,7 +755,7 @@ trait Date
      * Return the Carbon instance passed through, a now instance in the same timezone
      * if null given or parse the input if string given.
      *
-     * @param Carbon|CarbonPeriod|CarbonInterval|DateInterval|DatePeriod|DateTimeInterface|string|null $date
+     * @param Carbon|CarbonPeriod|CarbonInterval|DateInterval|DatePeriod|DateTimeInterface|string|null  $date
      *
      * @return static
      */

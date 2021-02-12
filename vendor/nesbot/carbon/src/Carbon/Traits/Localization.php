@@ -20,6 +20,7 @@ use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInterface;
+
 use function gettype;
 use function is_array;
 use function get_class;
@@ -42,12 +43,14 @@ trait Localization
 {
     /**
      * Default translator.
+     *
      * @var TranslatorInterface
      */
     protected static $translator;
 
     /**
      * Specific translator of the current instance.
+     *
      * @var TranslatorInterface
      */
     protected $localTranslator;
@@ -118,7 +121,7 @@ trait Localization
     /**
      * Set the default translator instance to use.
      *
-     * @param TranslatorInterface $translator
+     * @param  TranslatorInterface  $translator
      *
      * @return void
      */
@@ -150,7 +153,7 @@ trait Localization
     /**
      * Set the translator for the current instance.
      *
-     * @param TranslatorInterface $translator
+     * @param  TranslatorInterface  $translator
      *
      * @return $this
      */
@@ -164,10 +167,10 @@ trait Localization
     /**
      * Returns raw translation message for a given key.
      *
-     * @param TranslatorInterface $translator the translator to use
-     * @param string              $key        key to find
-     * @param string|null         $locale     current locale used if null
-     * @param string|null         $default    default value if translation returns the key
+     * @param  TranslatorInterface  $translator  the translator to use
+     * @param string                $key         key to find
+     * @param string|null           $locale      current locale used if null
+     * @param string|null           $default     default value if translation returns the key
      *
      * @return string
      */
@@ -192,10 +195,10 @@ trait Localization
     /**
      * Returns raw translation message for a given key.
      *
-     * @param string              $key        key to find
-     * @param string|null         $locale     current locale used if null
-     * @param string|null         $default    default value if translation returns the key
-     * @param TranslatorInterface $translator an optional translator to use
+     * @param string                $key         key to find
+     * @param string|null           $locale      current locale used if null
+     * @param string|null           $default     default value if translation returns the key
+     * @param  TranslatorInterface  $translator  an optional translator to use
      *
      * @return string
      */
@@ -207,10 +210,10 @@ trait Localization
     /**
      * Translate using translation string or callback available.
      *
-     * @param TranslatorInterface $translator
-     * @param string              $key
-     * @param array               $parameters
-     * @param null                $number
+     * @param  TranslatorInterface  $translator
+     * @param string                $key
+     * @param array                 $parameters
+     * @param null                  $number
      *
      * @return string
      */
@@ -240,10 +243,10 @@ trait Localization
     /**
      * Translate using translation string or callback available.
      *
-     * @param string              $key
-     * @param array               $parameters
-     * @param null                $number
-     * @param TranslatorInterface $translator
+     * @param string                $key
+     * @param array                 $parameters
+     * @param null                  $number
+     * @param  TranslatorInterface  $translator
      *
      * @return string
      */

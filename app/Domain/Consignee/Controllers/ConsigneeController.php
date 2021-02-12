@@ -14,26 +14,34 @@ class ConsigneeController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')->with('livewire', 'models.consignees.index')->with('title', 'Consignees')->with('description', 'View all the consignees who work with your company');
+        return view('page')
+            ->with('livewire', 'models.consignees.index')
+            ->with('title', 'Consignees')
+            ->with('description', 'View all the consignees who work with your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     *
+     * @return Application|Factory|View|Response
      */
     public function create()
     {
-        abort(404);
+        return view('page')
+            ->with('livewire', 'models.consignees.create')
+            ->with('title', 'Consignees')
+            ->with('description', 'Add a new consignee to your company');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -45,7 +53,7 @@ class ConsigneeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Consignee $Consignee
+     * @param  Consignee  $Consignee
      *
      * @return Response
      */
@@ -57,7 +65,7 @@ class ConsigneeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Consignee $Consignee
+     * @param  Consignee  $Consignee
      *
      * @return Response
      */
@@ -69,8 +77,8 @@ class ConsigneeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request   $request
-     * @param Consignee $Consignee
+     * @param  Request    $request
+     * @param  Consignee  $Consignee
      *
      * @return Response
      */
@@ -82,7 +90,7 @@ class ConsigneeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Consignee $Consignee
+     * @param  Consignee  $Consignee
      *
      * @return Response
      */

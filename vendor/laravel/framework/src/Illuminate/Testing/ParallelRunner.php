@@ -2,11 +2,16 @@
 
 namespace Illuminate\Testing;
 
+use Closure;
+use Tests\CreatesApplication;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\ParallelTesting;
 use ParaTest\Runners\PHPUnit\Options;
 use ParaTest\Runners\PHPUnit\RunnerInterface;
 use ParaTest\Runners\PHPUnit\WrapperRunner;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use RuntimeException;
+use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,36 +20,37 @@ class ParallelRunner implements RunnerInterface
     /**
      * The application resolver callback.
      *
-     * @var \Closure|null
+     * @var Closure|null
      */
     protected static $applicationResolver;
 
     /**
      * The original test runner options.
      *
-     * @var \ParaTest\Runners\PHPUnit\Options
+     * @var Options
      */
     protected $options;
 
     /**
      * The output instance.
      *
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     protected $output;
 
     /**
      * The original test runner.
      *
-     * @var \ParaTest\Runners\PHPUnit\RunnerInterface
+     * @var RunnerInterface
      */
     protected $runner;
 
     /**
      * Creates a new test runner instance.
      *
-     * @param  \ParaTest\Runners\PHPUnit\Options  $options
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param  Options          $options
+     * @param  OutputInterface  $output
+     *
      * @return void
      */
     public function __construct(Options $options, OutputInterface $output)
@@ -61,7 +67,7 @@ class ParallelRunner implements RunnerInterface
     /**
      * Set the application resolver callback.
      *
-     * @param  \Closure|null  $resolver
+     * @param  Closure|null  $resolver
      * @return void
      */
     public static function resolveApplicationUsing($resolver)
@@ -123,16 +129,26 @@ class ParallelRunner implements RunnerInterface
     /**
      * Creates the application.
      *
-     * @return \Illuminate\Contracts\Foundation\Application
+     * @return Application
      */
     protected function createApplication()
     {
         $applicationResolver = static::$applicationResolver ?: function () {
-            $applicationCreator = new class {
-                use \Tests\CreatesApplication;
-            };
+            if (trait_exists(CreatesApplication::class)) {
+                $applicationCreator = new class {
+                    use CreatesApplication;
+                };
 
-            return $applicationCreator->createApplication();
+                return $applicationCreator->createApplication();
+            } elseif (file_exists(getcwd().'/bootstrap/app.php')) {
+                $app = require getcwd().'/bootstrap/app.php';
+
+                $app->make(Kernel::class)->bootstrap();
+
+                return $app;
+            }
+
+            throw new RuntimeException('Parallel Runner unable to resolve application.');
         };
 
         return call_user_func($applicationResolver);

@@ -2,6 +2,7 @@
 
 namespace Intervention\Image\Commands;
 
+use Intervention\Image\Image;
 use Intervention\Image\Exception\NotSupportedException;
 
 class IptcCommand extends AbstractCommand
@@ -9,7 +10,7 @@ class IptcCommand extends AbstractCommand
     /**
      * Read Iptc data from the given image
      *
-     * @param  \Intervention\Image\Image $image
+     * @param  Image $image
      * @return boolean
      */
     public function execute($image)
@@ -47,7 +48,7 @@ class IptcCommand extends AbstractCommand
                 $data['Country'] = isset($iptc["2#101"][0]) ? $iptc["2#101"][0] : null;
                 $data['OTR'] = isset($iptc["2#103"][0]) ? $iptc["2#103"][0] : null;
                 $data['Headline'] = isset($iptc["2#105"][0]) ? $iptc["2#105"][0] : null;
-                $data['Source'] = isset($iptc["2#110"][0]) ? $iptc["2#110"][0] : null;
+                $data['LoadingPoints'] = isset($iptc["2#110"][0]) ? $iptc["2#110"][0] : null;
                 $data['PhotoSource'] = isset($iptc["2#115"][0]) ? $iptc["2#115"][0] : null;
                 $data['Copyright'] = isset($iptc["2#116"][0]) ? $iptc["2#116"][0] : null;
                 $data['Caption'] = isset($iptc["2#120"][0]) ? $iptc["2#120"][0] : null;

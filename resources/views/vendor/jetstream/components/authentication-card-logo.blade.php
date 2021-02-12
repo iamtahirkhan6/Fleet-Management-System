@@ -1,1 +1,1 @@
-<image src="/img/theme/asklogistiek-color.png" />
+<image src="/img/theme/logo-color.png" />

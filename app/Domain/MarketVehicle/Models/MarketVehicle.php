@@ -13,7 +13,7 @@ class MarketVehicle extends Model
     use MultiTenable;
 
     // Allow Mass Assignment
-    protected $fillable = [
+    protected array $fillable = [
         'number',
         'party_id',
         'company_id',

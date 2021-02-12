@@ -3,11 +3,12 @@
 namespace App\Http\Livewire\Models\Payments\Trips;
 
 use Auth;
+use App\Helper\Helper;
 use Livewire\Component;
 use App\Domain\Party\Models\Party;
 use App\Domain\Payment\Models\TaxCategory;
-use App\Domain\Payment\Models\PaymentMethod;
 use App\Domain\Payment\Models\PaymentStatus;
+use App\Domain\Payment\Models\PaymentMethod;
 use App\Domain\Payment\Actions\Trip\CompleteTripPayment;
 use Spatie\MediaLibraryPro\Http\Livewire\Concerns\WithMedia;
 
@@ -15,7 +16,7 @@ class CompletePending extends Component
 {
     use WithMedia;
 
-    protected $listeners           = [ 'refreshDetails' => '$refresh' ];
+    protected $listeners           = ['refreshDetails' => '$refresh'];
     public    $mediaComponentNames = [
         'pan',
         'rc',
@@ -47,18 +48,20 @@ class CompletePending extends Component
 
     public function checkIfPartyExists()
     {
-        $this->validate([ 'input.pan' => 'required|size:10|alpha_num' ], [
+        $this->validate(['input.pan' => 'required|size:10|alpha_num'], [
             'input.pan.required'  => 'Pan Card is required',
             'input.pan.size'      => 'Pan Card should be 10 characters long',
             'input.pan.alpha_num' => 'Pan Card can only be Alpha Numeric',
         ]);
         $this->panDiv = false; // Hide Pan Search Option
-        $party        = Party::wherePan($this->input['pan'])->first();
+        $party        = Party::wherePan($this->input['pan'])
+            ->first();
         if ($party) {
             $this->input["party_id"]     = $party->id;
             $this->input["name"]         = $party->name ?? null;
             $this->input["phone_number"] = $party->phoneNumber ?? null;
-            if ($party->bankAccounts()->count() > 0) {
+            if ($party->bankAccounts()
+                    ->count() > 0) {
                 $this->existing_bank_accounts  = $party->bankAccounts ?? [];
                 $this->showExistingBankDetails = true;
                 $this->emit('refreshDetails');
@@ -66,7 +69,8 @@ class CompletePending extends Component
             $this->enterBankDetails    = true;
             $this->showFeesStructure   = true;
             $this->showUploadDocuments = true;
-        } else {
+        }
+        else {
             if ($this->showExistingBankDetails) {
                 unset($this->existing_bank_accounts);
                 $this->existing_bank_accounts  = [];
@@ -85,19 +89,44 @@ class CompletePending extends Component
     {
         $this->input["tds_sbm_bool"] = $this->tds_sbm_bool;
         $this->fixInput();
-        $this->validate($this->rules(), $this->messages());
+        $this->validate($this->rules(), null, $this->validationAttributes());
         $result = CompleteTripPayment::run($this->input, $this->trip, Auth::user()->company_id);
         if (!$result) {
             $this->showFail = true;
-        } else {
-            $party   = $result[0];
-            $trip    = $result[1];
-            $payment = $result[2];
+        }
+        else {
+            $party          = $result[0];
+            $trip           = $result[1];
+            $payment        = $result[2];
+            $market_vehicle = $result[3];
 
-            $party->addFromMediaLibraryRequest($this->rc_soft_copy)->toMediaCollection('documents')?->withCustomProperties(['type' => 'rc', 'market_vehicle_number' => $trip->market_vehicle_number]);
-            $party->addFromMediaLibraryRequest($this->pan_soft_copy)->toMediaCollection('documents')?->withCustomProperties(['type' => 'pan', 'party_id' => $party->id]);
+            $market_vehicle->addFromMediaLibraryRequest($this->rc_soft_copy)
+                ->withCustomProperties([
+                                           'type'                  => 'rc',
+                                           'market_vehicle_number' => $trip->market_vehicle_number,
+                                           'party'                 => $party->id,
+                                           'company_id'            => Auth::user()->company_id,
+                                       ])
+                ->toMediaCollection('documents');
 
-            if($this->tds_soft_copy) $party->addFromMediaLibraryRequest($this->pan_soft_copy)->toMediaCollection('documents')?->withCustomProperties(['type' => 'tds', 'party_id' => $party->id, 'payment_id' => $payment->id]);
+            $party->addFromMediaLibraryRequest($this->pan_soft_copy)
+                ->withCustomProperties([
+                                           'type'       => 'pan',
+                                           'party'      => $party->id,
+                                           'company_id' => Auth::user()->company_id,
+                                       ])
+                ->toMediaCollection('documents');
+
+            if ($this->tds_soft_copy) {
+                $payment->addFromMediaLibraryRequest($this->pan_soft_copy)
+                    ->withCustomProperties([
+                                               'type'       => 'tds',
+                                               'party'      => $party->id,
+                                               'payment_id' => $payment->id,
+                                               'company_id' => Auth::user()->company_id,
+                                           ])
+                    ->toMediaCollection('documents');
+            }
 
             redirect()->to(url('/payments/pending'));
         }
@@ -107,16 +136,18 @@ class CompletePending extends Component
     public function mount($trip)
     {
         // If Payment Already Done
-        if (!$trip->payment_done == 0) return abort(404);
+        if (!$trip->payment_done == 0) {
+            return abort(404);
+        }
 
         $this->trip = $trip;
         $this->feedInput();
         $this->input['two_pay'] = 0;
 
         // Prefetch Categories
-        $this->tax_categories   = TaxCategory::all();
-        $this->payment_methods  = PaymentMethod::all();
-        $this->payment_statuses = PaymentStatus::all();
+        $this->tax_categories   = TaxCategory::all(['id', 'section']);
+        $this->payment_methods  = PaymentMethod::all(['id', 'name']);
+        $this->payment_statuses = PaymentStatus::all(['id', 'name']);
 
     }
 
@@ -143,7 +174,7 @@ class CompletePending extends Component
     // Set $input array
     public function feedInput()
     {
-        $this->input = CompleteTripPayment::input($this->rules());
+        $this->input = Helper::setInput($this->rules());
     }
 
     // Fix input array
@@ -167,22 +198,24 @@ class CompletePending extends Component
     {
         $rules  = collect(CompleteTripPayment::rules('input.'));
         $merged = $rules->merge([
-            'pan_soft_copy' => 'required',
-            'rc_soft_copy'  => 'required',
-            'tds_soft_copy' => 'required_if:tds_sbm_bool,true',
-        ]);
+                                    'pan_soft_copy' => 'required',
+                                    'rc_soft_copy'  => 'required',
+                                    'tds_soft_copy' => 'required_if:tds_sbm_bool,true',
+                                ]);
+
         return $merged->toArray();
     }
 
     // Custom Messages
-    public function messages() : array
+    public function validationAttributes() : array
     {
-        $messages = collect(CompleteTripPayment::messages('input.'));
+        $messages = collect(CompleteTripPayment::validationAttributes('input.'));
         $merged   = $messages->merge([
-            'pan_soft_copy.required_if' => 'Soft copy of PAN is required.',
-            'rc_soft_copy.required'  => 'Soft copy of RC is required.',
-            'tds_soft_copy.required_if' => 'Soft copy of TDS is required.',
-        ]);
+                                         'pan_soft_copy.required_if' => 'Soft copy of PAN is required.',
+                                         'rc_soft_copy.required'     => 'Soft copy of RC is required.',
+                                         'tds_soft_copy.required_if' => 'Soft copy of TDS is required.',
+                                     ]);
+
         return $merged->toArray();
     }
 

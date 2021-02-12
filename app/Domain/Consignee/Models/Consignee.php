@@ -6,6 +6,7 @@ use DB;
 use App\Traits\MultiTenable;
 use App\Domain\Trip\Models\Trip;
 use App\Domain\Project\Models\Project;
+use App\Domain\General\Models\Address;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,21 +15,33 @@ class Consignee extends Model
     use HasFactory;
     use MultiTenable;
 
-    public function projects()
+    protected array $fillable = ["name", "gstin", "pan"];
+
+    public function address()
     {
-        return Project::where('consignee_id', $this->id)->count();
+        return $this->morphOne(Address::class, 'addressable');
     }
 
-    public function running_projects()
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function totalProjects()
+    {
+        return $this->projects()->count();
+    }
+
+    public function runningProjects()
     {
         $running_projects = Project::where('consignee_id', $this->id)->where('status', '1')->count();
 
         return (int) $running_projects;
     }
 
-    public function business_done()
+    public function businessDone()
     {
-        $all_projects = Project::where('consignee_id', $this->id)->get();
+        $all_projects = $this->projects;
         $total_amt    = 0;
 
         foreach ($all_projects as $project) {
@@ -38,4 +51,5 @@ class Consignee extends Model
         }
         return $total_amt;
     }
+
 }

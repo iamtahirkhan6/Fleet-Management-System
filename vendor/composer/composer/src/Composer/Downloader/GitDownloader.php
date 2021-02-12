@@ -316,7 +316,7 @@ class GitDownloader extends VcsDownloader implements DvcsDownloaderInterface
 
         $unpushed = $this->getUnpushedChanges($package, $path);
         if ($unpushed && ($this->io->isInteractive() || $this->config->get('discard-changes') !== true)) {
-            throw new RuntimeException('Source directory ' . $path . ' has unpushed changes on the current branch: '."\n".$unpushed);
+            throw new RuntimeException('LoadingPoints directory ' . $path . ' has unpushed changes on the current branch: '."\n".$unpushed);
         }
 
         if (!$changes = $this->getLocalChanges($package, $path)) {

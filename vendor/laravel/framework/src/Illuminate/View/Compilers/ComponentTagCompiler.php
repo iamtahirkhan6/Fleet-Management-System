@@ -2,16 +2,16 @@
 
 namespace Illuminate\View\Compilers;
 
-use ReflectionClass;
-use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\View\DynamicComponent;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\AnonymousComponent;
-use Illuminate\View\ViewFinderInterface;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Illuminate\View\AnonymousComponent;
+use Illuminate\View\DynamicComponent;
+use Illuminate\View\ViewFinderInterface;
+use InvalidArgumentException;
+use ReflectionClass;
 
 /**
  * @author Spatie bvba <info@spatie.be>
@@ -21,6 +21,7 @@ class ComponentTagCompiler
 {
     /**
      * The Blade compiler instance.
+     *
      * @var BladeCompiler
      */
     protected $blade;
@@ -47,11 +48,11 @@ class ComponentTagCompiler
     protected $boundAttributes = [];
 
     /**
-     * Create new component tag compiler.
+     * Create a new component tag compiler.
      *
-     * @param  array              $aliases
-     * @param  array              $namespaces
-     * @param  BladeCompiler|null $blade
+     * @param  array               $aliases
+     * @param  array               $namespaces
+     * @param  BladeCompiler|null  $blade
      *
      * @return void
      */
@@ -82,6 +83,7 @@ class ComponentTagCompiler
      * @param  string  $value
      *
      * @return string
+     *
      * @throws InvalidArgumentException
      */
     public function compileTags(string $value)
@@ -99,6 +101,7 @@ class ComponentTagCompiler
      * @param  string  $value
      *
      * @return string
+     *
      * @throws InvalidArgumentException
      */
     protected function compileOpeningTags(string $value)
@@ -151,6 +154,7 @@ class ComponentTagCompiler
      * @param  string  $value
      *
      * @return string
+     *
      * @throws InvalidArgumentException
      */
     protected function compileSelfClosingTags(string $value)
@@ -204,6 +208,7 @@ class ComponentTagCompiler
      * @param  array  $attributes
      *
      * @return string
+     *
      * @throws InvalidArgumentException
      */
     protected function componentString(string $component, array $attributes)
@@ -240,6 +245,7 @@ class ComponentTagCompiler
      * @param  string  $component
      *
      * @return string
+     *
      * @throws InvalidArgumentException
      */
     public function componentClass(string $component)
@@ -469,7 +475,7 @@ class ComponentTagCompiler
     }
 
     /**
-     * Parse the attribute bag in a given attribute string into it's fully-qualified syntax.
+     * Parse the attribute bag in a given attribute string into its fully-qualified syntax.
      *
      * @param  string  $attributeString
      * @return string

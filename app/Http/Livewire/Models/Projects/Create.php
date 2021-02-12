@@ -2,77 +2,67 @@
 
 namespace App\Http\Livewire\Models\Projects;
 
-use App\Domain\General\Models\Mine;
-use App\Domain\Project\Models\Project;
-use App\Domain\Company\Models\Company;
-use App\Domain\General\Models\Material;
-use App\Domain\Consignee\Models\Consignee;
-use App\Domain\General\Models\UnloadingPoint;
-
 use Livewire\Component;
+use App\Domain\Project\Models\Project;
+use App\Domain\General\Models\Material;
+use Illuminate\Database\QueryException;
+use App\Domain\Consignee\Models\Consignee;
+use App\Domain\Project\Actions\CreateProject;
+use App\Domain\LoadingPoint\Models\LoadingPoint;
+use App\Domain\UnloadingPoint\Models\UnloadingPoint;
 
 class Create extends Component
 {
-    public $sources;
-    public $destinations;
-    public $materials;
-    public $consignees;
-    public $companies;
-
     public Project $project;
 
+    public $loading_points;
+    public $unloading_points;
+    public $materials;
+    public $consignees;
+
     public $createSuccess = false;
-    public $createFail = false;
-
-    protected $rules = [
-        'project.material'      => 'required',
-        'project.consignee'     => 'required',
-        'project.source'        => 'required',
-        'project.destination'   => 'required',
-        'project.company_id'       => 'required',
-    ];
-
-    protected $messages = [
-        'project.material.required'     => 'The material cannot be empty.',
-        'project.consignee.required'    => 'The Consignee cannot be empty.',
-        'project.source.required'       => 'The Source cannot be empty.',
-        'project.destination.required'  => 'The Destination Address cannot be empty.',
-        'project.company_id.required'   => 'The Company cannot be empty.',
-    ];
+    public $createFail    = false;
 
     public function createProject()
     {
         $this->validate();
-
         $this->project->status = 1;
 
-        try{
+        try {
             $this->project->save();
-        } catch(\Illuminate\Database\QueryException $ex)
-        {
+        } catch (QueryException $ex) {
             $this->createFail = true;
         }
 
         $this->createSuccess = true;
     }
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function mount()
     {
-        $this->project      = new Project();
-        $this->sources      = Mine::all();
-        $this->destinations = UnloadingPoint::all();
-        $this->materials    = Material::all();
-        $this->consignees   = Consignee::all();
-        $this->companies    = Company::all();
+        $this->project          = new Project();
+        $this->loading_points   = LoadingPoint::all('id', 'name');
+        $this->unloading_points = UnloadingPoint::all('id', 'name');
+        $this->materials        = Material::all('id', 'name');
+        $this->consignees       = Consignee::all('id', 'name');
     }
 
     public function render()
     {
         return view('livewire.models.projects.create');
+    }
+
+    public function rules() : array
+    {
+        return CreateProject::rules('project.');
+    }
+
+    public function validationAttributes() : array
+    {
+        return CreateProject::validationAttributes('project.');
+    }
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 }

@@ -8,18 +8,18 @@ class CreateAddressesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('street_address')->nullable();
-            $table->string('street_address_two')->nullable();
+            $table->string('line_1')->nullable();
+            $table->string('line_2')->nullable();
             $table->string('city')->nullable();
-            $table->string('state')->nullable();
             $table->string('zip')->nullable();
+            $table->string('state')->nullable();
+            $table->morphs('addressable');
             $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
@@ -27,7 +27,6 @@ class CreateAddressesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()

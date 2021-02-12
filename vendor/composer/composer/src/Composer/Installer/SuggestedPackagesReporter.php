@@ -57,7 +57,7 @@ class SuggestedPackagesReporter
      * Could be used to add suggested packages both from the installer
      * or from CreateProjectCommand.
      *
-     * @param  string                    $source Source package which made the suggestion
+     * @param  string                    $source LoadingPoints package which made the suggestion
      * @param  string                    $target Target package to be suggested
      * @param  string                    $reason Reason the target package to be suggested
      * @return SuggestedPackagesReporter

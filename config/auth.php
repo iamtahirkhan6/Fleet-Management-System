@@ -58,7 +58,7 @@ return [
     | mechanisms used by this application to persist your user's data.
     |
     | If you have multiple user tables or models you may configure multiple
-    | sources which represent each model / table. These sources may then
+    | loading-points which represent each model / table. These loading-points may then
     | be assigned to any extra authentication guards you have defined.
     |
     | Supported: "database", "eloquent"

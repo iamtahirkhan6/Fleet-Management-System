@@ -2,6 +2,7 @@
 
 namespace Illuminate\Mail;
 
+use Throwable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Mail\Factory as MailFactory;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
@@ -14,7 +15,7 @@ class SendQueuedMailable
     /**
      * The mailable message instance.
      *
-     * @var \Illuminate\Contracts\Mail\Mailable
+     * @var MailableContract
      */
     public $mailable;
 
@@ -42,7 +43,8 @@ class SendQueuedMailable
     /**
      * Create a new job instance.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     * @param  MailableContract  $mailable
+     *
      * @return void
      */
     public function __construct(MailableContract $mailable)
@@ -57,7 +59,7 @@ class SendQueuedMailable
     /**
      * Handle the queued job.
      *
-     * @param  \Illuminate\Contracts\Mail\Factory  $factory
+     * @param  MailFactory  $factory
      * @return void
      */
     public function handle(MailFactory $factory)
@@ -78,7 +80,7 @@ class SendQueuedMailable
     /**
      * Call the failed method on the mailable instance.
      *
-     * @param  \Throwable  $e
+     * @param  Throwable  $e
      * @return void
      */
     public function failed($e)
@@ -89,7 +91,7 @@ class SendQueuedMailable
     }
 
     /**
-     * Get number of seconds before a released mailable will be available.
+     * Get the number of seconds before a released mailable will be available.
      *
      * @return mixed
      */

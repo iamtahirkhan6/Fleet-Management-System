@@ -199,7 +199,8 @@ class Stringable implements JsonSerializable
      *
      * @param  string  $delimiter
      * @param  int  $limit
-     * @return \Illuminate\Support\Collection
+     *
+     * @return Collection
      */
     public function explode($delimiter, $limit = PHP_INT_MAX)
     {
@@ -212,7 +213,8 @@ class Stringable implements JsonSerializable
      * @param  string|int  $pattern
      * @param  int  $limit
      * @param  int  $flags
-     * @return \Illuminate\Support\Collection
+     *
+     * @return Collection
      */
     public function split($pattern, $limit = -1, $flags = 0)
     {
@@ -321,6 +323,17 @@ class Stringable implements JsonSerializable
     }
 
     /**
+     * Convert GitHub flavored Markdown into HTML.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public function markdown(array $options = [])
+    {
+        return new static(Str::markdown($this->value, $options));
+    }
+
+    /**
      * Get the string matching the given pattern.
      *
      * @param  string  $pattern
@@ -341,7 +354,8 @@ class Stringable implements JsonSerializable
      * Get the string matching the given pattern.
      *
      * @param  string  $pattern
-     * @return \Illuminate\Support\Collection
+     *
+     * @return Collection
      */
     public function matchAll($pattern)
     {
@@ -496,9 +510,9 @@ class Stringable implements JsonSerializable
     /**
      * Replace the patterns matching the given regular expression.
      *
-     * @param  string  $pattern
-     * @param  \Closure|string  $replace
-     * @param  int  $limit
+     * @param  string          $pattern
+     * @param  Closure|string  $replace
+     * @param  int             $limit
      * @return static
      */
     public function replaceMatches($pattern, $replace, $limit = -1)
@@ -596,7 +610,7 @@ class Stringable implements JsonSerializable
     }
 
     /**
-     * Returns the portion of string specified by the start and length parameters.
+     * Returns the portion of the string specified by the start and length parameters.
      *
      * @param  int  $start
      * @param  int|null  $length

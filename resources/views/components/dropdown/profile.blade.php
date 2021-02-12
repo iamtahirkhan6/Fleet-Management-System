@@ -16,6 +16,7 @@
             </x-form-button>
         </div>
 
+        @role('manager')
         <div class="border-t border-gray-100"></div>
 
         <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -23,6 +24,7 @@
                 Company Settings
             </x-form-button>
         </div>
+        @endrole
 
         <div class="border-t border-gray-100"></div>
 

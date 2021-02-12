@@ -14,21 +14,22 @@ class Index extends Component
 
     public $perPage;
     public $searchTerm;
-    public $officeParameter;
+    public $office;
 
-    public function mount($_office = null)
+    public function mount($office = null)
     {
+        $this->office = $office;
         $this->perPage = 10;
     }
 
     public function render()
     {
-        return $this->officeParameter == null ? view('livewire.models.employees.index', [
+        return (!isset($this->office)) ? view('livewire.models.employees.index', [
             'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')
                 ->paginate($this->perPage)
         ]) : view('livewire.models.employees.index', [
             'employees' => Employee::where('name', 'like', '%' . $this->searchTerm . '%')
-                ->where('office_id', $this->officeParameter->id)
+                ->where('office_id', $this->office->id)
                 ->paginate($this->perPage)
         ]);
     }

@@ -57,6 +57,14 @@
                             @error('input.razorpay_key_secret') <p
                                 class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
+                        <div class="col-span-6 sm:w-3/6">
+                            <label for="last_name" class="block text-sm font-medium text-gray-700">Razorpay Account Number</label>
+                            <input type="text" wire:model.lazy="input.razorpay_account_number"
+                                   placeholder="{{ $company->razorpay_account_number }}"
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            @error('input.razorpay_key_secret') <p
+                                class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

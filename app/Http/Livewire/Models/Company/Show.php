@@ -2,15 +2,13 @@
 
 namespace App\Http\Livewire\Models\Company;
 
+use App\Domain\Company\Models\Company;
 use Livewire\Component;
 
 class Show extends Component
 {
-    public $company;
-    public function mount($company)
-    {
-        $this->company = $company;
-    }
+    public Company $company;
+
     public function render()
     {
         return view('livewire.models.company.show');

@@ -45,12 +45,14 @@ class WorkCommand extends Command
 
     /**
      * The queue worker instance.
+     *
      * @var Worker
      */
     protected $worker;
 
     /**
      * The cache store implementation.
+     *
      * @var Cache
      */
     protected $cache;
@@ -58,8 +60,8 @@ class WorkCommand extends Command
     /**
      * Create a new queue work command.
      *
-     * @param  Worker $worker
-     * @param  Cache  $cache
+     * @param  Worker  $worker
+     * @param  Cache   $cache
      *
      * @return void
      */
@@ -162,8 +164,8 @@ class WorkCommand extends Command
     /**
      * Write the status output for the queue worker.
      *
-     * @param Job     $job
-     * @param  string $status
+     * @param  Job     $job
+     * @param  string  $status
      *
      * @return void
      */
@@ -182,9 +184,9 @@ class WorkCommand extends Command
     /**
      * Format the status output for the queue worker.
      *
-     * @param Job     $job
-     * @param  string $status
-     * @param  string $type
+     * @param  Job     $job
+     * @param  string  $status
+     * @param  string  $type
      *
      * @return void
      */
@@ -201,7 +203,7 @@ class WorkCommand extends Command
     /**
      * Store a failed job event.
      *
-     * @param JobFailed $event
+     * @param  JobFailed  $event
      * @return void
      */
     protected function logFailedJob(JobFailed $event)

@@ -114,14 +114,11 @@ class TemporaryUpload extends Model implements HasMedia
             throw CouldNotAddUpload::uuidAlreadyExists();
         }
 
-        $mediaTemporaryUpload = $temporaryUpload->addMedia($file)
-                                                ->setName($name)
-                                                ->toMediaCollection('default', static::getDiskName());
-
-        // Handle edge-case when uuid is not filled
-        if (! $mediaTemporaryUpload->uuid) {
-            $mediaTemporaryUpload->update(compact('uuid'));
-        }
+        $temporaryUpload
+            ->addMedia($file)
+            ->setName($name)
+            ->toMediaCollection('default', static::getDiskName())
+            ->update(compact('uuid'));
 
         return $temporaryUpload->fresh();
     }

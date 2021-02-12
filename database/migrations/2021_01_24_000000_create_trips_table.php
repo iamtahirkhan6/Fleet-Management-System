@@ -17,7 +17,7 @@ class CreateTripsTable extends Migration
 
             $table->id();                                                                                            // Primary Id
             $table->date('date');                                                                           // Loading Date
-            $table->foreignId('trip_type');                                                                 // 01 = Market Vehicle, 2 = Owned Vehicle
+            $table->foreignId('trip_type')->constrained('trip_types');                              // 01 = Market Vehicle, 2 = Owned Vehicle
             $table->foreignId('project_id')->constrained('projects');                               // Project
             $table->foreignId('company_id')->constrained('companies');                              // Company
             $table->string('challan_serial')->nullable();                                                   // Challan Number

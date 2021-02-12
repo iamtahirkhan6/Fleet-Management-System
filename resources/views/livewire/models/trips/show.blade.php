@@ -1,6 +1,6 @@
 <x-description-list.main title="Trip Information" desc="All the details regarding the trip is available here.">
   <x-description-list.row :value="$trip->challan_serial"        background="bg-gray-50">Challan Number</x-description-list.row >
-  <x-description-list.row :value="$trip->date->format('d-m-Y')" background="bg-white">Loading Date</x-description-list.row >
+  <x-description-list.row :value="$trip->date->format('d-M-Y')" background="bg-white">Loading Date</x-description-list.row >
   <x-description-list.row :value="$trip->market_vehicle_number ?? $trip->fleetVehicle->number"       background="bg-gray-50">Vehicle Number</x-description-list.row >
   <x-description-list.row :value="$trip->tp_number"             background="bg-white"  >TP Number</x-description-list.row >
   <x-description-list.row :value="$trip->tp_serial"             background="bg-gray-50"  >TP Serial</x-description-list.row >
