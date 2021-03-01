@@ -16,7 +16,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($trips as $trip)
+            @forelse ($trips as $trip)
                 <tr  class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $trip->date }}</x-tables.basic.row>
@@ -27,10 +27,16 @@
                     <x-tables.basic.row amount="true" :amountVal="$trip->hsd">{{ $trip->hsd }}</x-tables.basic.row>
                     <x-tables.basic.row amount="true" :amountVal="$trip->cash">{{ $trip->cash }}</x-tables.basic.row>
                     <x-tables.basic.row amount="true" :amountVal="$trip->two_pay">{{ $trip->two_pay }}</x-tables.basic.row>
-                    <x-tables.basic.row :colorToggle="$trip->step_payment" trueVal="Completed" falseVal="Payment Pending"></x-tables.basic.>
+                    <x-tables.basic.row :colorToggle="$trip->step_payment" trueVal="Completed" falseVal="Payment Pending"></x-tables.basic.row>
                     <x-tables.basic.row link="/parties/{{ $trip->id }}/trips/{{ $trip->id }}">View</x-tables.basic.row>
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

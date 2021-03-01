@@ -47,8 +47,7 @@ class CreateMarketVehicleTrip
             $trip->save();
 
             return $trip;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -78,6 +77,8 @@ class CreateMarketVehicleTrip
             $prefix . 'market_vehicle_number.required'  => 'Vehicle Number cannot be empty.',
             $prefix . 'market_vehicle_number.alpha_num' => 'Vehicle Number is not valid.',
             $prefix . 'market_vehicle_number.regex'     => 'Vehicle Number cannot have spaces.',
+            $prefix . 'challan_soft_copy.max'           => 'Challan Copy can not be more than 10mb.',
+            $prefix . 'challan_soft_copy.image'         => 'Challan Copy should be in image format.',
         ];
     }
 
@@ -101,6 +102,7 @@ class CreateMarketVehicleTrip
             $prefix . 'cash'                  => 'nullable|numeric',
             $prefix . 'party_name'            => 'nullable|alpha_spaces',
             $prefix . 'party_number'          => 'nullable|numeric|digits:10',
+            $prefix . 'challan_soft_copy'     => 'nullable|image|max:10240',
         ];
     }
 }

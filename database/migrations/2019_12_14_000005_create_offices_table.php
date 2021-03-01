@@ -16,10 +16,6 @@ class CreateOfficesTable extends Migration
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('street_address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('zip')->nullable();
             $table->foreignId('company_id')->references('id')->on('companies');
             $table->timestamps();
         });

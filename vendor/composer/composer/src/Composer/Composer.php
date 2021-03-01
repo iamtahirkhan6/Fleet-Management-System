@@ -12,15 +12,15 @@
 
 namespace Composer;
 
-use Composer\Util\Loop;
-use Composer\Package\Locker;
-use Composer\Plugin\PluginManager;
-use Composer\Downloader\DownloadManager;
-use Composer\Autoload\AutoloadGenerator;
 use Composer\Package\RootPackageInterface;
+use Composer\Package\Locker;
+use Composer\Util\Loop;
 use Composer\Repository\RepositoryManager;
 use Composer\Installer\InstallationManager;
+use Composer\Plugin\PluginManager;
+use Composer\Downloader\DownloadManager;
 use Composer\EventDispatcher\EventDispatcher;
+use Composer\Autoload\AutoloadGenerator;
 use Composer\Package\Archiver\ArchiveManager;
 
 /**
@@ -51,9 +51,9 @@ class Composer
      * const RELEASE_DATE = '@release_date@';
      * const SOURCE_VERSION = '1.8-dev+source';
      */
-    const VERSION = '2.0.9';
+    const VERSION = '2.0.11';
     const BRANCH_ALIAS_VERSION = '';
-    const RELEASE_DATE = '2021-01-27 16:09:27';
+    const RELEASE_DATE = '2021-02-24 14:57:23';
     const SOURCE_VERSION = '';
 
     /**

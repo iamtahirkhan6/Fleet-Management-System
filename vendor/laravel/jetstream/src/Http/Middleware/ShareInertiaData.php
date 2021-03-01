@@ -3,7 +3,6 @@
 namespace Laravel\Jetstream\Http\Middleware;
 
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -30,8 +29,10 @@ class ShareInertiaData
                     'canUpdatePassword' => Features::enabled(Features::updatePasswords()),
                     'canUpdateProfileInformation' => Features::canUpdateProfileInformation(),
                     'flash' => $request->session()->get('flash', []),
+                    'hasAccountDeletionFeatures' => Jetstream::hasAccountDeletionFeatures(),
                     'hasApiFeatures' => Jetstream::hasApiFeatures(),
                     'hasTeamFeatures' => Jetstream::hasTeamFeatures(),
+                    'hasTermsAndPrivacyPolicyFeature' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
                     'managesProfilePhotos' => Jetstream::managesProfilePhotos(),
                 ];
             },
@@ -55,7 +56,6 @@ class ShareInertiaData
                     return [$key => $bag->messages()];
                 })->all();
             },
-            'currentRouteName' => Route::currentRouteName(),
         ]));
 
         return $next($request);

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection\Map;
 
+use Ramsey\Collection\Exception\InvalidArgumentException;
 use Ramsey\Collection\Tool\TypeTrait;
 use Ramsey\Collection\Tool\ValueToStringTrait;
-use Ramsey\Collection\Exception\InvalidArgumentException;
 
 /**
  * This class provides a basic implementation of `TypedMapInterface`, to

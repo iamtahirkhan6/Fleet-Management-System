@@ -11,7 +11,7 @@ trait GuardsAttributes
      *
      * @var string[]
      */
-    protected array $fillable = [];
+    protected $fillable = [];
 
     /**
      * The attributes that aren't mass assignable.

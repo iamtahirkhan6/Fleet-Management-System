@@ -2,11 +2,9 @@
 
 namespace Illuminate\Support;
 
-use Traversable;
 use ArrayIterator;
 use Closure;
 use DateTimeInterface;
-use InvalidArgumentException;
 use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
 use IteratorAggregate;
@@ -820,7 +818,7 @@ class LazyCollection implements Enumerable
      * @param  int|null  $number
      * @return static|mixed
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function random($number = null)
     {
@@ -1212,7 +1210,7 @@ class LazyCollection implements Enumerable
     /**
      * Take items in the collection until a given point in time.
      *
-     * @param  DateTimeInterface  $timeout
+     * @param  \DateTimeInterface  $timeout
      * @return static
      */
     public function takeUntilTimeout(DateTimeInterface $timeout)
@@ -1327,7 +1325,7 @@ class LazyCollection implements Enumerable
     /**
      * Get the values iterator.
      *
-     * @return Traversable
+     * @return \Traversable
      */
     public function getIterator()
     {
@@ -1352,7 +1350,7 @@ class LazyCollection implements Enumerable
      * Make an iterator from the given source.
      *
      * @param  mixed  $source
-     * @return Traversable
+     * @return \Traversable
      */
     protected function makeIterator($source)
     {

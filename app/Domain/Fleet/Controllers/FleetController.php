@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Domain\Fleet\Models\Fleet;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application;
 
@@ -14,31 +15,40 @@ class FleetController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Application|Factory|View
+     *
+     * @return Application|Factory|View|void
      */
     public function index()
     {
-        return view('page')->with('livewire', 'models.fleets.index')->with('title', 'Your Fleets')->with('description', 'View all the fleets in your company');
-    }
+        if (!Auth::user()
+            ->isAbleTo('fleets-read')) return abort(403);
 
-    public function live(Fleet $fleet)
-    {
-        return view('page')->with('livewire', 'models.fleets.live.index')->with('title', 'Your Fleets')->with('description', 'View all the fleets in your company')->with('key', 'fleet')->with('val', $fleet);
+        return view('page')
+            ->with('livewire', 'models.fleets.index')
+            ->with('title', 'Your Fleets')
+            ->with('description', 'View all the fleets in your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     *
+     * @return Application|Factory|View|void
      */
     public function create()
     {
-        abort(404);
+        if (!Auth::user()
+            ->isAbleTo('fleets-create')) return abort(403);
+
+        return view('page')
+            ->with('livewire', 'models.fleets.create')
+            ->with('title', 'Add a Fleet')
+            ->with('description', 'Add a new fleet to your company');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -50,7 +60,7 @@ class FleetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Fleet $fleet
+     * @param  Fleet  $fleet
      *
      * @return Response
      */
@@ -62,7 +72,7 @@ class FleetController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Fleet $fleet
+     * @param  Fleet  $fleet
      *
      * @return Response
      */
@@ -74,8 +84,8 @@ class FleetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Fleet   $fleet
+     * @param  Request  $request
+     * @param  Fleet    $fleet
      *
      * @return Response
      */
@@ -87,12 +97,22 @@ class FleetController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Fleet $fleet
+     * @param  Fleet  $fleet
      *
      * @return Response
      */
     public function destroy(Fleet $fleet)
     {
         abort(404);
+    }
+
+    public function live(Fleet $fleet)
+    {
+        return view('page')
+            ->with('livewire', 'models.fleets.live.index')
+            ->with('title', 'Your Fleets')
+            ->with('description', 'View all the fleets in your company')
+            ->with('key', 'fleet')
+            ->with('val', $fleet);
     }
 }

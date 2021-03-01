@@ -725,7 +725,7 @@ class Command
 
         $testsDirectory = trim(fgets(STDIN));
 
-        print 'LoadingPoints directory (relative to path shown above; default: src): ';
+        print 'Source directory (relative to path shown above; default: src): ';
 
         $src = trim(fgets(STDIN));
 

@@ -10,6 +10,7 @@ use App\Domain\Project\Models\Project;
 class Index extends Component
 {
     public Project $project;
+
     use WithPagination;
 
     public function render()

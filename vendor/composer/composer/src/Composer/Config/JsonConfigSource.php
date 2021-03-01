@@ -12,15 +12,13 @@
 
 namespace Composer\Config;
 
-use stdClass;
-use RuntimeException;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
 use Composer\Json\JsonValidationException;
 use Composer\Util\Silencer;
 
 /**
- * JSON Configuration LoadingPoints
+ * JSON Configuration Source
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Beau Simensen <beau@dflydev.com>
@@ -104,7 +102,7 @@ class JsonConfigSource implements ConfigSourceInterface
         $authConfig = $this->authConfig;
         $this->manipulateJson('addConfigSetting', $name, $value, function (&$config, $key, $val) use ($authConfig) {
             if (preg_match('{^(bitbucket-oauth|github-oauth|gitlab-oauth|gitlab-token|bearer|http-basic|platform)\.}', $key)) {
-                [$key, $host] = explode('.', $key, 2);
+                list($key, $host) = explode('.', $key, 2);
                 if ($authConfig) {
                     $config[$key][$host] = $val;
                 } else {
@@ -124,7 +122,7 @@ class JsonConfigSource implements ConfigSourceInterface
         $authConfig = $this->authConfig;
         $this->manipulateJson('removeConfigSetting', $name, function (&$config, $key) use ($authConfig) {
             if (preg_match('{^(bitbucket-oauth|github-oauth|gitlab-oauth|gitlab-token|bearer|http-basic|platform)\.}', $key)) {
-                [$key, $host] = explode('.', $key, 2);
+                list($key, $host) = explode('.', $key, 2);
                 if ($authConfig) {
                     unset($config[$key][$host]);
                 } else {
@@ -216,11 +214,11 @@ class JsonConfigSource implements ConfigSourceInterface
 
         if ($this->file->exists()) {
             if (!is_writable($this->file->getPath())) {
-                throw new RuntimeException(sprintf('The file "%s" is not writable.', $this->file->getPath()));
+                throw new \RuntimeException(sprintf('The file "%s" is not writable.', $this->file->getPath()));
             }
 
             if (!is_readable($this->file->getPath())) {
-                throw new RuntimeException(sprintf('The file "%s" is not readable.', $this->file->getPath()));
+                throw new \RuntimeException(sprintf('The file "%s" is not readable.', $this->file->getPath()));
             }
 
             $contents = file_get_contents($this->file->getPath());
@@ -237,11 +235,11 @@ class JsonConfigSource implements ConfigSourceInterface
         // override manipulator method for auth config files
         if ($this->authConfig && $method === 'addConfigSetting') {
             $method = 'addSubNode';
-            [$mainNode, $name] = explode('.', $args[0], 2);
+            list($mainNode, $name) = explode('.', $args[0], 2);
             $args = array($mainNode, $name, $args[1]);
         } elseif ($this->authConfig && $method === 'removeConfigSetting') {
             $method = 'removeSubNode';
-            [$mainNode, $name] = explode('.', $args[0], 2);
+            list($mainNode, $name) = explode('.', $args[0], 2);
             $args = array($mainNode, $name);
         }
 
@@ -256,20 +254,20 @@ class JsonConfigSource implements ConfigSourceInterface
             // avoid ending up with arrays for keys that should be objects
             foreach (array('require', 'require-dev', 'conflict', 'provide', 'replace', 'suggest', 'config', 'autoload', 'autoload-dev', 'scripts', 'scripts-descriptions', 'support') as $prop) {
                 if (isset($config[$prop]) && $config[$prop] === array()) {
-                    $config[$prop] = new stdClass;
+                    $config[$prop] = new \stdClass;
                 }
             }
             foreach (array('psr-0', 'psr-4') as $prop) {
                 if (isset($config['autoload'][$prop]) && $config['autoload'][$prop] === array()) {
-                    $config['autoload'][$prop] = new stdClass;
+                    $config['autoload'][$prop] = new \stdClass;
                 }
                 if (isset($config['autoload-dev'][$prop]) && $config['autoload-dev'][$prop] === array()) {
-                    $config['autoload-dev'][$prop] = new stdClass;
+                    $config['autoload-dev'][$prop] = new \stdClass;
                 }
             }
             foreach (array('platform', 'http-basic', 'bearer', 'gitlab-token', 'gitlab-oauth', 'github-oauth', 'preferred-install') as $prop) {
                 if (isset($config['config'][$prop]) && $config['config'][$prop] === array()) {
-                    $config['config'][$prop] = new stdClass;
+                    $config['config'][$prop] = new \stdClass;
                 }
             }
             $this->file->write($config);
@@ -280,7 +278,7 @@ class JsonConfigSource implements ConfigSourceInterface
         } catch (JsonValidationException $e) {
             // restore contents to the original state
             file_put_contents($this->file->getPath(), $contents);
-            throw new RuntimeException('Failed to update composer.json with a valid format, reverting to the original content. Please report an issue to us with details (command you run and a copy of your composer.json).', 0, $e);
+            throw new \RuntimeException('Failed to update composer.json with a valid format, reverting to the original content. Please report an issue to us with details (command you run and a copy of your composer.json).', 0, $e);
         }
 
         if ($newFile) {

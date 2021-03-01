@@ -16,8 +16,9 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('short_name');
-            $table->string('gstin')->nullable();
+            $table->string('short_code');
+            $table->string('trade_name')->nullable();
+            $table->string('gstn')->nullable();
             $table->string('pan')->nullable();
             $table->boolean('use_razorpay')->default(0);
             $table->string('razorpay_key_id')->nullable();

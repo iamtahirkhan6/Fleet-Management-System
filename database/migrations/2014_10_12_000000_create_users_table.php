@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
@@ -18,13 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->bigInteger('phone_number')->unique()->nullable();
             $table->string('password');
-            $table->string('email')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->text('profile_photo_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE `users` MODIFY COLUMN `phone_number` BIGINT (10);');
     }
 
     /**

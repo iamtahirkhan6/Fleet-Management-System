@@ -10,12 +10,46 @@ use App\Domain\General\Models\PhoneNumber;
 use App\Domain\Payment\Models\BankAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Domain\Employee\Models\Employee
+ *
+ * @property int $id
+ * @property string|null $name
+ * @property float|null $salary
+ * @property string|null $email
+ * @property int $office_id
+ * @property int $company_id
+ * @property int $employee_designation_id
+ * @property int|null $is_currently_hired
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read BankAccount|null $bankAccount
+ * @property-read \App\Domain\Employee\Models\EmployeesDesignation|null $designation
+ * @property-read \App\Domain\Office\Models\Office|null $office
+ * @property-read PhoneNumber|null $phoneNumber
+ * @property-read \Illuminate\Database\Eloquent\Collection|Trip[] $trips
+ * @property-read int|null $trips_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereEmployeeDesignationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereIsCurrentlyHired($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereOfficeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereSalary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Employee extends Model
 {
     use HasFactory;
     use MultiTenable;
 
-    protected array $fillable = [
+    protected $fillable = [
         'name',
         'salary',
         'email',

@@ -9,7 +9,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <input type="text" wire:model="searchTerm"
+                        <input type="text" wire:model.lazy="searchTerm"
                             class="block w-full pl-10 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Search Party">
                     </div>
@@ -18,7 +18,7 @@
 
             <div class="inline-flex flex-1 mt-1 ml-5">
                 <span class="mt-2 mr-3 text-gray-500">Per Page</span>
-                <select wire:model="perPage" id="location" name="location"
+                <select wire:model.lazy="perPage" id="location" name="location"
                     class="block py-2 pl-3 pr-10 mt-1 text-base border-gray-300 rounded-md w-min focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option selected value="10">10</option>
                     <option value="25">25</option>
@@ -41,7 +41,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($parties as $party)
+            @forelse ($parties as $party)
                 <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $party->name }}</x-tables.basic.row>
@@ -52,7 +52,13 @@
                     <x-tables.basic.row link="/parties/{{ $party->id }}">View</x-tables.basic.row>
 
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">

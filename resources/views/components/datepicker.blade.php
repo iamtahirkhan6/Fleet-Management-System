@@ -1,7 +1,7 @@
-<input wire:ignore
-    x-data
-    x-ref="input"
-    x-init="picker = new Pikaday({
+<input class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:ignore
+       x-data
+       x-ref="input"
+       x-init="picker = new Pikaday({
                 field: $refs.input,
                 format: 'D-M-YYYY',
                 toString(date, format) {
@@ -18,10 +18,10 @@
                     return Date(year, month, day);
                 }
             })"
-    type="text"
-    readonly
-    onchange="this.dispatchEvent(new InputEvent('input'))"
+       type="text"
+       readonly
+       onchange="this.dispatchEvent(new InputEvent('input'))"
     {{ $attributes }} />
-    @push('modals')
-        <script type="text/javascript">function pad(n) { return ( n <10 ? '0'+ n : n); }</script>
-    @endpush
+@push('modals')
+    <script type="text/javascript">function pad(n) { return ( n <10 ? '0'+ n : n); }</script>
+@endpush

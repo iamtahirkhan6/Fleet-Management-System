@@ -56,17 +56,6 @@
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
-  'intervention/image' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Intervention\\Image\\ImageServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Image' => 'Intervention\\Image\\Facades\\Image',
-    ),
-  ),
   'jenssegers/agent' => 
   array (
     'providers' => 
@@ -76,17 +65,6 @@
     'aliases' => 
     array (
       'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
-    ),
-  ),
-  'kbs1/laravel-abbreviations' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Kbs1\\Abbreviations\\AbbreviationsServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Abbreviation' => 'Kbs1\\Abbreviations\\Abbreviation',
     ),
   ),
   'laravel/fortify' => 
@@ -176,20 +154,6 @@
     'aliases' => 
     array (
       'Laratrust' => 'Laratrust\\LaratrustFacade',
-    ),
-  ),
-  'spatie/laravel-medialibrary' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
-    ),
-  ),
-  'spatie/laravel-medialibrary-pro' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\MediaLibraryPro\\MediaLibraryProServiceProvider',
     ),
   ),
 );

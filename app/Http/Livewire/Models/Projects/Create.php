@@ -15,10 +15,10 @@ class Create extends Component
 {
     public Project $project;
 
-    public $loading_points;
-    public $unloading_points;
     public $materials;
     public $consignees;
+    public $loading_points;
+    public $unloading_points;
 
     public $createSuccess = false;
     public $createFail    = false;
@@ -26,6 +26,7 @@ class Create extends Component
     public function createProject()
     {
         $this->validate();
+        $this->project->name = LoadingPoint::find($this->project->loading_point_id, 'short_code')->short_code."/".UnloadingPoint::find($this->project->unloading_point_id, 'short_code')->short_code."/".Consignee::find($this->project->consignee_id,'short_code')->short_code;
         $this->project->status = 1;
 
         try {

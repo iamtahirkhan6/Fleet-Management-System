@@ -13,8 +13,7 @@
         <div class="px-4 border-b border-gray-200"></div>
     @endif
     <div @if(isset($attributes["topGap"]) && $attributes["topGap"] == "false") class="px-4 py-5 sm:p-6 sm:pt-1" @else
-    class="px-4 py-5
-    sm:p-6" @endif>
+    class="px-4 py-5 sm:p-6" @endif>
         <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
             {{ $slot }}
         </div>
@@ -29,7 +28,8 @@
             @endif
             <button type="submit"
                     class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600
-                    border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                <x-tabler-loader-quarter class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" wire:loading wire:loading.attr="disabled" />
                 Submit
             </button>
         </div>

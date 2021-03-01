@@ -577,7 +577,7 @@ begged the Mouse to tell them something more.
 it is you hate--C and D,' she added in a whisper, half afraid that it
 would be offended again.
 
-'LoadingPoints is a long and a sad tale!' said the Mouse, turning to Alice, and
+'Mine is a long and a sad tale!' said the Mouse, turning to Alice, and
 sighing.
 
 'It IS a long tail, certainly,' said Alice, looking down with wonder at

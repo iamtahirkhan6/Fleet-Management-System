@@ -16,10 +16,12 @@ class CreateConsigneesTable extends Migration
         Schema::create('consignees', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('short_code')->unique();
-            $table->string('gstin')->nullable();
+            $table->string('trade_name')->nullable();
+            $table->string('short_code');
+            $table->string('gstn')->nullable();
             $table->string('pan')->nullable();
             $table->foreignId('company_id')->constrained('companies');
+            $table->unique(['short_code', 'company_id'], 'uniq_short_code');
             $table->timestamps();
         });
     }

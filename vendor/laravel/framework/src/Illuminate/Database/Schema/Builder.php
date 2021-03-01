@@ -4,33 +4,31 @@ namespace Illuminate\Database\Schema;
 
 use Closure;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\DBALException;
 use Illuminate\Database\Connection;
 use InvalidArgumentException;
 use LogicException;
 use RuntimeException;
-use Illuminate\Database\Schema\Grammars\Grammar;
 
 class Builder
 {
     /**
      * The database connection instance.
      *
-     * @var Connection
+     * @var \Illuminate\Database\Connection
      */
     protected $connection;
 
     /**
      * The schema grammar instance.
      *
-     * @var Grammar
+     * @var \Illuminate\Database\Schema\Grammars\Grammar
      */
     protected $grammar;
 
     /**
      * The Blueprint resolver callback.
      *
-     * @var Closure
+     * @var \Closure
      */
     protected $resolver;
 
@@ -51,8 +49,7 @@ class Builder
     /**
      * Create a new database Schema manager.
      *
-     * @param  Connection  $connection
-     *
+     * @param  \Illuminate\Database\Connection  $connection
      * @return void
      */
     public function __construct(Connection $connection)
@@ -200,9 +197,8 @@ class Builder
     /**
      * Modify a table on the schema.
      *
-     * @param  string   $table
-     * @param  Closure  $callback
-     *
+     * @param  string  $table
+     * @param  \Closure  $callback
      * @return void
      */
     public function table($table, Closure $callback)
@@ -213,9 +209,8 @@ class Builder
     /**
      * Create a new table on the schema.
      *
-     * @param  string   $table
-     * @param  Closure  $callback
-     *
+     * @param  string  $table
+     * @param  \Closure  $callback
      * @return void
      */
     public function create($table, Closure $callback)
@@ -272,7 +267,7 @@ class Builder
      *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function dropAllTables()
     {
@@ -284,7 +279,7 @@ class Builder
      *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function dropAllViews()
     {
@@ -296,7 +291,7 @@ class Builder
      *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function dropAllTypes()
     {
@@ -308,7 +303,7 @@ class Builder
      *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function getAllTables()
     {
@@ -356,8 +351,7 @@ class Builder
     /**
      * Execute the blueprint to build / modify the table.
      *
-     * @param  Blueprint  $blueprint
-     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return void
      */
     protected function build(Blueprint $blueprint)
@@ -368,10 +362,9 @@ class Builder
     /**
      * Create a new command set with a Closure.
      *
-     * @param  string        $table
-     * @param  Closure|null  $callback
-     *
-     * @return Blueprint
+     * @param  string  $table
+     * @param  \Closure|null  $callback
+     * @return \Illuminate\Database\Schema\Blueprint
      */
     protected function createBlueprint($table, Closure $callback = null)
     {
@@ -394,8 +387,8 @@ class Builder
      * @param  string  $type
      * @return void
      *
-     * @throws DBALException
-     * @throws RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
      */
     public function registerCustomDoctrineType($class, $name, $type)
     {
@@ -418,7 +411,7 @@ class Builder
     /**
      * Get the database connection instance.
      *
-     * @return Connection
+     * @return \Illuminate\Database\Connection
      */
     public function getConnection()
     {
@@ -428,8 +421,7 @@ class Builder
     /**
      * Set the database connection instance.
      *
-     * @param  Connection  $connection
-     *
+     * @param  \Illuminate\Database\Connection  $connection
      * @return $this
      */
     public function setConnection(Connection $connection)
@@ -442,8 +434,7 @@ class Builder
     /**
      * Set the Schema Blueprint resolver callback.
      *
-     * @param  Closure  $resolver
-     *
+     * @param  \Closure  $resolver
      * @return void
      */
     public function blueprintResolver(Closure $resolver)

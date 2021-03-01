@@ -44,21 +44,21 @@ abstract class Component
     /**
      * The component attributes.
      *
-     * @var ComponentAttributeBag
+     * @var \Illuminate\View\ComponentAttributeBag
      */
     public $attributes;
 
     /**
      * Get the view / view contents that represent the component.
      *
-     * @return ViewContract|Htmlable|Closure|string
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     abstract public function render();
 
     /**
      * Resolve the Blade view or view file that should be used when rendering the component.
      *
-     * @return ViewContract|Htmlable|Closure|string
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     public function resolveView()
     {
@@ -192,7 +192,7 @@ abstract class Component
     /**
      * Create a callable variable from the given method.
      *
-     * @param  ReflectionMethod  $method
+     * @param  \ReflectionMethod  $method
      * @return mixed
      */
     protected function createVariableFromMethod(ReflectionMethod $method)
@@ -206,7 +206,7 @@ abstract class Component
      * Create an invokable, toStringable variable for the given component method.
      *
      * @param  string  $method
-     * @return InvokableComponentVariable
+     * @return \Illuminate\View\InvokableComponentVariable
      */
     protected function createInvokableVariable(string $method)
     {
@@ -277,8 +277,7 @@ abstract class Component
      * Get a new attribute bag instance.
      *
      * @param  array  $attributes
-     *
-     * @return ComponentAttributeBag
+     * @return \Illuminate\View\ComponentAttributeBag
      */
     protected function newAttributeBag(array $attributes = [])
     {

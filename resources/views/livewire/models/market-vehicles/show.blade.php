@@ -9,9 +9,9 @@
   </div>
   <div class="border-t border-gray-200">
     <dl>
-        <x-description-list.row :value="$vehicle->number"           background="bg-gray-50">Vehicle Number</x-description-list.row >
+        <x-description-list.row :value="$vehicle->license_plate"           background="bg-gray-50">Vehicle Number</x-description-list.row >
         <x-description-list.row :value="$vehicle->all_trips()"      background="bg-white">Trips</x-description-list.row >
-       
+
     </dl>
   </div>
 </div>
@@ -95,7 +95,7 @@
         <x-description-list.row :value="$rc_details->engine_number"     background="bg-gray-50">Engine Number</x-description-list.row >
         <x-description-list.row :value="$rc_details->authority"         background="bg-white">Registration Authority</x-description-list.row >
         <x-description-list.row :value="$rc_details->rto_code"          background="bg-gray-50">RTO Code</x-description-list.row >
-       
+
     </dl>
   </div>
 </div>

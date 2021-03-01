@@ -12,8 +12,8 @@ class MySqlSchemaState extends SchemaState
     /**
      * Dump the database's schema into a file.
      *
-     * @param  Connection  $connection
-     * @param  string      $path
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $path
      * @return void
      */
     public function dump(Connection $connection, $path)
@@ -133,11 +133,10 @@ class MySqlSchemaState extends SchemaState
     /**
      * Execute the given dump process.
      *
-     * @param  Process   $process
+     * @param  \Symfony\Component\Process\Process  $process
      * @param  callable  $output
-     * @param  array     $variables
-     *
-     * @return Process
+     * @param  array  $variables
+     * @return \Symfony\Component\Process\Process
      */
     protected function executeDumpProcess(Process $process, $output, array $variables)
     {

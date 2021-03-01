@@ -2,8 +2,6 @@
 
 namespace Illuminate\Testing;
 
-use Closure;
-use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 
@@ -12,21 +10,21 @@ class ParallelTesting
     /**
      * The container instance.
      *
-     * @var Container
+     * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
 
     /**
      * The options resolver callback.
      *
-     * @var Closure|null
+     * @var \Closure|null
      */
     protected $optionsResolver;
 
     /**
      * The token resolver callback.
      *
-     * @var Closure|null
+     * @var \Closure|null
      */
     protected $tokenResolver;
 
@@ -45,6 +43,13 @@ class ParallelTesting
     protected $setUpTestCaseCallbacks = [];
 
     /**
+     * All of the registered "setUp" test database callbacks.
+     *
+     * @var array
+     */
+    protected $setUpTestDatabaseCallbacks = [];
+
+    /**
      * All of the registered "tearDown" process callbacks.
      *
      * @var array
@@ -61,8 +66,7 @@ class ParallelTesting
     /**
      * Create a new parallel testing instance.
      *
-     * @param  Container  $container
-     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     public function __construct(Container $container)
@@ -73,7 +77,7 @@ class ParallelTesting
     /**
      * Set a callback that should be used when resolving options.
      *
-     * @param  Closure|null  $callback
+     * @param  \Closure|null  $callback
      * @return void
      */
     public function resolveOptionsUsing($resolver)
@@ -84,7 +88,7 @@ class ParallelTesting
     /**
      * Set a callback that should be used when resolving the unique process token.
      *
-     * @param  Closure|null  $callback
+     * @param  \Closure|null  $callback
      * @return void
      */
     public function resolveTokenUsing($resolver)
@@ -112,6 +116,17 @@ class ParallelTesting
     public function setUpTestCase($callback)
     {
         $this->setUpTestCaseCallbacks[] = $callback;
+    }
+
+    /**
+     * Register a "setUp" test database callback.
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public function setUpTestDatabase($callback)
+    {
+        $this->setUpTestDatabaseCallbacks[] = $callback;
     }
 
     /**
@@ -155,7 +170,7 @@ class ParallelTesting
     /**
      * Call all of the "setUp" test case callbacks.
      *
-     * @param  TestCase  $testCase
+     * @param  \Illuminate\Foundation\Testing\TestCase  $testCase
      * @return void
      */
     public function callSetUpTestCaseCallbacks($testCase)
@@ -164,6 +179,24 @@ class ParallelTesting
             foreach ($this->setUpTestCaseCallbacks as $callback) {
                 $this->container->call($callback, [
                     'testCase' => $testCase,
+                    'token' => $this->token(),
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Call all of the "setUp" test database callbacks.
+     *
+     * @param  string  $database
+     * @return void
+     */
+    public function callSetUpTestDatabaseCallbacks($database)
+    {
+        $this->whenRunningInParallel(function () use ($database) {
+            foreach ($this->setUpTestDatabaseCallbacks as $callback) {
+                $this->container->call($callback, [
+                    'database' => $database,
                     'token' => $this->token(),
                 ]);
             }
@@ -189,7 +222,7 @@ class ParallelTesting
     /**
      * Call all of the "tearDown" test case callbacks.
      *
-     * @param  TestCase  $testCase
+     * @param  \Illuminate\Foundation\Testing\TestCase  $testCase
      * @return void
      */
     public function callTearDownTestCaseCallbacks($testCase)

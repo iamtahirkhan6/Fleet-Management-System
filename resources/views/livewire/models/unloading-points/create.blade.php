@@ -8,16 +8,16 @@
 
         <!-- Short Code -->
         <x-forms.basic-stacked.column title="Short Code Name">
-            <x-forms.basic-stacked.input-basic wire:model="unloadingpoint.short_code" placeholder="Enter the short code">
+            <x-forms.basic-stacked.input-basic wire:model.lazy="unloadingpoint.name" placeholder="Enter the short code">
             </x-forms.basic-stacked.input-basic>
-            @error('unloadingpoint.short_code') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('unloadingpoint.name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
         <!-- Name -->
         <x-forms.basic-stacked.column title="Unloading Point Name">
-            <x-forms.basic-stacked.input-basic wire:model="unloadingpoint.name" placeholder="Enter the unloading point name">
+            <x-forms.basic-stacked.input-basic wire:model.lazy="unloadingpoint.short_code" placeholder="Enter the unloading point name">
             </x-forms.basic-stacked.input-basic>
-            @error('unloadingpoint.name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            @error('unloadingpoint.short_code') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
     </x-forms.basic-stacked.form>

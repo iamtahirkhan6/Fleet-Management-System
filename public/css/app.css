@@ -1,3 +1,5 @@
+/*! tailwindcss v2.0.3 | MIT License | https://tailwindcss.com */
+
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /*
@@ -22,7 +24,7 @@ Use a more readable tab size (opinionated).
 :root {
   -moz-tab-size: 4;
   -o-tab-size: 4;
-  tab-size: 4;
+     tab-size: 4;
 }
 
 /**
@@ -91,7 +93,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr[title] {
   -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
 /**
@@ -440,15 +442,18 @@ textarea {
 }
 
 input::-moz-placeholder, textarea::-moz-placeholder {
+  opacity: 1;
   color: #9ca3af;
 }
 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  opacity: 1;
   color: #9ca3af;
 }
 
 input::placeholder,
 textarea::placeholder {
+  opacity: 1;
   color: #9ca3af;
 }
 
@@ -564,8 +569,8 @@ video {
       select
      {
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   background-color: #fff;
   border-color: #6b7280;
   border-width: 1px;
@@ -621,7 +626,7 @@ select {
   background-size: 1.5em 1.5em;
   padding-right: 2.5rem;
   -webkit-print-color-adjust: exact;
-  color-adjust: exact;
+          color-adjust: exact;
 }
 
 [multiple] {
@@ -631,7 +636,7 @@ select {
   background-size: initial;
   padding-right: 0.75rem;
   -webkit-print-color-adjust: unset;
-  color-adjust: unset;
+          color-adjust: unset;
 }
 
 
@@ -639,18 +644,18 @@ select {
       [type='radio']
      {
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   padding: 0;
   -webkit-print-color-adjust: exact;
-  color-adjust: exact;
+          color-adjust: exact;
   display: inline-block;
   vertical-align: middle;
   background-origin: border-box;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   flex-shrink: 0;
   height: 1rem;
   width: 1rem;
@@ -3735,8 +3740,8 @@ select {
 
 .appearance-none {
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 
 .bg-fixed {
@@ -3765,7 +3770,7 @@ select {
 
 .bg-clip-text {
   -webkit-background-clip: text;
-  background-clip: text;
+          background-clip: text;
 }
 
 .bg-transparent {
@@ -12452,6 +12457,10 @@ select {
   cursor: move;
 }
 
+.cursor-help {
+  cursor: help;
+}
+
 .cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -13134,6 +13143,26 @@ select {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-screen\/2 {
+  height: 50vh;
+}
+
+.h-screen\/3 {
+  height: calc(100vh / 3);
+}
+
+.h-screen\/4 {
+  height: calc(100vh / 4);
+}
+
+.h-screen\/5 {
+  height: calc(100vh / 5);
+}
+
+.h-screen\/75 {
+  height: calc(100vh / 1.33);
 }
 
 .text-xs {
@@ -15681,72 +15710,72 @@ select {
 
 .object-contain {
   -o-object-fit: contain;
-  object-fit: contain;
+     object-fit: contain;
 }
 
 .object-cover {
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
 }
 
 .object-fill {
   -o-object-fit: fill;
-  object-fit: fill;
+     object-fit: fill;
 }
 
 .object-none {
   -o-object-fit: none;
-  object-fit: none;
+     object-fit: none;
 }
 
 .object-scale-down {
   -o-object-fit: scale-down;
-  object-fit: scale-down;
+     object-fit: scale-down;
 }
 
 .object-bottom {
   -o-object-position: bottom;
-  object-position: bottom;
+     object-position: bottom;
 }
 
 .object-center {
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
 
 .object-left {
   -o-object-position: left;
-  object-position: left;
+     object-position: left;
 }
 
 .object-left-bottom {
   -o-object-position: left bottom;
-  object-position: left bottom;
+     object-position: left bottom;
 }
 
 .object-left-top {
   -o-object-position: left top;
-  object-position: left top;
+     object-position: left top;
 }
 
 .object-right {
   -o-object-position: right;
-  object-position: right;
+     object-position: right;
 }
 
 .object-right-bottom {
   -o-object-position: right bottom;
-  object-position: right bottom;
+     object-position: right bottom;
 }
 
 .object-right-top {
   -o-object-position: right top;
-  object-position: right top;
+     object-position: right top;
 }
 
 .object-top {
   -o-object-position: top;
-  object-position: top;
+     object-position: top;
 }
 
 .opacity-0 {
@@ -16049,6 +16078,66 @@ select {
   opacity: 1;
 }
 
+.disabled\:opacity-0:disabled {
+  opacity: 0;
+}
+
+.disabled\:opacity-5:disabled {
+  opacity: 0.05;
+}
+
+.disabled\:opacity-10:disabled {
+  opacity: 0.1;
+}
+
+.disabled\:opacity-20:disabled {
+  opacity: 0.2;
+}
+
+.disabled\:opacity-25:disabled {
+  opacity: 0.25;
+}
+
+.disabled\:opacity-30:disabled {
+  opacity: 0.3;
+}
+
+.disabled\:opacity-40:disabled {
+  opacity: 0.4;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+
+.disabled\:opacity-60:disabled {
+  opacity: 0.6;
+}
+
+.disabled\:opacity-70:disabled {
+  opacity: 0.7;
+}
+
+.disabled\:opacity-75:disabled {
+  opacity: 0.75;
+}
+
+.disabled\:opacity-80:disabled {
+  opacity: 0.8;
+}
+
+.disabled\:opacity-90:disabled {
+  opacity: 0.9;
+}
+
+.disabled\:opacity-95:disabled {
+  opacity: 0.95;
+}
+
+.disabled\:opacity-100:disabled {
+  opacity: 1;
+}
+
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -16144,17 +16233,17 @@ select {
 
 .overscroll-auto {
   -ms-scroll-chaining: chained;
-  overscroll-behavior: auto;
+      overscroll-behavior: auto;
 }
 
 .overscroll-contain {
   -ms-scroll-chaining: none;
-  overscroll-behavior: contain;
+      overscroll-behavior: contain;
 }
 
 .overscroll-none {
   -ms-scroll-chaining: none;
-  overscroll-behavior: none;
+      overscroll-behavior: none;
 }
 
 .overscroll-y-auto {
@@ -28397,30 +28486,29 @@ select {
 
 .select-none {
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .select-text {
   -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
 }
 
 .select-all {
   -webkit-user-select: all;
-  -moz-user-select: all;
-  -ms-user-select: all;
-  user-select: all;
+     -moz-user-select: all;
+          user-select: all;
 }
 
 .select-auto {
   -webkit-user-select: auto;
-  -moz-user-select: auto;
-  -ms-user-select: auto;
-  user-select: auto;
+     -moz-user-select: auto;
+      -ms-user-select: auto;
+          user-select: auto;
 }
 
 .align-baseline {
@@ -28982,177 +29070,177 @@ select {
 
 .gap-x-0 {
   -moz-column-gap: 0px;
-  column-gap: 0px;
+       column-gap: 0px;
 }
 
 .gap-x-1 {
   -moz-column-gap: 0.25rem;
-  column-gap: 0.25rem;
+       column-gap: 0.25rem;
 }
 
 .gap-x-2 {
   -moz-column-gap: 0.5rem;
-  column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }
 
 .gap-x-3 {
   -moz-column-gap: 0.75rem;
-  column-gap: 0.75rem;
+       column-gap: 0.75rem;
 }
 
 .gap-x-4 {
   -moz-column-gap: 1rem;
-  column-gap: 1rem;
+       column-gap: 1rem;
 }
 
 .gap-x-5 {
   -moz-column-gap: 1.25rem;
-  column-gap: 1.25rem;
+       column-gap: 1.25rem;
 }
 
 .gap-x-6 {
   -moz-column-gap: 1.5rem;
-  column-gap: 1.5rem;
+       column-gap: 1.5rem;
 }
 
 .gap-x-7 {
   -moz-column-gap: 1.75rem;
-  column-gap: 1.75rem;
+       column-gap: 1.75rem;
 }
 
 .gap-x-8 {
   -moz-column-gap: 2rem;
-  column-gap: 2rem;
+       column-gap: 2rem;
 }
 
 .gap-x-9 {
   -moz-column-gap: 2.25rem;
-  column-gap: 2.25rem;
+       column-gap: 2.25rem;
 }
 
 .gap-x-10 {
   -moz-column-gap: 2.5rem;
-  column-gap: 2.5rem;
+       column-gap: 2.5rem;
 }
 
 .gap-x-11 {
   -moz-column-gap: 2.75rem;
-  column-gap: 2.75rem;
+       column-gap: 2.75rem;
 }
 
 .gap-x-12 {
   -moz-column-gap: 3rem;
-  column-gap: 3rem;
+       column-gap: 3rem;
 }
 
 .gap-x-14 {
   -moz-column-gap: 3.5rem;
-  column-gap: 3.5rem;
+       column-gap: 3.5rem;
 }
 
 .gap-x-16 {
   -moz-column-gap: 4rem;
-  column-gap: 4rem;
+       column-gap: 4rem;
 }
 
 .gap-x-20 {
   -moz-column-gap: 5rem;
-  column-gap: 5rem;
+       column-gap: 5rem;
 }
 
 .gap-x-24 {
   -moz-column-gap: 6rem;
-  column-gap: 6rem;
+       column-gap: 6rem;
 }
 
 .gap-x-28 {
   -moz-column-gap: 7rem;
-  column-gap: 7rem;
+       column-gap: 7rem;
 }
 
 .gap-x-32 {
   -moz-column-gap: 8rem;
-  column-gap: 8rem;
+       column-gap: 8rem;
 }
 
 .gap-x-36 {
   -moz-column-gap: 9rem;
-  column-gap: 9rem;
+       column-gap: 9rem;
 }
 
 .gap-x-40 {
   -moz-column-gap: 10rem;
-  column-gap: 10rem;
+       column-gap: 10rem;
 }
 
 .gap-x-44 {
   -moz-column-gap: 11rem;
-  column-gap: 11rem;
+       column-gap: 11rem;
 }
 
 .gap-x-48 {
   -moz-column-gap: 12rem;
-  column-gap: 12rem;
+       column-gap: 12rem;
 }
 
 .gap-x-52 {
   -moz-column-gap: 13rem;
-  column-gap: 13rem;
+       column-gap: 13rem;
 }
 
 .gap-x-56 {
   -moz-column-gap: 14rem;
-  column-gap: 14rem;
+       column-gap: 14rem;
 }
 
 .gap-x-60 {
   -moz-column-gap: 15rem;
-  column-gap: 15rem;
+       column-gap: 15rem;
 }
 
 .gap-x-64 {
   -moz-column-gap: 16rem;
-  column-gap: 16rem;
+       column-gap: 16rem;
 }
 
 .gap-x-72 {
   -moz-column-gap: 18rem;
-  column-gap: 18rem;
+       column-gap: 18rem;
 }
 
 .gap-x-80 {
   -moz-column-gap: 20rem;
-  column-gap: 20rem;
+       column-gap: 20rem;
 }
 
 .gap-x-96 {
   -moz-column-gap: 24rem;
-  column-gap: 24rem;
+       column-gap: 24rem;
 }
 
 .gap-x-px {
   -moz-column-gap: 1px;
-  column-gap: 1px;
+       column-gap: 1px;
 }
 
 .gap-x-0\.5 {
   -moz-column-gap: 0.125rem;
-  column-gap: 0.125rem;
+       column-gap: 0.125rem;
 }
 
 .gap-x-1\.5 {
   -moz-column-gap: 0.375rem;
-  column-gap: 0.375rem;
+       column-gap: 0.375rem;
 }
 
 .gap-x-2\.5 {
   -moz-column-gap: 0.625rem;
-  column-gap: 0.625rem;
+       column-gap: 0.625rem;
 }
 
 .gap-x-3\.5 {
   -moz-column-gap: 0.875rem;
-  column-gap: 0.875rem;
+       column-gap: 0.875rem;
 }
 
 .gap-y-0 {
@@ -32789,13 +32877,13 @@ select {
   0%, 100% {
     transform: translateY(-25%);
     -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
   }
 
   50% {
     transform: none;
     -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
   }
 }
 
@@ -32803,39 +32891,39 @@ select {
   0%, 100% {
     transform: translateY(-25%);
     -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
   }
 
   50% {
     transform: none;
     -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
   }
 }
 
 .animate-none {
   -webkit-animation: none;
-  animation: none;
+          animation: none;
 }
 
 .animate-spin {
   -webkit-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
 }
 
 .animate-ping {
   -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+          animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .animate-pulse {
   -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-bounce {
   -webkit-animation: bounce 1s infinite;
-  animation: bounce 1s infinite;
+          animation: bounce 1s infinite;
 }
 
 @media (min-width: 640px) {
@@ -35831,8 +35919,8 @@ select {
 
   .sm\:appearance-none {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
 
   .sm\:bg-fixed {
@@ -35861,7 +35949,7 @@ select {
 
   .sm\:bg-clip-text {
     -webkit-background-clip: text;
-    background-clip: text;
+            background-clip: text;
   }
 
   .sm\:bg-transparent {
@@ -44548,6 +44636,10 @@ select {
     cursor: move;
   }
 
+  .sm\:cursor-help {
+    cursor: help;
+  }
+
   .sm\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -45230,6 +45322,26 @@ select {
 
   .sm\:h-screen {
     height: 100vh;
+  }
+
+  .sm\:h-screen\/2 {
+    height: 50vh;
+  }
+
+  .sm\:h-screen\/3 {
+    height: calc(100vh / 3);
+  }
+
+  .sm\:h-screen\/4 {
+    height: calc(100vh / 4);
+  }
+
+  .sm\:h-screen\/5 {
+    height: calc(100vh / 5);
+  }
+
+  .sm\:h-screen\/75 {
+    height: calc(100vh / 1.33);
   }
 
   .sm\:text-xs {
@@ -47777,72 +47889,72 @@ select {
 
   .sm\:object-contain {
     -o-object-fit: contain;
-    object-fit: contain;
+       object-fit: contain;
   }
 
   .sm\:object-cover {
     -o-object-fit: cover;
-    object-fit: cover;
+       object-fit: cover;
   }
 
   .sm\:object-fill {
     -o-object-fit: fill;
-    object-fit: fill;
+       object-fit: fill;
   }
 
   .sm\:object-none {
     -o-object-fit: none;
-    object-fit: none;
+       object-fit: none;
   }
 
   .sm\:object-scale-down {
     -o-object-fit: scale-down;
-    object-fit: scale-down;
+       object-fit: scale-down;
   }
 
   .sm\:object-bottom {
     -o-object-position: bottom;
-    object-position: bottom;
+       object-position: bottom;
   }
 
   .sm\:object-center {
     -o-object-position: center;
-    object-position: center;
+       object-position: center;
   }
 
   .sm\:object-left {
     -o-object-position: left;
-    object-position: left;
+       object-position: left;
   }
 
   .sm\:object-left-bottom {
     -o-object-position: left bottom;
-    object-position: left bottom;
+       object-position: left bottom;
   }
 
   .sm\:object-left-top {
     -o-object-position: left top;
-    object-position: left top;
+       object-position: left top;
   }
 
   .sm\:object-right {
     -o-object-position: right;
-    object-position: right;
+       object-position: right;
   }
 
   .sm\:object-right-bottom {
     -o-object-position: right bottom;
-    object-position: right bottom;
+       object-position: right bottom;
   }
 
   .sm\:object-right-top {
     -o-object-position: right top;
-    object-position: right top;
+       object-position: right top;
   }
 
   .sm\:object-top {
     -o-object-position: top;
-    object-position: top;
+       object-position: top;
   }
 
   .sm\:opacity-0 {
@@ -48145,6 +48257,66 @@ select {
     opacity: 1;
   }
 
+  .sm\:disabled\:opacity-0:disabled {
+    opacity: 0;
+  }
+
+  .sm\:disabled\:opacity-5:disabled {
+    opacity: 0.05;
+  }
+
+  .sm\:disabled\:opacity-10:disabled {
+    opacity: 0.1;
+  }
+
+  .sm\:disabled\:opacity-20:disabled {
+    opacity: 0.2;
+  }
+
+  .sm\:disabled\:opacity-25:disabled {
+    opacity: 0.25;
+  }
+
+  .sm\:disabled\:opacity-30:disabled {
+    opacity: 0.3;
+  }
+
+  .sm\:disabled\:opacity-40:disabled {
+    opacity: 0.4;
+  }
+
+  .sm\:disabled\:opacity-50:disabled {
+    opacity: 0.5;
+  }
+
+  .sm\:disabled\:opacity-60:disabled {
+    opacity: 0.6;
+  }
+
+  .sm\:disabled\:opacity-70:disabled {
+    opacity: 0.7;
+  }
+
+  .sm\:disabled\:opacity-75:disabled {
+    opacity: 0.75;
+  }
+
+  .sm\:disabled\:opacity-80:disabled {
+    opacity: 0.8;
+  }
+
+  .sm\:disabled\:opacity-90:disabled {
+    opacity: 0.9;
+  }
+
+  .sm\:disabled\:opacity-95:disabled {
+    opacity: 0.95;
+  }
+
+  .sm\:disabled\:opacity-100:disabled {
+    opacity: 1;
+  }
+
   .sm\:outline-none {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -48240,17 +48412,17 @@ select {
 
   .sm\:overscroll-auto {
     -ms-scroll-chaining: chained;
-    overscroll-behavior: auto;
+        overscroll-behavior: auto;
   }
 
   .sm\:overscroll-contain {
     -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
+        overscroll-behavior: contain;
   }
 
   .sm\:overscroll-none {
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+        overscroll-behavior: none;
   }
 
   .sm\:overscroll-y-auto {
@@ -60480,30 +60652,29 @@ select {
 
   .sm\:select-none {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
 
   .sm\:select-text {
     -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
   }
 
   .sm\:select-all {
     -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+       -moz-user-select: all;
+            user-select: all;
   }
 
   .sm\:select-auto {
     -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
+       -moz-user-select: auto;
+        -ms-user-select: auto;
+            user-select: auto;
   }
 
   .sm\:align-baseline {
@@ -61065,177 +61236,177 @@ select {
 
   .sm\:gap-x-0 {
     -moz-column-gap: 0px;
-    column-gap: 0px;
+         column-gap: 0px;
   }
 
   .sm\:gap-x-1 {
     -moz-column-gap: 0.25rem;
-    column-gap: 0.25rem;
+         column-gap: 0.25rem;
   }
 
   .sm\:gap-x-2 {
     -moz-column-gap: 0.5rem;
-    column-gap: 0.5rem;
+         column-gap: 0.5rem;
   }
 
   .sm\:gap-x-3 {
     -moz-column-gap: 0.75rem;
-    column-gap: 0.75rem;
+         column-gap: 0.75rem;
   }
 
   .sm\:gap-x-4 {
     -moz-column-gap: 1rem;
-    column-gap: 1rem;
+         column-gap: 1rem;
   }
 
   .sm\:gap-x-5 {
     -moz-column-gap: 1.25rem;
-    column-gap: 1.25rem;
+         column-gap: 1.25rem;
   }
 
   .sm\:gap-x-6 {
     -moz-column-gap: 1.5rem;
-    column-gap: 1.5rem;
+         column-gap: 1.5rem;
   }
 
   .sm\:gap-x-7 {
     -moz-column-gap: 1.75rem;
-    column-gap: 1.75rem;
+         column-gap: 1.75rem;
   }
 
   .sm\:gap-x-8 {
     -moz-column-gap: 2rem;
-    column-gap: 2rem;
+         column-gap: 2rem;
   }
 
   .sm\:gap-x-9 {
     -moz-column-gap: 2.25rem;
-    column-gap: 2.25rem;
+         column-gap: 2.25rem;
   }
 
   .sm\:gap-x-10 {
     -moz-column-gap: 2.5rem;
-    column-gap: 2.5rem;
+         column-gap: 2.5rem;
   }
 
   .sm\:gap-x-11 {
     -moz-column-gap: 2.75rem;
-    column-gap: 2.75rem;
+         column-gap: 2.75rem;
   }
 
   .sm\:gap-x-12 {
     -moz-column-gap: 3rem;
-    column-gap: 3rem;
+         column-gap: 3rem;
   }
 
   .sm\:gap-x-14 {
     -moz-column-gap: 3.5rem;
-    column-gap: 3.5rem;
+         column-gap: 3.5rem;
   }
 
   .sm\:gap-x-16 {
     -moz-column-gap: 4rem;
-    column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .sm\:gap-x-20 {
     -moz-column-gap: 5rem;
-    column-gap: 5rem;
+         column-gap: 5rem;
   }
 
   .sm\:gap-x-24 {
     -moz-column-gap: 6rem;
-    column-gap: 6rem;
+         column-gap: 6rem;
   }
 
   .sm\:gap-x-28 {
     -moz-column-gap: 7rem;
-    column-gap: 7rem;
+         column-gap: 7rem;
   }
 
   .sm\:gap-x-32 {
     -moz-column-gap: 8rem;
-    column-gap: 8rem;
+         column-gap: 8rem;
   }
 
   .sm\:gap-x-36 {
     -moz-column-gap: 9rem;
-    column-gap: 9rem;
+         column-gap: 9rem;
   }
 
   .sm\:gap-x-40 {
     -moz-column-gap: 10rem;
-    column-gap: 10rem;
+         column-gap: 10rem;
   }
 
   .sm\:gap-x-44 {
     -moz-column-gap: 11rem;
-    column-gap: 11rem;
+         column-gap: 11rem;
   }
 
   .sm\:gap-x-48 {
     -moz-column-gap: 12rem;
-    column-gap: 12rem;
+         column-gap: 12rem;
   }
 
   .sm\:gap-x-52 {
     -moz-column-gap: 13rem;
-    column-gap: 13rem;
+         column-gap: 13rem;
   }
 
   .sm\:gap-x-56 {
     -moz-column-gap: 14rem;
-    column-gap: 14rem;
+         column-gap: 14rem;
   }
 
   .sm\:gap-x-60 {
     -moz-column-gap: 15rem;
-    column-gap: 15rem;
+         column-gap: 15rem;
   }
 
   .sm\:gap-x-64 {
     -moz-column-gap: 16rem;
-    column-gap: 16rem;
+         column-gap: 16rem;
   }
 
   .sm\:gap-x-72 {
     -moz-column-gap: 18rem;
-    column-gap: 18rem;
+         column-gap: 18rem;
   }
 
   .sm\:gap-x-80 {
     -moz-column-gap: 20rem;
-    column-gap: 20rem;
+         column-gap: 20rem;
   }
 
   .sm\:gap-x-96 {
     -moz-column-gap: 24rem;
-    column-gap: 24rem;
+         column-gap: 24rem;
   }
 
   .sm\:gap-x-px {
     -moz-column-gap: 1px;
-    column-gap: 1px;
+         column-gap: 1px;
   }
 
   .sm\:gap-x-0\.5 {
     -moz-column-gap: 0.125rem;
-    column-gap: 0.125rem;
+         column-gap: 0.125rem;
   }
 
   .sm\:gap-x-1\.5 {
     -moz-column-gap: 0.375rem;
-    column-gap: 0.375rem;
+         column-gap: 0.375rem;
   }
 
   .sm\:gap-x-2\.5 {
     -moz-column-gap: 0.625rem;
-    column-gap: 0.625rem;
+         column-gap: 0.625rem;
   }
 
   .sm\:gap-x-3\.5 {
     -moz-column-gap: 0.875rem;
-    column-gap: 0.875rem;
+         column-gap: 0.875rem;
   }
 
   .sm\:gap-y-0 {
@@ -64832,27 +65003,27 @@ select {
 
   .sm\:animate-none {
     -webkit-animation: none;
-    animation: none;
+            animation: none;
   }
 
   .sm\:animate-spin {
     -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
   }
 
   .sm\:animate-ping {
     -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .sm\:animate-pulse {
     -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .sm\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
-    animation: bounce 1s infinite;
+            animation: bounce 1s infinite;
   }
 }
 
@@ -67849,8 +68020,8 @@ select {
 
   .md\:appearance-none {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
 
   .md\:bg-fixed {
@@ -67879,7 +68050,7 @@ select {
 
   .md\:bg-clip-text {
     -webkit-background-clip: text;
-    background-clip: text;
+            background-clip: text;
   }
 
   .md\:bg-transparent {
@@ -76566,6 +76737,10 @@ select {
     cursor: move;
   }
 
+  .md\:cursor-help {
+    cursor: help;
+  }
+
   .md\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -77248,6 +77423,26 @@ select {
 
   .md\:h-screen {
     height: 100vh;
+  }
+
+  .md\:h-screen\/2 {
+    height: 50vh;
+  }
+
+  .md\:h-screen\/3 {
+    height: calc(100vh / 3);
+  }
+
+  .md\:h-screen\/4 {
+    height: calc(100vh / 4);
+  }
+
+  .md\:h-screen\/5 {
+    height: calc(100vh / 5);
+  }
+
+  .md\:h-screen\/75 {
+    height: calc(100vh / 1.33);
   }
 
   .md\:text-xs {
@@ -79795,72 +79990,72 @@ select {
 
   .md\:object-contain {
     -o-object-fit: contain;
-    object-fit: contain;
+       object-fit: contain;
   }
 
   .md\:object-cover {
     -o-object-fit: cover;
-    object-fit: cover;
+       object-fit: cover;
   }
 
   .md\:object-fill {
     -o-object-fit: fill;
-    object-fit: fill;
+       object-fit: fill;
   }
 
   .md\:object-none {
     -o-object-fit: none;
-    object-fit: none;
+       object-fit: none;
   }
 
   .md\:object-scale-down {
     -o-object-fit: scale-down;
-    object-fit: scale-down;
+       object-fit: scale-down;
   }
 
   .md\:object-bottom {
     -o-object-position: bottom;
-    object-position: bottom;
+       object-position: bottom;
   }
 
   .md\:object-center {
     -o-object-position: center;
-    object-position: center;
+       object-position: center;
   }
 
   .md\:object-left {
     -o-object-position: left;
-    object-position: left;
+       object-position: left;
   }
 
   .md\:object-left-bottom {
     -o-object-position: left bottom;
-    object-position: left bottom;
+       object-position: left bottom;
   }
 
   .md\:object-left-top {
     -o-object-position: left top;
-    object-position: left top;
+       object-position: left top;
   }
 
   .md\:object-right {
     -o-object-position: right;
-    object-position: right;
+       object-position: right;
   }
 
   .md\:object-right-bottom {
     -o-object-position: right bottom;
-    object-position: right bottom;
+       object-position: right bottom;
   }
 
   .md\:object-right-top {
     -o-object-position: right top;
-    object-position: right top;
+       object-position: right top;
   }
 
   .md\:object-top {
     -o-object-position: top;
-    object-position: top;
+       object-position: top;
   }
 
   .md\:opacity-0 {
@@ -80163,6 +80358,66 @@ select {
     opacity: 1;
   }
 
+  .md\:disabled\:opacity-0:disabled {
+    opacity: 0;
+  }
+
+  .md\:disabled\:opacity-5:disabled {
+    opacity: 0.05;
+  }
+
+  .md\:disabled\:opacity-10:disabled {
+    opacity: 0.1;
+  }
+
+  .md\:disabled\:opacity-20:disabled {
+    opacity: 0.2;
+  }
+
+  .md\:disabled\:opacity-25:disabled {
+    opacity: 0.25;
+  }
+
+  .md\:disabled\:opacity-30:disabled {
+    opacity: 0.3;
+  }
+
+  .md\:disabled\:opacity-40:disabled {
+    opacity: 0.4;
+  }
+
+  .md\:disabled\:opacity-50:disabled {
+    opacity: 0.5;
+  }
+
+  .md\:disabled\:opacity-60:disabled {
+    opacity: 0.6;
+  }
+
+  .md\:disabled\:opacity-70:disabled {
+    opacity: 0.7;
+  }
+
+  .md\:disabled\:opacity-75:disabled {
+    opacity: 0.75;
+  }
+
+  .md\:disabled\:opacity-80:disabled {
+    opacity: 0.8;
+  }
+
+  .md\:disabled\:opacity-90:disabled {
+    opacity: 0.9;
+  }
+
+  .md\:disabled\:opacity-95:disabled {
+    opacity: 0.95;
+  }
+
+  .md\:disabled\:opacity-100:disabled {
+    opacity: 1;
+  }
+
   .md\:outline-none {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -80258,17 +80513,17 @@ select {
 
   .md\:overscroll-auto {
     -ms-scroll-chaining: chained;
-    overscroll-behavior: auto;
+        overscroll-behavior: auto;
   }
 
   .md\:overscroll-contain {
     -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
+        overscroll-behavior: contain;
   }
 
   .md\:overscroll-none {
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+        overscroll-behavior: none;
   }
 
   .md\:overscroll-y-auto {
@@ -92498,30 +92753,29 @@ select {
 
   .md\:select-none {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
 
   .md\:select-text {
     -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
   }
 
   .md\:select-all {
     -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+       -moz-user-select: all;
+            user-select: all;
   }
 
   .md\:select-auto {
     -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
+       -moz-user-select: auto;
+        -ms-user-select: auto;
+            user-select: auto;
   }
 
   .md\:align-baseline {
@@ -93083,177 +93337,177 @@ select {
 
   .md\:gap-x-0 {
     -moz-column-gap: 0px;
-    column-gap: 0px;
+         column-gap: 0px;
   }
 
   .md\:gap-x-1 {
     -moz-column-gap: 0.25rem;
-    column-gap: 0.25rem;
+         column-gap: 0.25rem;
   }
 
   .md\:gap-x-2 {
     -moz-column-gap: 0.5rem;
-    column-gap: 0.5rem;
+         column-gap: 0.5rem;
   }
 
   .md\:gap-x-3 {
     -moz-column-gap: 0.75rem;
-    column-gap: 0.75rem;
+         column-gap: 0.75rem;
   }
 
   .md\:gap-x-4 {
     -moz-column-gap: 1rem;
-    column-gap: 1rem;
+         column-gap: 1rem;
   }
 
   .md\:gap-x-5 {
     -moz-column-gap: 1.25rem;
-    column-gap: 1.25rem;
+         column-gap: 1.25rem;
   }
 
   .md\:gap-x-6 {
     -moz-column-gap: 1.5rem;
-    column-gap: 1.5rem;
+         column-gap: 1.5rem;
   }
 
   .md\:gap-x-7 {
     -moz-column-gap: 1.75rem;
-    column-gap: 1.75rem;
+         column-gap: 1.75rem;
   }
 
   .md\:gap-x-8 {
     -moz-column-gap: 2rem;
-    column-gap: 2rem;
+         column-gap: 2rem;
   }
 
   .md\:gap-x-9 {
     -moz-column-gap: 2.25rem;
-    column-gap: 2.25rem;
+         column-gap: 2.25rem;
   }
 
   .md\:gap-x-10 {
     -moz-column-gap: 2.5rem;
-    column-gap: 2.5rem;
+         column-gap: 2.5rem;
   }
 
   .md\:gap-x-11 {
     -moz-column-gap: 2.75rem;
-    column-gap: 2.75rem;
+         column-gap: 2.75rem;
   }
 
   .md\:gap-x-12 {
     -moz-column-gap: 3rem;
-    column-gap: 3rem;
+         column-gap: 3rem;
   }
 
   .md\:gap-x-14 {
     -moz-column-gap: 3.5rem;
-    column-gap: 3.5rem;
+         column-gap: 3.5rem;
   }
 
   .md\:gap-x-16 {
     -moz-column-gap: 4rem;
-    column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .md\:gap-x-20 {
     -moz-column-gap: 5rem;
-    column-gap: 5rem;
+         column-gap: 5rem;
   }
 
   .md\:gap-x-24 {
     -moz-column-gap: 6rem;
-    column-gap: 6rem;
+         column-gap: 6rem;
   }
 
   .md\:gap-x-28 {
     -moz-column-gap: 7rem;
-    column-gap: 7rem;
+         column-gap: 7rem;
   }
 
   .md\:gap-x-32 {
     -moz-column-gap: 8rem;
-    column-gap: 8rem;
+         column-gap: 8rem;
   }
 
   .md\:gap-x-36 {
     -moz-column-gap: 9rem;
-    column-gap: 9rem;
+         column-gap: 9rem;
   }
 
   .md\:gap-x-40 {
     -moz-column-gap: 10rem;
-    column-gap: 10rem;
+         column-gap: 10rem;
   }
 
   .md\:gap-x-44 {
     -moz-column-gap: 11rem;
-    column-gap: 11rem;
+         column-gap: 11rem;
   }
 
   .md\:gap-x-48 {
     -moz-column-gap: 12rem;
-    column-gap: 12rem;
+         column-gap: 12rem;
   }
 
   .md\:gap-x-52 {
     -moz-column-gap: 13rem;
-    column-gap: 13rem;
+         column-gap: 13rem;
   }
 
   .md\:gap-x-56 {
     -moz-column-gap: 14rem;
-    column-gap: 14rem;
+         column-gap: 14rem;
   }
 
   .md\:gap-x-60 {
     -moz-column-gap: 15rem;
-    column-gap: 15rem;
+         column-gap: 15rem;
   }
 
   .md\:gap-x-64 {
     -moz-column-gap: 16rem;
-    column-gap: 16rem;
+         column-gap: 16rem;
   }
 
   .md\:gap-x-72 {
     -moz-column-gap: 18rem;
-    column-gap: 18rem;
+         column-gap: 18rem;
   }
 
   .md\:gap-x-80 {
     -moz-column-gap: 20rem;
-    column-gap: 20rem;
+         column-gap: 20rem;
   }
 
   .md\:gap-x-96 {
     -moz-column-gap: 24rem;
-    column-gap: 24rem;
+         column-gap: 24rem;
   }
 
   .md\:gap-x-px {
     -moz-column-gap: 1px;
-    column-gap: 1px;
+         column-gap: 1px;
   }
 
   .md\:gap-x-0\.5 {
     -moz-column-gap: 0.125rem;
-    column-gap: 0.125rem;
+         column-gap: 0.125rem;
   }
 
   .md\:gap-x-1\.5 {
     -moz-column-gap: 0.375rem;
-    column-gap: 0.375rem;
+         column-gap: 0.375rem;
   }
 
   .md\:gap-x-2\.5 {
     -moz-column-gap: 0.625rem;
-    column-gap: 0.625rem;
+         column-gap: 0.625rem;
   }
 
   .md\:gap-x-3\.5 {
     -moz-column-gap: 0.875rem;
-    column-gap: 0.875rem;
+         column-gap: 0.875rem;
   }
 
   .md\:gap-y-0 {
@@ -96850,27 +97104,27 @@ select {
 
   .md\:animate-none {
     -webkit-animation: none;
-    animation: none;
+            animation: none;
   }
 
   .md\:animate-spin {
     -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
   }
 
   .md\:animate-ping {
     -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .md\:animate-pulse {
     -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .md\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
-    animation: bounce 1s infinite;
+            animation: bounce 1s infinite;
   }
 }
 
@@ -99867,8 +100121,8 @@ select {
 
   .lg\:appearance-none {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
 
   .lg\:bg-fixed {
@@ -99897,7 +100151,7 @@ select {
 
   .lg\:bg-clip-text {
     -webkit-background-clip: text;
-    background-clip: text;
+            background-clip: text;
   }
 
   .lg\:bg-transparent {
@@ -108584,6 +108838,10 @@ select {
     cursor: move;
   }
 
+  .lg\:cursor-help {
+    cursor: help;
+  }
+
   .lg\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -109266,6 +109524,26 @@ select {
 
   .lg\:h-screen {
     height: 100vh;
+  }
+
+  .lg\:h-screen\/2 {
+    height: 50vh;
+  }
+
+  .lg\:h-screen\/3 {
+    height: calc(100vh / 3);
+  }
+
+  .lg\:h-screen\/4 {
+    height: calc(100vh / 4);
+  }
+
+  .lg\:h-screen\/5 {
+    height: calc(100vh / 5);
+  }
+
+  .lg\:h-screen\/75 {
+    height: calc(100vh / 1.33);
   }
 
   .lg\:text-xs {
@@ -111813,72 +112091,72 @@ select {
 
   .lg\:object-contain {
     -o-object-fit: contain;
-    object-fit: contain;
+       object-fit: contain;
   }
 
   .lg\:object-cover {
     -o-object-fit: cover;
-    object-fit: cover;
+       object-fit: cover;
   }
 
   .lg\:object-fill {
     -o-object-fit: fill;
-    object-fit: fill;
+       object-fit: fill;
   }
 
   .lg\:object-none {
     -o-object-fit: none;
-    object-fit: none;
+       object-fit: none;
   }
 
   .lg\:object-scale-down {
     -o-object-fit: scale-down;
-    object-fit: scale-down;
+       object-fit: scale-down;
   }
 
   .lg\:object-bottom {
     -o-object-position: bottom;
-    object-position: bottom;
+       object-position: bottom;
   }
 
   .lg\:object-center {
     -o-object-position: center;
-    object-position: center;
+       object-position: center;
   }
 
   .lg\:object-left {
     -o-object-position: left;
-    object-position: left;
+       object-position: left;
   }
 
   .lg\:object-left-bottom {
     -o-object-position: left bottom;
-    object-position: left bottom;
+       object-position: left bottom;
   }
 
   .lg\:object-left-top {
     -o-object-position: left top;
-    object-position: left top;
+       object-position: left top;
   }
 
   .lg\:object-right {
     -o-object-position: right;
-    object-position: right;
+       object-position: right;
   }
 
   .lg\:object-right-bottom {
     -o-object-position: right bottom;
-    object-position: right bottom;
+       object-position: right bottom;
   }
 
   .lg\:object-right-top {
     -o-object-position: right top;
-    object-position: right top;
+       object-position: right top;
   }
 
   .lg\:object-top {
     -o-object-position: top;
-    object-position: top;
+       object-position: top;
   }
 
   .lg\:opacity-0 {
@@ -112181,6 +112459,66 @@ select {
     opacity: 1;
   }
 
+  .lg\:disabled\:opacity-0:disabled {
+    opacity: 0;
+  }
+
+  .lg\:disabled\:opacity-5:disabled {
+    opacity: 0.05;
+  }
+
+  .lg\:disabled\:opacity-10:disabled {
+    opacity: 0.1;
+  }
+
+  .lg\:disabled\:opacity-20:disabled {
+    opacity: 0.2;
+  }
+
+  .lg\:disabled\:opacity-25:disabled {
+    opacity: 0.25;
+  }
+
+  .lg\:disabled\:opacity-30:disabled {
+    opacity: 0.3;
+  }
+
+  .lg\:disabled\:opacity-40:disabled {
+    opacity: 0.4;
+  }
+
+  .lg\:disabled\:opacity-50:disabled {
+    opacity: 0.5;
+  }
+
+  .lg\:disabled\:opacity-60:disabled {
+    opacity: 0.6;
+  }
+
+  .lg\:disabled\:opacity-70:disabled {
+    opacity: 0.7;
+  }
+
+  .lg\:disabled\:opacity-75:disabled {
+    opacity: 0.75;
+  }
+
+  .lg\:disabled\:opacity-80:disabled {
+    opacity: 0.8;
+  }
+
+  .lg\:disabled\:opacity-90:disabled {
+    opacity: 0.9;
+  }
+
+  .lg\:disabled\:opacity-95:disabled {
+    opacity: 0.95;
+  }
+
+  .lg\:disabled\:opacity-100:disabled {
+    opacity: 1;
+  }
+
   .lg\:outline-none {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -112276,17 +112614,17 @@ select {
 
   .lg\:overscroll-auto {
     -ms-scroll-chaining: chained;
-    overscroll-behavior: auto;
+        overscroll-behavior: auto;
   }
 
   .lg\:overscroll-contain {
     -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
+        overscroll-behavior: contain;
   }
 
   .lg\:overscroll-none {
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+        overscroll-behavior: none;
   }
 
   .lg\:overscroll-y-auto {
@@ -124516,30 +124854,29 @@ select {
 
   .lg\:select-none {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
 
   .lg\:select-text {
     -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
   }
 
   .lg\:select-all {
     -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+       -moz-user-select: all;
+            user-select: all;
   }
 
   .lg\:select-auto {
     -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
+       -moz-user-select: auto;
+        -ms-user-select: auto;
+            user-select: auto;
   }
 
   .lg\:align-baseline {
@@ -125101,177 +125438,177 @@ select {
 
   .lg\:gap-x-0 {
     -moz-column-gap: 0px;
-    column-gap: 0px;
+         column-gap: 0px;
   }
 
   .lg\:gap-x-1 {
     -moz-column-gap: 0.25rem;
-    column-gap: 0.25rem;
+         column-gap: 0.25rem;
   }
 
   .lg\:gap-x-2 {
     -moz-column-gap: 0.5rem;
-    column-gap: 0.5rem;
+         column-gap: 0.5rem;
   }
 
   .lg\:gap-x-3 {
     -moz-column-gap: 0.75rem;
-    column-gap: 0.75rem;
+         column-gap: 0.75rem;
   }
 
   .lg\:gap-x-4 {
     -moz-column-gap: 1rem;
-    column-gap: 1rem;
+         column-gap: 1rem;
   }
 
   .lg\:gap-x-5 {
     -moz-column-gap: 1.25rem;
-    column-gap: 1.25rem;
+         column-gap: 1.25rem;
   }
 
   .lg\:gap-x-6 {
     -moz-column-gap: 1.5rem;
-    column-gap: 1.5rem;
+         column-gap: 1.5rem;
   }
 
   .lg\:gap-x-7 {
     -moz-column-gap: 1.75rem;
-    column-gap: 1.75rem;
+         column-gap: 1.75rem;
   }
 
   .lg\:gap-x-8 {
     -moz-column-gap: 2rem;
-    column-gap: 2rem;
+         column-gap: 2rem;
   }
 
   .lg\:gap-x-9 {
     -moz-column-gap: 2.25rem;
-    column-gap: 2.25rem;
+         column-gap: 2.25rem;
   }
 
   .lg\:gap-x-10 {
     -moz-column-gap: 2.5rem;
-    column-gap: 2.5rem;
+         column-gap: 2.5rem;
   }
 
   .lg\:gap-x-11 {
     -moz-column-gap: 2.75rem;
-    column-gap: 2.75rem;
+         column-gap: 2.75rem;
   }
 
   .lg\:gap-x-12 {
     -moz-column-gap: 3rem;
-    column-gap: 3rem;
+         column-gap: 3rem;
   }
 
   .lg\:gap-x-14 {
     -moz-column-gap: 3.5rem;
-    column-gap: 3.5rem;
+         column-gap: 3.5rem;
   }
 
   .lg\:gap-x-16 {
     -moz-column-gap: 4rem;
-    column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .lg\:gap-x-20 {
     -moz-column-gap: 5rem;
-    column-gap: 5rem;
+         column-gap: 5rem;
   }
 
   .lg\:gap-x-24 {
     -moz-column-gap: 6rem;
-    column-gap: 6rem;
+         column-gap: 6rem;
   }
 
   .lg\:gap-x-28 {
     -moz-column-gap: 7rem;
-    column-gap: 7rem;
+         column-gap: 7rem;
   }
 
   .lg\:gap-x-32 {
     -moz-column-gap: 8rem;
-    column-gap: 8rem;
+         column-gap: 8rem;
   }
 
   .lg\:gap-x-36 {
     -moz-column-gap: 9rem;
-    column-gap: 9rem;
+         column-gap: 9rem;
   }
 
   .lg\:gap-x-40 {
     -moz-column-gap: 10rem;
-    column-gap: 10rem;
+         column-gap: 10rem;
   }
 
   .lg\:gap-x-44 {
     -moz-column-gap: 11rem;
-    column-gap: 11rem;
+         column-gap: 11rem;
   }
 
   .lg\:gap-x-48 {
     -moz-column-gap: 12rem;
-    column-gap: 12rem;
+         column-gap: 12rem;
   }
 
   .lg\:gap-x-52 {
     -moz-column-gap: 13rem;
-    column-gap: 13rem;
+         column-gap: 13rem;
   }
 
   .lg\:gap-x-56 {
     -moz-column-gap: 14rem;
-    column-gap: 14rem;
+         column-gap: 14rem;
   }
 
   .lg\:gap-x-60 {
     -moz-column-gap: 15rem;
-    column-gap: 15rem;
+         column-gap: 15rem;
   }
 
   .lg\:gap-x-64 {
     -moz-column-gap: 16rem;
-    column-gap: 16rem;
+         column-gap: 16rem;
   }
 
   .lg\:gap-x-72 {
     -moz-column-gap: 18rem;
-    column-gap: 18rem;
+         column-gap: 18rem;
   }
 
   .lg\:gap-x-80 {
     -moz-column-gap: 20rem;
-    column-gap: 20rem;
+         column-gap: 20rem;
   }
 
   .lg\:gap-x-96 {
     -moz-column-gap: 24rem;
-    column-gap: 24rem;
+         column-gap: 24rem;
   }
 
   .lg\:gap-x-px {
     -moz-column-gap: 1px;
-    column-gap: 1px;
+         column-gap: 1px;
   }
 
   .lg\:gap-x-0\.5 {
     -moz-column-gap: 0.125rem;
-    column-gap: 0.125rem;
+         column-gap: 0.125rem;
   }
 
   .lg\:gap-x-1\.5 {
     -moz-column-gap: 0.375rem;
-    column-gap: 0.375rem;
+         column-gap: 0.375rem;
   }
 
   .lg\:gap-x-2\.5 {
     -moz-column-gap: 0.625rem;
-    column-gap: 0.625rem;
+         column-gap: 0.625rem;
   }
 
   .lg\:gap-x-3\.5 {
     -moz-column-gap: 0.875rem;
-    column-gap: 0.875rem;
+         column-gap: 0.875rem;
   }
 
   .lg\:gap-y-0 {
@@ -128868,27 +129205,27 @@ select {
 
   .lg\:animate-none {
     -webkit-animation: none;
-    animation: none;
+            animation: none;
   }
 
   .lg\:animate-spin {
     -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
   }
 
   .lg\:animate-ping {
     -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .lg\:animate-pulse {
     -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .lg\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
-    animation: bounce 1s infinite;
+            animation: bounce 1s infinite;
   }
 }
 
@@ -131885,8 +132222,8 @@ select {
 
   .xl\:appearance-none {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
 
   .xl\:bg-fixed {
@@ -131915,7 +132252,7 @@ select {
 
   .xl\:bg-clip-text {
     -webkit-background-clip: text;
-    background-clip: text;
+            background-clip: text;
   }
 
   .xl\:bg-transparent {
@@ -140602,6 +140939,10 @@ select {
     cursor: move;
   }
 
+  .xl\:cursor-help {
+    cursor: help;
+  }
+
   .xl\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -141284,6 +141625,26 @@ select {
 
   .xl\:h-screen {
     height: 100vh;
+  }
+
+  .xl\:h-screen\/2 {
+    height: 50vh;
+  }
+
+  .xl\:h-screen\/3 {
+    height: calc(100vh / 3);
+  }
+
+  .xl\:h-screen\/4 {
+    height: calc(100vh / 4);
+  }
+
+  .xl\:h-screen\/5 {
+    height: calc(100vh / 5);
+  }
+
+  .xl\:h-screen\/75 {
+    height: calc(100vh / 1.33);
   }
 
   .xl\:text-xs {
@@ -143831,72 +144192,72 @@ select {
 
   .xl\:object-contain {
     -o-object-fit: contain;
-    object-fit: contain;
+       object-fit: contain;
   }
 
   .xl\:object-cover {
     -o-object-fit: cover;
-    object-fit: cover;
+       object-fit: cover;
   }
 
   .xl\:object-fill {
     -o-object-fit: fill;
-    object-fit: fill;
+       object-fit: fill;
   }
 
   .xl\:object-none {
     -o-object-fit: none;
-    object-fit: none;
+       object-fit: none;
   }
 
   .xl\:object-scale-down {
     -o-object-fit: scale-down;
-    object-fit: scale-down;
+       object-fit: scale-down;
   }
 
   .xl\:object-bottom {
     -o-object-position: bottom;
-    object-position: bottom;
+       object-position: bottom;
   }
 
   .xl\:object-center {
     -o-object-position: center;
-    object-position: center;
+       object-position: center;
   }
 
   .xl\:object-left {
     -o-object-position: left;
-    object-position: left;
+       object-position: left;
   }
 
   .xl\:object-left-bottom {
     -o-object-position: left bottom;
-    object-position: left bottom;
+       object-position: left bottom;
   }
 
   .xl\:object-left-top {
     -o-object-position: left top;
-    object-position: left top;
+       object-position: left top;
   }
 
   .xl\:object-right {
     -o-object-position: right;
-    object-position: right;
+       object-position: right;
   }
 
   .xl\:object-right-bottom {
     -o-object-position: right bottom;
-    object-position: right bottom;
+       object-position: right bottom;
   }
 
   .xl\:object-right-top {
     -o-object-position: right top;
-    object-position: right top;
+       object-position: right top;
   }
 
   .xl\:object-top {
     -o-object-position: top;
-    object-position: top;
+       object-position: top;
   }
 
   .xl\:opacity-0 {
@@ -144199,6 +144560,66 @@ select {
     opacity: 1;
   }
 
+  .xl\:disabled\:opacity-0:disabled {
+    opacity: 0;
+  }
+
+  .xl\:disabled\:opacity-5:disabled {
+    opacity: 0.05;
+  }
+
+  .xl\:disabled\:opacity-10:disabled {
+    opacity: 0.1;
+  }
+
+  .xl\:disabled\:opacity-20:disabled {
+    opacity: 0.2;
+  }
+
+  .xl\:disabled\:opacity-25:disabled {
+    opacity: 0.25;
+  }
+
+  .xl\:disabled\:opacity-30:disabled {
+    opacity: 0.3;
+  }
+
+  .xl\:disabled\:opacity-40:disabled {
+    opacity: 0.4;
+  }
+
+  .xl\:disabled\:opacity-50:disabled {
+    opacity: 0.5;
+  }
+
+  .xl\:disabled\:opacity-60:disabled {
+    opacity: 0.6;
+  }
+
+  .xl\:disabled\:opacity-70:disabled {
+    opacity: 0.7;
+  }
+
+  .xl\:disabled\:opacity-75:disabled {
+    opacity: 0.75;
+  }
+
+  .xl\:disabled\:opacity-80:disabled {
+    opacity: 0.8;
+  }
+
+  .xl\:disabled\:opacity-90:disabled {
+    opacity: 0.9;
+  }
+
+  .xl\:disabled\:opacity-95:disabled {
+    opacity: 0.95;
+  }
+
+  .xl\:disabled\:opacity-100:disabled {
+    opacity: 1;
+  }
+
   .xl\:outline-none {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -144294,17 +144715,17 @@ select {
 
   .xl\:overscroll-auto {
     -ms-scroll-chaining: chained;
-    overscroll-behavior: auto;
+        overscroll-behavior: auto;
   }
 
   .xl\:overscroll-contain {
     -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
+        overscroll-behavior: contain;
   }
 
   .xl\:overscroll-none {
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+        overscroll-behavior: none;
   }
 
   .xl\:overscroll-y-auto {
@@ -156534,30 +156955,29 @@ select {
 
   .xl\:select-none {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
 
   .xl\:select-text {
     -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
   }
 
   .xl\:select-all {
     -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+       -moz-user-select: all;
+            user-select: all;
   }
 
   .xl\:select-auto {
     -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
+       -moz-user-select: auto;
+        -ms-user-select: auto;
+            user-select: auto;
   }
 
   .xl\:align-baseline {
@@ -157119,177 +157539,177 @@ select {
 
   .xl\:gap-x-0 {
     -moz-column-gap: 0px;
-    column-gap: 0px;
+         column-gap: 0px;
   }
 
   .xl\:gap-x-1 {
     -moz-column-gap: 0.25rem;
-    column-gap: 0.25rem;
+         column-gap: 0.25rem;
   }
 
   .xl\:gap-x-2 {
     -moz-column-gap: 0.5rem;
-    column-gap: 0.5rem;
+         column-gap: 0.5rem;
   }
 
   .xl\:gap-x-3 {
     -moz-column-gap: 0.75rem;
-    column-gap: 0.75rem;
+         column-gap: 0.75rem;
   }
 
   .xl\:gap-x-4 {
     -moz-column-gap: 1rem;
-    column-gap: 1rem;
+         column-gap: 1rem;
   }
 
   .xl\:gap-x-5 {
     -moz-column-gap: 1.25rem;
-    column-gap: 1.25rem;
+         column-gap: 1.25rem;
   }
 
   .xl\:gap-x-6 {
     -moz-column-gap: 1.5rem;
-    column-gap: 1.5rem;
+         column-gap: 1.5rem;
   }
 
   .xl\:gap-x-7 {
     -moz-column-gap: 1.75rem;
-    column-gap: 1.75rem;
+         column-gap: 1.75rem;
   }
 
   .xl\:gap-x-8 {
     -moz-column-gap: 2rem;
-    column-gap: 2rem;
+         column-gap: 2rem;
   }
 
   .xl\:gap-x-9 {
     -moz-column-gap: 2.25rem;
-    column-gap: 2.25rem;
+         column-gap: 2.25rem;
   }
 
   .xl\:gap-x-10 {
     -moz-column-gap: 2.5rem;
-    column-gap: 2.5rem;
+         column-gap: 2.5rem;
   }
 
   .xl\:gap-x-11 {
     -moz-column-gap: 2.75rem;
-    column-gap: 2.75rem;
+         column-gap: 2.75rem;
   }
 
   .xl\:gap-x-12 {
     -moz-column-gap: 3rem;
-    column-gap: 3rem;
+         column-gap: 3rem;
   }
 
   .xl\:gap-x-14 {
     -moz-column-gap: 3.5rem;
-    column-gap: 3.5rem;
+         column-gap: 3.5rem;
   }
 
   .xl\:gap-x-16 {
     -moz-column-gap: 4rem;
-    column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .xl\:gap-x-20 {
     -moz-column-gap: 5rem;
-    column-gap: 5rem;
+         column-gap: 5rem;
   }
 
   .xl\:gap-x-24 {
     -moz-column-gap: 6rem;
-    column-gap: 6rem;
+         column-gap: 6rem;
   }
 
   .xl\:gap-x-28 {
     -moz-column-gap: 7rem;
-    column-gap: 7rem;
+         column-gap: 7rem;
   }
 
   .xl\:gap-x-32 {
     -moz-column-gap: 8rem;
-    column-gap: 8rem;
+         column-gap: 8rem;
   }
 
   .xl\:gap-x-36 {
     -moz-column-gap: 9rem;
-    column-gap: 9rem;
+         column-gap: 9rem;
   }
 
   .xl\:gap-x-40 {
     -moz-column-gap: 10rem;
-    column-gap: 10rem;
+         column-gap: 10rem;
   }
 
   .xl\:gap-x-44 {
     -moz-column-gap: 11rem;
-    column-gap: 11rem;
+         column-gap: 11rem;
   }
 
   .xl\:gap-x-48 {
     -moz-column-gap: 12rem;
-    column-gap: 12rem;
+         column-gap: 12rem;
   }
 
   .xl\:gap-x-52 {
     -moz-column-gap: 13rem;
-    column-gap: 13rem;
+         column-gap: 13rem;
   }
 
   .xl\:gap-x-56 {
     -moz-column-gap: 14rem;
-    column-gap: 14rem;
+         column-gap: 14rem;
   }
 
   .xl\:gap-x-60 {
     -moz-column-gap: 15rem;
-    column-gap: 15rem;
+         column-gap: 15rem;
   }
 
   .xl\:gap-x-64 {
     -moz-column-gap: 16rem;
-    column-gap: 16rem;
+         column-gap: 16rem;
   }
 
   .xl\:gap-x-72 {
     -moz-column-gap: 18rem;
-    column-gap: 18rem;
+         column-gap: 18rem;
   }
 
   .xl\:gap-x-80 {
     -moz-column-gap: 20rem;
-    column-gap: 20rem;
+         column-gap: 20rem;
   }
 
   .xl\:gap-x-96 {
     -moz-column-gap: 24rem;
-    column-gap: 24rem;
+         column-gap: 24rem;
   }
 
   .xl\:gap-x-px {
     -moz-column-gap: 1px;
-    column-gap: 1px;
+         column-gap: 1px;
   }
 
   .xl\:gap-x-0\.5 {
     -moz-column-gap: 0.125rem;
-    column-gap: 0.125rem;
+         column-gap: 0.125rem;
   }
 
   .xl\:gap-x-1\.5 {
     -moz-column-gap: 0.375rem;
-    column-gap: 0.375rem;
+         column-gap: 0.375rem;
   }
 
   .xl\:gap-x-2\.5 {
     -moz-column-gap: 0.625rem;
-    column-gap: 0.625rem;
+         column-gap: 0.625rem;
   }
 
   .xl\:gap-x-3\.5 {
     -moz-column-gap: 0.875rem;
-    column-gap: 0.875rem;
+         column-gap: 0.875rem;
   }
 
   .xl\:gap-y-0 {
@@ -160886,27 +161306,27 @@ select {
 
   .xl\:animate-none {
     -webkit-animation: none;
-    animation: none;
+            animation: none;
   }
 
   .xl\:animate-spin {
     -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
   }
 
   .xl\:animate-ping {
     -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .xl\:animate-pulse {
     -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .xl\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
-    animation: bounce 1s infinite;
+            animation: bounce 1s infinite;
   }
 }
 
@@ -163903,8 +164323,8 @@ select {
 
   .\32xl\:appearance-none {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
 
   .\32xl\:bg-fixed {
@@ -163933,7 +164353,7 @@ select {
 
   .\32xl\:bg-clip-text {
     -webkit-background-clip: text;
-    background-clip: text;
+            background-clip: text;
   }
 
   .\32xl\:bg-transparent {
@@ -172620,6 +173040,10 @@ select {
     cursor: move;
   }
 
+  .\32xl\:cursor-help {
+    cursor: help;
+  }
+
   .\32xl\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -173302,6 +173726,26 @@ select {
 
   .\32xl\:h-screen {
     height: 100vh;
+  }
+
+  .\32xl\:h-screen\/2 {
+    height: 50vh;
+  }
+
+  .\32xl\:h-screen\/3 {
+    height: calc(100vh / 3);
+  }
+
+  .\32xl\:h-screen\/4 {
+    height: calc(100vh / 4);
+  }
+
+  .\32xl\:h-screen\/5 {
+    height: calc(100vh / 5);
+  }
+
+  .\32xl\:h-screen\/75 {
+    height: calc(100vh / 1.33);
   }
 
   .\32xl\:text-xs {
@@ -175849,72 +176293,72 @@ select {
 
   .\32xl\:object-contain {
     -o-object-fit: contain;
-    object-fit: contain;
+       object-fit: contain;
   }
 
   .\32xl\:object-cover {
     -o-object-fit: cover;
-    object-fit: cover;
+       object-fit: cover;
   }
 
   .\32xl\:object-fill {
     -o-object-fit: fill;
-    object-fit: fill;
+       object-fit: fill;
   }
 
   .\32xl\:object-none {
     -o-object-fit: none;
-    object-fit: none;
+       object-fit: none;
   }
 
   .\32xl\:object-scale-down {
     -o-object-fit: scale-down;
-    object-fit: scale-down;
+       object-fit: scale-down;
   }
 
   .\32xl\:object-bottom {
     -o-object-position: bottom;
-    object-position: bottom;
+       object-position: bottom;
   }
 
   .\32xl\:object-center {
     -o-object-position: center;
-    object-position: center;
+       object-position: center;
   }
 
   .\32xl\:object-left {
     -o-object-position: left;
-    object-position: left;
+       object-position: left;
   }
 
   .\32xl\:object-left-bottom {
     -o-object-position: left bottom;
-    object-position: left bottom;
+       object-position: left bottom;
   }
 
   .\32xl\:object-left-top {
     -o-object-position: left top;
-    object-position: left top;
+       object-position: left top;
   }
 
   .\32xl\:object-right {
     -o-object-position: right;
-    object-position: right;
+       object-position: right;
   }
 
   .\32xl\:object-right-bottom {
     -o-object-position: right bottom;
-    object-position: right bottom;
+       object-position: right bottom;
   }
 
   .\32xl\:object-right-top {
     -o-object-position: right top;
-    object-position: right top;
+       object-position: right top;
   }
 
   .\32xl\:object-top {
     -o-object-position: top;
-    object-position: top;
+       object-position: top;
   }
 
   .\32xl\:opacity-0 {
@@ -176217,6 +176661,66 @@ select {
     opacity: 1;
   }
 
+  .\32xl\:disabled\:opacity-0:disabled {
+    opacity: 0;
+  }
+
+  .\32xl\:disabled\:opacity-5:disabled {
+    opacity: 0.05;
+  }
+
+  .\32xl\:disabled\:opacity-10:disabled {
+    opacity: 0.1;
+  }
+
+  .\32xl\:disabled\:opacity-20:disabled {
+    opacity: 0.2;
+  }
+
+  .\32xl\:disabled\:opacity-25:disabled {
+    opacity: 0.25;
+  }
+
+  .\32xl\:disabled\:opacity-30:disabled {
+    opacity: 0.3;
+  }
+
+  .\32xl\:disabled\:opacity-40:disabled {
+    opacity: 0.4;
+  }
+
+  .\32xl\:disabled\:opacity-50:disabled {
+    opacity: 0.5;
+  }
+
+  .\32xl\:disabled\:opacity-60:disabled {
+    opacity: 0.6;
+  }
+
+  .\32xl\:disabled\:opacity-70:disabled {
+    opacity: 0.7;
+  }
+
+  .\32xl\:disabled\:opacity-75:disabled {
+    opacity: 0.75;
+  }
+
+  .\32xl\:disabled\:opacity-80:disabled {
+    opacity: 0.8;
+  }
+
+  .\32xl\:disabled\:opacity-90:disabled {
+    opacity: 0.9;
+  }
+
+  .\32xl\:disabled\:opacity-95:disabled {
+    opacity: 0.95;
+  }
+
+  .\32xl\:disabled\:opacity-100:disabled {
+    opacity: 1;
+  }
+
   .\32xl\:outline-none {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -176312,17 +176816,17 @@ select {
 
   .\32xl\:overscroll-auto {
     -ms-scroll-chaining: chained;
-    overscroll-behavior: auto;
+        overscroll-behavior: auto;
   }
 
   .\32xl\:overscroll-contain {
     -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
+        overscroll-behavior: contain;
   }
 
   .\32xl\:overscroll-none {
     -ms-scroll-chaining: none;
-    overscroll-behavior: none;
+        overscroll-behavior: none;
   }
 
   .\32xl\:overscroll-y-auto {
@@ -188552,30 +189056,29 @@ select {
 
   .\32xl\:select-none {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
 
   .\32xl\:select-text {
     -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
   }
 
   .\32xl\:select-all {
     -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+       -moz-user-select: all;
+            user-select: all;
   }
 
   .\32xl\:select-auto {
     -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
+       -moz-user-select: auto;
+        -ms-user-select: auto;
+            user-select: auto;
   }
 
   .\32xl\:align-baseline {
@@ -189137,177 +189640,177 @@ select {
 
   .\32xl\:gap-x-0 {
     -moz-column-gap: 0px;
-    column-gap: 0px;
+         column-gap: 0px;
   }
 
   .\32xl\:gap-x-1 {
     -moz-column-gap: 0.25rem;
-    column-gap: 0.25rem;
+         column-gap: 0.25rem;
   }
 
   .\32xl\:gap-x-2 {
     -moz-column-gap: 0.5rem;
-    column-gap: 0.5rem;
+         column-gap: 0.5rem;
   }
 
   .\32xl\:gap-x-3 {
     -moz-column-gap: 0.75rem;
-    column-gap: 0.75rem;
+         column-gap: 0.75rem;
   }
 
   .\32xl\:gap-x-4 {
     -moz-column-gap: 1rem;
-    column-gap: 1rem;
+         column-gap: 1rem;
   }
 
   .\32xl\:gap-x-5 {
     -moz-column-gap: 1.25rem;
-    column-gap: 1.25rem;
+         column-gap: 1.25rem;
   }
 
   .\32xl\:gap-x-6 {
     -moz-column-gap: 1.5rem;
-    column-gap: 1.5rem;
+         column-gap: 1.5rem;
   }
 
   .\32xl\:gap-x-7 {
     -moz-column-gap: 1.75rem;
-    column-gap: 1.75rem;
+         column-gap: 1.75rem;
   }
 
   .\32xl\:gap-x-8 {
     -moz-column-gap: 2rem;
-    column-gap: 2rem;
+         column-gap: 2rem;
   }
 
   .\32xl\:gap-x-9 {
     -moz-column-gap: 2.25rem;
-    column-gap: 2.25rem;
+         column-gap: 2.25rem;
   }
 
   .\32xl\:gap-x-10 {
     -moz-column-gap: 2.5rem;
-    column-gap: 2.5rem;
+         column-gap: 2.5rem;
   }
 
   .\32xl\:gap-x-11 {
     -moz-column-gap: 2.75rem;
-    column-gap: 2.75rem;
+         column-gap: 2.75rem;
   }
 
   .\32xl\:gap-x-12 {
     -moz-column-gap: 3rem;
-    column-gap: 3rem;
+         column-gap: 3rem;
   }
 
   .\32xl\:gap-x-14 {
     -moz-column-gap: 3.5rem;
-    column-gap: 3.5rem;
+         column-gap: 3.5rem;
   }
 
   .\32xl\:gap-x-16 {
     -moz-column-gap: 4rem;
-    column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .\32xl\:gap-x-20 {
     -moz-column-gap: 5rem;
-    column-gap: 5rem;
+         column-gap: 5rem;
   }
 
   .\32xl\:gap-x-24 {
     -moz-column-gap: 6rem;
-    column-gap: 6rem;
+         column-gap: 6rem;
   }
 
   .\32xl\:gap-x-28 {
     -moz-column-gap: 7rem;
-    column-gap: 7rem;
+         column-gap: 7rem;
   }
 
   .\32xl\:gap-x-32 {
     -moz-column-gap: 8rem;
-    column-gap: 8rem;
+         column-gap: 8rem;
   }
 
   .\32xl\:gap-x-36 {
     -moz-column-gap: 9rem;
-    column-gap: 9rem;
+         column-gap: 9rem;
   }
 
   .\32xl\:gap-x-40 {
     -moz-column-gap: 10rem;
-    column-gap: 10rem;
+         column-gap: 10rem;
   }
 
   .\32xl\:gap-x-44 {
     -moz-column-gap: 11rem;
-    column-gap: 11rem;
+         column-gap: 11rem;
   }
 
   .\32xl\:gap-x-48 {
     -moz-column-gap: 12rem;
-    column-gap: 12rem;
+         column-gap: 12rem;
   }
 
   .\32xl\:gap-x-52 {
     -moz-column-gap: 13rem;
-    column-gap: 13rem;
+         column-gap: 13rem;
   }
 
   .\32xl\:gap-x-56 {
     -moz-column-gap: 14rem;
-    column-gap: 14rem;
+         column-gap: 14rem;
   }
 
   .\32xl\:gap-x-60 {
     -moz-column-gap: 15rem;
-    column-gap: 15rem;
+         column-gap: 15rem;
   }
 
   .\32xl\:gap-x-64 {
     -moz-column-gap: 16rem;
-    column-gap: 16rem;
+         column-gap: 16rem;
   }
 
   .\32xl\:gap-x-72 {
     -moz-column-gap: 18rem;
-    column-gap: 18rem;
+         column-gap: 18rem;
   }
 
   .\32xl\:gap-x-80 {
     -moz-column-gap: 20rem;
-    column-gap: 20rem;
+         column-gap: 20rem;
   }
 
   .\32xl\:gap-x-96 {
     -moz-column-gap: 24rem;
-    column-gap: 24rem;
+         column-gap: 24rem;
   }
 
   .\32xl\:gap-x-px {
     -moz-column-gap: 1px;
-    column-gap: 1px;
+         column-gap: 1px;
   }
 
   .\32xl\:gap-x-0\.5 {
     -moz-column-gap: 0.125rem;
-    column-gap: 0.125rem;
+         column-gap: 0.125rem;
   }
 
   .\32xl\:gap-x-1\.5 {
     -moz-column-gap: 0.375rem;
-    column-gap: 0.375rem;
+         column-gap: 0.375rem;
   }
 
   .\32xl\:gap-x-2\.5 {
     -moz-column-gap: 0.625rem;
-    column-gap: 0.625rem;
+         column-gap: 0.625rem;
   }
 
   .\32xl\:gap-x-3\.5 {
     -moz-column-gap: 0.875rem;
-    column-gap: 0.875rem;
+         column-gap: 0.875rem;
   }
 
   .\32xl\:gap-y-0 {
@@ -192904,27 +193407,27 @@ select {
 
   .\32xl\:animate-none {
     -webkit-animation: none;
-    animation: none;
+            animation: none;
   }
 
   .\32xl\:animate-spin {
     -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
   }
 
   .\32xl\:animate-ping {
     -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   .\32xl\:animate-pulse {
     -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .\32xl\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
-    animation: bounce 1s infinite;
+            animation: bounce 1s infinite;
   }
 }
 

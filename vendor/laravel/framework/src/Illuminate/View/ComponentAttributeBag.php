@@ -251,7 +251,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * Create a new appendable attribute value.
      *
      * @param  mixed  $value
-     * @return AppendableAttributeValue
+     * @return \Illuminate\View\AppendableAttributeValue
      */
     public function prepends($value)
     {
@@ -319,7 +319,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * Merge additional attributes / values into the attribute bag.
      *
      * @param  array  $attributeDefaults
-     * @return HtmlString
+     * @return \Illuminate\Support\HtmlString
      */
     public function __invoke(array $attributeDefaults = [])
     {
@@ -374,7 +374,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * Get an iterator for the items.
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {

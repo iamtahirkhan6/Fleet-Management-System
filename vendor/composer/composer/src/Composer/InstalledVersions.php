@@ -12,11 +12,8 @@
 
 namespace Composer;
 
-use OutOfBoundsException;
 use Composer\Autoload\ClassLoader;
 use Composer\Semver\VersionParser;
-use function count;
-use function call_user_func_array;
 
 /**
  * This class is copied in every Composer installed project and available to all
@@ -43,11 +40,11 @@ class InstalledVersions
         }
 
 
-        if (1 === count($packages)) {
+        if (1 === \count($packages)) {
             return $packages[0];
         }
 
-        return array_keys(array_flip(call_user_func_array('array_merge', $packages)));
+        return array_keys(array_flip(\call_user_func_array('array_merge', $packages)));
     }
 
     /**
@@ -123,7 +120,7 @@ class InstalledVersions
             return implode(' || ', $ranges);
         }
 
-        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -144,7 +141,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['version'];
         }
 
-        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -165,7 +162,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['pretty_version'];
         }
 
-        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -186,7 +183,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['reference'];
         }
 
-        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -247,7 +244,6 @@ class InstalledVersions
         $installed = array();
 
         if (self::$canGetVendors) {
-            // @phpstan-ignore-next-line
             foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
                 if (isset(self::$installedByVendor[$vendorDir])) {
                     $installed[] = self::$installedByVendor[$vendorDir];

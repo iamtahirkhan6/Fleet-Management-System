@@ -12,8 +12,6 @@
 
 namespace Composer\Util;
 
-use Exception;
-use LogicException;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Downloader\TransportException;
@@ -21,9 +19,8 @@ use Composer\Util\Http\Response;
 use Composer\Composer;
 use Composer\Package\Version\VersionParser;
 use Composer\Semver\Constraint\Constraint;
+use Composer\Exception\IrrecoverableDownloadException;
 use React\Promise\Promise;
-use function function_exists;
-use function extension_loaded;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -41,7 +38,7 @@ class HttpDownloader
     private $jobs = array();
     private $options = array();
     private $runningJobs = 0;
-    private $maxJobs = 10;
+    private $maxJobs = 12;
     private $curl;
     private $rfs;
     private $idGen = 0;
@@ -75,6 +72,10 @@ class HttpDownloader
         }
 
         $this->rfs = new RemoteFilesystem($io, $config, $options, $disableTls);
+
+        if (is_numeric($maxJobs = getenv('COMPOSER_MAX_PARALLEL_HTTP'))) {
+            $this->maxJobs = max(1, min(50, (int) $maxJobs));
+        }
     }
 
     /**
@@ -89,7 +90,7 @@ class HttpDownloader
      */
     public function get($url, $options = array())
     {
-        [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
+        list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
         $this->wait($job['id']);
 
         $response = $this->getResponse($job['id']);
@@ -106,7 +107,7 @@ class HttpDownloader
 
             $this->curl = null;
 
-            [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
+            list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false), true);
             $this->wait($job['id']);
 
             $response = $this->getResponse($job['id']);
@@ -127,7 +128,7 @@ class HttpDownloader
      */
     public function add($url, $options = array())
     {
-        [, $promise] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false));
+        list(, $promise) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => false));
 
         return $promise;
     }
@@ -145,7 +146,7 @@ class HttpDownloader
      */
     public function copy($url, $to, $options = array())
     {
-        [$job] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to), true);
+        list($job) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to), true);
         $this->wait($job['id']);
 
         return $this->getResponse($job['id']);
@@ -164,7 +165,7 @@ class HttpDownloader
      */
     public function addCopy($url, $to, $options = array())
     {
-        [, $promise] = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to));
+        list(, $promise) = $this->addJob(array('url' => $url, 'options' => $options, 'copyTo' => $to));
 
         return $promise;
     }
@@ -202,7 +203,7 @@ class HttpDownloader
         );
 
         if (!$sync && !$this->allowAsync) {
-            throw new LogicException('You must use the HttpDownloader instance which is part of a Composer\Loop instance to be able to run async http requests');
+            throw new \LogicException('You must use the HttpDownloader instance which is part of a Composer\Loop instance to be able to run async http requests');
         }
 
         // capture username/password from URL if there is one
@@ -257,10 +258,11 @@ class HttpDownloader
             if (isset($job['curl_id'])) {
                 $curl->abortRequest($job['curl_id']);
             }
+            throw new IrrecoverableDownloadException('Download of ' . Url::sanitize($job['request']['url']) . ' canceled');
         };
 
         $promise = new Promise($resolver, $canceler);
-        $promise->then(function ($response) use (&$job, $downloader) {
+        $promise = $promise->then(function ($response) use (&$job, $downloader) {
             $job['status'] = HttpDownloader::STATUS_COMPLETED;
             $job['response'] = $response;
 
@@ -306,7 +308,7 @@ class HttpDownloader
             if (isset($job['request']['options']['http']['header']) && false !== stripos(implode('', $job['request']['options']['http']['header']), 'if-modified-since')) {
                 $resolve(new Response(array('url' => $url), 304, array(), ''));
             } else {
-                $e = new TransportException('Network disabled, request canceled: '.$url, 499);
+                $e = new TransportException('Network disabled, request canceled: '.Url::sanitize($url), 499);
                 $e->setStatusCode(499);
                 $reject($e);
             }
@@ -320,7 +322,7 @@ class HttpDownloader
             } else {
                 $job['curl_id'] = $this->curl->download($resolve, $reject, $origin, $url, $options);
             }
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $reject($exception);
         }
     }
@@ -392,7 +394,7 @@ class HttpDownloader
     private function getResponse($index)
     {
         if (!isset($this->jobs[$index])) {
-            throw new LogicException('Invalid request id');
+            throw new \LogicException('Invalid request id');
         }
 
         if ($this->jobs[$index]['status'] === self::STATUS_FAILED) {
@@ -400,7 +402,7 @@ class HttpDownloader
         }
 
         if (!isset($this->jobs[$index]['response'])) {
-            throw new LogicException('Response not available yet, call wait() first');
+            throw new \LogicException('Response not available yet, call wait() first');
         }
 
         $resp = $this->jobs[$index]['response'];
@@ -429,14 +431,14 @@ class HttpDownloader
                 }
             }
 
-            $io->writeError('<'.$type.'>'.ucfirst($type).' from '.$url.': '.$data[$type].'</'.$type.'>');
+            $io->writeError('<'.$type.'>'.ucfirst($type).' from '.Url::sanitize($url).': '.$data[$type].'</'.$type.'>');
         }
     }
 
     /**
      * @internal
      */
-    public static function getExceptionHints(Exception $e)
+    public static function getExceptionHints(\Exception $e)
     {
         if (!$e instanceof TransportException) {
             return;
@@ -486,6 +488,6 @@ class HttpDownloader
      */
     public static function isCurlEnabled()
     {
-        return extension_loaded('curl') && function_exists('curl_multi_exec') && function_exists('curl_multi_init');
+        return \extension_loaded('curl') && \function_exists('curl_multi_exec') && \function_exists('curl_multi_init');
     }
 }

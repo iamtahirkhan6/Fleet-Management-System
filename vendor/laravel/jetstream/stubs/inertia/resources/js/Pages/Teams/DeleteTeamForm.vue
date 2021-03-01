@@ -45,7 +45,6 @@
 
 <script>
     import JetActionSection from '@/Jetstream/ActionSection'
-    import JetButton from '@/Jetstream/Button'
     import JetConfirmationModal from '@/Jetstream/ConfirmationModal'
     import JetDangerButton from '@/Jetstream/DangerButton'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton'
@@ -55,7 +54,6 @@
 
         components: {
             JetActionSection,
-            JetButton,
             JetConfirmationModal,
             JetDangerButton,
             JetSecondaryButton,
@@ -66,11 +64,7 @@
                 confirmingTeamDeletion: false,
                 deleting: false,
 
-                form: this.$inertia.form({
-                    //
-                }, {
-                    bag: 'deleteTeam'
-                })
+                form: this.$inertia.form()
             }
         },
 
@@ -81,7 +75,7 @@
 
             deleteTeam() {
                 this.form.delete(route('teams.destroy', this.team), {
-                    preserveScroll: true
+                    errorBag: 'deleteTeam'
                 });
             },
         },

@@ -3,7 +3,6 @@
 namespace Illuminate\Queue;
 
 use Closure;
-use Throwable;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Container\Container;
@@ -18,7 +17,7 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * The serializable Closure instance.
      *
-     * @var SerializableClosure
+     * @var \Illuminate\Queue\SerializableClosure
      */
     public $closure;
 
@@ -39,8 +38,7 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  SerializableClosure  $closure
-     *
+     * @param  \Illuminate\Queue\SerializableClosure  $closure
      * @return void
      */
     public function __construct(SerializableClosure $closure)
@@ -51,7 +49,7 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Closure  $job
+     * @param  \Closure  $job
      * @return self
      */
     public static function create(Closure $job)
@@ -62,7 +60,7 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param  Container  $container
+     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     public function handle(Container $container)
@@ -88,7 +86,7 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * Handle a job failure.
      *
-     * @param  Throwable  $e
+     * @param  \Throwable  $e
      * @return void
      */
     public function failed($e)

@@ -52,7 +52,7 @@
     <div class="mt-5">
         {{ $payments->links() }}
     </div>
-    <x-modals.simple-with-gray-footer x-show="confirmingRazorPay" x-cloak>
+    <x-modals.simple-with-gray-footer iconBackground="" x-show="confirmingRazorPay" x-cloak>
 
         <x-slot name="icon">
             <x-svg.question class="h-6 w-6 text-red-600"></x-svg.question>
@@ -74,7 +74,7 @@ Amount            : {{ $amount ?? 'Not Mentioned' }}
 </pre><br>
             <div class="grid grid-cols-3">
                 <label for="location" class="col-span-1 block text-sm text-gray-500">Mode</label>
-                <select wire:model="mode" class="col-span-2 mt-1 block w-full md:w-4/6 pl-3 pr-10 py-2 text-base
+                <select wire:model.lazy="mode" class="col-span-2 mt-1 block w-full md:w-4/6 pl-3 pr-10 py-2 text-base
   border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                     <option hidden>Select a mode</option>
                     <option value="IMPS">IMPS</option>

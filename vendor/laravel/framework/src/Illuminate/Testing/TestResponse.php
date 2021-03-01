@@ -2,11 +2,8 @@
 
 namespace Illuminate\Testing;
 
-use Throwable;
 use ArrayAccess;
 use Closure;
-use Illuminate\Session\Store;
-use Illuminate\Http\Response;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Database\Eloquent\Model;
@@ -16,13 +13,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\Tappable;
 use Illuminate\Testing\Assert as PHPUnit;
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Testing\Constraints\SeeInOrder;
 use LogicException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * @mixin Response
+ * @mixin \Illuminate\Http\Response
  */
 class TestResponse implements ArrayAccess
 {
@@ -33,7 +29,7 @@ class TestResponse implements ArrayAccess
     /**
      * The response to delegate to.
      *
-     * @var Response
+     * @var \Illuminate\Http\Response
      */
     public $baseResponse;
 
@@ -47,7 +43,7 @@ class TestResponse implements ArrayAccess
     /**
      * Create a new test response instance.
      *
-     * @param  Response  $response
+     * @param  \Illuminate\Http\Response  $response
      * @return void
      */
     public function __construct($response)
@@ -58,7 +54,7 @@ class TestResponse implements ArrayAccess
     /**
      * Create a new TestResponse from another response.
      *
-     * @param  Response  $response
+     * @param  \Illuminate\Http\Response  $response
      * @return static
      */
     public static function fromBaseResponse($response)
@@ -381,7 +377,7 @@ class TestResponse implements ArrayAccess
      * Get the given cookie from the response.
      *
      * @param  string  $cookieName
-     * @return Cookie|null
+     * @return \Symfony\Component\HttpFoundation\Cookie|null
      */
     protected function getCookie($cookieName)
     {
@@ -696,13 +692,13 @@ class TestResponse implements ArrayAccess
 
         $json = $this->json();
 
-        if (! array_key_exists($responseKey, $json)) {
-            PHPUnit::assertArrayNotHasKey($responseKey, $json);
+        if (! Arr::has($json, $responseKey)) {
+            PHPUnit::assertTrue(true);
 
             return $this;
         }
 
-        $errors = $json[$responseKey];
+        $errors = Arr::get($json, $responseKey, []);
 
         if (is_null($keys) && count($errors) > 0) {
             PHPUnit::fail(
@@ -724,9 +720,9 @@ class TestResponse implements ArrayAccess
     /**
      * Validate and return the decoded response JSON.
      *
-     * @return AssertableJsonString
+     * @return \Illuminate\Testing\AssertableJsonString
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function decodeResponseJson()
     {
@@ -1071,7 +1067,7 @@ class TestResponse implements ArrayAccess
     /**
      * Get the current session store.
      *
-     * @return Store
+     * @return \Illuminate\Session\Store
      */
     protected function session()
     {
@@ -1204,10 +1200,9 @@ class TestResponse implements ArrayAccess
      *
      * @param  string  $offset
      * @param  mixed  $value
-     *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function offsetSet($offset, $value)
     {
@@ -1218,10 +1213,9 @@ class TestResponse implements ArrayAccess
      * Unset the value at the given offset.
      *
      * @param  string  $offset
-     *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function offsetUnset($offset)
     {

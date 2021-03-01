@@ -16,9 +16,10 @@ namespace Ramsey\Collection\Map;
 
 use Ramsey\Collection\AbstractArray;
 use Ramsey\Collection\Exception\InvalidArgumentException;
-use function in_array;
-use function array_keys;
+
 use function array_key_exists;
+use function array_keys;
+use function in_array;
 
 /**
  * This class provides a basic implementation of `MapInterface`, to minimize the

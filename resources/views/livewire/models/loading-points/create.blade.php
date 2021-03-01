@@ -1,19 +1,17 @@
 <div class="overflow-hidden bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg"
     x-data="{createSuccess: @entangle('createSuccess'), createFail: @entangle('createFail')}">
 
-    <x-forms.basic-stacked.form wire:submit.prevent='createMine' :backLink="route('loading-points.index')"
+    <x-forms.basic-stacked.form wire:submit.prevent='createLoadingPoint' :backLink="route('loading-points.index')"
         backLinkTitle="Go Back">
 
         <!-- Name -->
-        <x-forms.basic-stacked.column title="Loading Point/Mine Name" required="true">
-            <x-forms.basic-stacked.input-basic wire:model="loadingpoint.name" placeholder="Enter the source name"></x-forms.basic-stacked.input-basic>
-                @error('loadingpoint.name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+        <x-forms.basic-stacked.column title="Loading Point/Mine Name" error="loadingpoint.name" required="true">
+            <x-forms.basic-stacked.input-basic wire:model.lazy="loadingpoint.name" placeholder="Enter the source name"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
 
         <!-- Short Code -->
-        <x-forms.basic-stacked.column title="Shortcode (without spaces)" required="true">
-            <x-forms.basic-stacked.input-basic wire:model="loadingpoint.short_code" placeholder="Enter the shortcode"></x-forms.basic-stacked.input-basic>
-                @error('loadingpoint.short_code') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+        <x-forms.basic-stacked.column title="Shortcode (without spaces)" error="loadingpoint.short_code" required="true">
+            <x-forms.basic-stacked.input-basic wire:model.lazy="loadingpoint.short_code" placeholder="Enter the shortcode"></x-forms.basic-stacked.input-basic>
         </x-forms.basic-stacked.column>
     </x-forms.basic-stacked.form>
 

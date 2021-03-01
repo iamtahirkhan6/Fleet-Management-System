@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use LogicException;
-use InvalidArgumentException;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
-use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use function explode;
 
 /**
  * An arbitrarily large rational number.
@@ -299,7 +296,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power(int $exponent) : BigRational
     {
@@ -476,15 +473,15 @@ final class BigRational extends BigNumber
      *
      * @return void
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function unserialize($value) : void
     {
         if (isset($this->numerator)) {
-            throw new LogicException('unserialize() is an internal function, it must not be called directly.');
+            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
-        [$numerator, $denominator] = explode('/', $value);
+        [$numerator, $denominator] = \explode('/', $value);
 
         $this->numerator   = BigInteger::of($numerator);
         $this->denominator = BigInteger::of($denominator);

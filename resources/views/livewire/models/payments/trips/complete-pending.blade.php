@@ -6,7 +6,7 @@
 
         <!-- Pan Account -->
         @if($panDiv)
-            <x-forms.basic-stacked.column title="PAN" error="input.pan" width="md:w-2/6 sm:w-full" x-show="panDiv">
+            <x-forms.basic-stacked.column title="PAN" error="input.pan" width="md:w-3/6 sm:w-full" x-show="panDiv">
                 <x-forms.basic-stacked.input-basic wire:model.lazy="input.pan" type="text"
                                                    placeholder="Enter the pan of the party" maxlength="10"
                                                    oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"></x-forms.basic-stacked.input-basic>
@@ -72,7 +72,7 @@
                                           x-show="showExistingBankDetails" x-cloak>
                 <x-forms.basic-stacked.dropdown :array="$existing_bank_accounts" arrayKey="account_number"
                                                 title="Select an option"
-                                                wire:model="input.bank_account_id"></x-forms.basic-stacked.dropdown>
+                                                wire:model.lazy="input.bank_account_id"></x-forms.basic-stacked.dropdown>
             </x-forms.basic-stacked.column>
             <div class="relative w-full sm:w-2/6 my-3" x-show="showExistingBankDetails" x-cloak>
                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
@@ -136,7 +136,7 @@
         @if($trip->getRawOriginal('cash') != null)
             <!-- Cash Percentage -->
                 <x-forms.basic-stacked.column title="Cash Adv. Percentage">
-                    <x-forms.basic-stacked.input-basic wire:model="input.cash_adv_pct" type="number" placeholder="%"
+                    <x-forms.basic-stacked.input-basic wire:model.lazy="input.cash_adv_pct" type="number" placeholder="%"
                                                        class="sm:w-1/6" value="0"></x-forms.basic-stacked.input-basic>
                 </x-forms.basic-stacked.column>
                 <!-- Cash Percentage Fees -->
@@ -152,7 +152,7 @@
 
                 <x-forms.basic-stacked.column title="TDS Category" error="input.tax_category_id" x-show="!tds_sbm_bool">
                     <x-forms.basic-stacked.dropdown :array="$tax_categories" arrayKey="section"
-                                                    wire:model="input.tax_category_id"
+                                                    wire:model.lazy="input.tax_category_id"
                                                     title="Select a category"></x-forms.basic-stacked.dropdown>
                 </x-forms.basic-stacked.column>
 
@@ -160,12 +160,15 @@
                     <x-forms.basic-stacked.row-with-value>{{ App\Helper\Helper::rupee_format($input["tds"]) ?? '0' }}</x-forms.basic-stacked.row-with-value>
                 </x-forms.basic-stacked.column>
 
-                <x-forms.basic-stacked.column title="TDS Soft Copy" error="tds_soft_copy" width="md:w-3/6 sm:w-full"
+                <x-forms.basic-stacked.column title="TDS Soft Copy" error="tds_soft_copy" width="w-full"
                                               x-show="tds_sbm_bool" x-cloak>
-                    <x-media-library-attachment
-                        name="tds_soft_copy"
-                        rules="mimes:png,jpeg,pdf|max:10000"
-                    />
+                    @if(!isset($tds_soft_copy))
+                        <x-forms.basic-stacked.image-upload wireModel="tds_soft_copy"/>
+                    @else
+                        <ul>
+                            <li><span class="text-md text-indigo-500">Uploaded</span></li>
+                        </ul>
+                    @endif
                 </x-forms.basic-stacked.column>
             </div>
             <x-forms.basic-stacked.column title="2PAY Charges" error="input.two_pay">
@@ -182,32 +185,38 @@
         <div x-show="onPanSearch" x-cloak>
             <x-forms.basic-stacked.column title="Payment Method" error="input.payment_method_id">
                 <x-forms.basic-stacked.dropdown :array="$payment_methods"
-                                                wire:model="input.payment_method_id"></x-forms.basic-stacked.dropdown>
+                                                wire:model.lazy="input.payment_method_id"></x-forms.basic-stacked.dropdown>
             </x-forms.basic-stacked.column>
 
             <x-forms.basic-stacked.column title="Payment Status" error="input.payment_status_id">
                 <x-forms.basic-stacked.dropdown :array="$payment_statuses"
-                                                wire:model="input.payment_status_id"></x-forms.basic-stacked.dropdown>
+                                                wire:model.lazy="input.payment_status_id"></x-forms.basic-stacked.dropdown>
             </x-forms.basic-stacked.column>
         </div>
 
         <!-- PAN Soft Copy -->
-        <x-forms.basic-stacked.column title="Pan Soft Copy" width="md:w-3/6 sm:w-full" x-show="showUploadDocuments"
+        <x-forms.basic-stacked.column title="Pan Soft Copy" width="w-full" x-show="showUploadDocuments"
                                       error="pan_soft_copy" x-cloak>
-            <x-media-library-attachment
-                name="pan_soft_copy"
-                rules="required|mimes:png,jpeg,pdf|max:10000"
-            />
+            @if(!isset($pan_soft_copy))
+                <x-forms.basic-stacked.image-upload wireModel="pan_soft_copy"/>
+            @else
+                <ul>
+                    <li><span class="text-md text-indigo-500">Uploaded</span></li>
+                </ul>
+            @endif
         </x-forms.basic-stacked.column>
 
         <!-- RC Soft Copy -->
-        <x-forms.basic-stacked.column title="Vehicle Registration Soft Copy" width="md:w-3/6 sm:w-full"
+        <x-forms.basic-stacked.column title="Vehicle Registration Soft Copy" width="w-full"
                                       error="rc_soft_copy"
                                       x-show="showUploadDocuments" x-cloak>
-            <x-media-library-attachment
-                name="rc_soft_copy"
-                rules="mimes:png,jpeg,pdf|max:10000"
-            />
+            @if(!isset($rc_soft_copy))
+                <x-forms.basic-stacked.image-upload wireModel="rc_soft_copy"/>
+            @else
+                <ul>
+                    <li><span class="text-md text-indigo-500">Uploaded</span></li>
+                </ul>
+            @endif
         </x-forms.basic-stacked.column>
 
         <!-- Premium Rate -->

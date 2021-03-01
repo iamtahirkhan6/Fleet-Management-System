@@ -18,10 +18,6 @@ class InvoiceStatusSeeder extends Seeder
             "desc" => "The invoice has been created, but it has not been sent to the client.",
         ]);
         InvoiceStatus::create([
-            "name" => "Draft",
-            "desc" => "The invoice has been created, but it has not been sent to the client.",
-        ]);
-        InvoiceStatus::create([
             "name" => "Sent",
             "desc" => "The invoice has been sent to the client.",
         ]);

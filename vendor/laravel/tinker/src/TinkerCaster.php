@@ -3,11 +3,6 @@
 namespace Laravel\Tinker;
 
 use Exception;
-use Illuminate\Support\Stringable;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\VarDumper\Caster\Caster;
 
 class TinkerCaster
@@ -38,7 +33,7 @@ class TinkerCaster
     /**
      * Get an array representing the properties of an application.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     public static function castApplication($app)
@@ -63,7 +58,7 @@ class TinkerCaster
     /**
      * Get an array representing the properties of a collection.
      *
-     * @param  Collection  $collection
+     * @param  \Illuminate\Support\Collection  $collection
      * @return array
      */
     public static function castCollection($collection)
@@ -76,7 +71,7 @@ class TinkerCaster
     /**
      * Get an array representing the properties of an html string.
      *
-     * @param  HtmlString  $htmlString
+     * @param  \Illuminate\Support\HtmlString  $htmlString
      * @return array
      */
     public static function castHtmlString($htmlString)
@@ -89,7 +84,7 @@ class TinkerCaster
     /**
      * Get an array representing the properties of a fluent string.
      *
-     * @param  Stringable  $stringable
+     * @param  \Illuminate\Support\Stringable  $stringable
      * @return array
      */
     public static function castStringable($stringable)
@@ -102,7 +97,7 @@ class TinkerCaster
     /**
      * Get an array representing the properties of a model.
      *
-     * @param  Model  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
     public static function castModel($model)

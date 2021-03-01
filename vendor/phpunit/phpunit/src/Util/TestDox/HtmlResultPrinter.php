@@ -35,7 +35,7 @@ final class HtmlResultPrinter extends ResultPrinter
             }
 
             body > ul > li {
-                font-family: LoadingPoints Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
+                font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
                 font-size: 2em;
             }
 

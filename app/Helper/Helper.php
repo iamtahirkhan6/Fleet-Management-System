@@ -13,33 +13,54 @@ class Helper
 
     public static function human_date($date)
     {
-        return Carbon::parse($date)->format('d-M-Y');
+        return Carbon::parse($date)
+            ->format('d-M-Y');
     }
 
     public static function human_date_time($date)
     {
-        return Carbon::parse($date)->format('jS \o\f F, Y g:i:s A');
+        return Carbon::parse($date)
+            ->format('jS \o\f F, Y g:i:s A');
     }
 
     public static function vn($number)
     {
-        $state = substr($number, 0, 2);
+        $state    = substr($number, 0, 2);
         $district = $number[2] . $number[3];
-        $last_4 = substr($number, -4);
-        $middle = str_replace($last_4, '', $number);
-        $middle = str_replace($state, '', $middle);
-        $middle = str_replace($district, '', $middle);
-        $arr = [
+        $last_4   = substr($number, -4);
+        $middle   = str_replace($last_4, '', $number);
+        $middle   = str_replace($state, '', $middle);
+        $middle   = str_replace($district, '', $middle);
+        $arr      = [
             $state . $district . $middle,
             $last_4,
         ];
+
         return join("-", $arr);
     }
 
     public static function setInput(array $array, $prefix = null) : array
     {
         $new_array = [];
-        foreach (array_keys($array) as $value) $new_array[(!isset($prefix)) ? $value : str_replace($prefix, '', $value)] = null;
+        foreach (array_keys($array) as $value) {
+            $new_array[(!isset($prefix)) ? $value : str_replace($prefix, '', $value)] = null;
+        }
+
         return $new_array;
+    }
+
+    public static function cleanColumnName($value) : string
+    {
+        return ucwords(str_replace('_', ' ', $value));
+    }
+
+    public static function array_column_recursive(array $haystack, $needle) : array
+    {
+        $found = [];
+        array_walk_recursive($haystack, function($value, $key) use (&$found, $needle) {
+            if ($key == $needle)
+                $found[] = $value;
+        });
+        return $found;
     }
 }

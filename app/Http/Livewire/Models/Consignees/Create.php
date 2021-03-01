@@ -11,18 +11,15 @@ class Create extends Component
     public array $input         = [];
     public bool  $createSuccess = false;
     public bool  $createFail    = false;
+    public bool  $addressAdd    = false;
 
     public function createConsignee()
     {
         $this->validate();
         $consignee = CreateConsignee::run($this->input);
 
-        if ($consignee) {
-            $this->createSuccess = true;
-        }
-        else {
-            $this->createFail = true;
-        }
+        $this->createSuccess = ($consignee);
+        $this->createFail    = ($consignee == false) ? true : false;
     }
 
     public function mount()
@@ -32,6 +29,8 @@ class Create extends Component
 
     public function render()
     {
+        $this->input["address_bool"] = $this->addressAdd;
+
         return view('livewire.models.consignees.create');
     }
 

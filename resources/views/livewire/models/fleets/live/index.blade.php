@@ -12,10 +12,10 @@
             @foreach ($vehicles as $vehicle)
                 <tr wire:poll>
                     @if($loop->iteration != 1)
-                        {{ $this->fetchVehicle($vehicle->number) }}
+                        {{ $this->fetchVehicle($vehicle->license_plate) }}
                     @else
                         <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                        <x-tables.basic.row>{{ App\Helper\Helper::vn($vehicle->number) }}</x-tables.basic.row>
+                        <x-tables.basic.row>{{ App\Helper\Helper::vn($vehicle->license_plate) }}</x-tables.basic.row>
                         <x-tables.basic.row>{{ count($vehicles_data) }}</x-tables.basic.row>
                     @endif
 

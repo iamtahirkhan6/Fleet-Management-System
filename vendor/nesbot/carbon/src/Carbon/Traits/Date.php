@@ -10,7 +10,6 @@
  */
 namespace Carbon\Traits;
 
-use Carbon\CarbonInterval;
 use BadMethodCallException;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -33,19 +32,6 @@ use DateTimeZone;
 use InvalidArgumentException;
 use ReflectionException;
 use Throwable;
-
-use function count;
-use function strlen;
-use function strval;
-use function intval;
-use function is_null;
-use function gettype;
-use function in_array;
-use function is_array;
-use function is_string;
-use function get_class;
-use function is_object;
-use function func_num_args;
 
 /**
  * A simple API extension for DateTime.
@@ -723,7 +709,7 @@ trait Date
         if (!$date instanceof DateTime && !$date instanceof DateTimeInterface) {
             throw new InvalidTypeException(
                 $message.'DateTime or DateTimeInterface, '.
-                (is_object($date) ? get_class($date) : gettype($date)).' given'
+                (\is_object($date) ? \get_class($date) : \gettype($date)).' given'
             );
         }
     }
@@ -742,7 +728,7 @@ trait Date
             return $this->nowWithSameTz();
         }
 
-        if (is_string($date)) {
+        if (\is_string($date)) {
             return static::parse($date, $this->getTimezone());
         }
 
@@ -755,7 +741,7 @@ trait Date
      * Return the Carbon instance passed through, a now instance in the same timezone
      * if null given or parse the input if string given.
      *
-     * @param Carbon|CarbonPeriod|CarbonInterval|DateInterval|DatePeriod|DateTimeInterface|string|null  $date
+     * @param Carbon|\Carbon\CarbonPeriod|\Carbon\CarbonInterval|\DateInterval|\DatePeriod|DateTimeInterface|string|null $date
      *
      * @return static
      */
@@ -939,7 +925,7 @@ trait Date
 
             // @property int 1 through 366
             case $name === 'dayOfYear':
-                return 1 + intval($this->rawFormat('z'));
+                return 1 + \intval($this->rawFormat('z'));
 
             // @property-read int 365 or 366
             case $name === 'daysInYear':
@@ -1087,7 +1073,7 @@ trait Date
             throw new ImmutableException(sprintf('%s class', static::class));
         }
 
-        if (is_array($name)) {
+        if (\is_array($name)) {
             foreach ($name as $key => $value) {
                 $this->set($key, $value);
             }
@@ -1297,7 +1283,7 @@ trait Date
     {
         $dayOfYear = $this->dayOfYear;
 
-        return is_null($value) ? $dayOfYear : $this->addDays($value - $dayOfYear);
+        return \is_null($value) ? $dayOfYear : $this->addDays($value - $dayOfYear);
     }
 
     /**
@@ -1309,9 +1295,9 @@ trait Date
      */
     public function weekday($value = null)
     {
-        $dayOfWeek = ($this->dayOfWeek + 7 - intval($this->getTranslationMessage('first_day_of_week') ?? 0)) % 7;
+        $dayOfWeek = ($this->dayOfWeek + 7 - \intval($this->getTranslationMessage('first_day_of_week') ?? 0)) % 7;
 
-        return is_null($value) ? $dayOfWeek : $this->addDays($value - $dayOfWeek);
+        return \is_null($value) ? $dayOfWeek : $this->addDays($value - $dayOfWeek);
     }
 
     /**
@@ -1325,7 +1311,7 @@ trait Date
     {
         $dayOfWeekIso = $this->dayOfWeekIso;
 
-        return is_null($value) ? $dayOfWeekIso : $this->addDays($value - $dayOfWeekIso);
+        return \is_null($value) ? $dayOfWeekIso : $this->addDays($value - $dayOfWeekIso);
     }
 
     /**
@@ -1394,7 +1380,7 @@ trait Date
      */
     public function utcOffset(int $minuteOffset = null)
     {
-        if (func_num_args() < 1) {
+        if (\func_num_args() < 1) {
             return $this->offsetMinutes;
         }
 
@@ -1521,7 +1507,7 @@ trait Date
      */
     public function tz($value = null)
     {
-        if (func_num_args() < 1) {
+        if (\func_num_args() < 1) {
             return $this->tzName;
         }
 
@@ -1883,7 +1869,7 @@ trait Date
                 's' => 'second',
                 'ss' => ['getPaddedUnit', ['second']],
                 'S' => function (CarbonInterface $date) {
-                    return strval((string) floor($date->micro / 100000));
+                    return \strval((string) floor($date->micro / 100000));
                 },
                 'SS' => function (CarbonInterface $date) {
                     return str_pad((string) floor($date->micro / 10000), 2, '0', STR_PAD_LEFT);
@@ -1990,7 +1976,7 @@ trait Date
             ':period' => $period,
         ]);
 
-        return strval($result === 'ordinal' ? $number : $result);
+        return \strval($result === 'ordinal' ? $number : $result);
     }
 
     /**
@@ -2042,7 +2028,7 @@ trait Date
      */
     public function getAltNumber(string $key): string
     {
-        return $this->translateNumber(strlen($key) > 1 ? $this->$key : $this->rawFormat('h'));
+        return $this->translateNumber(\strlen($key) > 1 ? $this->$key : $this->rawFormat('h'));
     }
 
     /**
@@ -2121,13 +2107,13 @@ trait Date
 
                 if ($sequence instanceof Closure) {
                     $sequence = $sequence($this, $originalFormat);
-                } elseif (is_array($sequence)) {
+                } elseif (\is_array($sequence)) {
                     try {
                         $sequence = $this->{$sequence[0]}(...$sequence[1]);
                     } catch (ReflectionException | InvalidArgumentException | BadMethodCallException $e) {
                         $sequence = '';
                     }
-                } elseif (is_string($sequence)) {
+                } elseif (\is_string($sequence)) {
                     $sequence = $this->$sequence ?? $code;
                 }
 
@@ -2358,7 +2344,7 @@ trait Date
     {
         $unit = static::singularUnit($unit);
         $dateUnits = ['year', 'month', 'day'];
-        if (in_array($unit, $dateUnits)) {
+        if (\in_array($unit, $dateUnits)) {
             return $this->setDate(...array_map(function ($name) use ($unit, $value) {
                 return (int) ($name === $unit ? $value : $this->$name);
             }, $dateUnits));
@@ -2485,7 +2471,7 @@ trait Date
             });
             $other = null;
 
-            if (count($dates)) {
+            if (\count($dates)) {
                 $key = key($dates);
                 $other = current($dates);
                 array_splice($parameters, $key, 1);
@@ -2505,7 +2491,7 @@ trait Date
         if (substr($unit, 0, 2) === 'is') {
             $word = substr($unit, 2);
 
-            if (in_array($word, static::$days)) {
+            if (\in_array($word, static::$days)) {
                 return $this->isDayOfWeek($word);
             }
 
@@ -2533,7 +2519,7 @@ trait Date
             $unit = strtolower(substr($unit, 3));
         }
 
-        if (in_array($unit, static::$units)) {
+        if (\in_array($unit, static::$units)) {
             return $this->setUnit($unit, ...$parameters);
         }
 

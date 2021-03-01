@@ -15,7 +15,8 @@
         <entry key="createModel:namespace" value="Models" />
       </map>
     </option>
-    <option name="helperCodeModelsStyle" value="dynamic" />
+    <option name="helperCodeCreateHighOrderCollectionProxies" value="true" />
+    <option name="helperCodeModelsFileName" value="_ide_helper_models.php" />
     <option name="moduleSystemName" value="directory" />
     <option name="userClassName" value="App\Models\User" />
   </component>

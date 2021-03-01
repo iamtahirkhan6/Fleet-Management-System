@@ -27,7 +27,7 @@
         <!-- Office -->
         <x-forms.basic-stacked.column title="Office" error="input.office_id" required="true">
             <x-forms.basic-stacked.dropdown
-                wire:model="input.office_id"
+                wire:model.lazy="input.office_id"
                 :array="$offices"
                 joinColumn="true"
                 title="Choose an office"
@@ -35,13 +35,10 @@
             </x-forms.basic-stacked.dropdown>
         </x-forms.basic-stacked.column>
 
-        <!-- Hidden Company ID -->
-        <input type="hidden" wire:model="input.company_id">
-
         <!-- Designation -->
         <x-forms.basic-stacked.column title="Designation" error="input.employee_designation_id" required="true">
             <x-forms.basic-stacked.dropdown
-                wire:model="input.employee_designation_id"
+                wire:model.lazy="input.employee_designation_id"
                 :array="$designations"
                 title="Choose a designation"
                 arrayKey="employee_designation_id">

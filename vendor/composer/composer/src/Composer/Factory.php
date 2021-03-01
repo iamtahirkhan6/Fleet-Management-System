@@ -12,10 +12,6 @@
 
 namespace Composer;
 
-use Exception;
-use RuntimeException;
-use InvalidArgumentException;
-use UnexpectedValueException;
 use Composer\Config\JsonConfigSource;
 use Composer\Json\JsonFile;
 use Composer\IO\IOInterface;
@@ -54,7 +50,7 @@ use Seld\JsonLint\JsonParser;
 class Factory
 {
     /**
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return string
      */
     protected static function getHomeDir()
@@ -66,7 +62,7 @@ class Factory
 
         if (Platform::isWindows()) {
             if (!getenv('APPDATA')) {
-                throw new RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
+                throw new \RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
             }
 
             return rtrim(strtr(getenv('APPDATA'), '\\', '/'), '/') . '/Composer';
@@ -222,7 +218,7 @@ class Factory
             $authData = json_decode($composerAuthEnv, true);
 
             if (null === $authData) {
-                throw new UnexpectedValueException('COMPOSER_AUTH environment variable is malformed, should be a valid JSON object');
+                throw new \UnexpectedValueException('COMPOSER_AUTH environment variable is malformed, should be a valid JSON object');
             }
 
             if ($io && $io->isDebug()) {
@@ -275,8 +271,8 @@ class Factory
      *                                                   read from the default filename
      * @param  bool                      $disablePlugins Whether plugins should not be loaded
      * @param  bool                      $fullLoad       Whether to initialize everything or only main project stuff (used when loading the global composer)
-     * @throws InvalidArgumentException
-     * @throws UnexpectedValueException
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      * @return Composer
      */
     public function createComposer(IOInterface $io, $localConfig = null, $disablePlugins = false, $cwd = null, $fullLoad = true)
@@ -300,7 +296,7 @@ class Factory
                     $message = 'Composer could not find the config file: '.$localConfig;
                 }
                 $instructions = $fullLoad ? 'To initialize a project, please create a composer.json file as described in the https://getcomposer.org/ "Getting Started" section' : '';
-                throw new InvalidArgumentException($message.PHP_EOL.$instructions);
+                throw new \InvalidArgumentException($message.PHP_EOL.$instructions);
             }
 
             $file->validateSchema(JsonFile::LAX_SCHEMA);
@@ -460,7 +456,7 @@ class Factory
         $composer = null;
         try {
             $composer = $this->createComposer($io, $config->get('home') . '/composer.json', $disablePlugins, $config->get('home'), $fullLoad);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $io->writeError('Failed to initialize global composer: '.$e->getMessage(), true, IOInterface::DEBUG);
         }
 
@@ -520,7 +516,7 @@ class Factory
 
     /**
      * @param  Config                     $config The configuration
-     * @param  Downloader\DownloadManager $dm     Manager use to download loading-points
+     * @param  Downloader\DownloadManager $dm     Manager use to download sources
      * @return Archiver\ArchiveManager
      */
     public function createArchiveManager(Config $config, Downloader\DownloadManager $dm, Loop $loop)
@@ -671,14 +667,14 @@ class Factory
     }
 
     /**
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return string
      */
     private static function getUserDir()
     {
         $home = getenv('HOME');
         if (!$home) {
-            throw new RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
+            throw new \RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
         }
 
         return rtrim(strtr($home, '\\', '/'), '/');

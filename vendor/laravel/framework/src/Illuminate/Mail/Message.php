@@ -2,14 +2,12 @@
 
 namespace Illuminate\Mail;
 
-use Swift_Message;
-use Swift_Mime_Attachment;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Swift_Attachment;
 use Swift_Image;
 
 /**
- * @mixin Swift_Message
+ * @mixin \Swift_Message
  */
 class Message
 {
@@ -18,7 +16,7 @@ class Message
     /**
      * The Swift Message instance.
      *
-     * @var Swift_Message
+     * @var \Swift_Message
      */
     protected $swift;
 
@@ -32,7 +30,7 @@ class Message
     /**
      * Create a new message instance.
      *
-     * @param  Swift_Message  $swift
+     * @param  \Swift_Message  $swift
      * @return void
      */
     public function __construct($swift)
@@ -213,7 +211,7 @@ class Message
      * Create a Swift Attachment instance.
      *
      * @param  string  $file
-     * @return Swift_Mime_Attachment
+     * @return \Swift_Mime_Attachment
      */
     protected function createAttachmentFromPath($file)
     {
@@ -240,8 +238,7 @@ class Message
      *
      * @param  string  $data
      * @param  string  $name
-     *
-     * @return Swift_Attachment
+     * @return \Swift_Attachment
      */
     protected function createAttachmentFromData($data, $name)
     {
@@ -283,9 +280,8 @@ class Message
     /**
      * Prepare and attach the given attachment.
      *
-     * @param  Swift_Attachment  $attachment
-     * @param  array             $options
-     *
+     * @param  \Swift_Attachment  $attachment
+     * @param  array  $options
      * @return $this
      */
     protected function prepAttachment($attachment, $options = [])
@@ -312,7 +308,7 @@ class Message
     /**
      * Get the underlying Swift Message instance.
      *
-     * @return Swift_Message
+     * @return \Swift_Message
      */
     public function getSwiftMessage()
     {

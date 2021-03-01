@@ -72,9 +72,9 @@ class FleetLiveEvery10Mins extends Command
         {
             foreach($fleet->vehicles as $vehicle)
             {
-                $location = $this->getLiveLocation($vehicle->number);
+                $location = $this->getLiveLocation($vehicle->license_plate);
                 $fleetLive = FleetLive::updateOrCreate(
-                    ['vehicleno' => $vehicle->number],
+                    ['vehicleno' => $vehicle->license_plate],
                     [
                         'outtype' => $location['outtype'],
                         'ttime' => $location['ttime'],

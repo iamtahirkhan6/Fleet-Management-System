@@ -16,19 +16,22 @@ class CompanyEmployeesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return Application|Factory|View|Response
      */
     public function index()
     {
-        return view('page')->with('livewire', 'models.employees.index')->with('title', 'Employees')->with('description', 'View all the employees in your company');
+        return view('page')
+            ->with('livewire', 'models.employees.index')
+            ->with('title', 'Employees')
+            ->with('description', 'View all the employees in your company');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return Response
      */
@@ -40,8 +43,8 @@ class CompanyEmployeesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Company $company
+     * @param  Request  $request
+     * @param  Company  $company
      *
      * @return Response
      */
@@ -53,21 +56,24 @@ class CompanyEmployeesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Company  $company
-     * @param Employee $employee
+     * @param  Company   $company
+     * @param  Employee  $employee
      *
      * @return Application|Factory|View
      */
     public function show(Company $company, Employee $employee)
     {
-        return view('page')->with('livewire', 'models.employees.show')->with('title', $employee->name)->with('description', 'View all the details of the employee');
+        return view('page')
+            ->with('livewire', 'models.employees.show')
+            ->with('title', $employee->name)
+            ->with('description', 'View all the details of the employee');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Company  $company
-     * @param Employee $employee
+     * @param  Company   $company
+     * @param  Employee  $employee
      *
      * @return Response
      */
@@ -79,9 +85,9 @@ class CompanyEmployeesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request  $request
-     * @param Company  $company
-     * @param Employee $employee
+     * @param  Request   $request
+     * @param  Company   $company
+     * @param  Employee  $employee
      *
      * @return Response
      */
@@ -93,8 +99,8 @@ class CompanyEmployeesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Company  $company
-     * @param Employee $employee
+     * @param  Company   $company
+     * @param  Employee  $employee
      *
      * @return Response
      */

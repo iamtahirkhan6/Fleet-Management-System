@@ -4,7 +4,6 @@ namespace Laravel\Sanctum;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\Contracts\HasAbilities;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class PersonalAccessToken extends Model implements HasAbilities
 {
@@ -23,7 +22,7 @@ class PersonalAccessToken extends Model implements HasAbilities
      *
      * @var array
      */
-    protected array $fillable = [
+    protected $fillable = [
         'name',
         'token',
         'abilities',
@@ -41,7 +40,7 @@ class PersonalAccessToken extends Model implements HasAbilities
     /**
      * Get the tokenable model that the access token belongs to.
      *
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function tokenable()
     {

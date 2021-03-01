@@ -12,9 +12,7 @@
 
 namespace Composer\Plugin;
 
-use RuntimeException;
 use Composer\Composer;
-use UnexpectedValueException;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackage;
@@ -25,6 +23,7 @@ use Composer\Repository\RepositoryInterface;
 use Composer\Repository\InstalledRepository;
 use Composer\Repository\RootPackageRepository;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
 use Composer\Package\Link;
 use Composer\Semver\Constraint\Constraint;
 use Composer\Plugin\Capability\Capability;
@@ -123,7 +122,7 @@ class PluginManager
      * @param bool             $failOnMissingClasses By default this silently skips plugins that can not be found, but if set to true it fails with an exception
      * @param bool             $isGlobalPlugin       Set to true to denote plugins which are installed in the global Composer directory
      *
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function registerPackage(PackageInterface $package, $failOnMissingClasses = false, $isGlobalPlugin = false)
     {
@@ -141,7 +140,7 @@ class PluginManager
             }
 
             if (!$requiresComposer) {
-                throw new RuntimeException("Plugin ".$package->getName()." is missing a require statement for a version of the composer-plugin-api package.");
+                throw new \RuntimeException("Plugin ".$package->getName()." is missing a require statement for a version of the composer-plugin-api package.");
             }
 
             $currentPluginApiVersion = $this->getPluginApiVersion();
@@ -170,7 +169,7 @@ class PluginManager
 
         $extra = $package->getExtra();
         if (empty($extra['class'])) {
-            throw new UnexpectedValueException('Error while installing '.$package->getPrettyName().', composer-plugin packages should have a class defined in their extra key to be usable.');
+            throw new \UnexpectedValueException('Error while installing '.$package->getPrettyName().', composer-plugin packages should have a class defined in their extra key to be usable.');
         }
         $classes = is_array($extra['class']) ? $extra['class'] : array($extra['class']);
 
@@ -199,8 +198,8 @@ class PluginManager
         }
 
         $map = $generator->parseAutoloads($autoloads, $rootPackage);
-        $classLoader = $generator->createLoader($map);
-        $classLoader->register();
+        $classLoader = $generator->createLoader($map, $this->composer->getConfig()->get('vendor-dir'));
+        $classLoader->register(false);
 
         foreach ($classes as $class) {
             if (class_exists($class, false)) {
@@ -233,7 +232,7 @@ class PluginManager
                 $this->addPlugin($plugin, $isGlobalPlugin);
                 $this->registeredPlugins[$package->getName()] = $plugin;
             } elseif ($failOnMissingClasses) {
-                throw new UnexpectedValueException('Plugin '.$package->getName().' could not be initialized, class not found: '.$class);
+                throw new \UnexpectedValueException('Plugin '.$package->getName().' could not be initialized, class not found: '.$class);
             }
         }
     }
@@ -246,7 +245,7 @@ class PluginManager
      *
      * @param PackageInterface $package
      *
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function deactivatePackage(PackageInterface $package)
     {
@@ -279,7 +278,7 @@ class PluginManager
      *
      * @param PackageInterface $package
      *
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function uninstallPackage(PackageInterface $package)
     {
@@ -382,7 +381,7 @@ class PluginManager
      *
      * @param RepositoryInterface $repo Repository to scan for plugins to install
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     private function loadRepository(RepositoryInterface $repo, $isGlobalRepo)
     {
@@ -412,12 +411,7 @@ class PluginManager
      */
     private function collectDependencies(InstalledRepository $installedRepo, array $collected, PackageInterface $package)
     {
-        $requires = array_merge(
-            $package->getRequires(),
-            $package->getDevRequires()
-        );
-
-        foreach ($requires as $requireLink) {
+        foreach ($package->getRequires() as $requireLink) {
             foreach ($installedRepo->findPackagesWithReplacersAndProviders($requireLink->getTarget()) as $requiredPackage) {
                 if (!isset($collected[$requiredPackage->getName()])) {
                     $collected[$requiredPackage->getName()] = $requiredPackage;
@@ -449,7 +443,7 @@ class PluginManager
     /**
      * @param  PluginInterface   $plugin
      * @param  string            $capability
-     * @throws RuntimeException On empty or non-string implementation class name value
+     * @throws \RuntimeException On empty or non-string implementation class name value
      * @return null|string       The fully qualified class of the implementation or null if Plugin is not of Capable type or does not provide it
      */
     protected function getCapabilityImplementationClassName(PluginInterface $plugin, $capability)
@@ -468,7 +462,7 @@ class PluginManager
             array_key_exists($capability, $capabilities)
             && (empty($capabilities[$capability]) || !is_string($capabilities[$capability]) || !trim($capabilities[$capability]))
         ) {
-            throw new UnexpectedValueException('Plugin '.get_class($plugin).' provided invalid capability class name(s), got '.var_export($capabilities[$capability], 1));
+            throw new \UnexpectedValueException('Plugin '.get_class($plugin).' provided invalid capability class name(s), got '.var_export($capabilities[$capability], 1));
         }
     }
 
@@ -484,7 +478,7 @@ class PluginManager
     {
         if ($capabilityClass = $this->getCapabilityImplementationClassName($plugin, $capabilityClassName)) {
             if (!class_exists($capabilityClass)) {
-                throw new RuntimeException("Cannot instantiate Capability, as class $capabilityClass from plugin ".get_class($plugin)." does not exist.");
+                throw new \RuntimeException("Cannot instantiate Capability, as class $capabilityClass from plugin ".get_class($plugin)." does not exist.");
             }
 
             $ctorArgs['plugin'] = $plugin;
@@ -492,7 +486,7 @@ class PluginManager
 
             // FIXME these could use is_a and do the check *before* instantiating once drop support for php<5.3.9
             if (!$capabilityObj instanceof Capability || !$capabilityObj instanceof $capabilityClassName) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     'Class ' . $capabilityClass . ' must implement both Composer\Plugin\Capability\Capability and '. $capabilityClassName . '.'
                 );
             }

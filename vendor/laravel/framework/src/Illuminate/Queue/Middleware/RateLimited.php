@@ -12,7 +12,7 @@ class RateLimited
     /**
      * The rate limiter instance.
      *
-     * @var RateLimiter
+     * @var \Illuminate\Cache\RateLimiter
      */
     protected $limiter;
 

@@ -10,8 +10,8 @@ class PostgresSchemaState extends SchemaState
     /**
      * Dump the database's schema into a file.
      *
-     * @param  Connection  $connection
-     * @param  string      $path
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $path
      * @return void
      */
     public function dump(Connection $connection, $path)

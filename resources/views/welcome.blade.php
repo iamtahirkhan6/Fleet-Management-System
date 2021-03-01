@@ -9,7 +9,7 @@
                 <div class="flex items-center">
 {{--                    <nav class="text-indigo-900 text-lg hidden lg:flex items-center">--}}
 {{--                        <a href="#" class="py-2 px-8 flex hover:text-indigo-700">--}}
-{{--                            Home--}}
+{{--                            Dashboard--}}
 {{--                        </a>--}}
 {{--                        <a href="#" class="py-2 px-8 flex hover:text-indigo-700">--}}
 {{--                            Service--}}
@@ -32,9 +32,9 @@
             </div>
             <div class="sm:w-5/12 xl:w-4/12 flex flex-col items-start sm:items-end sm:text-right ml-auto mt-8 sm:mt-0 relative z-10 xl:pt-20 mb-16 sm:mb-0">
                 <h1 class="text-4xl lg:text-5xl text-indigo-700 leading-none mb-4 font-black">Your Fleet on the Internet</h1>
-                <p class="lg:text-lg mb-4 sm:mb-12 text-indigo-900">With our technology, blend your offline work with our services and make your workload close to nothing. Without our smart technology, you can manage your projects, trips and make payments to your clients with our support for 3rd party payment processors.</p>
+                <p class="lg:text-lg mb-4 sm:mb-12 text-indigo-900">With our technology, blend your offline work with our services and make your workload close to nothing. With our smart technology, you can manage your projects, trips and make payments to your clients with our support for 3rd party payment processors.</p>
 
-                <a href="/dashboard" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     @if(Auth::check()) Dashboard @else Login @endif
                 </a>
             </div>

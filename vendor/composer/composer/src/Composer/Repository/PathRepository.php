@@ -13,7 +13,6 @@
 namespace Composer\Repository;
 
 use Composer\Config;
-use RuntimeException;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\Loader\ArrayLoader;
@@ -102,7 +101,7 @@ class PathRepository extends ArrayRepository implements ConfigurableRepositoryIn
     public function __construct(array $repoConfig, IOInterface $io, Config $config)
     {
         if (!isset($repoConfig['url'])) {
-            throw new RuntimeException('You must specify the `url` configuration for the path repository');
+            throw new \RuntimeException('You must specify the `url` configuration for the path repository');
         }
 
         $this->loader = new ArrayLoader(null, true);
@@ -152,7 +151,7 @@ class PathRepository extends ArrayRepository implements ConfigurableRepositoryIn
                 }
             }
 
-            throw new RuntimeException('The `url` supplied for the path (' . $this->url . ') repository does not exist');
+            throw new \RuntimeException('The `url` supplied for the path (' . $this->url . ') repository does not exist');
         }
 
         foreach ($urlMatches as $url) {
@@ -226,7 +225,7 @@ class PathRepository extends ArrayRepository implements ConfigurableRepositoryIn
         if (defined('GLOB_BRACE')) {
             $flags |= GLOB_BRACE;
         } elseif (strpos($this->url, '{') !== false || strpos($this->url, '}') !== false) {
-            throw new RuntimeException('The operating system does not support GLOB_BRACE which is required for the url '. $this->url);
+            throw new \RuntimeException('The operating system does not support GLOB_BRACE which is required for the url '. $this->url);
         }
 
         // Ensure environment-specific path separators are normalized to URL separators

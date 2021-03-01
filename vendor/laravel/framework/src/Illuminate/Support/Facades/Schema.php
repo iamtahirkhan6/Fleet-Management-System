@@ -2,19 +2,16 @@
 
 namespace Illuminate\Support\Facades;
 
-use Closure;
-use Illuminate\Database\Schema\Builder;
-
 /**
- * @method static Builder create(string $table, Closure $callback)
- * @method static Builder createDatabase(string $name)
- * @method static Builder disableForeignKeyConstraints()
- * @method static Builder drop(string $table)
- * @method static Builder dropDatabaseIfExists(string $name)
- * @method static Builder dropIfExists(string $table)
- * @method static Builder enableForeignKeyConstraints()
- * @method static Builder rename(string $from, string $to)
- * @method static Builder table(string $table, Closure $callback)
+ * @method static \Illuminate\Database\Schema\Builder create(string $table, \Closure $callback)
+ * @method static \Illuminate\Database\Schema\Builder createDatabase(string $name)
+ * @method static \Illuminate\Database\Schema\Builder disableForeignKeyConstraints()
+ * @method static \Illuminate\Database\Schema\Builder drop(string $table)
+ * @method static \Illuminate\Database\Schema\Builder dropDatabaseIfExists(string $name)
+ * @method static \Illuminate\Database\Schema\Builder dropIfExists(string $table)
+ * @method static \Illuminate\Database\Schema\Builder enableForeignKeyConstraints()
+ * @method static \Illuminate\Database\Schema\Builder rename(string $from, string $to)
+ * @method static \Illuminate\Database\Schema\Builder table(string $table, \Closure $callback)
  * @method static bool hasColumn(string $table, string $column)
  * @method static bool hasColumns(string $table, array $columns)
  * @method static bool dropColumns(string $table, array $columns)
@@ -30,7 +27,7 @@ class Schema extends Facade
      * Get a schema builder instance for a connection.
      *
      * @param  string|null  $name
-     * @return Builder
+     * @return \Illuminate\Database\Schema\Builder
      */
     public static function connection($name)
     {
@@ -40,7 +37,7 @@ class Schema extends Facade
     /**
      * Get a schema builder instance for the default connection.
      *
-     * @return Builder
+     * @return \Illuminate\Database\Schema\Builder
      */
     protected static function getFacadeAccessor()
     {

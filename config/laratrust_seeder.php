@@ -27,6 +27,8 @@ return [
             'razorpay'         => 'cp',
             'loading-points'   => 'c,r,u,d',
             'unloading-points' => 'c,r,u,d',
+            'parties'          => 'c,r,u',
+            'payees'          => 'c,r,u',
         ],
         'trips_entry_manager'     => [
             'trips'    => 'c,r,u',
@@ -34,6 +36,7 @@ return [
         ],
         'trips_payment_executive' => [
             'payments' => 'c,r,u',
+            'parties'  => 'c,r,u',
             'projects' => 'r,u',
             'trips'    => 'r',
         ],

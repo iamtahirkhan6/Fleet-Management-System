@@ -22,7 +22,7 @@ class ComponentTagCompiler
     /**
      * The Blade compiler instance.
      *
-     * @var BladeCompiler
+     * @var \Illuminate\View\Compilers\BladeCompiler
      */
     protected $blade;
 
@@ -50,10 +50,9 @@ class ComponentTagCompiler
     /**
      * Create a new component tag compiler.
      *
-     * @param  array               $aliases
-     * @param  array               $namespaces
-     * @param  BladeCompiler|null  $blade
-     *
+     * @param  array  $aliases
+     * @param  array  $namespaces
+     * @param  \Illuminate\View\Compilers\BladeCompiler|null $blade
      * @return void
      */
     public function __construct(array $aliases = [], array $namespaces = [], ?BladeCompiler $blade = null)
@@ -81,10 +80,9 @@ class ComponentTagCompiler
      * Compile the tags within the given string.
      *
      * @param  string  $value
-     *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function compileTags(string $value)
     {
@@ -99,10 +97,9 @@ class ComponentTagCompiler
      * Compile the opening tags within the given string.
      *
      * @param  string  $value
-     *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function compileOpeningTags(string $value)
     {
@@ -152,10 +149,9 @@ class ComponentTagCompiler
      * Compile the self-closing tags within the given string.
      *
      * @param  string  $value
-     *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function compileSelfClosingTags(string $value)
     {
@@ -206,10 +202,9 @@ class ComponentTagCompiler
      *
      * @param  string  $component
      * @param  array  $attributes
-     *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function componentString(string $component, array $attributes)
     {
@@ -243,10 +238,9 @@ class ComponentTagCompiler
      * Get the component class for a given component alias.
      *
      * @param  string  $component
-     *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function componentClass(string $component)
     {

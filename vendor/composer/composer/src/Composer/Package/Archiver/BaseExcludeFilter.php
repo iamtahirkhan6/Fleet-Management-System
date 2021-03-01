@@ -30,7 +30,7 @@ abstract class BaseExcludeFilter
     protected $excludePatterns;
 
     /**
-     * @param string $sourcePath Directory containing loading-points to be filtered
+     * @param string $sourcePath Directory containing sources to be filtered
      */
     public function __construct($sourcePath)
     {
@@ -51,7 +51,7 @@ abstract class BaseExcludeFilter
     public function filter($relativePath, $exclude)
     {
         foreach ($this->excludePatterns as $patternData) {
-            [$pattern, $negate, $stripLeadingSlash] = $patternData;
+            list($pattern, $negate, $stripLeadingSlash) = $patternData;
 
             if ($stripLeadingSlash) {
                 $path = substr($relativePath, 1);
@@ -138,7 +138,7 @@ abstract class BaseExcludeFilter
         }
 
         $rule = trim($rule, '/');
-
+        
         // remove delimiters as well as caret (^) and dollar sign ($) from the regex
         $rule = substr(Finder\Glob::toRegex($rule), 2, -2);
 

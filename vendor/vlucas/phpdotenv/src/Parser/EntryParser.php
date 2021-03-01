@@ -9,17 +9,6 @@ use Dotenv\Util\Str;
 use GrahamCampbell\ResultType\Error;
 use GrahamCampbell\ResultType\Result;
 use GrahamCampbell\ResultType\Success;
-use function trim;
-use function ltrim;
-use function strtok;
-use function sprintf;
-use function explode;
-use function in_array;
-use function array_map;
-use function ctype_space;
-use function array_reduce;
-use function stripcslashes;
-use function iterator_to_array;
 
 final class EntryParser
 {
@@ -46,12 +35,13 @@ final class EntryParser
 
     /**
      * Parse a raw entry into a proper entry.
+     *
      * That is, turn a raw environment variable entry into a name and possibly
      * a value. We wrap the answer in a result type.
      *
      * @param string $entry
      *
-     * @return Result
+     * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry,string>
      */
     public static function parse(string $entry)
     {
@@ -74,36 +64,37 @@ final class EntryParser
      *
      * @param string $line
      *
-     * @return Result{string,string|null},string>
+     * @return \GrahamCampbell\ResultType\Result<array{string,string|null},string>
      */
     private static function splitStringIntoParts(string $line)
     {
         /** @var array{string,string|null} */
         $result = Str::pos($line, '=')->map(static function () use ($line) {
-            return array_map('trim', explode('=', $line, 2));
+            return \array_map('trim', \explode('=', $line, 2));
         })->getOrElse([$line, null]);
 
         if ($result[0] === '') {
             return Error::create(self::getErrorMessage('an unexpected equals', $line));
         }
 
-        /** @var Result{string,string|null},string> */
+        /** @var \GrahamCampbell\ResultType\Result<array{string,string|null},string> */
         return Success::create($result);
     }
 
     /**
      * Parse the given variable name.
+     *
      * That is, strip the optional quotes and leading "export" from the
      * variable name. We wrap the answer in a result type.
      *
      * @param string $name
      *
-     * @return Result
+     * @return \GrahamCampbell\ResultType\Result<string,string>
      */
     private static function parseName(string $name)
     {
-        if (Str::len($name) > 8 && Str::substr($name, 0, 6) === 'export' && ctype_space(Str::substr($name, 6, 1))) {
-            $name = ltrim(Str::substr($name, 6));
+        if (Str::len($name) > 8 && Str::substr($name, 0, 6) === 'export' && \ctype_space(Str::substr($name, 6, 1))) {
+            $name = \ltrim(Str::substr($name, 6));
         }
 
         if (self::isQuotedName($name)) {
@@ -158,15 +149,15 @@ final class EntryParser
      *
      * @param string $value
      *
-     * @return Result
+     * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Value,string>
      */
     private static function parseValue(string $value)
     {
-        if (trim($value) === '') {
+        if (\trim($value) === '') {
             return Success::create(Value::blank());
         }
 
-        return array_reduce(iterator_to_array(Lexer::lex($value)), static function (Result $data, string $token) {
+        return \array_reduce(\iterator_to_array(Lexer::lex($value)), static function (Result $data, string $token) {
             return $data->flatMap(static function (array $data) use ($token) {
                 return self::processToken($data[1], $token)->map(static function (array $val) use ($data) {
                     return [$data[0]->append($val[0], $val[1]), $val[2]];
@@ -189,94 +180,94 @@ final class EntryParser
      * @param int    $state
      * @param string $token
      *
-     * @return Result{string,bool,int},string>
+     * @return \GrahamCampbell\ResultType\Result<array{string,bool,int},string>
      */
     private static function processToken(int $state, string $token)
     {
         switch ($state) {
             case self::INITIAL_STATE:
                 if ($token === '\'') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::SINGLE_QUOTED_STATE]);
                 } elseif ($token === '"') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::DOUBLE_QUOTED_STATE]);
                 } elseif ($token === '#') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::COMMENT_STATE]);
                 } elseif ($token === '$') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, true, self::UNQUOTED_STATE]);
                 } else {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::UNQUOTED_STATE]);
                 }
             case self::UNQUOTED_STATE:
                 if ($token === '#') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::COMMENT_STATE]);
-                } elseif (ctype_space($token)) {
-                    /** @var Result{string,bool,int},string> */
+                } elseif (\ctype_space($token)) {
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::WHITESPACE_STATE]);
                 } elseif ($token === '$') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, true, self::UNQUOTED_STATE]);
                 } else {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::UNQUOTED_STATE]);
                 }
             case self::SINGLE_QUOTED_STATE:
                 if ($token === '\'') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::WHITESPACE_STATE]);
                 } else {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::SINGLE_QUOTED_STATE]);
                 }
             case self::DOUBLE_QUOTED_STATE:
                 if ($token === '"') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::WHITESPACE_STATE]);
                 } elseif ($token === '\\') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::ESCAPE_SEQUENCE_STATE]);
                 } elseif ($token === '$') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, true, self::DOUBLE_QUOTED_STATE]);
                 } else {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::DOUBLE_QUOTED_STATE]);
                 }
             case self::ESCAPE_SEQUENCE_STATE:
                 if ($token === '"' || $token === '\\') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::DOUBLE_QUOTED_STATE]);
                 } elseif ($token === '$') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create([$token, false, self::DOUBLE_QUOTED_STATE]);
                 } else {
                     $first = Str::substr($token, 0, 1);
-                    if (in_array($first, [ 'f', 'n', 'r', 't', 'v'], true)) {
-                        /** @var Result{string,bool,int},string> */
-                        return Success::create([ stripcslashes('\\'.$first).Str::substr($token, 1), false, self::DOUBLE_QUOTED_STATE]);
+                    if (\in_array($first, ['f', 'n', 'r', 't', 'v'], true)) {
+                        /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
+                        return Success::create([\stripcslashes('\\'.$first).Str::substr($token, 1), false, self::DOUBLE_QUOTED_STATE]);
                     } else {
-                        /** @var Result{string,bool,int},string> */
+                        /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                         return Error::create('an unexpected escape sequence');
                     }
                 }
             case self::WHITESPACE_STATE:
                 if ($token === '#') {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::COMMENT_STATE]);
-                } elseif (!ctype_space($token)) {
-                    /** @var Result{string,bool,int},string> */
+                } elseif (!\ctype_space($token)) {
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Error::create('unexpected whitespace');
                 } else {
-                    /** @var Result{string,bool,int},string> */
+                    /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                     return Success::create(['', false, self::WHITESPACE_STATE]);
                 }
             case self::COMMENT_STATE:
-                /** @var Result{string,bool,int},string> */
+                /** @var \GrahamCampbell\ResultType\Result<array{string,bool,int},string> */
                 return Success::create(['', false, self::COMMENT_STATE]);
             default:
                 throw new \Error('Parser entered invalid state.');
@@ -293,10 +284,10 @@ final class EntryParser
      */
     private static function getErrorMessage(string $cause, string $subject)
     {
-        return sprintf(
+        return \sprintf(
             'Encountered %s at [%s].',
             $cause,
-            strtok($subject, "\n")
+            \strtok($subject, "\n")
         );
     }
 }

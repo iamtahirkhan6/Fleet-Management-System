@@ -2,9 +2,6 @@
 
 namespace Illuminate\Redis\Limiters;
 
-use DateInterval;
-use DateTimeInterface;
-use Illuminate\Redis\Connections\Connection;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
 use Illuminate\Support\InteractsWithTime;
 
@@ -15,7 +12,7 @@ class DurationLimiterBuilder
     /**
      * The Redis connection.
      *
-     * @var Connection
+     * @var \Illuminate\Redis\Connections\Connection
      */
     public $connection;
 
@@ -50,7 +47,7 @@ class DurationLimiterBuilder
     /**
      * Create a new builder instance.
      *
-     * @param  Connection  $connection
+     * @param  \Illuminate\Redis\Connections\Connection  $connection
      * @param  string  $name
      * @return void
      */
@@ -76,8 +73,7 @@ class DurationLimiterBuilder
     /**
      * Set the amount of time the lock window is maintained.
      *
-     * @param  DateTimeInterface|DateInterval|int  $decay
-     *
+     * @param  \DateTimeInterface|\DateInterval|int  $decay
      * @return $this
      */
     public function every($decay)
@@ -107,7 +103,7 @@ class DurationLimiterBuilder
      * @param  callable|null  $failure
      * @return mixed
      *
-     * @throws LimiterTimeoutException
+     * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
      */
     public function then(callable $callback, callable $failure = null)
     {

@@ -19,7 +19,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('amount');
             $table->text('remark')->nullable();
             $table->foreignId('expense_category_id')->constrained('expense_categories');
-            $table->foreignId('expense_individual_id')->constrained('expense_individuals');
+            $table->foreignId('payee_id')->nullable()->constrained('payees');
             $table->foreignId('office_id')->constrained('offices');
             $table->foreignId('payment_method_id')->constrained('payment_methods');
             $table->foreignId('company_id')->constrained('companies');

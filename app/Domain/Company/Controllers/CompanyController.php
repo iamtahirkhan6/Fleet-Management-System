@@ -15,6 +15,7 @@ class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return View|Response
      */
     public function index()
@@ -25,30 +26,9 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return Application|Factory|View|Response
      */
@@ -68,20 +48,48 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return bool|View|void
      */
-    public function settings()
+    public function settings(Company $settings)
     {
-        if (!Auth::user()->hasRole('manager')) return abort(403);
-        return view('page')->with('livewire', 'models.company.settings')->with('title', 'Company Settings')->with('description', 'Manage the settings of your company from this page.');
+        if (auth()->user()->hasRole('manager') == false) {
+            return abort(403);
+        }
+
+        return view('page')
+            ->with('livewire', 'models.company.settings')
+            ->with('title', 'Company Settings')
+            ->with('description', 'Manage the settings of your company from this page.');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return View|Response
      */
@@ -93,8 +101,8 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Company $company
+     * @param  Request  $request
+     * @param  Company  $company
      *
      * @return View|Response
      */
@@ -106,7 +114,7 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Company $company
+     * @param  Company  $company
      *
      * @return View|Response
      */

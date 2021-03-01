@@ -12,7 +12,7 @@ class CompilerEngine extends PhpEngine
     /**
      * The Blade compiler instance.
      *
-     * @var CompilerInterface
+     * @var \Illuminate\View\Compilers\CompilerInterface
      */
     protected $compiler;
 
@@ -26,9 +26,8 @@ class CompilerEngine extends PhpEngine
     /**
      * Create a new compiler engine instance.
      *
-     * @param  CompilerInterface  $compiler
-     * @param  Filesystem|null    $files
-     *
+     * @param  \Illuminate\View\Compilers\CompilerInterface  $compiler
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
      * @return void
      */
     public function __construct(CompilerInterface $compiler, Filesystem $files = null)
@@ -69,12 +68,11 @@ class CompilerEngine extends PhpEngine
     /**
      * Handle a view exception.
      *
-     * @param  Throwable  $e
-     * @param  int        $obLevel
-     *
+     * @param  \Throwable  $e
+     * @param  int  $obLevel
      * @return void
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     protected function handleViewException(Throwable $e, $obLevel)
     {
@@ -86,8 +84,7 @@ class CompilerEngine extends PhpEngine
     /**
      * Get the exception message for an exception.
      *
-     * @param  Throwable  $e
-     *
+     * @param  \Throwable  $e
      * @return string
      */
     protected function getMessage(Throwable $e)
@@ -98,7 +95,7 @@ class CompilerEngine extends PhpEngine
     /**
      * Get the compiler implementation.
      *
-     * @return CompilerInterface
+     * @return \Illuminate\View\Compilers\CompilerInterface
      */
     public function getCompiler()
     {

@@ -11,7 +11,7 @@ trait MultiTenable {
     {
         if (Auth::check()) {
             static::creating(function ($model) {
-                $model->company_id = Auth::user()->company_id;
+                $model->company_id = auth()->user()->company_id;
             });
 
             if (!Auth::user()->hasRole('admin')) {

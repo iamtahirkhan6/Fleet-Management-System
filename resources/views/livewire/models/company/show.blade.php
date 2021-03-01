@@ -4,7 +4,7 @@
     <x-description-list.row :value="$company->offices->count()"     background="bg-gray-50">Offices</x-description-list.row>
     <x-description-list.row :value="$company->employees->count()"    background="bg-white">Employees</x-description-list.row>
     <x-description-list.row :value="$company->pan"                  background="bg-gray-50">PAN</x-description-list.row>
-    <x-description-list.row :value="$company->gstin"                background="bg-white">GSTIN</x-description-list.row>
+    <x-description-list.row :value="$company->gstn"                background="bg-white">GSTIN</x-description-list.row>
 </x-description-list.main>
 
 <x-description-list.main title="Address" desc="View the address of the company." class="mt-5">

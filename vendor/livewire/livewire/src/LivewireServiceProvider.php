@@ -3,16 +3,13 @@
 namespace Livewire;
 
 use Illuminate\View\View;
-use PHPUnit\Framework\Assert;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\ComponentAttributeBag;
 use Livewire\Controllers\FileUploadHandler;
 use Livewire\Controllers\FilePreviewHandler;
-use Facade\Ignition\IgnitionServiceProvider;
 use Livewire\Controllers\HttpConnectionHandler;
 use Livewire\Controllers\LivewireJavaScriptAssets;
 use Illuminate\Support\Facades\Route as RouteFacade;
@@ -170,7 +167,7 @@ class LivewireServiceProvider extends ServiceProvider
         TestResponse::macro('assertSeeLivewire', function ($component) {
             $escapedComponentName = trim(htmlspecialchars(json_encode(['name' => $component])), '{}');
 
-            Assert::assertStringContainsString(
+            \PHPUnit\Framework\Assert::assertStringContainsString(
                 $escapedComponentName,
                 $this->getContent(),
                 'Cannot find Livewire component ['.$component.'] rendered on page.'
@@ -183,7 +180,7 @@ class LivewireServiceProvider extends ServiceProvider
         TestResponse::macro('assertDontSeeLivewire', function ($component) {
             $escapedComponentName = trim(htmlspecialchars(json_encode(['name' => $component])), '{}');
 
-            Assert::assertStringNotContainsString(
+            \PHPUnit\Framework\Assert::assertStringNotContainsString(
                 $escapedComponentName,
                 $this->getContent(),
                 'Found Livewire component ['.$component.'] rendered on page.'
@@ -253,7 +250,7 @@ class LivewireServiceProvider extends ServiceProvider
             // If the application is using Ignition, make sure Livewire's view compiler
             // uses a version that extends Ignition's so it can continue to report errors
             // correctly. Don't change this class without first submitting a PR to Ignition.
-            if (class_exists(IgnitionServiceProvider::class)) {
+            if (class_exists('Facade\Ignition\IgnitionServiceProvider')) {
                 return new CompilerEngineForIgnition($this->app['blade.compiler']);
             }
 
@@ -331,7 +328,7 @@ class LivewireServiceProvider extends ServiceProvider
     {
         if (! Livewire::isProbablyLivewireRequest()) return;
 
-        $kernel = $this->app->make(Kernel::class);
+        $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
 
         $openKernel = new ObjectPrybar($kernel);
 

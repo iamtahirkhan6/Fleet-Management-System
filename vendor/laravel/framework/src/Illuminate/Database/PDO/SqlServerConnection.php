@@ -9,24 +9,19 @@ use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
 use PDO;
 
-use function substr;
-use function strpos;
-use function is_string;
-
 class SqlServerConnection implements ServerInfoAwareConnection
 {
     /**
      * The underlying connection instance.
      *
-     * @var Connection
+     * @var \Illuminate\Database\PDO\Connection
      */
     protected $connection;
 
     /**
      * Create a new SQL Server connection instance.
      *
-     * @param  Connection  $connection
-     *
+     * @param  \Illuminate\Database\PDO\Connection  $connection
      * @return void
      */
     public function __construct(Connection $connection)
@@ -38,7 +33,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
      * Prepare a new SQL statement.
      *
      * @param  string  $sql
-     * @return StatementInterface
+     * @return \Doctrine\DBAL\Driver\Statement
      */
     public function prepare(string $sql): StatementInterface
     {
@@ -51,7 +46,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
      * Execute a new query against the connection.
      *
      * @param  string  $sql
-     * @return Result
+     * @return \Doctrine\DBAL\Driver\Result
      */
     public function query(string $sql): Result
     {
@@ -128,8 +123,8 @@ class SqlServerConnection implements ServerInfoAwareConnection
         $val = $this->connection->quote($value, $type);
 
         // Fix for a driver version terminating all values with null byte...
-        if (is_string($val) && strpos($val, "\0") !== false) {
-            $val = substr($val, 0, -1);
+        if (\is_string($val) && \strpos($val, "\0") !== false) {
+            $val = \substr($val, 0, -1);
         }
 
         return $val;
@@ -148,7 +143,7 @@ class SqlServerConnection implements ServerInfoAwareConnection
     /**
      * Get the wrapped PDO connection.
      *
-     * @return PDO
+     * @return \PDO
      */
     public function getWrappedConnection(): PDO
     {

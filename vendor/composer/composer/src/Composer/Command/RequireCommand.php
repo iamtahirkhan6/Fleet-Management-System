@@ -12,8 +12,6 @@
 
 namespace Composer\Command;
 
-use Exception;
-use RuntimeException;
 use Composer\DependencyResolver\Request;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -58,7 +56,7 @@ class RequireCommand extends InitCommand
                 new InputArgument('packages', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Optional package name can also include a version constraint, e.g. foo/bar or foo/bar:1.0.0 or foo/bar=1.0.0 or "foo/bar 1.0.0"'),
                 new InputOption('dev', null, InputOption::VALUE_NONE, 'Add requirement to require-dev.'),
                 new InputOption('dry-run', null, InputOption::VALUE_NONE, 'Outputs the operations but will not execute anything (implicitly enables --verbose).'),
-                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package loading-points when possible, including VCS information.'),
+                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
                 new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist even for dev versions.'),
                 new InputOption('fixed', null, InputOption::VALUE_NONE, 'Write fixed version to the composer.json.'),
                 new InputOption('no-suggest', null, InputOption::VALUE_NONE, 'DEPRECATED: This flag does not exist anymore.'),
@@ -190,9 +188,9 @@ EOT
                 !$input->getOption('no-update'),
                 $input->getOption('fixed')
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             if ($this->newlyCreated) {
-                throw new RuntimeException('No composer.json present in the current directory ('.$this->file.'), this may be the cause of the following exception.', 0, $e);
+                throw new \RuntimeException('No composer.json present in the current directory ('.$this->file.'), this may be the cause of the following exception.', 0, $e);
             }
 
             throw $e;
@@ -243,7 +241,7 @@ EOT
 
         try {
             return $this->doUpdate($input, $output, $io, $requirements, $requireKey, $removeKey);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->revertComposerFile(false);
             throw $e;
         }

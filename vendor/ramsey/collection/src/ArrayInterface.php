@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection;
 
-use Countable;
 use ArrayAccess;
-use Serializable;
+use Countable;
 use IteratorAggregate;
+use Serializable;
 
 /**
  * `ArrayInterface` provides traversable array functionality to data types.

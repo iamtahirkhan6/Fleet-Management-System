@@ -18,13 +18,9 @@
 
 namespace Composer\Autoload;
 
-use Iterator;
-use SplFileInfo;
-use Traversable;
-use RuntimeException;
+use Symfony\Component\Finder\Finder;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
-use Symfony\Component\Finder\Finder;
 
 /**
  * ClassMapGenerator
@@ -37,7 +33,7 @@ class ClassMapGenerator
     /**
      * Generate a class map file
      *
-     * @param Traversable $dirs Directories or a single path to search in
+     * @param \Traversable $dirs Directories or a single path to search in
      * @param string       $file The name of the class map file
      */
     public static function dump($dirs, $file)
@@ -54,13 +50,13 @@ class ClassMapGenerator
     /**
      * Iterate over all files in the given directory searching for classes
      *
-     * @param Iterator|string $path         The path to search in or an iterator
+     * @param \Iterator|string $path         The path to search in or an iterator
      * @param string           $excluded     Regex that matches file paths to be excluded from the classmap
      * @param IOInterface      $io           IO object
      * @param string           $namespace    Optional namespace prefix to filter by
      * @param string           $autoloadType psr-0|psr-4 Optional autoload standard to use mapping rules
      *
-     * @throws RuntimeException When the path is neither an existing file nor directory
+     * @throws \RuntimeException When the path is neither an existing file nor directory
      * @return array             A class map array
      */
     public static function createMap($path, $excluded = null, IOInterface $io = null, $namespace = null, $autoloadType = null, &$scannedFiles = array())
@@ -68,17 +64,17 @@ class ClassMapGenerator
         $basePath = $path;
         if (is_string($path)) {
             if (is_file($path)) {
-                $path = array(new SplFileInfo($path));
+                $path = array(new \SplFileInfo($path));
             } elseif (is_dir($path) || strpos($path, '*') !== false) {
                 $path = Finder::create()->files()->followLinks()->name('/\.(php|inc|hh)$/')->in($path);
             } else {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     'Could not scan for classes inside "'.$path.
                     '" which does not appear to be a file nor a folder'
                 );
             }
         } elseif (null !== $autoloadType) {
-            throw new RuntimeException('Path must be a string when specifying an autoload type');
+            throw new \RuntimeException('Path must be a string when specifying an autoload type');
         }
 
         $map = array();
@@ -187,7 +183,7 @@ class ClassMapGenerator
                 $subNamespace = ('' !== $baseNamespace) ? substr($class, strlen($baseNamespace)) : $class;
                 $subPath = str_replace('\\', DIRECTORY_SEPARATOR, $subNamespace);
             } else {
-                throw new RuntimeException("namespaceType must be psr-0 or psr-4, $namespaceType given");
+                throw new \RuntimeException("namespaceType must be psr-0 or psr-4, $namespaceType given");
             }
             if ($subPath === $realSubPath) {
                 $validClasses[] = $class;
@@ -213,7 +209,7 @@ class ClassMapGenerator
      * Extract the classes in the given file
      *
      * @param  string            $path The file to check
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return array             The found classes
      */
     private static function findClasses($path)
@@ -241,7 +237,7 @@ class ClassMapGenerator
             if (isset($error['message'])) {
                 $message .= PHP_EOL . 'The following message may be helpful:' . PHP_EOL . $error['message'];
             }
-            throw new RuntimeException(sprintf($message, $path));
+            throw new \RuntimeException(sprintf($message, $path));
         }
 
         // return early if there is no chance of matching anything in this file

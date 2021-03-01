@@ -13,21 +13,19 @@
 namespace Composer\Autoload;
 
 use Composer\Config;
-use RuntimeException;
+use Composer\EventDispatcher\EventDispatcher;
+use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
-use InvalidArgumentException;
-use Composer\Util\Filesystem;
-use Composer\Util\PackageSorter;
-use Composer\Script\ScriptEvents;
 use Composer\Package\AliasPackage;
-use Composer\Semver\Constraint\Bound;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Installer\InstallationManager;
-use Composer\Repository\PlatformRepository;
-use Composer\EventDispatcher\EventDispatcher;
-use Composer\Semver\Constraint\MatchAllConstraint;
 use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Repository\PlatformRepository;
+use Composer\Semver\Constraint\Bound;
+use Composer\Semver\Constraint\MatchAllConstraint;
+use Composer\Util\Filesystem;
+use Composer\Script\ScriptEvents;
+use Composer\Util\PackageSorter;
 
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
@@ -454,7 +452,7 @@ EOF;
     /**
      * @param PackageInterface $package
      *
-     * @throws InvalidArgumentException Throws an exception, if the package has illegal settings.
+     * @throws \InvalidArgumentException Throws an exception, if the package has illegal settings.
      */
     protected function validatePackage(PackageInterface $package)
     {
@@ -462,12 +460,12 @@ EOF;
         if (!empty($autoload['psr-4']) && null !== $package->getTargetDir()) {
             $name = $package->getName();
             $package->getTargetDir();
-            throw new InvalidArgumentException("PSR-4 autoloading is incompatible with the target-dir property, remove the target-dir in package '$name'.");
+            throw new \InvalidArgumentException("PSR-4 autoloading is incompatible with the target-dir property, remove the target-dir in package '$name'.");
         }
         if (!empty($autoload['psr-4'])) {
             foreach ($autoload['psr-4'] as $namespace => $dirs) {
                 if ($namespace !== '' && '\\' !== substr($namespace, -1)) {
-                    throw new InvalidArgumentException("psr-4 namespaces must end with a namespace separator, '$namespace' does not, use '$namespace\\'.");
+                    throw new \InvalidArgumentException("psr-4 namespaces must end with a namespace separator, '$namespace' does not, use '$namespace\\'.");
                 }
             }
         }
@@ -519,9 +517,9 @@ EOF;
      * @param  array       $autoloads see parseAutoloads return value
      * @return ClassLoader
      */
-    public function createLoader(array $autoloads)
+    public function createLoader(array $autoloads, $vendorDir = null)
     {
-        $loader = new ClassLoader();
+        $loader = new ClassLoader($vendorDir);
 
         if (isset($autoloads['psr-0'])) {
             foreach ($autoloads['psr-0'] as $namespace => $path) {
@@ -545,7 +543,7 @@ EOF;
             foreach ($autoloads['classmap'] as $dir) {
                 try {
                     $loader->addClassMap($this->generateClassMap($dir, $excluded, null, null, false, $scannedFiles));
-                } catch (RuntimeException $e) {
+                } catch (\RuntimeException $e) {
                     $this->io->writeError('<warning>'.$e->getMessage().'</warning>');
                 }
             }
@@ -559,7 +557,7 @@ EOF;
         $includePaths = array();
 
         foreach ($packageMap as $item) {
-            [$package, $installPath] = $item;
+            list($package, $installPath) = $item;
 
             if (null !== $package->getTargetDir() && strlen($package->getTargetDir()) > 0) {
                 $installPath = substr($installPath, 0, -strlen('/'.$package->getTargetDir()));
@@ -1098,7 +1096,7 @@ INITIALIZER;
         $autoloads = array();
 
         foreach ($packageMap as $item) {
-            [$package, $installPath] = $item;
+            list($package, $installPath) = $item;
 
             $autoload = $package->getAutoload();
             if ($this->devMode && $package === $rootPackage) {
@@ -1247,7 +1245,7 @@ INITIALIZER;
         $paths = array();
 
         foreach ($packageMap as $item) {
-            [$package, $path] = $item;
+            list($package, $path) = $item;
             $name = $package->getName();
             $packages[$name] = $package;
             $paths[$name] = $path;

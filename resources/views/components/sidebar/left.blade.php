@@ -23,21 +23,21 @@
                         @permission('consignees-read')<x-sidebar.link href="{{ route('consignees.index') }}"><x-svg.consignees class="w-6 h-6 mr-3 text-indigo-300" /> Consignees</x-sidebar.link>@endpermission
                         @permission('parties-read')<x-sidebar.link href="{{ route('parties.index') }}"><x-svg.parties class="w-6 h-6 mr-3 text-indigo-300" /> Parties</x-sidebar.link>@endpermission
                         @permission('market-vehicles-read')<x-sidebar.link href="{{ route('market-vehicles.index') }}"><x-svg.vehicles class="w-6 h-6 mr-3 text-indigo-300" /> Market Vehicles</x-sidebar.link>@endpermission
-                        @permission('projects-read')<x-sidebar.link href="{{ route('payments.index') }}"><x-svg.payments class="w-6 h-6 mr-3 text-indigo-300" /> Payments</x-sidebar.link>@endpermission
+                        @permission('payments-read')<x-sidebar.link href="{{ route('payments.index') }}"><x-svg.payments class="w-6 h-6 mr-3 text-indigo-300" /> Payments</x-sidebar.link>@endpermission
                         @permission('fleets-read')<x-sidebar.link href="{{ route('fleets.index') }}"><x-svg.fleets class="w-6 h-6 mr-3 text-indigo-300" /> Fleets</x-sidebar.link>@endpermission
                         @permission('loading-points-read')<x-sidebar.link href="{{ route('loading-points.index') }}"><x-fas-truck-loading class="w-6 h-6 mr-3 text-indigo-300" /> Loading Points</x-sidebar.link>@endpermission
-                        @permission('unloading-points-read')<x-sidebar.link href=""><x-tabler-truck-return class="w-6 h-6 mr-3 text-indigo-300" /> UnLoading Points</x-sidebar.link>@endpermission
+                        @permission('unloading-points-read')<x-sidebar.link href="{{ route('unloading-points.index') }}"><x-tabler-truck-return class="w-6 h-6 mr-3 text-indigo-300" /> UnLoading Points</x-sidebar.link>@endpermission
                         {{--                        @permission('rc-search')<x-sidebar.link href="/search_vehicle_rc"><x-svg.search class="w-6 h-6 mr-3 text-indigo-300" /> Search RC</x-sidebar.link>@endpermission--}}
                         {{--						<x-sidebar.link href="/expenses"><x-svg.expenses class="w-6 h-6 mr-3 text-indigo-300" /> Expenses</x-sidebar.link>--}}
                     </nav>
                     </nav>
                 </div>
                 <div class="flex flex-shrink-0 p-4 border-t border-indigo-800">
-                    <a href="#" class="flex-shrink-0 block group">
+                    <a href="{{ route('profile.show') }}" class="flex-shrink-0 block group">
                         <div class="flex items-center">
-                            <div> <img class="inline-block w-10 h-10 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt=""> </div>
+                            <div> <img class="inline-block w-10 h-10 rounded-full" src="{{ auth()->user()->profile_photo_url }}" alt=""> </div>
                             <div class="ml-3">
-                                <p class="text-base font-medium text-white"> {{ Auth::user()->name }} </p>
+                                <p class="text-base font-medium text-white"> {{ auth()->user()->name }} </p>
                                 <p class="text-sm font-medium text-indigo-200 group-hover:text-white"> View profile </p>
                             </div>
                         </div>
@@ -59,26 +59,27 @@
                     <div class="flex items-center flex-shrink-0 px-4"> <img class="w-auto h-8" src="{{ url('/img/theme/logo-transparent.png') }}" alt="MynFlotten"> </div>
                     <nav class="flex-1 px-2 mt-5 space-y-1">
                         <x-sidebar.link href="/dashboard"><x-svg.dashboard class="w-6 h-6 mr-3 text-indigo-300" /> Dashboard</x-sidebar.link>
-                        @role('manager')<x-sidebar.link href="{{ route('company.index') }}"><x-svg.company class="w-6 h-6 mr-3 text-indigo-300" /> My Company</x-sidebar.link>@endrole
+                        @role('manager')<x-sidebar.link href="{{ route('offices.index') }}"><x-svg.company class="w-6 h-6 mr-3 text-indigo-300" /> Offices</x-sidebar.link>@endrole
                         @role('manager')<x-sidebar.link href="{{ route('employees.index') }}"><x-svg.employees class="w-6 h-6 mr-3 text-indigo-300" /> Employees</x-sidebar.link>@endrole
                         @permission('projects-read')<x-sidebar.link href="{{ route('projects.index') }}"><x-svg.projects class="w-6 h-6	mr-3 text-indigo-300" />Projects</x-sidebar.link>@endpermission
                         @permission('consignees-read')<x-sidebar.link href="{{ route('consignees.index') }}"><x-svg.consignees class="w-6 h-6 mr-3 text-indigo-300" /> Consignees</x-sidebar.link>@endpermission
                         @permission('parties-read')<x-sidebar.link href="{{ route('parties.index') }}"><x-svg.parties class="w-6 h-6 mr-3 text-indigo-300" /> Parties</x-sidebar.link>@endpermission
                         @permission('market-vehicles-read')<x-sidebar.link href="{{ route('market-vehicles.index') }}"><x-svg.vehicles class="w-6 h-6 mr-3 text-indigo-300" /> Market Vehicles</x-sidebar.link>@endpermission
-                        @permission('projects-read')<x-sidebar.link href="{{ route('payments.index') }}"><x-svg.payments class="w-6 h-6 mr-3 text-indigo-300" /> Payments</x-sidebar.link>@endpermission
+                        @permission('payments-read')<x-sidebar.link href="{{ route('payments.index') }}"><x-svg.payments class="w-6 h-6 mr-3 text-indigo-300" /> Payments</x-sidebar.link>@endpermission
                         @permission('fleets-read')<x-sidebar.link href="{{ route('fleets.index') }}"><x-svg.fleets class="w-6 h-6 mr-3 text-indigo-300" /> Fleets</x-sidebar.link>@endpermission
                         @permission('loading-points-read')<x-sidebar.link href="{{ route('loading-points.index') }}"><x-fas-truck-loading class="w-6 h-6 mr-3 text-indigo-300" /> Loading Points</x-sidebar.link>@endpermission
-                        @permission('unloading-points-read')<x-sidebar.link href=""><x-tabler-truck-return class="w-6 h-6 mr-3 text-indigo-300" /> UnLoading Points</x-sidebar.link>@endpermission
+                        @permission('unloading-points-read')<x-sidebar.link href="{{ route('unloading-points.index') }}"><x-tabler-truck-return class="w-6 h-6 mr-3 text-indigo-300" /> UnLoading Points</x-sidebar.link>@endpermission
+                        @permission('payees-read')<x-sidebar.link href="{{ route('payees.index') }}"><x-svg.payee class="w-6 h-6 mr-3 text-indigo-300" /> Payees</x-sidebar.link>@endpermission
                         {{--                        @permission('rc-search')<x-sidebar.link href="/search_vehicle_rc"><x-svg.search class="w-6 h-6 mr-3 text-indigo-300" /> Search RC</x-sidebar.link>@endpermission--}}
                         {{--						<x-sidebar.link href="/expenses"><x-svg.expenses class="w-6 h-6 mr-3 text-indigo-300" /> Expenses</x-sidebar.link>--}}
                     </nav>
                 </div>
                 <div class="flex flex-shrink-0 p-4 border-t border-indigo-600">
-                    <a href="{{ env('APP_URL') }}/user/profile" class="flex-shrink-0 block w-full group">
+                    <a href="{{ route('profile.show') }}" class="flex-shrink-0 block w-full group">
                         <div class="flex items-center">
-                            <div> <img class="inline-block rounded-full h-9 w-9" src="{{ Auth::user()->profile_photo_url }}" alt=""> </div>
+                            <div> <img class="inline-block rounded-full h-9 w-9" src="{{ auth()->user()->profile_photo_url }}" alt=""> </div>
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-white"> {{ Auth::user()->name }} </p>
+                                <p class="text-sm font-medium text-white"> {{ auth()->user()->name }} </p>
                                 <p class="text-xs font-medium text-indigo-200 group-hover:text-white"> View profile </p>
                             </div>
                         </div>

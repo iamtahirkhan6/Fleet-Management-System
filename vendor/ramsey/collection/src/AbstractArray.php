@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection;
 
-use Traversable;
 use ArrayIterator;
+use Traversable;
+
 use function serialize;
 use function unserialize;
 

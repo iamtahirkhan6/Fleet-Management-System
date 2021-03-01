@@ -10,14 +10,9 @@
  */
 namespace Carbon\Traits;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Throwable;
-
-use Carbon\CarbonImmutable;
-
-use function is_array;
 
 /**
  * Trait Options.
@@ -26,7 +21,7 @@ use function is_array;
  *
  * Depends on the following methods:
  *
- * @method Carbon|CarbonImmutable shiftTimezone($timezone) Set the timezone
+ * @method \Carbon\Carbon|\Carbon\CarbonImmutable shiftTimezone($timezone) Set the timezone
  */
 trait Options
 {
@@ -382,7 +377,7 @@ trait Options
         if (isset($settings['locale'])) {
             $locales = $settings['locale'];
 
-            if (!is_array($locales)) {
+            if (!\is_array($locales)) {
                 $locales = [$locales];
             }
 

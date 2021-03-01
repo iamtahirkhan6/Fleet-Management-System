@@ -12,18 +12,10 @@
 
 namespace Composer\Util;
 
-use LogicException;
-use RuntimeException;
-use InvalidArgumentException;
-use UnexpectedValueException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
-use function count;
-use function strlen;
-use function dirname;
-use function function_exists;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -66,7 +58,7 @@ class Filesystem
             ->depth(0)
             ->in($dir);
 
-        return count($finder) === 0;
+        return \count($finder) === 0;
     }
 
     public function emptyDirectory($dir, $ensureDirectoryExists = true)
@@ -99,7 +91,7 @@ class Filesystem
      * installation.
      *
      * @param  string            $directory
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return bool
      */
     public function removeDirectory($directory)
@@ -121,10 +113,10 @@ class Filesystem
         }
 
         if (preg_match('{^(?:[a-z]:)?[/\\\\]+$}i', $directory)) {
-            throw new RuntimeException('Aborting an attempted deletion of '.$directory.', this was probably not intended, if it is a real use case please report it.');
+            throw new \RuntimeException('Aborting an attempted deletion of '.$directory.', this was probably not intended, if it is a real use case please report it.');
         }
 
-        if (!function_exists('proc_open')) {
+        if (!\function_exists('proc_open')) {
             return $this->removeDirectoryPhp($directory);
         }
 
@@ -160,7 +152,7 @@ class Filesystem
     {
         try {
             $it = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
-        } catch (UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException $e) {
             // re-try once after clearing the stat cache if it failed as it
             // sometimes fails without apparent reason, see https://github.com/composer/composer/issues/4009
             clearstatcache();
@@ -187,12 +179,12 @@ class Filesystem
     {
         if (!is_dir($directory)) {
             if (file_exists($directory)) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     $directory.' exists and is not a directory.'
                 );
             }
             if (!@mkdir($directory, 0777, true)) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     $directory.' does not exist and could not be created.'
                 );
             }
@@ -203,7 +195,7 @@ class Filesystem
      * Attempts to unlink a file and in case of failure retries after 350ms on windows
      *
      * @param  string            $path
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return bool
      */
     public function unlink($path)
@@ -223,7 +215,7 @@ class Filesystem
                     $message .= "\nThis can be due to an antivirus or the Windows Search Indexer locking the file while they are analyzed";
                 }
 
-                throw new RuntimeException($message);
+                throw new \RuntimeException($message);
             }
         }
 
@@ -234,7 +226,7 @@ class Filesystem
      * Attempts to rmdir a file and in case of failure retries after 350ms on windows
      *
      * @param  string            $path
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return bool
      */
     public function rmdir($path)
@@ -254,7 +246,7 @@ class Filesystem
                     $message .= "\nThis can be due to an antivirus or the Windows Search Indexer locking the file while they are analyzed";
                 }
 
-                throw new RuntimeException($message);
+                throw new \RuntimeException($message);
             }
         }
 
@@ -319,7 +311,7 @@ class Filesystem
             return;
         }
 
-        if (!function_exists('proc_open')) {
+        if (!\function_exists('proc_open')) {
             $this->copyThenRemove($source, $target);
 
             return;
@@ -361,13 +353,13 @@ class Filesystem
      * @param  string                    $from
      * @param  string                    $to
      * @param  bool                      $directories if true, the source/target are considered to be directories
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @return string
      */
     public function findShortestPath($from, $to, $directories = false)
     {
         if (!$this->isAbsolutePath($from) || !$this->isAbsolutePath($to)) {
-            throw new InvalidArgumentException(sprintf('$from (%s) and $to (%s) must be absolute paths.', $from, $to));
+            throw new \InvalidArgumentException(sprintf('$from (%s) and $to (%s) must be absolute paths.', $from, $to));
         }
 
         $from = lcfirst($this->normalizePath($from));
@@ -377,13 +369,13 @@ class Filesystem
             $from = rtrim($from, '/') . '/dummy_file';
         }
 
-        if (dirname($from) === dirname($to)) {
+        if (\dirname($from) === \dirname($to)) {
             return './'.basename($to);
         }
 
         $commonPath = $to;
         while (strpos($from.'/', $commonPath.'/') !== 0 && '/' !== $commonPath && !preg_match('{^[a-z]:/?$}i', $commonPath)) {
-            $commonPath = strtr(dirname($commonPath), '\\', '/');
+            $commonPath = strtr(\dirname($commonPath), '\\', '/');
         }
 
         if (0 !== strpos($from, $commonPath) || '/' === $commonPath) {
@@ -391,10 +383,10 @@ class Filesystem
         }
 
         $commonPath = rtrim($commonPath, '/') . '/';
-        $sourcePathDepth = substr_count(substr($from, strlen($commonPath)), '/');
+        $sourcePathDepth = substr_count(substr($from, \strlen($commonPath)), '/');
         $commonPathCode = str_repeat('../', $sourcePathDepth);
 
-        return ($commonPathCode . substr($to, strlen($commonPath))) ?: './';
+        return ($commonPathCode . substr($to, \strlen($commonPath))) ?: './';
     }
 
     /**
@@ -404,13 +396,13 @@ class Filesystem
      * @param  string                    $to
      * @param  bool                      $directories if true, the source/target are considered to be directories
      * @param  bool                      $staticCode
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @return string
      */
     public function findShortestPathCode($from, $to, $directories = false, $staticCode = false)
     {
         if (!$this->isAbsolutePath($from) || !$this->isAbsolutePath($to)) {
-            throw new InvalidArgumentException(sprintf('$from (%s) and $to (%s) must be absolute paths.', $from, $to));
+            throw new \InvalidArgumentException(sprintf('$from (%s) and $to (%s) must be absolute paths.', $from, $to));
         }
 
         $from = lcfirst($this->normalizePath($from));
@@ -422,7 +414,7 @@ class Filesystem
 
         $commonPath = $to;
         while (strpos($from.'/', $commonPath.'/') !== 0 && '/' !== $commonPath && !preg_match('{^[a-z]:/?$}i', $commonPath) && '.' !== $commonPath) {
-            $commonPath = strtr(dirname($commonPath), '\\', '/');
+            $commonPath = strtr(\dirname($commonPath), '\\', '/');
         }
 
         if (0 !== strpos($from, $commonPath) || '/' === $commonPath || '.' === $commonPath) {
@@ -431,17 +423,17 @@ class Filesystem
 
         $commonPath = rtrim($commonPath, '/') . '/';
         if (strpos($to, $from.'/') === 0) {
-            return '__DIR__ . '.var_export(substr($to, strlen($from)), true);
+            return '__DIR__ . '.var_export(substr($to, \strlen($from)), true);
         }
-        $sourcePathDepth = substr_count(substr($from, strlen($commonPath)), '/') + $directories;
+        $sourcePathDepth = substr_count(substr($from, \strlen($commonPath)), '/') + $directories;
         if ($staticCode) {
             $commonPathCode = "__DIR__ . '".str_repeat('/..', $sourcePathDepth)."'";
         } else {
             $commonPathCode = str_repeat('dirname(', $sourcePathDepth).'__DIR__'.str_repeat(')', $sourcePathDepth);
         }
-        $relTarget = substr($to, strlen($commonPath));
+        $relTarget = substr($to, \strlen($commonPath));
 
-        return $commonPathCode . (strlen($relTarget) ? '.' . var_export('/' . $relTarget, true) : '');
+        return $commonPathCode . (\strlen($relTarget) ? '.' . var_export('/' . $relTarget, true) : '');
     }
 
     /**
@@ -460,13 +452,13 @@ class Filesystem
      * given, it's size will be computed recursively.
      *
      * @param  string            $path Path to the file or directory
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return int
      */
     public function size($path)
     {
         if (!file_exists($path)) {
-            throw new RuntimeException("$path does not exist.");
+            throw new \RuntimeException("$path does not exist.");
         }
         if (is_dir($path)) {
             return $this->directorySize($path);
@@ -492,7 +484,7 @@ class Filesystem
         // extract a prefix being a protocol://, protocol:, protocol://drive: or simply drive:
         if (preg_match('{^( [0-9a-z]{2,}+: (?: // (?: [a-z]: )? )? | [a-z]: )}ix', $path, $match)) {
             $prefix = $match[1];
-            $path = substr($path, strlen($prefix));
+            $path = substr($path, \strlen($prefix));
         }
 
         if (strpos($path, '/') === 0) {
@@ -612,7 +604,7 @@ class Filesystem
         $cwd = getcwd();
 
         $relativePath = $this->findShortestPath($link, $target);
-        chdir(dirname($link));
+        chdir(\dirname($link));
         $result = @symlink($relativePath, $link);
 
         chdir($cwd);
@@ -665,7 +657,7 @@ class Filesystem
 
         $resolved = rtrim($pathname, '/');
 
-        if (!strlen($resolved)) {
+        if (!\strlen($resolved)) {
             return $pathname;
         }
 
@@ -681,7 +673,7 @@ class Filesystem
     public function junction($target, $junction)
     {
         if (!Platform::isWindows()) {
-            throw new LogicException(sprintf('Function %s is not available on non-Windows platform', __CLASS__));
+            throw new \LogicException(sprintf('Function %s is not available on non-Windows platform', __CLASS__));
         }
         if (!is_dir($target)) {
             throw new IOException(sprintf('Cannot junction to "%s" as it is not a directory.', $target), 0, null, $target);

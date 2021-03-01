@@ -56,7 +56,7 @@ class RouteAction
      * @param  string  $uri
      * @return array
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     protected static function missingAction($uri)
     {
@@ -84,7 +84,7 @@ class RouteAction
      * @param  string  $action
      * @return string
      *
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     protected static function makeInvokable($action)
     {

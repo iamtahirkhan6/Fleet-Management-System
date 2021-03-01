@@ -1,13 +1,13 @@
 <div>
     <!-- Actions -->
     <div class="flex flex-row-reverse">
-        @role('manager')
+        @can('projects-create')
         <a href="{{ route('projects.create') }}"
             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <x-svg.plus-circle />
             Add Project
         </a>
-        @endrole
+        @endcan
     </div>
     <!-- List all projects -->
     <x-tables.basic.main class="mt-5">
@@ -17,7 +17,6 @@
             <x-tables.basic.column>Destination</x-tables.basic.column>
             <x-tables.basic.column>Consignee</x-tables.basic.column>
             <x-tables.basic.column>Material</x-tables.basic.column>
-            <x-tables.basic.column>Company</x-tables.basic.column>
             <x-tables.basic.column>Status</x-tables.basic.column>
             <x-tables.basic.column></x-tables.basic.column>
         </x-slot>
@@ -26,13 +25,15 @@
             @forelse($projects as $project)
                 <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $project->Source->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $project->Destination->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $project->Consignee->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $project->Material->name }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $project->Company->short_name }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $project->loadingPoint->name }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $project->unloadingPoint->name }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $project->consignee->name }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $project->material->name }}</x-tables.basic.row>
                     <x-tables.basic.row :colorToggle="$project->status" trueVal="Active" falseVal="Inactive"></x-tables.basic.row>
-                    <x-tables.basic.row><x-buttons.icons.small href="/projects/{{ $project->id }}"></x-buttons.icons.small></x-tables.basic.row>
+                    <x-tables.basic.row>
+                        <x-buttons.icons.small
+                            :href="route('projects.show', ['project' => $project->id])"></x-buttons.icons.small>
+                    </x-tables.basic.row>
                 </tr>
             @empty
                 <tr class="">

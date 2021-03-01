@@ -12,12 +12,9 @@
 
 namespace Composer\Command;
 
-use Exception;
 use Composer\Config;
 use Composer\Factory;
-use RuntimeException;
 use Composer\Installer;
-use InvalidArgumentException;
 use Composer\Installer\ProjectInstaller;
 use Composer\Installer\SuggestedPackagesReporter;
 use Composer\IO\IOInterface;
@@ -68,7 +65,7 @@ class CreateProjectCommand extends BaseCommand
                 new InputArgument('directory', InputArgument::OPTIONAL, 'Directory where the files should be created'),
                 new InputArgument('version', InputArgument::OPTIONAL, 'Version, will default to latest'),
                 new InputOption('stability', 's', InputOption::VALUE_REQUIRED, 'Minimum-stability allowed (unless a version is specified).'),
-                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package loading-points when possible, including VCS information.'),
+                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
                 new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist even for dev versions.'),
                 new InputOption('repository', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add custom repositories to look the package up, either by URL or using JSON arrays'),
                 new InputOption('repository-url', null, InputOption::VALUE_REQUIRED, 'DEPRECATED: Use --repository instead.'),
@@ -121,7 +118,7 @@ EOT
         $config = Factory::createConfig();
         $io = $this->getIO();
 
-        [$preferSource, $preferDist] = $this->getPreferredInstallOptions($config, $input, true);
+        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($config, $input, true);
 
         if ($input->getOption('dev')) {
             $io->writeError('<warning>You are using the deprecated option "dev". Dev packages are installed by default now.</warning>');
@@ -216,7 +213,7 @@ EOT
 
         // use the new config including the newly installed project
         $config = $composer->getConfig();
-        [$preferSource, $preferDist] = $this->getPreferredInstallOptions($config, $input);
+        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($config, $input);
 
         // install dependencies of the created project
         if ($noInstall === false) {
@@ -268,10 +265,10 @@ EOT
                 unset($finder);
                 foreach ($dirs as $dir) {
                     if (!$fs->removeDirectory($dir)) {
-                        throw new RuntimeException('Could not remove '.$dir);
+                        throw new \RuntimeException('Could not remove '.$dir);
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $io->writeError('<error>An error occurred while removing the VCS metadata: '.$e->getMessage().'</error>');
             }
 
@@ -338,10 +335,10 @@ EOT
 
         if (file_exists($directory)) {
             if (!is_dir($directory)) {
-                throw new InvalidArgumentException('Cannot create project directory at "'.$directory.'", it exists as a file.');
+                throw new \InvalidArgumentException('Cannot create project directory at "'.$directory.'", it exists as a file.');
             }
             if (!$fs->isDirEmpty($directory)) {
-                throw new InvalidArgumentException('Project directory "'.$directory.'" is not empty.');
+                throw new \InvalidArgumentException('Project directory "'.$directory.'" is not empty.');
             }
         }
 
@@ -356,7 +353,7 @@ EOT
         $stability = VersionParser::normalizeStability($stability);
 
         if (!isset(BasePackage::$stabilities[$stability])) {
-            throw new InvalidArgumentException('Invalid stability provided ('.$stability.'), must be one of: '.implode(', ', array_keys(BasePackage::$stabilities)));
+            throw new \InvalidArgumentException('Invalid stability provided ('.$stability.'), must be one of: '.implode(', ', array_keys(BasePackage::$stabilities)));
         }
 
         $composer = Factory::create($io, $config->all(), $disablePlugins);
@@ -389,10 +386,10 @@ EOT
         if (!$package) {
             $errorMessage = "Could not find package $name with " . ($packageVersion ? "version $packageVersion" : "stability $stability");
             if (true !== $ignorePlatformReqs && $versionSelector->findBestCandidate($name, $packageVersion, $stability, true)) {
-                throw new InvalidArgumentException($errorMessage .' in a version installable using your PHP version, PHP extensions and Composer version.');
+                throw new \InvalidArgumentException($errorMessage .' in a version installable using your PHP version, PHP extensions and Composer version.');
             }
 
-            throw new InvalidArgumentException($errorMessage .'.');
+            throw new \InvalidArgumentException($errorMessage .'.');
         }
 
         // handler Ctrl+C for unix-like systems

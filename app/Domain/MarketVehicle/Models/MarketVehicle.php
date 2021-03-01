@@ -7,13 +7,35 @@ use App\Domain\Trip\Models\Trip;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Domain\MarketVehicle\Models\MarketVehicle
+ *
+ * @property int $id
+ * @property string $number
+ * @property int $party_id
+ * @property int $company_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domain\Party\Models\Party[] $party
+ * @property-read int|null $party_count
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle whereCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle wherePartyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketVehicle whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class MarketVehicle extends Model
 {
     use HasFactory;
     use MultiTenable;
 
     // Allow Mass Assignment
-    protected array $fillable = [
+    protected $fillable = [
         'number',
         'party_id',
         'company_id',

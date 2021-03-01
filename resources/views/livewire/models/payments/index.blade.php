@@ -49,12 +49,12 @@
     @can('payments-read')
         <div class="flex flex-row-reverse gap-5 mt-5">
             @can('payments-read')
-                <a href="/payments/pending" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                <a href="/payments/pending" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <x-svg.collection /> Pending Payments
                 </a>
             @endcan
             @can('razorpay-complete')
-                <a href="/payments/razorpay-pending" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                <a href="/payments/razorpay-pending" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <x-svg.clock /> RazorPay Pending Payouts
                 </a>
             @endcan

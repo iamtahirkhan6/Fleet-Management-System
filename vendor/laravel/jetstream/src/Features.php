@@ -2,6 +2,8 @@
 
 namespace Laravel\Jetstream;
 
+use Illuminate\Support\Arr;
+
 class Features
 {
     /**
@@ -13,6 +15,19 @@ class Features
     public static function enabled(string $feature)
     {
         return in_array($feature, config('jetstream.features', []));
+    }
+
+    /**
+     * Determine if the feature is enabled and has a given option enabled.
+     *
+     * @param  string  $feature
+     * @param  string  $option
+     * @return bool
+     */
+    public static function optionEnabled(string $feature, string $option)
+    {
+        return static::enabled($feature) &&
+               config("jetstream-options.{$feature}.{$option}") === true;
     }
 
     /**
@@ -46,6 +61,36 @@ class Features
     }
 
     /**
+     * Determine if invitations are sent to team members.
+     *
+     * @return bool
+     */
+    public static function sendsTeamInvitations()
+    {
+        return static::optionEnabled(static::teams(), 'invitations');
+    }
+
+    /**
+     * Determine if the application has terms of service / privacy policy confirmation enabled.
+     *
+     * @return bool
+     */
+    public static function hasTermsAndPrivacyPolicyFeature()
+    {
+        return static::enabled(static::termsAndPrivacyPolicy());
+    }
+
+    /**
+     * Determine if the application is using any account deletion features.
+     *
+     * @return bool
+     */
+    public static function hasAccountDeletionFeatures()
+    {
+        return static::enabled(static::accountDeletion());
+    }
+
+    /**
      * Enable the profile photo upload feature.
      *
      * @return string
@@ -68,10 +113,35 @@ class Features
     /**
      * Enable the teams feature.
      *
+     * @param  array  $options
      * @return string
      */
-    public static function teams()
+    public static function teams(array $options = [])
     {
+        if (! empty($options)) {
+            config(['jetstream-options.teams' => $options]);
+        }
+
         return 'teams';
+    }
+
+    /**
+     * Enable the terms of service and privacy policy feature.
+     *
+     * @return string
+     */
+    public static function termsAndPrivacyPolicy()
+    {
+        return 'terms';
+    }
+
+    /**
+     * Enable the account deletion feature.
+     *
+     * @return string
+     */
+    public static function accountDeletion()
+    {
+        return 'account-deletion';
     }
 }

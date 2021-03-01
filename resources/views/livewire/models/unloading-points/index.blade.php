@@ -20,7 +20,7 @@
         </x-slot>
 
         <x-slot name="rows">
-            @foreach ($unloading_points as $unloading_point)
+            @forelse ($unloading_points as $unloading_point)
                 <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $unloading_point->name }}</x-tables.basic.row>
@@ -30,10 +30,16 @@
                     {{-- <x-tables.basic.row link="/sectors/{{ $sector->id }}">View</x-tables.basic.row> --}}
 
                 </tr>
-            @endforeach
+            @empty
+                <tr class="">
+                    <td class="px-6 py-4 whitespace-nowrap text-red-400">
+                        No Results Found
+                    </td>
+                </tr>
+            @endforelse
         </x-slot>
     </x-tables.basic.main>
     <div class="mt-5">
-        {{ $destinations->links() }}
+        {{ $unloading_points->links() }}
     </div>
 </div>

@@ -20,7 +20,7 @@ namespace Composer\Package\Archiver;
 class ComposerExcludeFilter extends BaseExcludeFilter
 {
     /**
-     * @param string $sourcePath   Directory containing loading-points to be filtered
+     * @param string $sourcePath   Directory containing sources to be filtered
      * @param array  $excludeRules An array of exclude rules from composer.json
      */
     public function __construct($sourcePath, array $excludeRules)

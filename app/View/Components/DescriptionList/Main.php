@@ -13,10 +13,13 @@ class Main extends Component
      */
     public $title;
     public $desc;
-    public function __construct($title = null, $desc = null)
+    public $list;
+
+    public function __construct($title = null, $desc = null, $list = null)
     {
         $this->title = $title;
-        $this->desc = $desc;
+        $this->desc  = $desc;
+        $this->list  = $list;
     }
 
     /**

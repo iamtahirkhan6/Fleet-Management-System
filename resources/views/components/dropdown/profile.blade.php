@@ -10,27 +10,29 @@
          class="absolute right-0 w-48 py-1 mt-12 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
          role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
 
-        <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            <x-form-button action="/user/profile" method="GET">
-                Your Profile
-            </x-form-button>
-        </div>
+        <x-jet-dropdown-link href="{{ route('profile.show') }}">
+            {{ __('Your Profile') }}
+        </x-jet-dropdown-link>
 
         @role('manager')
         <div class="border-t border-gray-100"></div>
 
-        <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            <x-form-button action="/company/settings" method="GET" class="">
-                Company Settings
-            </x-form-button>
-        </div>
+        <x-jet-dropdown-link href="{{ route('company.settings') }}">
+            {{ __('Company Settings') }}
+        </x-jet-dropdown-link>
         @endrole
 
         <div class="border-t border-gray-100"></div>
 
-        <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            <x-logout>Log Out</x-logout>
-        </div>
+        <!-- Authentication -->
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <x-jet-dropdown-link href="{{ route('logout') }}"
+                                 onclick="event.preventDefault(); this.closest('form').submit();">
+                {{ __('Logout') }}
+            </x-jet-dropdown-link>
+        </form>
 
     </div>
 </div>

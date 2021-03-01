@@ -4,19 +4,8 @@ declare(strict_types=1);
 
 namespace Brick\Math\Internal;
 
-use Brick\Math\RoundingMode;
-use InvalidArgumentException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use function ord;
-use function chr;
-use function ltrim;
-use function strlen;
-use function strrev;
-use function strpos;
-use function substr;
-use function str_repeat;
-use function strtolower;
-use function extension_loaded;
+use Brick\Math\RoundingMode;
 
 /**
  * Performs basic operations on arbitrary size integers.
@@ -93,11 +82,11 @@ abstract class Calculator
      */
     private static function detect() : Calculator
     {
-        if (extension_loaded('gmp')) {
+        if (\extension_loaded('gmp')) {
             return new Calculator\GmpCalculator();
         }
 
-        if (extension_loaded('bcmath')) {
+        if (\extension_loaded('bcmath')) {
             return new Calculator\BcMathCalculator();
         }
 
@@ -118,8 +107,8 @@ abstract class Calculator
             $aNeg = ($a[0] === '-'),
             $bNeg = ($b[0] === '-'),
 
-            $aNeg ? substr($a, 1) : $a,
-            $bNeg ? substr($b, 1) : $b,
+            $aNeg ? \substr($a, 1) : $a,
+            $bNeg ? \substr($b, 1) : $b,
         ];
     }
 
@@ -132,7 +121,7 @@ abstract class Calculator
      */
     final public function abs(string $n) : string
     {
-        return ($n[0] === '-') ? substr($n, 1) : $n;
+        return ($n[0] === '-') ? \substr($n, 1) : $n;
     }
 
     /**
@@ -149,7 +138,7 @@ abstract class Calculator
         }
 
         if ($n[0] === '-') {
-            return substr($n, 1);
+            return \substr($n, 1);
         }
 
         return '-' . $n;
@@ -175,8 +164,8 @@ abstract class Calculator
             return 1;
         }
 
-        $aLen = strlen($aDig);
-        $bLen = strlen($bDig);
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
 
         if ($aLen < $bLen) {
             $result = -1;
@@ -385,7 +374,7 @@ abstract class Calculator
      */
     public function fromBase(string $number, int $base) : string
     {
-        return $this->fromArbitraryBase(strtolower($number), self::ALPHABET, $base);
+        return $this->fromArbitraryBase(\strtolower($number), self::ALPHABET, $base);
     }
 
     /**
@@ -404,7 +393,7 @@ abstract class Calculator
         $negative = ($number[0] === '-');
 
         if ($negative) {
-            $number = substr($number, 1);
+            $number = \substr($number, 1);
         }
 
         $number = $this->toArbitraryBase($number, self::ALPHABET, $base);
@@ -429,7 +418,7 @@ abstract class Calculator
     final public function fromArbitraryBase(string $number, string $alphabet, int $base) : string
     {
         // remove leading "zeros"
-        $number = ltrim($number, $alphabet[0]);
+        $number = \ltrim($number, $alphabet[0]);
 
         if ($number === '') {
             return '0';
@@ -445,8 +434,8 @@ abstract class Calculator
 
         $base = (string) $base;
 
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $index = strpos($alphabet, $number[$i]);
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $index = \strpos($alphabet, $number[$i]);
 
             if ($index !== 0) {
                 $result = $this->add($result, ($index === 1)
@@ -488,7 +477,7 @@ abstract class Calculator
             $result .= $alphabet[$remainder];
         }
 
-        return strrev($result);
+        return \strrev($result);
     }
 
     /**
@@ -502,7 +491,7 @@ abstract class Calculator
      *
      * @return string
      *
-     * @throws InvalidArgumentException  If the rounding mode is invalid.
+     * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      */
     final public function divRound(string $a, string $b, int $roundingMode) : string
@@ -566,7 +555,7 @@ abstract class Calculator
                 break;
 
             default:
-                throw new InvalidArgumentException('Invalid rounding mode.');
+                throw new \InvalidArgumentException('Invalid rounding mode.');
         }
 
         if ($increment) {
@@ -640,13 +629,13 @@ abstract class Calculator
         $aBin = $this->toBinary($aDig);
         $bBin = $this->toBinary($bDig);
 
-        $aLen = strlen($aBin);
-        $bLen = strlen($bBin);
+        $aLen = \strlen($aBin);
+        $bLen = \strlen($bBin);
 
         if ($aLen > $bLen) {
-            $bBin = str_repeat("\x00", $aLen - $bLen) . $bBin;
+            $bBin = \str_repeat("\x00", $aLen - $bLen) . $bBin;
         } elseif ($bLen > $aLen) {
-            $aBin = str_repeat("\x00", $bLen - $aLen) . $aBin;
+            $aBin = \str_repeat("\x00", $bLen - $aLen) . $aBin;
         }
 
         if ($aNeg) {
@@ -674,7 +663,7 @@ abstract class Calculator
 
             // @codeCoverageIgnoreStart
             default:
-                throw new InvalidArgumentException('Invalid bitwise operator.');
+                throw new \InvalidArgumentException('Invalid bitwise operator.');
             // @codeCoverageIgnoreEnd
         }
 
@@ -697,15 +686,15 @@ abstract class Calculator
      */
     private function twosComplement(string $number) : string
     {
-        $xor = str_repeat("\xff", strlen($number));
+        $xor = \str_repeat("\xff", \strlen($number));
 
         $number ^= $xor;
 
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $byte = ord($number[$i]);
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $byte = \ord($number[$i]);
 
             if (++$byte !== 256) {
-                $number[$i] = chr($byte);
+                $number[$i] = \chr($byte);
                 break;
             }
 
@@ -732,10 +721,10 @@ abstract class Calculator
 
         while ($number !== '0') {
             [$number, $remainder] = $this->divQR($number, '256');
-            $result .= chr((int) $remainder);
+            $result .= \chr((int) $remainder);
         }
 
-        return strrev($result);
+        return \strrev($result);
     }
 
     /**
@@ -750,8 +739,8 @@ abstract class Calculator
         $result = '0';
         $power = '1';
 
-        for ($i = strlen($bytes) - 1; $i >= 0; $i--) {
-            $index = ord($bytes[$i]);
+        for ($i = \strlen($bytes) - 1; $i >= 0; $i--) {
+            $index = \ord($bytes[$i]);
 
             if ($index !== 0) {
                 $result = $this->add($result, ($index === 1)

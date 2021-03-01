@@ -12,7 +12,7 @@ class Company extends \Faker\Provider\Company
     ];
 
     /**
-     * There are more Private Limited Company(Sdn Bhd) than Public Listed Company(Berhad)
+     * There are more Private Limited Companies(Sdn Bhd) than Public Listed Companies(Berhad)
      *
      * @link http://www.risscorporateservices.com/types-of-business-entities.html
      */

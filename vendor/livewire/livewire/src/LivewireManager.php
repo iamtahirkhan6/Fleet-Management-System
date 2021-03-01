@@ -3,9 +3,7 @@
 namespace Livewire;
 
 use Exception;
-use App\Http\Middleware\Authenticate;
 use Livewire\Testing\TestableLivewire;
-use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Livewire\Exceptions\ComponentNotFoundException;
 
@@ -22,8 +20,8 @@ class LivewireManager
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \App\Http\Middleware\RedirectIfAuthenticated::class,
         \Illuminate\Auth\Middleware\Authenticate::class,
-        Authorize::class,
-        Authenticate::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\Authenticate::class,
     ];
 
     public static $isLivewireRequestTestingOverride = false;
@@ -208,12 +206,6 @@ HTML;
     {
         $jsonEncodedOptions = $options ? json_encode($options) : '';
 
-        $devTools = null;
-
-        if (config('app.debug')) {
-            $devTools = 'window.livewire.devTools(true);';
-        }
-
         $appUrl = config('livewire.asset_url') ?: rtrim($options['asset_url'] ?? '', '/');
 
         $csrf = csrf_token();
@@ -237,10 +229,38 @@ HTML;
             if ($manifest !== $publishedManifest) {
                 $assetWarning = <<<'HTML'
 <script {$nonce}>
-    console.warn("Livewire: The published Livewire assets are out of date\n https://laravel-livewire.com/docs/installation/")
+    console.warn("Livewire: The published Livewire assets are out of date\n See: https://laravel-livewire.com/docs/installation/")
 </script>
 HTML;
             }
+        }
+
+	    $devTools = null;
+	    $windowLivewireCheck = null;
+	    $windowAlpineCheck = null;
+        if (config('app.debug')) {
+	        $devTools = 'window.livewire.devTools(true);';
+
+	        $windowLivewireCheck = <<<'HTML'
+if (window.livewire) {
+	    console.warn('Livewire: It looks like Livewire\'s @livewireScripts JavaScript assets have already been loaded. Make sure you aren\'t loading them twice.')
+	}
+HTML;
+
+	        $windowAlpineCheck = <<<'HTML'
+/* Make sure Livewire loads first. */
+	if (window.Alpine) {
+	    /* Defer showing the warning so it doesn't get buried under downstream errors. */
+	    document.addEventListener("DOMContentLoaded", function () {
+	        setTimeout(function() {
+	            console.warn("Livewire: It looks like AlpineJS has already been loaded. Make sure Livewire\'s scripts are loaded before Alpine.\\n\\n Reference docs for more info: http://laravel-livewire.com/docs/alpine-js")
+	        })
+	    });
+	}
+
+	/* Make Alpine wait until Livewire is finished rendering to do its thing. */
+HTML;
+
         }
 
         // Adding semicolons for this JavaScript is important,
@@ -249,27 +269,15 @@ HTML;
 {$assetWarning}
 <script src="{$fullAssetPath}" data-turbo-eval="false" data-turbolinks-eval="false"></script>
 <script data-turbo-eval="false" data-turbolinks-eval="false"{$nonce}>
-    if (window.livewire) {
-        console.warn('Livewire: It looks like Livewire\'s @livewireScripts JavaScript assets have already been loaded. Make sure you aren\'t loading them twice.')
-    }
+    {$windowLivewireCheck}
 
-    window.livewire = new Livewire({$jsonEncodedOptions})
+    window.livewire = new Livewire({$jsonEncodedOptions});
     {$devTools}
     window.Livewire = window.livewire;
     window.livewire_app_url = '{$appUrl}';
     window.livewire_token = '{$csrf}';
 
-    /* Make sure Livewire loads first. */
-    if (window.Alpine) {
-        /* Defer showing the warning so it doesn't get buried under downstream errors. */
-        document.addEventListener("DOMContentLoaded", function () {
-            setTimeout(function() {
-                console.warn("Livewire: It looks like AlpineJS has already been loaded. Make sure Livewire\'s scripts are loaded before Alpine.\\n\\n Reference docs for more info: http://laravel-livewire.com/docs/alpine-js")
-            })
-        });
-    }
-
-    /* Make Alpine wait until Livewire is finished rendering to do its thing. */
+	{$windowAlpineCheck}
     window.deferLoadingAlpine = function (callback) {
         window.addEventListener('livewire:load', function () {
             callback();

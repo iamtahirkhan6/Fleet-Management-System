@@ -6,23 +6,21 @@
         backLinkTitle="Go Back">
 
         <!-- Material -->
-        <x-forms.basic-stacked.column title="Material">
+        <x-forms.basic-stacked.column title="Material" error="project.material_id">
             <x-forms.basic-stacked.dropdown
                 wire:model="project.material_id"
                 title="Select the material"
                 :array="$materials">
             </x-forms.basic-stacked.dropdown>
-            @error('project.material_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </x-forms.basic-stacked.column>
 
         <!-- Consignee -->
-        <x-forms.basic-stacked.column title="Consignee">
+        <x-forms.basic-stacked.column title="Consignee" error="project.consignee_id">
             <x-forms.basic-stacked.dropdown
                 wire:model="project.consignee_id"
                 title="Select the consignee"
                 :array="$consignees">
             </x-forms.basic-stacked.dropdown>
-            @error('project.consignee_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             <x-slot name="lastColumn">
                 <div class="my-auto">
                     <a class="text-sm text-indigo-600" href="{{ route('consignees.create') }}">Add a new Consignee</a>
@@ -31,13 +29,12 @@
         </x-forms.basic-stacked.column>
 
         <!-- Loading Points -->
-        <x-forms.basic-stacked.column title="Source">
+        <x-forms.basic-stacked.column title="Source" error="project.loading_point_id">
             <x-forms.basic-stacked.dropdown
                 wire:model="project.loading_point_id"
                 title="Select the loading point"
                 :array="$loading_points">
             </x-forms.basic-stacked.dropdown>
-            @error('project.loading_point_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             <x-slot name="lastColumn">
                 <div class="my-auto">
                     <a class="text-sm text-indigo-600" href="{{ route('loading-points.create') }}">Create a new Loading Point</a>
@@ -46,13 +43,12 @@
         </x-forms.basic-stacked.column>
 
         <!-- Unloading Points -->
-        <x-forms.basic-stacked.column title="Destination">
+        <x-forms.basic-stacked.column title="Destination" error="project.unloading_point_id">
             <x-forms.basic-stacked.dropdown
                 wire:model="project.unloading_point_id"
                 title="Select the destination"
                 :array="$unloading_points">
             </x-forms.basic-stacked.dropdown>
-            @error('project.unloading_point_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             <x-slot name="lastColumn">
                 <div class="my-auto">
                     <a class="text-sm text-indigo-600" href="{{ route('unloading-points.create') }}">Create a new Unloading Point</a>

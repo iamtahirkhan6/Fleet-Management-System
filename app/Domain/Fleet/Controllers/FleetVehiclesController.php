@@ -17,45 +17,25 @@ class FleetVehiclesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Fleet $fleet
+     * @param  Fleet  $fleet
      *
      * @return Application|Factory|View
      */
     public function index(Fleet $fleet)
     {
-        return view('page')->with('livewire', 'models.fleets.vehicles.index')->with('title', 'Fleet Vehicles')->with('description', 'View all the vehicles in your fleet')->with('key', 'fleet')->with('val', $fleet);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Fleet $fleet
-     *
-     * @return Response
-     */
-    public function create(Fleet $fleet)
-    {
-        abort(404);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @param Fleet   $fleet
-     *
-     * @return Response
-     */
-    public function store(Request $request, Fleet $fleet)
-    {
-        abort(404);
+        return view('page')
+            ->with('livewire', 'models.fleets.vehicles.index')
+            ->with('title', 'Fleet Vehicles')
+            ->with('description', 'View all the vehicles in your fleet')
+            ->with('key', 'fleet')
+            ->with('val', $fleet);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Fleet        $fleet
-     * @param FleetVehicle $vehicle
+     * @param  Fleet         $fleet
+     * @param  FleetVehicle  $vehicle
      *
      * @return Response
      */
@@ -65,10 +45,40 @@ class FleetVehiclesController extends Controller
     }
 
     /**
+     * Show the form for adding a new vehicle.
+     *
+     * @param  Fleet  $fleet
+     *
+     * @return Application|Factory|View
+     */
+    public function create(Fleet $fleet)
+    {
+        return view('page')
+            ->with('livewire', 'models.fleets.vehicles.create')
+            ->with('title', 'Add Vehicle to Fleet')
+            ->with('description', 'Enter the details in the form below to add vehicle to your fleet')
+            ->with('key', 'fleet')
+            ->with('val', $fleet);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @param  Fleet    $fleet
+     *
+     * @return Response
+     */
+    public function store(Request $request, Fleet $fleet)
+    {
+        abort(404);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
-     * @param Fleet        $fleet
-     * @param FleetVehicle $vehicle
+     * @param  Fleet         $fleet
+     * @param  FleetVehicle  $vehicle
      *
      * @return Response
      */
@@ -80,9 +90,9 @@ class FleetVehiclesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request      $request
-     * @param Fleet        $fleet
-     * @param FleetVehicle $vehicle
+     * @param  Request       $request
+     * @param  Fleet         $fleet
+     * @param  FleetVehicle  $vehicle
      *
      * @return Response
      */
@@ -94,8 +104,8 @@ class FleetVehiclesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Fleet        $fleet
-     * @param FleetVehicle $vehicle
+     * @param  Fleet         $fleet
+     * @param  FleetVehicle  $vehicle
      *
      * @return Response
      */

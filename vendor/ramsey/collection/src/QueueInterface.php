@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection;
 
-use RuntimeException;
 use Ramsey\Collection\Exception\NoSuchElementException;
 
 /**
@@ -124,7 +123,7 @@ interface QueueInterface extends ArrayInterface
      *
      * @return bool `true` if this queue changed as a result of the call.
      *
-     * @throws RuntimeException if a queue refuses to add a particular element
+     * @throws \RuntimeException if a queue refuses to add a particular element
      *     for any reason other than that it already contains the element.
      *     Implementations should use a more-specific exception that extends
      *     `\RuntimeException`.

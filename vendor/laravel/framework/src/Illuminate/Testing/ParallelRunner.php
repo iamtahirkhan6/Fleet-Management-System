@@ -2,8 +2,6 @@
 
 namespace Illuminate\Testing;
 
-use Closure;
-use Tests\CreatesApplication;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\ParallelTesting;
 use ParaTest\Runners\PHPUnit\Options;
@@ -11,7 +9,6 @@ use ParaTest\Runners\PHPUnit\RunnerInterface;
 use ParaTest\Runners\PHPUnit\WrapperRunner;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use RuntimeException;
-use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,37 +17,36 @@ class ParallelRunner implements RunnerInterface
     /**
      * The application resolver callback.
      *
-     * @var Closure|null
+     * @var \Closure|null
      */
     protected static $applicationResolver;
 
     /**
      * The original test runner options.
      *
-     * @var Options
+     * @var \ParaTest\Runners\PHPUnit\Options
      */
     protected $options;
 
     /**
      * The output instance.
      *
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     protected $output;
 
     /**
      * The original test runner.
      *
-     * @var RunnerInterface
+     * @var \ParaTest\Runners\PHPUnit\RunnerInterface
      */
     protected $runner;
 
     /**
      * Creates a new test runner instance.
      *
-     * @param  Options          $options
-     * @param  OutputInterface  $output
-     *
+     * @param  \ParaTest\Runners\PHPUnit\Options  $options
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return void
      */
     public function __construct(Options $options, OutputInterface $output)
@@ -67,7 +63,7 @@ class ParallelRunner implements RunnerInterface
     /**
      * Set the application resolver callback.
      *
-     * @param  Closure|null  $resolver
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public static function resolveApplicationUsing($resolver)
@@ -129,14 +125,14 @@ class ParallelRunner implements RunnerInterface
     /**
      * Creates the application.
      *
-     * @return Application
+     * @return \Illuminate\Contracts\Foundation\Application
      */
     protected function createApplication()
     {
         $applicationResolver = static::$applicationResolver ?: function () {
-            if (trait_exists(CreatesApplication::class)) {
+            if (trait_exists(\Tests\CreatesApplication::class)) {
                 $applicationCreator = new class {
-                    use CreatesApplication;
+                    use \Tests\CreatesApplication;
                 };
 
                 return $applicationCreator->createApplication();

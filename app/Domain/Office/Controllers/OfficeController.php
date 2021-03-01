@@ -14,26 +14,34 @@ class OfficeController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Application|Factory|View
      */
     public function index()
     {
-        return view('page')->with('livewire', 'models.offices.index')->with('title', 'Offices')->with('description', 'View all the offices in your company');
+        return view('page')
+            ->with('livewire', 'models.offices.index')
+            ->with('title', 'Offices')
+            ->with('description', 'View all the offices in your company');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     *
+     * @return Application|Factory|View
      */
     public function create()
     {
-        abort(404);
+        return view('page')
+            ->with('livewire', 'models.offices.create')
+            ->with('title', 'Add an Office')
+            ->with('description', 'Create a new office in your company');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -45,7 +53,7 @@ class OfficeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Office $office
+     * @param  Office  $office
      *
      * @return Response
      */
@@ -57,7 +65,7 @@ class OfficeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Office $office
+     * @param  Office  $office
      *
      * @return Response
      */
@@ -69,8 +77,8 @@ class OfficeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Office  $office
+     * @param  Request  $request
+     * @param  Office   $office
      *
      * @return Response
      */
@@ -82,7 +90,7 @@ class OfficeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Office $office
+     * @param  Office  $office
      *
      * @return Response
      */

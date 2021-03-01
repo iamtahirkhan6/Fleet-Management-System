@@ -11,7 +11,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                             </svg>
                         </div>
-                        <input type="text" wire:model="searchTerm"
+                        <input type="text" wire:model.lazy="searchTerm"
                             class="block w-full pl-10 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Search Vehicles">
                     </div>
@@ -20,7 +20,7 @@
 
             <div class="inline-flex flex-1 mt-1 ml-5">
                 <span class="mt-2 mr-3 text-gray-500">Per Page</span>
-                <select wire:model="perPage" id="location" name="location"
+                <select wire:model.lazy="perPage" id="location" name="location"
                     class="block py-2 pl-3 pr-10 mt-1 text-base border-gray-300 rounded-md w-min focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option selected value="10">10</option>
                     <option value="25">25</option>
@@ -45,7 +45,7 @@
             @forelse ($market_vehicles as $vehicle)
                 <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
                     <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
-                    <x-tables.basic.row>{{ $vehicle->number }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $vehicle->license_plate }}</x-tables.basic.row>
                     @if ($vehicle->party_id != null)
                         <x-tables.basic.row>{{ $vehicle->party->first()->name }}</x-tables.basic.row>
                     @endif

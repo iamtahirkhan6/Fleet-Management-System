@@ -19,7 +19,7 @@ class MorphTo extends BelongsTo
     /**
      * The models whose relations are being eager loaded.
      *
-     * @var Collection
+     * @var \Illuminate\Database\Eloquent\Collection
      */
     protected $models;
 
@@ -61,13 +61,12 @@ class MorphTo extends BelongsTo
     /**
      * Create a new morph to relationship instance.
      *
-     * @param  Builder  $query
-     * @param  Model    $parent
-     * @param  string   $foreignKey
-     * @param  string   $ownerKey
-     * @param  string   $type
-     * @param  string   $relation
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Model  $parent
+     * @param  string  $foreignKey
+     * @param  string  $ownerKey
+     * @param  string  $type
+     * @param  string  $relation
      * @return void
      */
     public function __construct(Builder $query, Model $parent, $foreignKey, $ownerKey, $type, $relation)
@@ -91,8 +90,7 @@ class MorphTo extends BelongsTo
     /**
      * Build a dictionary with the models.
      *
-     * @param  Collection  $models
-     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
      */
     protected function buildDictionary(Collection $models)
@@ -124,8 +122,7 @@ class MorphTo extends BelongsTo
      * Get all of the relation results for a type.
      *
      * @param  string  $type
-     *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function getResultsByType($type)
     {
@@ -174,8 +171,7 @@ class MorphTo extends BelongsTo
      * Create a new model instance by type.
      *
      * @param  string  $type
-     *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function createModelByType($type)
     {
@@ -192,9 +188,8 @@ class MorphTo extends BelongsTo
      * Match the eagerly loaded results to their parents.
      *
      * @param  array  $models
-     * @param  Collection  $results
+     * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
-     *
      * @return array
      */
     public function match(array $models, Collection $results, $relation)
@@ -205,9 +200,8 @@ class MorphTo extends BelongsTo
     /**
      * Match the results for a given type to their parents.
      *
-     * @param  string      $type
-     * @param  Collection  $results
-     *
+     * @param  string  $type
+     * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return void
      */
     protected function matchToMorphParents($type, Collection $results)
@@ -226,14 +220,13 @@ class MorphTo extends BelongsTo
     /**
      * Associate the model instance to the given parent.
      *
-     * @param  Model  $model
-     *
-     * @return Model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function associate($model)
     {
         $this->parent->setAttribute(
-            $this->foreignKey, $model instanceof Model ? $model->getKey() : null
+            $this->foreignKey, $model instanceof Model ? $model->{$this->ownerKey ?: $model->getKeyName()} : null
         );
 
         $this->parent->setAttribute(
@@ -246,7 +239,7 @@ class MorphTo extends BelongsTo
     /**
      * Dissociate previously associated model from the given parent.
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function dissociate()
     {
@@ -272,9 +265,8 @@ class MorphTo extends BelongsTo
     /**
      * Make a new related instance for the given model.
      *
-     * @param  Model  $parent
-     *
-     * @return Model
+     * @param  \Illuminate\Database\Eloquent\Model  $parent
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function newRelatedInstanceFor(Model $parent)
     {
@@ -305,8 +297,7 @@ class MorphTo extends BelongsTo
      * Specify which relations to load for a given morph type.
      *
      * @param  array  $with
-     *
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function morphWith(array $with)
     {
@@ -321,8 +312,7 @@ class MorphTo extends BelongsTo
      * Specify which relationship counts to load for a given morph type.
      *
      * @param  array  $withCount
-     *
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function morphWithCount(array $withCount)
     {
@@ -337,8 +327,7 @@ class MorphTo extends BelongsTo
      * Specify constraints on the query for a given morph type.
      *
      * @param  array  $callbacks
-     *
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function constrain(array $callbacks)
     {
@@ -352,9 +341,8 @@ class MorphTo extends BelongsTo
     /**
      * Replay stored macro calls on the actual related instance.
      *
-     * @param  Builder  $query
-     *
-     * @return Builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function replayMacros(Builder $query)
     {

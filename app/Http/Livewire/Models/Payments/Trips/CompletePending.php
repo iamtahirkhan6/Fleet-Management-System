@@ -6,6 +6,7 @@ use Auth;
 use App\Helper\Helper;
 use Livewire\Component;
 use App\Domain\Party\Models\Party;
+use App\Domain\Document\Models\Document;
 use App\Domain\Payment\Models\TaxCategory;
 use App\Domain\Payment\Models\PaymentStatus;
 use App\Domain\Payment\Models\PaymentMethod;
@@ -14,19 +15,13 @@ use Spatie\MediaLibraryPro\Http\Livewire\Concerns\WithMedia;
 
 class CompletePending extends Component
 {
-    use WithMedia;
 
     protected $listeners           = ['refreshDetails' => '$refresh'];
-    public    $mediaComponentNames = [
-        'pan',
-        'rc',
-        'tds',
-    ];
     public    $trip;
+
     public    $pan_soft_copy;
     public    $rc_soft_copy;
     public    $tds_soft_copy;
-
 
     public ?array $input = [];
 
@@ -100,32 +95,22 @@ class CompletePending extends Component
             $payment        = $result[2];
             $market_vehicle = $result[3];
 
-            $market_vehicle->addFromMediaLibraryRequest($this->rc_soft_copy)
-                ->withCustomProperties([
-                                           'type'                  => 'rc',
-                                           'market_vehicle_number' => $trip->market_vehicle_number,
-                                           'party'                 => $party->id,
-                                           'company_id'            => Auth::user()->company_id,
-                                       ])
-                ->toMediaCollection('documents');
+            if(isset($this->rc_soft_copy))
+            {
+                $this->rc_soft_copy = $this->rc_soft_copy->storePublicly('/rc', 'documents');
+                $market_vehicle->challanCopy()->save(new Document(['path' => $this->rc_soft_copy, 'document_type_id' => 3]));
+            }
 
-            $party->addFromMediaLibraryRequest($this->pan_soft_copy)
-                ->withCustomProperties([
-                                           'type'       => 'pan',
-                                           'party'      => $party->id,
-                                           'company_id' => Auth::user()->company_id,
-                                       ])
-                ->toMediaCollection('documents');
+            if(isset($this->pan_soft_copy))
+            {
+                $this->rc_soft_copy = $this->rc_soft_copy->storePublicly('/pan', 'documents');
+                $market_vehicle->challanCopy()->save(new Document(['path' => $this->rc_soft_copy, 'document_type_id' => 4]));
+            }
 
-            if ($this->tds_soft_copy) {
-                $payment->addFromMediaLibraryRequest($this->pan_soft_copy)
-                    ->withCustomProperties([
-                                               'type'       => 'tds',
-                                               'party'      => $party->id,
-                                               'payment_id' => $payment->id,
-                                               'company_id' => Auth::user()->company_id,
-                                           ])
-                    ->toMediaCollection('documents');
+            if(isset($this->tds_soft_copy))
+            {
+                $this->rc_soft_copy = $this->tds_soft_copy->storePublicly('/tds', 'documents');
+                $market_vehicle->challanCopy()->save(new Document(['path' => $this->tds_soft_copy, 'document_type_id' => 5]));
             }
 
             redirect()->to(url('/payments/pending'));
@@ -198,11 +183,10 @@ class CompletePending extends Component
     {
         $rules  = collect(CompleteTripPayment::rules('input.'));
         $merged = $rules->merge([
-                                    'pan_soft_copy' => 'required',
-                                    'rc_soft_copy'  => 'required',
-                                    'tds_soft_copy' => 'required_if:tds_sbm_bool,true',
+                                    'pan_soft_copy' => 'nullable|image|max:10240',
+                                    'rc_soft_copy'  => 'nullable|image|max:10240',
+                                    'tds_soft_copy' => 'required_if:tds_sbm_bool,true|image|max:10240',
                                 ]);
-
         return $merged->toArray();
     }
 

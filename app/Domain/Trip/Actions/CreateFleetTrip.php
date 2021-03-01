@@ -13,17 +13,20 @@ class CreateFleetTrip
 
     public static function input(array $array) : array
     {
-        foreach ($array as $key => $value) $array[$key] = null;
+        foreach ($array as $key => $value) {
+            $array[$key] = null;
+        }
+
         return $array;
     }
 
-    public function handle($project_id, $input) : bool|Trip
+    public function handle($project_id, $input)
     {
         $validator = Validator::make($input, $this->rules(), $this->messages());
         if (!$validator->fails()) {
-            $trip                   = new Trip();
-            $trip->project_id       = $project_id;
-            $trip->trip_type        = 1;  // 1 = Fleet Vehicle
+            $trip             = new Trip();
+            $trip->project_id = $project_id;
+            $trip->trip_type  = 1;  // 1 = Fleet Vehicle
 //            $trip->company_id       = Auth::user()->company_id;
             $trip->date             = $input["date"];
             $trip->challan_serial   = $input["challan_serial"];
@@ -40,6 +43,7 @@ class CreateFleetTrip
             $trip->loading_done     = 1;
             $trip->created_by       = Auth::id();
             $trip->save();
+
             return $trip;
         } else {
             false;
@@ -49,16 +53,18 @@ class CreateFleetTrip
     public static function rules($prefix = null) : array
     {
         return [
-            $prefix . 'date'             => 'required|date',
-            $prefix . 'challan_serial'   => 'nullable|alpha_num',
-            $prefix . 'fleet_vehicle_id' => 'required|numeric|exists:fleet_vehicles,id',
-            $prefix . 'tp_number'        => 'required|regex:/^\S+$/',
-            $prefix . 'tp_serial'        => 'required|numeric|regex:/^\S+$/',
-            $prefix . 'gross_weight'     => 'nullable',
-            $prefix . 'tare_weight'      => 'nullable',
-            $prefix . 'net_weight'       => 'required',
-            $prefix . 'rate'             => 'required|numeric',
-            $prefix . 'fleet_driver_id'  => 'required|exists:employees,id',
+            $prefix . 'date'                    => 'required|date',
+            $prefix . 'challan_serial'          => 'nullable|alpha_num',
+            $prefix . 'fleet_vehicle_id'        => 'required|numeric|exists:fleet_vehicles,id',
+            $prefix . 'tp_number'               => 'required|regex:/^\S+$/',
+            $prefix . 'tp_serial'               => 'required|numeric|regex:/^\S+$/',
+            $prefix . 'gross_weight'            => 'nullable',
+            $prefix . 'tare_weight'             => 'nullable',
+            $prefix . 'net_weight'              => 'required',
+            $prefix . 'rate'                    => 'required|numeric',
+            $prefix . 'fleet_driver_id'         => 'required|exists:employees,id',
+            $prefix . 'challan_soft_copy'       => 'nullable|image|max:10240',
+
         ];
     }
 
@@ -75,6 +81,8 @@ class CreateFleetTrip
             $prefix . 'rate.required'             => 'Rate per ton be empty.',
             $prefix . 'fleet_vehicle_id.required' => 'Choose a Vehicle from your fleets.',
             $prefix . 'fleet_driver_id.required'  => 'Choose a Driver from your Employed Drivers.',
+            $prefix . 'challan_soft_copy.max'   => 'Challan Copy can not be more than 10mb.',
+            $prefix . 'challan_soft_copy.image' => 'Challan Copy should be in image format.',
         ];
     }
 }

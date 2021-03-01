@@ -10,6 +10,7 @@ use App\Domain\Fleet\Models\Fleet;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Project\Models\Project;
 use App\Domain\Employee\Models\Employee;
+use App\Domain\Document\Models\Document;
 use App\Domain\Trip\Actions\CreateFleetTrip;
 use Illuminate\Database\Eloquent\Collection;
 use App\Domain\Trip\Actions\CreateMarketVehicleTrip;
@@ -18,8 +19,7 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    public $mediaComponentNames = ['challan_soft_copy'];
-    public $challan_soft_copy;
+    public $challan_copy;
 
     public ?array     $input = [];
     public Project    $project;
@@ -28,8 +28,8 @@ class Create extends Component
     public            $fleet_vehicles;
 
     public string $consignee;
-    public string $source;
-    public string $destination;
+    public string $loadingpoint;
+    public string $unloadingpoint;
 
     public $createFail    = false;
     public $createSuccess = false;
@@ -61,15 +61,9 @@ class Create extends Component
         if ($this->mActive) {
             $trip = CreateMarketVehicleTrip::run($this->project->id, $this->input);
             if ($trip != false) {
-                if (isset($this->challan_soft_copy)) {
-                    $trip->addFromMediaLibraryRequest($this->challan_soft_copy)
-                        ->withCustomProperties([
-                                                   'trip'                        => $trip->id,
-                                                   'trip_type'                   => 1,
-                                                   'fleet_market_vehicle_number' => $trip->fleet_driver_id,
-                                                   'company_id'                  => Auth::user()->company_id,
-                                               ])
-                        ->toMediaCollection('challan');
+                if (isset($this->challan_copy)) {
+                    $this->challan_copy = $this->challan_copy->storePublicly('/challans', 'documents');
+                    $trip->challanCopy()->save(new Document(['path' => $this->challan_copy, 'document_type_id' => 1]));
                 }
                 $this->createSuccess = true;
             }
@@ -80,16 +74,9 @@ class Create extends Component
         elseif ($this->oActive) {
             $trip = CreateFleetTrip::run($this->project->id, $this->input);
             if ($trip != false) {
-                if (isset($this->challan_soft_copy)) {
-                    $trip->addFromMediaLibraryRequest($this->challan_soft_copy)
-                        ->withCustomProperties([
-                                                   'trip'             => $trip->id,
-                                                   'trip_type'        => 2,
-                                                   'fleet_vehicle_id' => $trip->fleet_vehicle_id,
-                                                   'fleet_driver_id'  => $trip->fleet_driver_id,
-                                                   'company_id'       => Auth::user()->company_id,
-                                               ])
-                        ->toMediaCollection('fleet_challan');
+                if (isset($this->challan_copy)) {
+                    $this->challan_copy = $this->challan_copy->storePublicly('/challans', 'documents');
+                    $trip->challanCopy()->save(new Document(['path' => $this->challan_copy, 'document_type_id' => 1]));
                 }
                 $this->createSuccess = true;
             }
@@ -104,14 +91,10 @@ class Create extends Component
 
     public function loadOwnedVehicleTripData()
     {
-        $this->paid_drivers   = Employee::whereEmployeeDesignationId(7)
-            ->get();
-        $this->fleet_vehicles = Fleet::with('vehicles')
-            ->get()
-            ->map(function ($fleet) {
+        $this->paid_drivers   = Employee::whereEmployeeDesignationId(7)->get();
+        $this->fleet_vehicles = Fleet::with('vehicles')->get()->map(function ($fleet) {
                 return $fleet->vehicles;
-            })
-            ->collapse();
+            })->collapse();
     }
 
     public function loadAgents()
@@ -125,11 +108,11 @@ class Create extends Component
     public function mount($project)
     {
         $this->feedInput();
-        $this->project       = $project;
-        $this->source        = $project->source->name;
-        $this->consignee     = $project->consignee->name;
-        $this->destination   = $project->destination->name;
-        $this->input["date"] = Carbon::today()
+        $this->project        = $project;
+        $this->loadingpoint   = $project->loadingPoint->name;
+        $this->unloadingpoint = $project->unloadingPoint->name;
+        $this->consignee      = $project->consignee->name;
+        $this->input["date"]  = Carbon::today()
             ->format('d-m-Y');
 
         if (Auth::user()->company->fleets->count() <= 0) {

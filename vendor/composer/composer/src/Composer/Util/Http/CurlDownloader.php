@@ -12,18 +12,15 @@
 
 namespace Composer\Util\Http;
 
-use Exception;
-use LogicException;
 use Composer\Config;
-use RuntimeException;
-use Composer\Util\Url;
-use Composer\IO\IOInterface;
-use Composer\Util\AuthHelper;
-use Composer\Util\HttpDownloader;
-use Composer\Util\StreamContextFactory;
-use Composer\Downloader\TransportException;
 use Composer\Downloader\MaxFileSizeExceededException;
-use function defined;
+use Composer\IO\IOInterface;
+use Composer\Downloader\TransportException;
+use Composer\Util\StreamContextFactory;
+use Composer\Util\AuthHelper;
+use Composer\Util\Url;
+use Composer\Util\HttpDownloader;
+use React\Promise\Promise;
 
 /**
  * @internal
@@ -181,7 +178,7 @@ class CurlDownloader
 
         $version = curl_version();
         $features = $version['features'];
-        if (0 === strpos($url, 'https://') && defined('CURL_VERSION_HTTP2') && defined('CURL_HTTP_VERSION_2_0') && (CURL_VERSION_HTTP2 & $features)) {
+        if (0 === strpos($url, 'https://') && \defined('CURL_VERSION_HTTP2') && \defined('CURL_HTTP_VERSION_2_0') && (CURL_VERSION_HTTP2 & $features)) {
             curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
         }
 
@@ -314,7 +311,7 @@ class CurlDownloader
                 fclose($job['headerHandle']);
 
                 if ($statusCode === 0) {
-                    throw new LogicException('Received unexpected http status code 0 without error for '.Url::sanitize($progress['url']).': headers '.var_export($headers, true).' curl info '.var_export($progress, true));
+                    throw new \LogicException('Received unexpected http status code 0 without error for '.Url::sanitize($progress['url']).': headers '.var_export($headers, true).' curl info '.var_export($progress, true));
                 }
 
                 // prepare response object
@@ -369,7 +366,7 @@ class CurlDownloader
                 } else {
                     call_user_func($job['resolve'], $response);
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 if ($e instanceof TransportException && $headers) {
                     $e->setHeaders($headers);
                     $e->setStatusCode($statusCode);
@@ -528,7 +525,7 @@ class CurlDownloader
     private function checkCurlResult($code)
     {
         if ($code != CURLM_OK && $code != CURLM_CALL_MULTI_PERFORM) {
-            throw new RuntimeException(
+            throw new \RuntimeException(
                 isset($this->multiErrors[$code])
                 ? "cURL error: {$code} ({$this->multiErrors[$code][0]}): cURL message: {$this->multiErrors[$code][1]}"
                 : 'Unexpected cURL error: ' . $code

@@ -2665,7 +2665,7 @@ de la forêt d'Argueil, avec les escarpements de la côte Saint-
 Jean, rayés du haut en bas par de longues traînées rouges,
 inégales; ce sont les traces des pluies, et ces tons de brique,
 tranchant en filets minces sur la couleur grise de la montagne,
-viennent de la quantité de loading-points ferrugineuses qui coulent au
+viennent de la quantité de sources ferrugineuses qui coulent au
 delà, dans le pays d'alentour.
 
 On est ici sur les confins de la Normandie, de la Picardie et de

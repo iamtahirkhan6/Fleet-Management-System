@@ -17,6 +17,7 @@
                 <x-tables.basic.column>Projects</x-tables.basic.column>
                 <x-tables.basic.column>Running Projects</x-tables.basic.column>
                 <x-tables.basic.column>Business Done</x-tables.basic.column>
+                <x-tables.basic.column></x-tables.basic.column>
         </x-slot>
 
         <x-slot name="rows">
@@ -27,6 +28,22 @@
                     <x-tables.basic.row>{{ $consignee->totalProjects() }}</x-tables.basic.row>
                     <x-tables.basic.row colorSlot="true" :colorSlotVal="$consignee->runningProjects()"></x-tables.basic.row>
                     <x-tables.basic.row money="true" :moneyBool="$consignee->businessDone()" :moneyVal="$consignee->businessDone()"></x-tables.basic.row>
+                    <x-tables.basic.row >
+                        <x-dropdown class="text-gray-500" x-cloak>
+                            <x-slot name="trigger">
+                                <button class="rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                    <span class="sr-only">Open options</span>
+                                    <x-svg.dots-vertical class="h-5 w-5" />
+                                </button>
+                            </x-slot>
+                            <div class="origin-top-right absolute right-20 mt-2 w-42 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    <x-jet-dropdown-link href="{{ route('consignees.show', ['consignee' => $consignee->id]) }}">View</x-jet-dropdown-link>
+                                    <x-jet-dropdown-link href="{{ route('consignees.update_details', ['consignee' => $consignee->id]) }}">Update Details</x-jet-dropdown-link>
+                                    </div>
+                            </div>
+                        </x-dropdown>
+                    </x-tables.basic.row>
                 </tr>
             @empty
                 <tr class="">

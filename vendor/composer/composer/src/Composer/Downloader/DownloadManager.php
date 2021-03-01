@@ -12,10 +12,6 @@
 
 namespace Composer\Downloader;
 
-use Exception;
-use LogicException;
-use RuntimeException;
-use InvalidArgumentException;
 use Composer\Package\PackageInterface;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
@@ -114,14 +110,14 @@ class DownloadManager
      * Returns downloader for a specific installation type.
      *
      * @param  string                    $type installation type
-     * @throws InvalidArgumentException if downloader for provided type is not registered
+     * @throws \InvalidArgumentException if downloader for provided type is not registered
      * @return DownloaderInterface
      */
     public function getDownloader($type)
     {
         $type = strtolower($type);
         if (!isset($this->downloaders[$type])) {
-            throw new InvalidArgumentException(sprintf('Unknown downloader type: %s. Available types: %s.', $type, implode(', ', array_keys($this->downloaders))));
+            throw new \InvalidArgumentException(sprintf('Unknown downloader type: %s. Available types: %s.', $type, implode(', ', array_keys($this->downloaders))));
         }
 
         return $this->downloaders[$type];
@@ -131,8 +127,8 @@ class DownloadManager
      * Returns downloader for already installed package.
      *
      * @param  PackageInterface          $package package instance
-     * @throws InvalidArgumentException if package has no installation source specified
-     * @throws LogicException           if specific downloader used to load package with
+     * @throws \InvalidArgumentException if package has no installation source specified
+     * @throws \LogicException           if specific downloader used to load package with
      *                                           wrong type
      * @return DownloaderInterface|null
      */
@@ -149,13 +145,13 @@ class DownloadManager
         } elseif ('source' === $installationSource) {
             $downloader = $this->getDownloader($package->getSourceType());
         } else {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Package '.$package.' does not have an installation source set'
             );
         }
 
         if ($installationSource !== $downloader->getInstallationSource()) {
-            throw new LogicException(sprintf(
+            throw new \LogicException(sprintf(
                 'Downloader "%s" is a %s type downloader and can not be used to download %s for package %s',
                 get_class($downloader),
                 $downloader->getInstallationSource(),
@@ -179,8 +175,8 @@ class DownloadManager
      * @param string                $targetDir   target dir
      * @param PackageInterface|null $prevPackage previous package instance in case of updates
      *
-     * @throws InvalidArgumentException if package have no urls to download from
-     * @throws RuntimeException
+     * @throws \InvalidArgumentException if package have no urls to download from
+     * @throws \RuntimeException
      * @return PromiseInterface
      */
     public function download(PackageInterface $package, $targetDir, PackageInterface $prevPackage = null)
@@ -206,7 +202,7 @@ class DownloadManager
             }
 
             $handleError = function ($e) use ($sources, $source, $package, $io, $download) {
-                if ($e instanceof RuntimeException && !$e instanceof IrrecoverableDownloadException) {
+                if ($e instanceof \RuntimeException && !$e instanceof IrrecoverableDownloadException) {
                     if (!$sources) {
                         throw $e;
                     }
@@ -226,7 +222,7 @@ class DownloadManager
 
             try {
                 $result = $downloader->download($package, $targetDir, $prevPackage);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return $handleError($e);
             }
             if (!$result instanceof PromiseInterface) {
@@ -268,8 +264,8 @@ class DownloadManager
      * @param PackageInterface $package   package instance
      * @param string           $targetDir target dir
      *
-     * @throws InvalidArgumentException if package have no urls to download from
-     * @throws RuntimeException
+     * @throws \InvalidArgumentException if package have no urls to download from
+     * @throws \RuntimeException
      * @return PromiseInterface|null
      */
     public function install(PackageInterface $package, $targetDir)
@@ -288,7 +284,7 @@ class DownloadManager
      * @param PackageInterface $target    target package version
      * @param string           $targetDir target dir
      *
-     * @throws InvalidArgumentException if initial package is not installed
+     * @throws \InvalidArgumentException if initial package is not installed
      * @return PromiseInterface|null
      */
     public function update(PackageInterface $initial, PackageInterface $target, $targetDir)
@@ -312,7 +308,7 @@ class DownloadManager
         if ($initialType === $targetType) {
             try {
                 return $downloader->update($initial, $target, $targetDir);
-            } catch (RuntimeException $e) {
+            } catch (\RuntimeException $e) {
                 if (!$this->io->isInteractive()) {
                     throw $e;
                 }
@@ -414,7 +410,7 @@ class DownloadManager
         }
 
         if (empty($sources)) {
-            throw new InvalidArgumentException('Package '.$package.' must have a source or dist specified');
+            throw new \InvalidArgumentException('Package '.$package.' must have a source or dist specified');
         }
 
         if (
@@ -432,7 +428,7 @@ class DownloadManager
             return $sources;
         }
 
-        // reverse loading-points in case dist is the preferred source for this package
+        // reverse sources in case dist is the preferred source for this package
         if (!$this->preferSource && ($this->preferDist || 'dist' === $this->resolvePackageInstallPreference($package))) {
             $sources = array_reverse($sources);
         }

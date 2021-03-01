@@ -17,8 +17,9 @@ class CreateAddressesTable extends Migration
             $table->string('line_1')->nullable();
             $table->string('line_2')->nullable();
             $table->string('city')->nullable();
-            $table->string('zip')->nullable();
+            $table->string('district')->nullable();
             $table->string('state')->nullable();
+            $table->string('zip')->nullable();
             $table->morphs('addressable');
             $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();

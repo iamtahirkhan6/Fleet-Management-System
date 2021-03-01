@@ -16,15 +16,13 @@ class OtherBrowserSessionsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @return \Inertia\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, StatefulGuard $guard)
     {
-        if (! Hash::check($request->password, $request->user()->password)) {
-            throw ValidationException::withMessages([
-                'password' => [__('This password does not match our records.')],
-            ])->errorBag('logoutOtherBrowserSessions');
-        }
+        $request->validate([
+            'password' => 'password',
+        ]);
 
         $guard->logoutOtherDevices($request->password);
 
@@ -45,7 +43,7 @@ class OtherBrowserSessionsController extends Controller
             return;
         }
 
-        DB::table(config('session.table', 'sessions'))
+        DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
             ->where('user_id', $request->user()->getAuthIdentifier())
             ->where('id', '!=', $request->session()->getId())
             ->delete();

@@ -5,7 +5,6 @@ namespace Illuminate\View\Compilers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Support\Collection;
 
 class BladeCompiler extends Compiler implements CompilerInterface
 {
@@ -181,7 +180,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Get the open and closing PHP tag tokens from the given string.
      *
      * @param  string  $contents
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     protected function getOpenAndClosingPhpTokens($contents)
     {
@@ -450,6 +449,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function callCustomDirective($name, $value)
     {
+        $value = $value ?? '';
+
         if (Str::startsWith($value, '(') && Str::endsWith($value, ')')) {
             $value = Str::substr($value, 1, -1);
         }
@@ -677,7 +678,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  callable  $handler
      * @return void
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function directive($name, callable $handler)
     {

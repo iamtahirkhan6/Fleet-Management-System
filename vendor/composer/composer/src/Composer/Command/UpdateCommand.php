@@ -12,10 +12,7 @@
 
 namespace Composer\Command;
 
-use RuntimeException;
 use Composer\Composer;
-use InvalidArgumentException;
-use UnexpectedValueException;
 use Composer\DependencyResolver\Request;
 use Composer\Installer;
 use Composer\IO\IOInterface;
@@ -47,7 +44,7 @@ class UpdateCommand extends BaseCommand
             ->setDefinition(array(
                 new InputArgument('packages', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Packages that should be updated, if not provided all packages are.'),
                 new InputOption('with', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Temporary version constraint to add, e.g. foo/bar:1.0.0 or foo/bar=1.0.0'),
-                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package loading-points when possible, including VCS information.'),
+                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
                 new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist even for dev versions.'),
                 new InputOption('dry-run', null, InputOption::VALUE_NONE, 'Outputs the operations but will not execute anything (implicitly enables --verbose).'),
                 new InputOption('dev', null, InputOption::VALUE_NONE, 'DEPRECATED: Enables installation of require-dev packages (enabled by default, only present for BC).'),
@@ -150,7 +147,7 @@ EOT
             } elseif (isset($rootDevRequires[$package])) {
                 $rootDevRequires[$package] = $this->appendConstraintToLink($rootDevRequires[$package], $constraint);
             } else {
-                throw new UnexpectedValueException('Only root package requirements can receive temporary constraints and '.$package.' is not one');
+                throw new \UnexpectedValueException('Only root package requirements can receive temporary constraints and '.$package.' is not one');
             }
         }
         $composer->getPackage()->setRequires($rootRequires);
@@ -195,7 +192,7 @@ EOT
         $install = Installer::create($io, $composer);
 
         $config = $composer->getConfig();
-        [$preferSource, $preferDist] = $this->getPreferredInstallOptions($config, $input);
+        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($config, $input);
 
         $optimize = $input->getOption('optimize-autoloader') || $config->get('optimize-autoloader');
         $authoritative = $input->getOption('classmap-authoritative') || $config->get('classmap-authoritative');
@@ -242,7 +239,7 @@ EOT
     private function getPackagesInteractively(IOInterface $io, InputInterface $input, OutputInterface $output, Composer $composer, array $packages)
     {
         if (!$input->isInteractive()) {
-            throw new InvalidArgumentException('--interactive cannot be used in non-interactive terminals.');
+            throw new \InvalidArgumentException('--interactive cannot be used in non-interactive terminals.');
         }
 
         $requires = array_merge(
@@ -282,7 +279,7 @@ EOT
 
         $packages = array_filter($packages);
         if (!$packages) {
-            throw new InvalidArgumentException('You must enter minimum one package.');
+            throw new \InvalidArgumentException('You must enter minimum one package.');
         }
 
         $table = new Table($output);
@@ -299,7 +296,7 @@ EOT
             return $packages;
         }
 
-        throw new RuntimeException('Installation aborted.');
+        throw new \RuntimeException('Installation aborted.');
     }
 
     private function appendConstraintToLink(Link $link, $constraint)

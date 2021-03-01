@@ -35,7 +35,7 @@ abstract class Swift_Transport_AbstractSmtpTransport implements Swift_Transport
     /** The pipelined commands waiting for response */
     protected $pipeline = [];
 
-    /** LoadingPoints Ip */
+    /** Source Ip */
     protected $sourceIp;
 
     /** Return an array of params for the Buffer */

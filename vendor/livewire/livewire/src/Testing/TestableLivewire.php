@@ -3,7 +3,6 @@
 namespace Livewire\Testing;
 
 use Mockery;
-use Throwable;
 use Livewire\Livewire;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\View;
@@ -220,7 +219,7 @@ class TestableLivewire
 
                 try {
                     $value = $this->instance()->{$root};
-                } catch (Throwable $e) {
+                } catch (\Throwable $e) {
                     if ($e instanceof PropertyNotFoundException) {
                         $value = null;
                     } else if (str($e->getMessage())->contains('must not be accessed before initialization')) {

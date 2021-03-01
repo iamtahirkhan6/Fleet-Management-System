@@ -4,8 +4,8 @@
     desc="All the details regarding the project is available here.">
 
       <x-description-list.row :value="$project->name"                   background="bg-gray-50">Project Name</x-description-list.row >
-      <x-description-list.row :value="$project->source->name"           background="bg-white">Source</x-description-list.row >
-      <x-description-list.row :value="$project->destination->name"      background="bg-gray-50">Destination</x-description-list.row >
+      <x-description-list.row :value="$project->loadingPoint->name"           background="bg-white">Source</x-description-list.row >
+      <x-description-list.row :value="$project->unloadingPoint->name"      background="bg-gray-50">Destination</x-description-list.row >
       <x-description-list.row :value="$project->consignee->name"        background="bg-white">Consignee</x-description-list.row >
       <x-description-list.row :value="$project->material->name"         background="bg-gray-50">Material Type</x-description-list.row >
       <x-description-list.row :value="$project->trips->count()"         background="bg-white" link="/projects/{{ $project->id }}/trips">Trips</x-description-list.row >

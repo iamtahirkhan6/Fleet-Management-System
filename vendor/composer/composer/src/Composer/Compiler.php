@@ -12,11 +12,6 @@
 
 namespace Composer;
 
-use Phar;
-use DateTime;
-use SplFileInfo;
-use DateTimeZone;
-use RuntimeException;
 use Composer\Json\JsonFile;
 use Composer\CaBundle\CaBundle;
 use Symfony\Component\Finder\Finder;
@@ -40,7 +35,7 @@ class Compiler
      * Compiles composer into a single phar file
      *
      * @param  string            $pharFile The full path to the file to create
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function compile($pharFile = 'composer.phar')
     {
@@ -50,17 +45,17 @@ class Compiler
 
         $process = new Process('git log --pretty="%H" -n1 HEAD', __DIR__);
         if ($process->run() != 0) {
-            throw new RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
+            throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
         }
         $this->version = trim($process->getOutput());
 
         $process = new Process('git log -n1 --pretty=%ci HEAD', __DIR__);
         if ($process->run() != 0) {
-            throw new RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
+            throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
         }
 
-        $this->versionDate = new DateTime(trim($process->getOutput()));
-        $this->versionDate->setTimezone(new DateTimeZone('UTC'));
+        $this->versionDate = new \DateTime(trim($process->getOutput()));
+        $this->versionDate->setTimezone(new \DateTimeZone('UTC'));
 
         $process = new Process('git describe --tags --exact-match HEAD');
         if ($process->run() == 0) {
@@ -75,8 +70,8 @@ class Compiler
             }
         }
 
-        $phar = new Phar($pharFile, 0, 'composer.phar');
-        $phar->setSignatureAlgorithm(Phar::SHA1);
+        $phar = new \Phar($pharFile, 0, 'composer.phar');
+        $phar->setSignatureAlgorithm(\Phar::SHA1);
 
         $phar->startBuffering();
 
@@ -84,7 +79,7 @@ class Compiler
             return strcmp(strtr($a->getRealPath(), '\\', '/'), strtr($b->getRealPath(), '\\', '/'));
         };
 
-        // Add Composer loading-points
+        // Add Composer sources
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
@@ -98,7 +93,7 @@ class Compiler
             $this->addFile($phar, $file);
         }
         // Add ClassLoader separately to make sure it retains the docblocks as it will get copied into projects
-        $this->addFile($phar, new SplFileInfo(__DIR__ . '/Autoload/ClassLoader.php'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__ . '/Autoload/ClassLoader.php'), false);
 
         // Add Composer resources
         $finder = new Finder();
@@ -152,10 +147,10 @@ class Compiler
         }
 
         if ($extraFiles) {
-            throw new RuntimeException('These files were expected but not added to the phar, they might be excluded or gone from the source package:'.PHP_EOL.implode(PHP_EOL, $extraFiles));
+            throw new \RuntimeException('These files were expected but not added to the phar, they might be excluded or gone from the source package:'.PHP_EOL.implode(PHP_EOL, $extraFiles));
         }
         if ($unexpectedFiles) {
-            throw new RuntimeException('These files were unexpectedly added to the phar, make sure they are excluded or listed in $extraFiles:'.PHP_EOL.implode(PHP_EOL, $unexpectedFiles));
+            throw new \RuntimeException('These files were unexpectedly added to the phar, make sure they are excluded or listed in $extraFiles:'.PHP_EOL.implode(PHP_EOL, $unexpectedFiles));
         }
 
         // Add bin/composer
@@ -169,20 +164,20 @@ class Compiler
         // disabled for interoperability with systems without gzip ext
         // $phar->compressFiles(\Phar::GZ);
 
-        $this->addFile($phar, new SplFileInfo(__DIR__.'/../../LICENSE'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
 
         unset($phar);
 
         // re-sign the phar with reproducible timestamp / signature
         $util = new Timestamps($pharFile);
         $util->updateTimestamps($this->versionDate);
-        $util->save($pharFile, Phar::SHA1);
+        $util->save($pharFile, \Phar::SHA1);
 
         Linter::lint($pharFile);
     }
 
     /**
-     * @param  SplFileInfo $file
+     * @param  \SplFileInfo $file
      * @return string
      */
     private function getRelativeFilePath($file)

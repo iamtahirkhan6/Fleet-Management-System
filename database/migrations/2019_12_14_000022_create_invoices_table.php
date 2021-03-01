@@ -15,26 +15,29 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->date('invoice_date');
-            $table->date('due_date');
+            $table->date('issue_date');
+            $table->date('due_date')->nullable();
 
             $table->string('invoice_number');
-
-            $table->string('bill_number');
-
+            $table->json('items');
             $table->string('reference_number')->nullable();
 
-            $table->foreignId('status')->constrained('invoice_statuses');
 
             $table->text('notes')->nullable();
+            $table->boolean('reverse_charge_basis')->nullable();
 
-            $table->unsignedBigInteger('total');
-            $table->unsignedBigInteger('tax');
-            $table->unsignedBigInteger('due_amount');
-            $table->unsignedBigInteger('received_amount');
+            $table->unsignedBigInteger('amount_tax');
+            $table->unsignedBigInteger('amount_subtotal');
+            $table->unsignedBigInteger('amount_total');
+            $table->unsignedBigInteger('amount_paid')->nullable();
+            $table->unsignedBigInteger('amount_due')->nullable();
+
+            $table->foreignId('invoice_status_id')->constrained('invoice_statuses');
 
             $table->foreignId('consignee_id')->constrained('consignees');
+            $table->foreignId('bank_account_id')->constrained('bank_accounts');
             $table->foreignId('company_id')->constrained('companies');
+            $table->text('invoice_path')->nullable();
             $table->timestamps();
         });
     }

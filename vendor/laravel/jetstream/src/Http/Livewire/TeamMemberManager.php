@@ -3,10 +3,13 @@
 namespace Laravel\Jetstream\Http\Livewire;
 
 use Illuminate\Support\Facades\Auth;
-use Laravel\Jetstream\Actions\RemoveTeamMember;
 use Laravel\Jetstream\Actions\UpdateTeamMemberRole;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
+use Laravel\Jetstream\Contracts\InvitesTeamMembers;
+use Laravel\Jetstream\Contracts\RemovesTeamMembers;
+use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Jetstream;
+use Laravel\Jetstream\TeamInvitation;
 use Livewire\Component;
 
 class TeamMemberManager extends Component
@@ -35,7 +38,7 @@ class TeamMemberManager extends Component
     /**
      * The current role for the user that is having their role managed.
      *
-     * @var array
+     * @var string
      */
     public $currentRole;
 
@@ -84,19 +87,27 @@ class TeamMemberManager extends Component
     /**
      * Add a new team member to a team.
      *
-     * @param  \Laravel\Jetstream\Contracts\AddsTeamMembers
      * @return void
      */
-    public function addTeamMember(AddsTeamMembers $adder)
+    public function addTeamMember()
     {
         $this->resetErrorBag();
 
-        $adder->add(
-            $this->user,
-            $this->team,
-            $this->addTeamMemberForm['email'],
-            $this->addTeamMemberForm['role']
-        );
+        if (Features::sendsTeamInvitations()) {
+            app(InvitesTeamMembers::class)->invite(
+                $this->user,
+                $this->team,
+                $this->addTeamMemberForm['email'],
+                $this->addTeamMemberForm['role']
+            );
+        } else {
+            app(AddsTeamMembers::class)->add(
+                $this->user,
+                $this->team,
+                $this->addTeamMemberForm['email'],
+                $this->addTeamMemberForm['role']
+            );
+        }
 
         $this->addTeamMemberForm = [
             'email' => '',
@@ -106,6 +117,23 @@ class TeamMemberManager extends Component
         $this->team = $this->team->fresh();
 
         $this->emit('saved');
+    }
+
+    /**
+     * Cancel a pending team member invitation.
+     *
+     * @param  int  $invitationId
+     * @return void
+     */
+    public function cancelTeamInvitation($invitationId)
+    {
+        if (! empty($invitationId)) {
+            $model = Jetstream::teamInvitationModel();
+
+            $model::whereKey($invitationId)->delete();
+        }
+
+        $this->team = $this->team->fresh();
     }
 
     /**
@@ -143,6 +171,8 @@ class TeamMemberManager extends Component
 
     /**
      * Stop managing the role of a given user.
+     *
+     * @return void
      */
     public function stopManagingRole()
     {
@@ -152,10 +182,10 @@ class TeamMemberManager extends Component
     /**
      * Remove the currently authenticated user from the team.
      *
-     * @param  \Laravel\Jetstream\Actions\RemoveTeamMember  $remover
+     * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
      * @return void
      */
-    public function leaveTeam(RemoveTeamMember $remover)
+    public function leaveTeam(RemovesTeamMembers $remover)
     {
         $remover->remove(
             $this->user,
@@ -186,10 +216,10 @@ class TeamMemberManager extends Component
     /**
      * Remove a team member from the team.
      *
-     * @param  \Laravel\Jetstream\Actions\RemoveTeamMember  $remover
+     * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
      * @return void
      */
-    public function removeTeamMember(RemoveTeamMember $remover)
+    public function removeTeamMember(RemovesTeamMembers $remover)
     {
         $remover->remove(
             $this->user,

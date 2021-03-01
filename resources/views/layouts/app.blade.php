@@ -15,26 +15,22 @@
     <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.js" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <style>
         [x-cloak] {
             display: none;
         }
-
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
         /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
     @stack('styles')
     @livewireStyles
@@ -42,43 +38,44 @@
 </head>
 
 <body class="">
-    <div class="flex h-screen overflow-hidden" x-data="{ leftSidebar: false, profileDropdown: false}">
-        <!-- Left Sidebar -->
-        <x-sidebar.left />
-        <!-- Main -->
-        <div class="flex flex-col flex-1 w-0 overflow-hidden">
-            <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none" tabindex="0">
-                <div class="pt-2 pb-6 md:py-6">
-                    <!-- Header -->
-                    <div class="px-4 mx-auto sm:px-6 md:px-8">
-                        <div class="grid grid-cols-2 px-4 pb-5 mb-5 border-b border-gray-200 sm:px-6 md:px-0">
-                            <!-- Title -->
-                            <div>
-                                <h1 class="text-2xl font-bold leading-9 text-gray-700">
-                                    {{ $header ?? null }}
-                                </h1>
-                                <p class="max-w-2xl mt-1 text-sm text-gray-500">{{ $desc ?? '' }}</p>
-                            </div>
+<div class="flex h-screen overflow-hidden" x-data="{ leftSidebar: false, profileDropdown: false}">
+    <!-- Left Sidebar -->
+    <x-sidebar.left />
+    <!-- Main -->
+    <div class="flex flex-col flex-1 w-0 min-h-screen overflow-hidden">
+        <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none" tabindex="0">
+            <div class="pt-2 pb-6 md:py-6">
+                <!-- Header -->
+                <div class="px-4 mx-auto sm:px-6 md:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 px-4 pb-5 mb-5 border-b border-gray-200 sm:px-6 md:px-0">
+                        <!-- Title -->
+                        <div>
+                            <h1 class="text-2xl font-bold leading-9 text-gray-700">
+                                {{ $header ?? null }}
+                            </h1>
+                            <p class="max-w-2xl mt-1 text-sm text-gray-500">{{ $desc ?? '' }}</p>
+                        </div>
 
-                            <!-- Dropdown -->
-                            <x-dropdown.profile />
+                        <!-- Dropdown -->
+                        <x-dropdown.profile />
+                        <!-- Morning Bar -->
+                            <!-- TODO Good Morning Bar -->
                         </div>
                     </div>
 
-                    <!-- Body -->
-                    <div class="px-4 max-w-8xl sm:px-6 md:px-8">
-                        {{ $slot ?? null }}
-                    </div>
+                <!-- Body -->
+                <div class="px-6 max-w-screen md:px-8">
+                    {{ $slot ?? null }}
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
+</div>
 
 
-    @stack('modals')
-    @livewireScripts
-    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    @bukScripts
+@stack('modals')
+@livewireScripts
+@bukScripts
 </body>
 
 </html>

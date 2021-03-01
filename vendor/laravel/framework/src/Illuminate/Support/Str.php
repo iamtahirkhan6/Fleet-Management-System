@@ -2,7 +2,6 @@
 
 namespace Illuminate\Support;
 
-use Ramsey\Uuid\UuidInterface;
 use Illuminate\Support\Traits\Macroable;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
@@ -47,7 +46,7 @@ class Str
      * Get a new stringable object from the given string.
      *
      * @param  string  $string
-     * @return Stringable
+     * @return \Illuminate\Support\Stringable
      */
     public static function of($string)
     {
@@ -741,7 +740,7 @@ class Str
     /**
      * Generate a UUID (version 4).
      *
-     * @return UuidInterface
+     * @return \Ramsey\Uuid\UuidInterface
      */
     public static function uuid()
     {
@@ -753,7 +752,7 @@ class Str
     /**
      * Generate a time-ordered UUID (version 4).
      *
-     * @return UuidInterface
+     * @return \Ramsey\Uuid\UuidInterface
      */
     public static function orderedUuid()
     {

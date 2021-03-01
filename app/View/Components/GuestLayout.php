@@ -7,19 +7,9 @@ use Illuminate\View\Component;
 class GuestLayout extends Component
 {
     /**
-     * Create a new component instance.
+     * Get the view / contents that represents the component.
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|string
+     * @return \Illuminate\View\View
      */
     public function render()
     {

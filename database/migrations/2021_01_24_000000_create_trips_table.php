@@ -44,6 +44,8 @@ class CreateTripsTable extends Migration
             $table->double('cash_adv_fees')->default(0)->nullable();                                // Cash adv after minus
             $table->boolean('tds_sbm_bool')->default(0)->nullable();                                // Did the person submit TDS?
             $table->double('tds')->default(0)->nullable();                                          // Amount to deduct if TDS not given
+            $table->boolean('tds_paid')->default(0)->nullable();                                    // Amount to deduct if TDS not given
+            $table->boolean('tds_filed')->default(0)->nullable();                                   // Amount to deduct if TDS not given
             $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories');        // Tax Category Id
             $table->mediumInteger('two_pay')->nullable();                                                   // 2 Pay
             $table->double('final_payable')->nullable();                                                    // Final Payable
@@ -59,9 +61,12 @@ class CreateTripsTable extends Migration
             $table->boolean('loading_done')->default(0);                                            // Loading Step
             $table->boolean('payment_done')->default(0);                                            // Payment Done
             $table->boolean('completed')->default(0);                                               // Loading Step
+            $table->foreignId('invoice_id')->nullable()->constrained('invoices');                   // Invoice
 
             $table->foreignId('created_by')->nullable()->constrained('users');                      // Created By
             $table->foreignId('finished_by')->nullable()->constrained('users');                     // Managed By
+
+            $table->unique(['tp_number', 'tp_serial']);
             $table->timestamps();
         });
     }

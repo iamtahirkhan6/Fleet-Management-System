@@ -10,24 +10,56 @@
             @csrf
 
             <div>
-                <x-jet-label for="name" value="{{ __('Name') }}" />
+                <x-jet-label for="name" value="{{ __('Name*') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="phone_number" value="{{ __('Phone Number') }}" />
-                <x-jet-input id="phone_number" class="block mt-1 w-full" type="phone_number" name="phone_number" :value="old('phone_number')" required />
+                <x-jet-label for="phone_number" value="{{ __('Phone Number*') }}" />
+                <x-jet-input id="phone_number" class="block mt-1 w-full" type="tel" maxlength="10" name="phone_number" :value="old('phone_number')" required />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
+                <x-jet-label for="company_name" value="{{ __('Company Name*') }}" />
+                <x-jet-input id="company_name" class="block mt-1 w-full" type="text" name="company_name" :value="old('company_name')" required />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="short_code" value="{{ __('Unique Short Code*') }}" />
+                <x-jet-input id="short_code" class="block mt-1 w-full" type="text" name="short_code" :value="old('short_code')" style="text-transform: uppercase" required />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="gstn" value="{{ __('GSTIN/UIN') }}" />
+                <x-jet-input id="gstn" class="block mt-1 w-full" type="text" name="gstn" :value="old('gstn')" style="text-transform: uppercase"/>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="password" value="{{ __('Password*') }}" />
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password*') }}" />
                 <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
+
+            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div class="mt-4">
+                    <x-jet-label for="terms">
+                        <div class="flex items-center">
+                            <x-jet-checkbox name="terms" id="terms"/>
+
+                            <div class="ml-2">
+                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
+                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
+                                ]) !!}
+                            </div>
+                        </div>
+                    </x-jet-label>
+                </div>
+            @endif
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

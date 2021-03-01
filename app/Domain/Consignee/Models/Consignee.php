@@ -10,12 +10,40 @@ use App\Domain\General\Models\Address;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Domain\Consignee\Models\Consignee
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $short_code
+ * @property string|null $gstn
+ * @property string|null $pan
+ * @property int $company_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Address|null $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|Project[] $projects
+ * @property-read int|null $projects_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereGstn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee wherePan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereShortCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+
 class Consignee extends Model
 {
     use HasFactory;
     use MultiTenable;
 
-    protected array $fillable = ["name", "gstin", "pan"];
+    protected $fillable = ["name", "gstn", "pan", "short_code", "company_id"];
 
     public function address()
     {

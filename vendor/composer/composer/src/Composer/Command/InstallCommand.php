@@ -36,7 +36,7 @@ class InstallCommand extends BaseCommand
             ->setAliases(array('i'))
             ->setDescription('Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.')
             ->setDefinition(array(
-                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package loading-points when possible, including VCS information.'),
+                new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
                 new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist even for dev versions.'),
                 new InputOption('dry-run', null, InputOption::VALUE_NONE, 'Outputs the operations but will not execute anything (implicitly enables --verbose).'),
                 new InputOption('dev', null, InputOption::VALUE_NONE, 'DEPRECATED: Enables installation of require-dev packages (enabled by default, only present for BC).'),

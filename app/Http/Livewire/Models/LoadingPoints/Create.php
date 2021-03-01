@@ -3,15 +3,14 @@
 namespace App\Http\Livewire\Models\LoadingPoints;
 
 use Livewire\Component;
-use Illuminate\Database\QueryException;
 use App\Domain\LoadingPoint\Models\LoadingPoint;
 
 class Create extends Component
 {
     public LoadingPoint $loadingpoint;
 
-    public $createSuccess = false;
-    public $createFail    = false;
+    public bool $createSuccess = false;
+    public bool $createFail    = false;
 
     protected $rules = [
         'loadingpoint.name'       => 'required',
@@ -23,17 +22,13 @@ class Create extends Component
         'loadingpoint.short_code' => 'short code',
     ];
 
-    public function createMine()
+    public function createLoadingPoint()
     {
         $this->validate();
+        $this->loadingpoint->save();
 
-        try {
-            $this->loadingpoint->save();
-        } catch (QueryException $ex) {
-            $this->createFail = true;
-        }
-
-        $this->createSuccess = true;
+        $this->createSuccess = !is_null($this->loadingpoint->id);
+        $this->createFail    = is_null($this->loadingpoint->id);
     }
 
     public function mount()
@@ -43,7 +38,7 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.models.loading-points.create', ["loadingpoint" => LoadingPoint::all()]);
+        return view('livewire.models.loading-points.create');
     }
 
     public function updated($propertyName)

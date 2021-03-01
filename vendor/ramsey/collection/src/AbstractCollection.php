@@ -15,26 +15,27 @@ declare(strict_types=1);
 namespace Ramsey\Collection;
 
 use Closure;
-use Ramsey\Collection\Tool\TypeTrait;
-use Ramsey\Collection\Tool\ValueToStringTrait;
-use Ramsey\Collection\Tool\ValueExtractorTrait;
-use Ramsey\Collection\Exception\OutOfBoundsException;
+use Ramsey\Collection\Exception\CollectionMismatchException;
 use Ramsey\Collection\Exception\InvalidArgumentException;
 use Ramsey\Collection\Exception\InvalidSortOrderException;
-use Ramsey\Collection\Exception\CollectionMismatchException;
-use function end;
-use function reset;
-use function usort;
-use function current;
-use function sprintf;
-use function in_array;
+use Ramsey\Collection\Exception\OutOfBoundsException;
+use Ramsey\Collection\Tool\TypeTrait;
+use Ramsey\Collection\Tool\ValueExtractorTrait;
+use Ramsey\Collection\Tool\ValueToStringTrait;
+
+use function array_filter;
 use function array_map;
 use function array_merge;
-use function array_udiff;
-use function unserialize;
-use function array_filter;
 use function array_search;
+use function array_udiff;
 use function array_uintersect;
+use function current;
+use function end;
+use function in_array;
+use function reset;
+use function sprintf;
+use function unserialize;
+use function usort;
 
 /**
  * This class provides a basic implementation of `CollectionInterface`, to

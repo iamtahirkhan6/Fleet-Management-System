@@ -14,7 +14,7 @@ class ConsigneeSeeder extends Seeder
 
         $consignee = Consignee::create([
             'name'       => 'M/S Shri Aandal Logistics',
-            'gstin'      => '21ADUFS0064M1ZR',
+            'gstn'      => '21ADUFS0064M1ZR',
             'pan'        => 'ADUFS0064M',
             'company_id' => '2',
         ]);
@@ -29,7 +29,7 @@ class ConsigneeSeeder extends Seeder
 
         $consignee = Consignee::create([
             'name'       => 'Ironide Minerals Private Limited',
-            'gstin'      => '21AADCI3789E1ZP',
+            'gstn'      => '21AADCI3789E1ZP',
             'pan'        => 'AADCI3789E',
             'company_id' => '2',
         ]);
@@ -44,7 +44,7 @@ class ConsigneeSeeder extends Seeder
 
         $consignee = Consignee::create([
             'name'       => 'Mohashakti Forging Private Limited',
-            'gstin'      => '21AAECM7104N1ZK',
+            'gstn'      => '21AAECM7104N1ZK',
             'pan'        => 'AAECM7104N',
             'company_id' => 2,
         ]);
@@ -59,7 +59,7 @@ class ConsigneeSeeder extends Seeder
 
         $consignee = Consignee::create([
             'name'       => 'B S Minerals',
-            'gstin'      => '21BNHPS1458R2ZE',
+            'gstn'      => '21BNHPS1458R2ZE',
             'pan'        => '21BNHP1458R',
             'company_id' => '2',
         ]);

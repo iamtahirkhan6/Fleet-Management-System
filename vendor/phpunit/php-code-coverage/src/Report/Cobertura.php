@@ -66,7 +66,7 @@ final class Cobertura
 
         $document->appendChild($coverageElement);
 
-        $sourcesElement = $document->createElement('loading-points');
+        $sourcesElement = $document->createElement('sources');
         $coverageElement->appendChild($sourcesElement);
 
         $sourceElement = $document->createElement('source', $report->pathAsString());

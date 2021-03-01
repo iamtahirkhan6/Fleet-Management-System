@@ -3,7 +3,6 @@
 namespace Illuminate\Database\Concerns;
 
 use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\MultipleRecordsFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -57,8 +56,7 @@ trait BuildsQueries
      *
      * @param  callable  $callback
      * @param  int  $count
-     *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function chunkMap(callable $callback, $count = 1000)
     {
@@ -165,7 +163,7 @@ trait BuildsQueries
      * Execute the query and get the first result.
      *
      * @param  array|string  $columns
-     * @return Model|object|static|null
+     * @return \Illuminate\Database\Eloquent\Model|object|static|null
      */
     public function first($columns = ['*'])
     {
@@ -176,10 +174,10 @@ trait BuildsQueries
      * Execute the query and get the first result if it's the sole matching record.
      *
      * @param  array|string  $columns
-     * @return Model|object|static|null
+     * @return \Illuminate\Database\Eloquent\Model|object|static|null
      *
-     * @throws RecordsNotFoundException
-     * @throws MultipleRecordsFoundException
+     * @throws \Illuminate\Database\RecordsNotFoundException
+     * @throws \Illuminate\Database\MultipleRecordsFoundException
      */
     public function sole($columns = ['*'])
     {
@@ -248,13 +246,12 @@ trait BuildsQueries
     /**
      * Create a new length-aware paginator instance.
      *
-     * @param  Collection  $items
-     * @param  int         $total
-     * @param  int         $perPage
-     * @param  int         $currentPage
-     * @param  array       $options
-     *
-     * @return LengthAwarePaginator
+     * @param  \Illuminate\Support\Collection  $items
+     * @param  int  $total
+     * @param  int  $perPage
+     * @param  int  $currentPage
+     * @param  array  $options
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     protected function paginator($items, $total, $perPage, $currentPage, $options)
     {
@@ -266,12 +263,11 @@ trait BuildsQueries
     /**
      * Create a new simple paginator instance.
      *
-     * @param  Collection  $items
+     * @param  \Illuminate\Support\Collection  $items
      * @param  int  $perPage
      * @param  int  $currentPage
      * @param  array  $options
-     *
-     * @return Paginator
+     * @return \Illuminate\Pagination\Paginator
      */
     protected function simplePaginator($items, $perPage, $currentPage, $options)
     {

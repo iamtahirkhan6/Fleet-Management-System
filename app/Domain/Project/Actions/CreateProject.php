@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Domain\Project\Actions;
+namespace App\Domain\Project\Actions;
 
 use Lorisleiva\Actions\Concerns\AsAction;
 

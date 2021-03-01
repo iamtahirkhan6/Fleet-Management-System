@@ -29,7 +29,7 @@ class Create extends Component
 
         try{
             // $this->unloadingPoint->visible = 1;
-            $this->unloadingPoint->save();
+            $this->unloadingpoint->save();
         } catch(QueryException $ex)
         {
             $this->createFail = true;

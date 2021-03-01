@@ -31,8 +31,11 @@
     @endif
 
 @else
-    <td class="px-6 py-4 whitespace-nowrap">
-            <div class="text-sm text-gray-500">
+    @if(isset($attributes["lessWidth"]) && $attributes["lessWidth"] == true)
+        <td {{ $attributes->merge(['class' => 'px-1 py-4 whitespace-nowrap text-sm text-gray-500']) }} >
+    @else
+        <td {{ $attributes->merge(['class' => 'px-6 py-4 whitespace-nowrap text-sm text-gray-500']) }} >
+            @endif
                 @if($link)
                     <a href="{{ $link }}" {{ $attributes }} {{ $attributes->merge(['class' => 'text-indigo-600 hover:text-indigo-900']) }}>{{ $slot }}</a>
                 @else
@@ -60,6 +63,5 @@
                         @endif
                     @endif
                 @endif
-            </div>
         </td>
 @endif

@@ -1,5 +1,5 @@
 <div class="mt-6 sm:col-span-6" {{ $attributes }}>
-    <label class="block text-sm font-medium text-gray-700">{{ $title ?? null }} @if($attributes["required"]) <span class="text-red-500">*</span> @endif</label>
+    <label class="block text-sm font-medium text-gray-700">{{ $title ?? null }} @if($attributes["required"] || $attributes["requiredCol"]) <span class="text-red-500">*</span> @endif</label>
     <div class="mt-1 sm:w-3/4">
         {{ $slot }}
     </div>

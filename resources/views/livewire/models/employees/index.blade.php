@@ -13,7 +13,7 @@
                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
-                        <input type="text" wire:model="searchTerm"
+                        <input type="text" wire:model.lazy="searchTerm"
                             class="block w-full pl-10 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Search Users">
                     </div>
@@ -22,7 +22,7 @@
 
             <div class="inline-flex flex-1 mt-1 ml-5">
               <span class="mt-2 mr-3 text-gray-500">Per Page</span>
-              <select wire:model="perPage" id="location" name="location" class="block py-2 pl-3 pr-10 text-base border-gray-300 rounded-md w-min h-10 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select wire:model.lazy="perPage" id="location" name="location" class="block py-2 pl-3 pr-10 text-base border-gray-300 rounded-md w-min h-10 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                   <option selected value="5">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>

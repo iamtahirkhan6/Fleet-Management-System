@@ -39,6 +39,23 @@ class ConsigneeController extends Controller
     }
 
     /**
+     * Show the form for updating/creating new address.
+     *
+     * @param  Consignee  $consignee
+     *
+     * @return Application|Factory|View
+     */
+    public function update_details(Consignee $consignee) : Application|Factory|View
+    {
+        return view('page')
+            ->with('livewire', 'models.consignees.update-details')
+            ->with('title', 'Update Consignee Details')
+            ->with('description', 'Add or make changes to your consignee below')
+            ->with('key', 'consignee')
+            ->with('val', $consignee);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request

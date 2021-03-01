@@ -2,10 +2,8 @@
 
 namespace Illuminate\Support;
 
-use Closure;
 use ArrayAccess;
 use ArrayIterator;
-use InvalidArgumentException;
 use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
 use stdClass;
@@ -57,7 +55,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get a lazy collection for the items in this collection.
      *
-     * @return LazyCollection
+     * @return \Illuminate\Support\LazyCollection
      */
     public function lazy()
     {
@@ -302,7 +300,7 @@ class Collection implements ArrayAccess, Enumerable
      * Get the comparison function to detect duplicates.
      *
      * @param  bool  $strict
-     * @return Closure
+     * @return \Closure
      */
     protected function duplicateComparator($strict)
     {
@@ -320,8 +318,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get all items except for those with the specified keys.
      *
-     * @param  Collection|mixed  $keys
-     *
+     * @param  \Illuminate\Support\Collection|mixed  $keys
      * @return static
      */
     public function except($keys)
@@ -864,7 +861,7 @@ class Collection implements ArrayAccess, Enumerable
      * @param  int|null  $number
      * @return static|mixed
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function random($number = null)
     {
@@ -1089,7 +1086,7 @@ class Collection implements ArrayAccess, Enumerable
 
         $callback && is_callable($callback)
             ? uasort($items, $callback)
-            : asort($items, $callback);
+            : asort($items, $callback ?? SORT_REGULAR);
 
         return new static($items);
     }
@@ -1344,7 +1341,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get an iterator for the items.
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {
@@ -1388,7 +1385,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get a base Support collection instance from this collection.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function toBase()
     {

@@ -89,7 +89,7 @@ final class Example implements Tag, Factory\StaticMethod
 
     public static function create(string $body) : ?Tag
     {
-        // File component: File path in quotes or File URI / LoadingPoints information
+        // File component: File path in quotes or File URI / Source information
         if (!preg_match('/^\s*(?:(\"[^\"]+\")|(\S+))(?:\s+(.*))?$/sux', $body, $matches)) {
             return null;
         }

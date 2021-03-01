@@ -12,31 +12,27 @@
 
 namespace Composer\Console;
 
-use Exception;
-use RuntimeException;
-use Composer\Command;
-use Composer\Factory;
-use Composer\Composer;
 use Composer\IO\NullIO;
-use Composer\IO\ConsoleIO;
 use Composer\Util\Platform;
 use Composer\Util\Silencer;
-use Composer\IO\IOInterface;
-use UnexpectedValueException;
-use InvalidArgumentException;
-use Composer\Util\ErrorHandler;
-use Composer\Util\HttpDownloader;
-use Seld\JsonLint\ParsingException;
-use Composer\Exception\NoSslException;
-use Composer\Json\JsonValidationException;
-use Symfony\Component\Console\Helper\HelperSet;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Output\OutputInterface;
-use Composer\EventDispatcher\ScriptExecutionException;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Seld\JsonLint\ParsingException;
+use Composer\Command;
+use Composer\Composer;
+use Composer\Factory;
+use Composer\IO\IOInterface;
+use Composer\IO\ConsoleIO;
+use Composer\Json\JsonValidationException;
+use Composer\Util\ErrorHandler;
+use Composer\Util\HttpDownloader;
+use Composer\EventDispatcher\ScriptExecutionException;
+use Composer\Exception\NoSslException;
 
 /**
  * The console application that handles the commands
@@ -164,7 +160,7 @@ class Application extends BaseApplication
             } catch (CommandNotFoundException $e) {
                 // we'll check command validity again later after plugins are loaded
                 $commandName = false;
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
             }
         }
 
@@ -223,7 +219,7 @@ class Application extends BaseApplication
                 $command = $this->find($name);
                 $commandName = $command->getName();
                 $isProxyCommand = ($command instanceof Command\BaseCommand && $command->isProxyCommand());
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
             }
         }
 
@@ -327,7 +323,7 @@ class Application extends BaseApplication
             return $result;
         } catch (ScriptExecutionException $e) {
             return (int) $e->getCode();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $ghe = new GithubActionError($this->io);
             $ghe->emit($e->getMessage());
 
@@ -341,14 +337,14 @@ class Application extends BaseApplication
 
     /**
      * @param  InputInterface    $input
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return string
      */
     private function getNewWorkingDir(InputInterface $input)
     {
         $workingDir = $input->getParameterOption(array('--working-dir', '-d'));
         if (false !== $workingDir && !is_dir($workingDir)) {
-            throw new RuntimeException('Invalid working directory specified, '.$workingDir.' does not exist.');
+            throw new \RuntimeException('Invalid working directory specified, '.$workingDir.' does not exist.');
         }
 
         return $workingDir;
@@ -375,7 +371,7 @@ class Application extends BaseApplication
                     $io->writeError('<error>The disk hosting '.$dir.' is full, this may be the cause of the following exception</error>', true, IOInterface::QUIET);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         Silencer::restore();
 
@@ -400,7 +396,7 @@ class Application extends BaseApplication
      * @param  bool                    $required
      * @param  bool|null               $disablePlugins
      * @throws JsonValidationException
-     * @return Composer
+     * @return \Composer\Composer
      */
     public function getComposer($required = true, $disablePlugins = null)
     {
@@ -411,7 +407,7 @@ class Application extends BaseApplication
         if (null === $this->composer) {
             try {
                 $this->composer = Factory::create($this->io, null, $disablePlugins);
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 if ($required) {
                     $this->io->writeError($e->getMessage());
                     exit(1);
@@ -538,11 +534,11 @@ class Application extends BaseApplication
             foreach ($pm->getPluginCapabilities('Composer\Plugin\Capability\CommandProvider', array('composer' => $composer, 'io' => $this->io)) as $capability) {
                 $newCommands = $capability->getCommands();
                 if (!is_array($newCommands)) {
-                    throw new UnexpectedValueException('Plugin capability '.get_class($capability).' failed to return an array from getCommands');
+                    throw new \UnexpectedValueException('Plugin capability '.get_class($capability).' failed to return an array from getCommands');
                 }
                 foreach ($newCommands as $command) {
                     if (!$command instanceof Command\BaseCommand) {
-                        throw new UnexpectedValueException('Plugin capability '.get_class($capability).' returned an invalid value, we expected an array of Composer\Command\BaseCommand objects');
+                        throw new \UnexpectedValueException('Plugin capability '.get_class($capability).' returned an invalid value, we expected an array of Composer\Command\BaseCommand objects');
                     }
                 }
                 $commands = array_merge($commands, $newCommands);
