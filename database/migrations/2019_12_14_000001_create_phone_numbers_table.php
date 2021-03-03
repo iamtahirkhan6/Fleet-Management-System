@@ -15,7 +15,7 @@ class CreatePhoneNumbersTable extends Migration
     {
         Schema::create('phone_numbers', function (Blueprint $table) {
             $table->id();
-            $table->text('phone_number');
+            $table->bigInteger('phone_number');
             $table->foreignId('company_id')->constrained('companies');
             $table->morphs('phoneable');
             $table->unique(['phone_number', 'company_id']);
