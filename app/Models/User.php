@@ -8,33 +8,32 @@ use App\Domain\Company\Models\Company;
 use Laratrust\Traits\LaratrustUserTrait;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Models\User
  *
- * @property int $id
- * @property string $name
- * @property int|null $phone_number
- * @property string $password
- * @property int|null $company_id
- * @property string|null $two_factor_secret
- * @property string|null $two_factor_recovery_codes
- * @property string|null $profile_photo_path
- * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Company|null $company
- * @property-read string $profile_photo_url
+ * @property int                                                                                                            $id
+ * @property string                                                                                                         $name
+ * @property int|null                                                                                                       $phone_number
+ * @property string                                                                                                         $password
+ * @property int|null                                                                                                       $company_id
+ * @property string|null                                                                                                    $two_factor_secret
+ * @property string|null                                                                                                    $two_factor_recovery_codes
+ * @property string|null                                                                                                    $profile_photo_path
+ * @property string|null                                                                                                    $remember_token
+ * @property \Illuminate\Support\Carbon|null                                                                                $created_at
+ * @property \Illuminate\Support\Carbon|null                                                                                $updated_at
+ * @property-read Company|null                                                                                              $company
+ * @property-read string                                                                                                    $profile_photo_url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
- * @property-read int|null $permissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
- * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
- * @property-read int|null $tokens_count
+ * @property-read int|null                                                                                                  $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[]                                         $permissions
+ * @property-read int|null                                                                                                  $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[]                                               $roles
+ * @property-read int|null                                                                                                  $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[]                           $tokens
+ * @property-read int|null                                                                                                  $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User orWherePermissionIs($permission = '')
@@ -62,7 +61,6 @@ class User extends Authenticatable
 {
     use LaratrustUserTrait;
     use HasApiTokens;
-    use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
