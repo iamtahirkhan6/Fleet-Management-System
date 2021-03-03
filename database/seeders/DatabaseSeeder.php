@@ -9,7 +9,6 @@ use App\Domain\Expense\Seeders\ExpenseSeeder;
 use App\Domain\Payee\Seeders\PayeeTypeSeeder;
 use App\Domain\General\Seeders\MaterialSeeder;
 use App\Domain\Payment\Seeders\TaxCategorySeeder;
-use App\Domain\VehicleRC\Seeders\VehicleRCSeeder;
 use App\Domain\Invoice\Seeders\InvoiceTypeSeeder;
 use App\Domain\Payment\Seeders\PaymentMethodSeeder;
 use App\Domain\Payment\Seeders\PaymentStatusSeeder;
