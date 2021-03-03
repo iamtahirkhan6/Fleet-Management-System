@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\Domain\Company\Models\Company;
 use App\Domain\General\Models\Address;
 use App\Domain\Project\Models\Project;
@@ -41,6 +42,23 @@ class AskLogistiekSeeder extends Seeder
         // Add Manager
         User::where('id', 2)
             ->update(['company_id' => $company->id]);
+
+        // Create Users
+        $user               = new User();
+        $user->name         = 'Ashish';
+        $user->phone_number = '6371112470';
+        $user->password     = Hash::make('password');
+        $user->company_id   = $company->id;
+        $user->save();
+        $user->attachRole('trips_entry_manager');
+
+        $user               = new User();
+        $user->name         = 'Parthasarathy Panda';
+        $user->phone_number = '9337264566';
+        $user->company_id   = $company->id;
+        $user->password     = Hash::make('password');
+        $user->save();
+        $user->attachRole('trips_payment_executive');
 
         // Create Loading Points
         $gplvisa = LoadingPoint::create(['name'       => 'Gopalpur (Visa Steel)',
@@ -85,7 +103,8 @@ class AskLogistiekSeeder extends Seeder
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $brspl->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')->first()->id,
+                         'material_id'        => Material::whereName('Coal')
+                             ->first()->id,
                          'loading_point_id'   => $gplsu->id,
                          'unloading_point_id' => $brspl->id,
                          'consignee_id'       => $astl->id,

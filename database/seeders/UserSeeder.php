@@ -35,11 +35,5 @@ class UserSeeder extends Seeder
         $user->password     = Hash::make("Qwerty1234x");
         $user->save();
         $user->attachRole("manager");
-
-        $user = User::factory()->create();
-        $user->attachRole("trips_entry_manager");
-
-        $user = User::factory()->create();
-        $user->attachRole("trips_payment_executive");
     }
 }
