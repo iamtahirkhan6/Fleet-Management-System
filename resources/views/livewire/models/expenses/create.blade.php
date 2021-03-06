@@ -46,7 +46,7 @@
 
                 <!-- Receipt -->
                 <x-forms.basic-stacked.column title="Remarks" error="expense.remark">
-                    <x-media-library-attachment multiple name="receipts" rules="mimes:jpeg,png,pdf|max:10240"/>
+{{--                    <x-media-library-attachment multiple name="receipts" rules="mimes:jpeg,png,pdf|max:10240"/>--}}
                 </x-forms.basic-stacked.column>
 
             </x-forms.basic-stacked.form>
