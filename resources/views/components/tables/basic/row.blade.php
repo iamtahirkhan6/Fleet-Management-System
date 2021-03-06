@@ -36,7 +36,7 @@
     @else
         <td {{ $attributes->merge(['class' => 'px-6 py-4 whitespace-nowrap text-sm text-gray-500']) }} >
             @endif
-                @if($link)
+                @if(isset($link) && $link)
                     <a href="{{ $link }}" {{ $attributes }} {{ $attributes->merge(['class' => 'text-indigo-600 hover:text-indigo-900']) }}>{{ $slot }}</a>
                 @else
                     @if($money == "true")
