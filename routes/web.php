@@ -38,7 +38,7 @@ use App\Domain\UnloadingPoint\Controllers\UnloadingPointsController;
 */
 
 Route::get('/', function () {
-    return view('Welcome');
+    return view('welcome');
 });
 
 
