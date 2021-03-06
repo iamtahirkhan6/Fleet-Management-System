@@ -39,20 +39,20 @@
                 @if(isset($link) && $link)
                     <a href="{{ $link }}" {{ $attributes }} {{ $attributes->merge(['class' => 'text-indigo-600 hover:text-indigo-900']) }}>{{ $slot }}</a>
                 @else
-                    @if($money == "true")
+                    @if(isset($money) && $money == "true")
                         @if($moneyBool == 0 || $moneyBool == false)
                             <x-svg.red-cross />
                         @else
                             {{ App\Helper\Helper::rupee_format($moneyVal) }}
                         @endif
-                    @elseif($amount == "true")
+                    @elseif(isset($amount) && $amount == "true")
                         @if(isset($amountVal) && $amountVal > 0)
                             {{ App\Helper\Helper::rupee_format($amountVal) }}
                         @else
                             <x-svg.red-cross />
                         @endif
                     @else
-                        @if($colorSlot == true)
+                        @if(isset($colorSlot) && $colorSlot == true)
                             @if(($colorSlotVal <= 0))
                                 <span class="text-red-500" {{ $attributes }}>{{ $colorSlotVal }}</span>
                             @else
