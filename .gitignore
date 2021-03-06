@@ -5,3 +5,4 @@ vendor/
 .vscode
 storage/app/
 .composer.lock
+.editorconfig
