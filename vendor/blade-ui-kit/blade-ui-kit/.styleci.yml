@@ -1,3 +1,0 @@
-preset: laravel
-enabled:
-  - heredoc_indentation
