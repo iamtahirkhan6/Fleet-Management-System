@@ -6,3 +6,4 @@ vendor/
 storage/app/
 .composer.lock
 .editorconfig
+.env

@@ -1,9 +1,9 @@
 {{-- If Avatar --}}
-@if ($avatar)
+@if ($attributes["avatar"])
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
             <div class="flex-shrink-0 w-10 h-10">
-                <img class="w-10 h-10 rounded-full" src="{{ $url ?? null }}" alt="{{ $slot ?? null }}">
+                <img class="w-10 h-10 rounded-full" src="{{ $attributes["url"] ?? null }}" alt="{{ $slot ?? null }}">
             </div>
             <div class="ml-4">
                 <div class="text-sm font-medium text-gray-900">
