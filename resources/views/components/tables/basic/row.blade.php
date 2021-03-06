@@ -1,9 +1,9 @@
 {{-- If Avatar --}}
-@if ($attributes["avatar"])
+@if (isset($avatar) && $avatar)
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
             <div class="flex-shrink-0 w-10 h-10">
-                <img class="w-10 h-10 rounded-full" src="{{ $attributes["url"] ?? null }}" alt="{{ $slot ?? null }}">
+                <img class="w-10 h-10 rounded-full" src="{{ $url ?? null }}" alt="{{ $slot ?? null }}">
             </div>
             <div class="ml-4">
                 <div class="text-sm font-medium text-gray-900">
@@ -15,7 +15,7 @@
             </div>
         </div>
     </td>
-@elseif($trueVal != null && $falseVal != null)
+@elseif(isset($trueVal) && $trueVal != null && isset($falseVal) && $falseVal != null)
     @if($colorToggle == 0)
         <td class="px-6 py-4 whitespace-nowrap">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
