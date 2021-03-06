@@ -7,6 +7,7 @@ use App\Traits\MultiTenable;
 use Spatie\MediaLibrary\HasMedia;
 use App\Domain\Payee\Models\Payee;
 use App\Domain\Office\Models\Office;
+use App\Domain\Document\Models\Document;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -79,5 +80,10 @@ class Expense extends Model
     public function payment_method()
     {
         $this->hasOne(ExpenseCategory::class);
+    }
+
+    public function receipt()
+    {
+        return $this->morphMany(Document::class, 'documentable');
     }
 }

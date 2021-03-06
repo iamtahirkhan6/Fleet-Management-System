@@ -46,7 +46,13 @@
 
                 <!-- Receipt -->
                 <x-forms.basic-stacked.column title="Remarks" error="expense.remark">
-{{--                    <x-media-library-attachment multiple name="receipts" rules="mimes:jpeg,png,pdf|max:10240"/>--}}
+                    @if(!isset($receipt))
+                        <x-forms.basic-stacked.image-upload wireModel="receipt"/>
+                    @else
+                        <ul>
+                            <li><span class="text-md text-indigo-500">Uploaded Receipt</span></li>
+                        </ul>
+                    @endif
                 </x-forms.basic-stacked.column>
 
             </x-forms.basic-stacked.form>

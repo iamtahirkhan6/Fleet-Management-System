@@ -19,6 +19,7 @@ class Create extends Component
     public         $payees;
     public         $payment_methods;
     public         $expense_categories;
+    public $receipt;
 
     public bool $showSuccess = false;
     public bool $showFail    = false;
@@ -35,6 +36,7 @@ class Create extends Component
         'expense.payee_id'            => 'nullable|exists:payees,id',
         'expense.payment_method_id'   => 'required|exists:payment_methods,id',
         'expense.remark'              => 'required_if:expense_category,9',         // 9 is the id of "Others" row
+        'receipt'             => 'nullable|image|max:10240',
     ];
 
     protected array $validationAttributes = [
@@ -53,9 +55,11 @@ class Create extends Component
         $this->expense->save();
 
         if (!is_null($this->expense->id)) {
-            $this->expense
-                ->addFromMediaLibraryRequest($this->receipts)
-                ->toMediaCollection('expenses');
+            if (isset($this->receipt)) {
+                $this->receipt = $this->receipt->storePublicly('/expense_receipts', 'documents');
+                $this->expense->receipt()->save(new Document(['path' => $this->receipt, 'document_type_id' => 3]));
+            }
+
         }
 
         $this->showSuccess = !is_null($this->expense->id);
