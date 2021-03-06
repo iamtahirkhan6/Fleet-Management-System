@@ -24,9 +24,9 @@ class UserSeeder extends Seeder
         $user->attachRole("admin");
 
         $user               = new User();
-        $user->name         = "Anil Tripathy";
-        $user->phone_number = "9920238105";
-        $user->password     = Hash::make("Qwerty123x");
+        $user->name         = "Nasir Khan";
+        $user->phone_number = "7873390895";
+        $user->password     = Hash::make("password");
         $user->save();
         $user->attachRole("manager");
 

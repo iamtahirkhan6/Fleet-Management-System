@@ -21,10 +21,10 @@ class AskLogistiekSeeder extends Seeder
         $company = Company::create([
                                        'name'                    => 'Ask Logistiek Solutio Private Limited',
                                        'short_code'              => 'ASK',
-                                       'use_razorpay'            => '1',
-                                       'razorpay_key_id'         => 'rzp_test_IR1ZQflkss4z99',
-                                       'razorpay_key_secret'     => '50KofXFsggr51LKN5GzA9hb9',
-                                       'razorpay_account_number' => '2323230074256115',
+                                       'use_razorpay'            => '0',
+//                                       'razorpay_key_id'         => 'rzp_test_IR1ZQflkss4z99',
+//                                       'razorpay_key_secret'     => '50KofXFsggr51LKN5GzA9hb9',
+//                                       'razorpay_account_number' => '2323230074256115',
                                        'user_id'                 => '2',
                                    ]);
 
