@@ -87,6 +87,9 @@ class AskLogistiekSeeder extends Seeder
         $mgm   = UnloadingPoint::create(['name'       => 'MGM Steels Ltd',
                                          'short_code' => 'MGM',
                                          'company_id' => $company->id]);
+        $sjn   = UnloadingPoint::create(['name'       => 'Shri Jagannath',
+                                         'short_code' => 'SJN',
+                                         'company_id' => $company->id]);
 
         // Consignee
         $astl = Consignee::create(['name'       => 'AS Translogistics Private Limited',
@@ -95,50 +98,51 @@ class AskLogistiekSeeder extends Seeder
 
         // Create Projects
         Project::create(['name'               => $gplvisa->short_code . '/' . $sml->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplvisa->id,
                          'unloading_point_id' => $sml->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $brspl->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplsu->id,
                          'unloading_point_id' => $brspl->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $psl->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplvisa->id,
                          'unloading_point_id' => $psl->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $bs->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplvisa->id,
                          'unloading_point_id' => $bs->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $kjil->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplvisa->id,
                          'unloading_point_id' => $kjil->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
         Project::create(['name'               => $gplvisa->short_code . '/' . $mgm->short_code . '/' . $astl->short_code,
-                         'material_id'        => Material::whereName('Coal')
-                             ->first()->id,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplvisa->id,
                          'unloading_point_id' => $mgm->id,
+                         'consignee_id'       => $astl->id,
+                         'company_id'         => $company->id,
+                         'status'             => 1]);
+        Project::create(['name'               => $gplvisa->short_code . '/' . $mgm->short_code . '/' . $astl->short_code,
+                         'material_id'        => Material::whereName('Coal')->first()->id,
+                         'loading_point_id'   => $gplvisa->id,
+                         'unloading_point_id' => $sjn->id,
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
