@@ -75,7 +75,7 @@ class AskLogistiekSeeder extends Seeder
         $brspl = UnloadingPoint::create(['name'       => 'B.R. Sponge & Power Limited',
                                          'short_code' => 'BRSPL',
                                          'company_id' => $company->id]);
-        $bs    = UnloadingPoint::create(['name'       => 'B.R. Sponge & Power Limited',
+        $bs    = UnloadingPoint::create(['name'       => 'Brand Steel',
                                          'short_code' => 'BS',
                                          'company_id' => $company->id]);
         $psl   = UnloadingPoint::create(['name'       => 'Patnaik Steels & Alloys Ltd',
@@ -104,7 +104,7 @@ class AskLogistiekSeeder extends Seeder
                          'consignee_id'       => $astl->id,
                          'company_id'         => $company->id,
                          'status'             => 1]);
-        Project::create(['name'               => $gplvisa->short_code . '/' . $brspl->short_code . '/' . $astl->short_code,
+        Project::create(['name'               => $gplsu->short_code . '/' . $brspl->short_code . '/' . $astl->short_code,
                          'material_id'        => Material::whereName('Coal')->first()->id,
                          'loading_point_id'   => $gplsu->id,
                          'unloading_point_id' => $brspl->id,
