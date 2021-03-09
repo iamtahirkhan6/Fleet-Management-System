@@ -11,7 +11,7 @@
     <!-- List all loading-points -->
     <x-tables.basic.main class="mt-5">
         <x-slot name="columns">
-            <x-tables.basic.column>Serial No.</x-tables.basic.column>
+            <x-tables.basic.column>ID</x-tables.basic.column>
             <x-tables.basic.column>Name</x-tables.basic.column>
             <x-tables.basic.column>Short Code</x-tables.basic.column>
             <x-tables.basic.column>Total Projects</x-tables.basic.column>
@@ -21,7 +21,7 @@
         <x-slot name="rows">
             @forelse ($loadingpoints as $loadingpoint)
                 <tr class="transition duration-500 ease-in-out hover:bg-gray-50 hover:shadow-xl">
-                    <x-tables.basic.row>{{ $loop->iteration }}</x-tables.basic.row>
+                    <x-tables.basic.row>{{ $loadingpoint->id }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $loadingpoint->name }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $loadingpoint->short_code }}</x-tables.basic.row>
                     <x-tables.basic.row>{{ $loadingpoint->totalProjects() }}</x-tables.basic.row>

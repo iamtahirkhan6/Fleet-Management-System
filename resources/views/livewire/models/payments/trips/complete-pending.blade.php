@@ -176,6 +176,11 @@
                                                    value="0"></x-forms.basic-stacked.input-basic>
             </x-forms.basic-stacked.column>
 
+            <x-forms.basic-stacked.column title="Shortage Amount" error="input.shortage_amount">
+                <x-forms.basic-stacked.input-rupee wire:model.lazy="input.shortage_amount" type="number" placeholder=""
+                                                   value="0"></x-forms.basic-stacked.input-rupee>
+            </x-forms.basic-stacked.column>
+
             <x-forms.basic-stacked.column title="Final Payable">
                 <x-forms.basic-stacked.row-with-value>{{ App\Helper\Helper::rupee_format($input['final_payable']) ?? '0' }}</x-forms.basic-stacked.row-with-value>
             </x-forms.basic-stacked.column>

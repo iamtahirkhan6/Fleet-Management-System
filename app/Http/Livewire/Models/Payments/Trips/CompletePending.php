@@ -151,7 +151,8 @@ class CompletePending extends Component
         }
 
         // Calculate Final Payable
-        $this->input['final_payable'] = $this->trip->getRawOriginal('total_amount') - ($this->trip->getRawOriginal('hsd') ?? 0) - ($this->trip->getRawOriginal('cash') ?? 0) - ($this->input['cash_adv_fees'] ?? 0) - ((($this->tds_sbm_bool == false) ? $this->input['tds'] : 0)) - ((isset($this->input['two_pay']) && (is_numeric($this->input['two_pay']))) ? $this->input['two_pay'] : 0);
+        $this->input['final_payable'] = $this->trip->getRawOriginal('total_amount') - ($this->trip->getRawOriginal('hsd') ?? 0) - ($this->trip->getRawOriginal('cash') ?? 0) - ($this->input['cash_adv_fees'] ?? 0) - ((($this->tds_sbm_bool == false) ? $this->input['tds'] : 0)) - ((isset($this->input['two_pay']) && (is_numeric($this->input['two_pay']))) ? $this->input['two_pay'] : 0) - ((isset
+                ($this->input['shortage_amount']) && (is_numeric($this->input['shortage_amount']))) ? $this->input['shortage_amount'] : 0);
 
         return view('livewire.models.payments.trips.complete-pending');
     }

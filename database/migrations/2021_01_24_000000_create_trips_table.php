@@ -47,8 +47,9 @@ class CreateTripsTable extends Migration
             $table->boolean('tds_paid')->default(0)->nullable();                                    // Amount to deduct if TDS not given
             $table->boolean('tds_filed')->default(0)->nullable();                                   // Amount to deduct if TDS not given
             $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories');        // Tax Category Id
-            $table->mediumInteger('two_pay')->nullable();                                                   // 2 Pay
-            $table->double('final_payable')->nullable();                                                    // Final Payable
+            $table->mediumInteger('two_pay')->nullable();                                           // 2 Pay
+            $table->mediumInteger('shortage_amount')->nullable();                                   // Shortage Amount
+            $table->double('final_payable')->nullable();                                            // Final Payable
             $table->foreignId('payment_id')->nullable()->constrained('payments');                   // Tax Category Id
             $table->double('profit')->nullable();
 
