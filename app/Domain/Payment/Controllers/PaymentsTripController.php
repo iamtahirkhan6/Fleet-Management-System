@@ -58,7 +58,7 @@ class PaymentsTripController extends Controller
      */
     public function pending_complete(Trip $trip)
     {
-        return (Auth::user()->isAbleTo('payments-create')) ? abort(404) : abort(403);
+        return (Auth::user()->isAbleTo('payments-create')) ? view('page')->with('livewire', 'models.payments.trips.complete-pending')->with('title', 'Complete Payment')->with('key', 'trip')->with('val', $trip) : abort(403);
     }
 
     /**
