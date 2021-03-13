@@ -57,7 +57,7 @@ class AskLogistiekSeeder extends Seeder
         $user->attachRole('trips_entry_manager');
 
         $user               = new User();
-        $user->name         = 'Parthasarathy Panda';
+        $user->name         = 'Parthasarathi Panda';
         $user->phone_number = '9337264566';
         $user->company_id   = $company->id;
         $user->password     = Hash::make('password');
