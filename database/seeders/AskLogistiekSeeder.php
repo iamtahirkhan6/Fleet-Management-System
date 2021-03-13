@@ -244,29 +244,29 @@ class AskLogistiekSeeder extends Seeder
                 $trip->payment_done          = (isset($payment_date) && $payment_date != '') ? 1 : 0;
                 $trip->save();
 
-                if ($pan_number != '' && $party_name != '' && $account_number != '' && $ifsc_code != '' && $payment_date != '') {
-                    $party = Party::firstOrCreate([ 'pan' => $pan_number ], [
-                        'name'       => $party_name,
-                        'company_id' => 2,
+                if ($payment_date != '' && $pan_number != '') {
+                    $party = Party::firstOrCreate(['pan' => $pan_number], ['name' => $party_name , 'company_id' => 2]);
+
+                    $bank_account = BankAccount::firstOrCreate([
+                        'account_number' => $account_number,
+                        'ifsc_code'      => $ifsc_code,
+                        'bankable_type'  => 'App\Domain\Party\Models\Party',
+                        'bankable_id'    => $party->id,
+                        'company_id'     => 2,
+                    ], [
+                        'account_name' => $party_name,
                     ]);
+                    $party->bankAccounts()->save($bank_account);
 
-                    $bank_accounts = BankAccount::whereHasMorph('bankable', [ Party::class ], function (Builder $query) use ($account_number) {
-                        $query->where('account_number', $account_number);
-                    })->get();
-
-                    $bank_accounts_count = $bank_accounts->count();
-
-                    if($bank_accounts_count <= 0)
-                    {
-                        $bank_account = new BankAccount([
-                            'account_name'   => $party_name,
-                            'account_number' => $account_number,
-                            'ifsc_code'      => $ifsc_code,
-                            'company_id'     => 2
-                        ]);
-                        $party->bankAccounts()->save($bank_account);
-                        $payment = Payment::create(['amount' => $final_payable, 'bank_account_id' => $bank_account->id, 'trip_id' => $trip->id, 'payment_method_id' => 4, 'payment_status_id' => 1, 'company_id' => 2]);
-                    }
+                    $payment = Payment::firstOrCreate(
+                        ['trip_id'           => $trip->id],
+                        [
+                        'amount'            => $final_payable,
+                        'bank_account_id'   => $bank_account->id,
+                        'payment_method_id' => 4,
+                        'payment_status_id' => 1,
+                        'company_id'        => 2,
+                    ]);
                 }
                 $this->command->info("Created Trip For Vehicle " . $market_vehicle_number . " (" . $date . ")");
             }

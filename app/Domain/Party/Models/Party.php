@@ -83,13 +83,13 @@ class Party extends Model
         return Trip::wherePartyId($this->id)->sum('net_weight');
     }
 
-    public function setNameAttribute($value)
+    public function setNameAttribute($name)
     {
-        $this->attributes['name'] = mb_convert_case($value, MB_CASE_TITLE);
+        $this->attributes['name'] = mb_convert_case($name, MB_CASE_TITLE);
     }
 
-    public function setPanAttribute($value)
+    public function setPanAttribute($pan)
     {
-        $this->attributes['name'] = mb_convert_case($value, MB_CASE_UPPER);
+        $this->attributes['pan'] = mb_convert_case($pan, MB_CASE_UPPER);
     }
 }
