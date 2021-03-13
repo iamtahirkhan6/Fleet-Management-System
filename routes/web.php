@@ -58,8 +58,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified'],], function () {
 
         Route::get('payments/pending', [PaymentsTripController::class, 'pending',])
             ->name('payments.pending');
+
         Route::get('payments/razorpay-pending', [PaymentsTripController::class, 'razorpay_pending',])
             ->name('payments.razorpay_pending');
+
         Route::get('payments/pending/{trip}', [PaymentsTripController::class, 'pending_complete',]);
 
         Route::resources([

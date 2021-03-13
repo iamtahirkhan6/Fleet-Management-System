@@ -34,7 +34,7 @@ class PaymentsTripController extends Controller
      */
     public function pending()
     {
-        abort(403);
+        return (Auth::user()->isAbleTo('payments-create')) ? view('page')->with('livewire', 'models.payments.trips.pending')->with('title', 'Challan Pending Payments') : abort(403);
     }
 
     /**
@@ -58,7 +58,7 @@ class PaymentsTripController extends Controller
      */
     public function pending_complete(Trip $trip)
     {
-        return (Auth::user()->isAbleTo('payments-create')) ? view('page')->with('livewire', 'models.payments.trips.complete-pending')->with('title', 'Complete Payment')->with('key', 'trip')->with('val', $trip) : abort(403);
+        abort(403);
     }
 
     /**
