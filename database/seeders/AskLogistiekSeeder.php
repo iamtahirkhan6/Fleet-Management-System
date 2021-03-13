@@ -241,6 +241,7 @@ class AskLogistiekSeeder extends Seeder
                 $trip->shortage_amount       = (isset($shortage_amount) && $shortage_amount > 0) ? $shortage_amount : null;
                 $trip->profit                = ((int) $net_weight * (int) $trip->premium_rate) + (int) $trip->cash_adv_fees - (int) $final_payable;
                 $trip->loading_done          = 1;
+                $trip->loading_done          = (isset($payment_date) && $payment_date != '') ? 1 : 0;
                 $trip->save();
 
                 if ($pan_number != '' && $party_name != '' && $account_number != '' && $ifsc_code != '' && $payment_date != '') {
