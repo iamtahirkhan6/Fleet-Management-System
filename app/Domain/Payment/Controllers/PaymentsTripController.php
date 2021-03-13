@@ -58,7 +58,7 @@ class PaymentsTripController extends Controller
      */
     public function pending_complete(Trip $trip)
     {
-        abort(403);
+        return (Auth::user()->isAbleTo('payments-create')) ? abort(404) : abort(403);
     }
 
     /**
