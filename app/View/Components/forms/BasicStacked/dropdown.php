@@ -1,19 +1,20 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\forms\basicStacked;
 
 use Illuminate\View\Component;
 
-class date-picker extends Component
+class dropdown extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public $array;
+    public function __construct($array = null)
     {
-        //
+        $this->array = $array;
     }
 
     /**
@@ -23,6 +24,6 @@ class date-picker extends Component
      */
     public function render()
     {
-        return view('components.date-picker');
+        return view('components.forms.basic-stacked.dropdown');
     }
 }

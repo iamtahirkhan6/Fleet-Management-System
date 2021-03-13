@@ -70,7 +70,9 @@
         <div>
             <x-forms.basic-stacked.column title="Select an Account" error="input.bank_account_id"
                                           x-show="showExistingBankDetails" x-cloak>
-                <x-forms.basic-stacked.dropdown arrayKey="account_number" title="Select an option" wire:model.lazy="input.bank_account_id" :array="$existing_bank_accounts"></x-forms.basic-stacked.dropdown>
+                <x-forms.basic-stacked.dropdown arrayKey="account_number"
+                                                title="Select an option"
+                                                wire:model.lazy="input.bank_account_id"></x-forms.basic-stacked.dropdown>
             </x-forms.basic-stacked.column>
             <div class="relative w-full sm:w-2/6 my-3" x-show="showExistingBankDetails" x-cloak>
                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
