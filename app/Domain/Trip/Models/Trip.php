@@ -123,6 +123,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Trip whereInvoiceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Trip whereTdsFiled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Trip whereTdsPaid($value)
+ * @property int|null $shortage_amount
+ * @property-read \Illuminate\Database\Eloquent\Collection|Document[] $challanCopy
+ * @property-read int|null $challan_copy_count
+ * @property-read \App\Domain\Trip\Models\TripType $tripType
+ * @method static \Illuminate\Database\Eloquent\Builder|Trip whereShortageAmount($value)
  */
 class Trip extends Model
 {

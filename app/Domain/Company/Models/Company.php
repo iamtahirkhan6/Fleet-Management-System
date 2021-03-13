@@ -56,6 +56,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Company whereUseRazorpay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Company whereUserId($value)
  * @mixin \Eloquent
+ * @property string|null $trade_name
+ * @property-read BankAccount|null $bankAccount
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereShortCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereTradeName($value)
  */
 
 class Company extends Model

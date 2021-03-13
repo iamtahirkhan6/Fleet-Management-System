@@ -45,6 +45,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read Payee                                      $payee
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Document[] $receipt
+ * @property-read int|null $receipt_count
  */
 
 class Expense extends Model

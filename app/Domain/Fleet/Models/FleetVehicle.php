@@ -87,6 +87,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereVehicleAge($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereVehicleType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereWeight($value)
+ * @property string|null $insurance_expiry
+ * @property-read \Illuminate\Database\Eloquent\Collection|Trip[] $trips
+ * @property-read int|null $trips_count
+ * @method static \Illuminate\Database\Eloquent\Builder|FleetVehicle whereInsuranceExpiry($value)
  */
 
 class FleetVehicle extends Model

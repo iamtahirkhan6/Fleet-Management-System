@@ -82,6 +82,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|VehicleRC whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VehicleRC whereVehicleAge($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VehicleRC whereWeight($value)
+ * @property string|null $insurance_expiry
+ * @method static \Illuminate\Database\Eloquent\Builder|VehicleRC whereInsuranceExpiry($value)
  */
 
 class VehicleRC extends Model

@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereShortCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $trade_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Consignee whereTradeName($value)
  */
 
 class Consignee extends Model

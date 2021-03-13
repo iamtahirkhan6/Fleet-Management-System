@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceStatus whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceStatus whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $desc
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceStatus whereDesc($value)
  */
 class InvoiceStatus extends Model
 {

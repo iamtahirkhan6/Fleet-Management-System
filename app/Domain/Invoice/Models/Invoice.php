@@ -53,6 +53,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereAmountPaid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereAmountTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereItems($value)
+ * @property string $issue_date
+ * @property int|null $reverse_charge_basis
+ * @property int $amount_tax
+ * @property int $amount_subtotal
+ * @property int $invoice_status_id
+ * @property int $bank_account_id
+ * @property string|null $invoice_path
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereAmountSubtotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereAmountTax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereBankAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereInvoicePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereInvoiceStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereIssueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereReverseChargeBasis($value)
  */
 
 class Invoice extends Model
