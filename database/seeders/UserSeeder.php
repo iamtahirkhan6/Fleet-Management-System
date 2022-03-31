@@ -18,22 +18,15 @@ class UserSeeder extends Seeder
     {
         $user               = new User();
         $user->name         = "Tahir Khan";
-        $user->phone_number = "8770923395";
+        $user->phone_number = "9999999999";
         $user->password     = Hash::make("Qwerty123");
         $user->save();
         $user->attachRole("admin");
 
         $user               = new User();
         $user->name         = "Nasir Khan";
-        $user->phone_number = "7873390895";
+        $user->phone_number = "9999999990";
         $user->password     = Hash::make("password");
-        $user->save();
-        $user->attachRole("manager");
-
-        $user               = new User();
-        $user->name         = "Khalid Khan";
-        $user->phone_number = "9937013057";
-        $user->password     = Hash::make("Qwerty1234x");
         $user->save();
         $user->attachRole("manager");
     }
